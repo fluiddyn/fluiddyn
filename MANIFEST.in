@@ -1,0 +1,8 @@
+include *.txt
+include *.rst
+recursive-include doc *.rst
+recursive-include fluiddyn *.h
+recursive-include fluiddyn *.pyx
+recursive-include fluiddyn *.pxd
+recursive-include fluiddyn *.c
+recursive-include include *.h
