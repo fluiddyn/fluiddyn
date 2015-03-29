@@ -2,14 +2,15 @@
 FluidDyn
 ========
 
-*Framework for studying fluid dynamics by experiments and simulations.*
+*Framework for studying fluid dynamics.*
 
 `Package Documentation <http://pythonhosted.org/fluiddyn>`__
 
-FluidDyn is a framework for studying fluid dynamics by experiments and
-numerical simulations using Python.  The project is still in a testing
-stage so it is still pretty unstable and many of its planned features
-have not yet been implemented.
+FluidDyn is a framework for studying fluid dynamics. Most of the
+features are actually implemented in other packages (fluidsim,
+fluidlab).  The project is still in a testing stage so it is still
+pretty unstable and many of its planned features have not yet been
+implemented.
 
 It is the evolution of two other projects previously developed by
 `Pierre Augier
@@ -49,7 +50,7 @@ Tests
 
 From the root directory::
 
-  python run_tests.py
+  make tests
 
 Or, from the root directory or from any of the "test" directories::
 

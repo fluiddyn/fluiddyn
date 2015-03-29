@@ -26,8 +26,11 @@ simul
 
 """
 
-from fluiddyn import lab
-from fluiddyn import simul
+try:
+    import fluidsim
+    simul = fluidsim
+except ImportError:
+    pass
 
 from fluiddyn.util.util import load_exp, create_object_from_file
 
