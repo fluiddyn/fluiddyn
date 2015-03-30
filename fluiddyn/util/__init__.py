@@ -14,7 +14,6 @@ Utilities (:mod:`fluiddyn.util`)
    timer
    deamons
    operator
-   gui
 
 """
 

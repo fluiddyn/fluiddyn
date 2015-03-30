@@ -2,8 +2,6 @@
 import fluiddyn.output.figs as figs
 
 import unittest
-import os
-from glob import glob
 
 
 class SimpleTestCase(unittest.TestCase):
