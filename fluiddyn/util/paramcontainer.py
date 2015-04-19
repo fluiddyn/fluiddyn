@@ -1,5 +1,5 @@
-"""Container for parameters using xml (:mod:`fluiddyn.util.containerxml`)
-=========================================================================
+"""Container for parameters (:mod:`fluiddyn.util.paramcontainer`)
+=================================================================
 
 .. currentmodule:: fluiddyn.util.paramcontainer
 
@@ -47,16 +47,15 @@ def _as_value(value):
 
 
 class ParamContainer(object):
-    """Structured container of values associated with xml objects.
+    """Structured container of values.
 
-    The objects ContainerXML can be used as containers of
-    parameters. They can be printed as xml text, and saved into and
-    loaded from xml and hdf5 files.
+    The objects ParamContainer can be used as containers of
+    parameters. They can be printed as xml text.
 
     They are used to contain parameters that can be modified by the
     user, for example in this way::
 
-      >>> params = ContainerXML(tag='params')
+      >>> params = ParamContainer(tag='params')
 
       >>> params._set_attribs({'a0': 1, 'a1': 1})
 
@@ -74,9 +73,9 @@ class ParamContainer(object):
       <child0 a1="2" a0="3"/>
       </params>
 
-    Here, `params.child0` is another ContainerXML.
+    Here, ``params.child0`` is another ParamContainer.
 
-    An interesting feature of the ContainerXML objects is that if one
+    An interesting feature of the ParamContainer objects is that if one
     uses a non-existing parameter, an AttributeError is raised::
 
       >>> params.a3 = 3
@@ -86,29 +85,40 @@ class ParamContainer(object):
       <ipython-input-9-a91118d8b23e> in <module>()
       ----> 1 params.child1.a0 = 3
 
-      AttributeError: 'ContainerXML' object has no attribute 'child1'
+      AttributeError: a3 is not already set in params.
+      The attributes are: set(['a1', 'a0', 'a2'])
+      To set a new attribute, use _set_attrib or _set_attribs.
 
     Note that for a parameter container, it is much better to raise an
     error rather than just add an unused parameter!
 
+    A ParamContainer object can be saved in xml and in hdf5 and then
+    reloaded from the file::
+
+      >>> params._save_as_xml()
+
+      >>> params_loaded = ParamContainer(path_file=params._tag + '.xml')
+
+      >>> assert params_loaded == params
+
     Parameters
     ----------
     (for the __init__ method)
-
-    path_file : (None) str
-        Path of a file (xml, hdf5, ...)
-
-    elemxml : (None) xml.etree.ElementTree.Element
-        An xml element.
-
-    hdf5_object : (None) file
-        An open hdf5 file.
 
     tag : (None) str
         A tag for the root container.
 
     attribs : (None) dict
         Some attributes.
+
+    path_file : (None) str
+        Path of a file (xml or hdf5).
+
+    elemxml : (None) xml.etree.ElementTree.Element
+        An xml element.
+
+    hdf5_object : (None) file
+        An open hdf5 file.
 
     """
     def __init__(self, tag=None, attribs=None,
@@ -138,12 +148,16 @@ class ParamContainer(object):
             self._set_attribs(attribs)
 
     def __setattr__(self, key, value):
-        if key in self.__dict__.keys():
+        if key in self._attribs:
             self._set_internal_attr(key, value)
+        elif key in self._tag_children:
+            if not isinstance(value, ParamContainer):
+                raise AttributeError(
+                    key + ' is a tag of a child.')
         else:
             raise AttributeError(
                 key + ' is not already set in ' + self._tag +
-                '.\nThe attributes are: ' + str(self._attribs.keys()) +
+                '.\nThe attributes are: ' + str(self._attribs) +
                 '\nTo set a new attribute, use _set_attrib or _set_attribs.')
 
     def __getattr__(self, attr):
@@ -165,6 +179,7 @@ class ParamContainer(object):
         self.__dict__[key] = value
 
     def _set_attrib(self, key, value):
+        """Add an attribute to the container."""
         self.__dict__[key] = value
         self._attribs.add(key)
 
@@ -181,7 +196,7 @@ class ParamContainer(object):
         self._tag_children.add(tag)
 
     def _set_as_child(self, child):
-        """Associate a ContainerXML as a child."""
+        """Associate a ParamContainer as a child."""
         if not isinstance(child, ParamContainer):
             raise ValueError('child should be a ParamContainer instance.')
         if child._tag in self.__dict__:
@@ -218,7 +233,7 @@ class ParamContainer(object):
         return elemxml
 
     def _make_xml_text(self):
-        """Produce and return the xml text representing the container."""
+        """Produce and return a xml text representing the container."""
         elemxml = self._make_element_xml()
         return produce_text_element(elemxml)
 
@@ -236,7 +251,6 @@ class ParamContainer(object):
         self._load_from_elemxml(elemxml)
 
     def _load_from_elemxml(self, elemxml):
-
         self._set_internal_attr('_tag', elemxml.tag)
 
         text = elemxml.text
@@ -253,9 +267,14 @@ class ParamContainer(object):
                 childxml.tag, self.__class__(elemxml=childxml))
             self._tag_children.add(childxml.tag)
 
-    def _save_as_xml(self, path_file, comment=None):
+    def _save_as_xml(self, path_file=None, comment=None):
         """Save the xml text in a file."""
-        # add verif if the file already exists?
+        if path_file is None:
+            path_file = self._tag + '.xml'
+
+        if os.path.exists(path_file):
+            raise ValueError('The file already exists.')
+
         with open(path_file, 'w') as f:
             if comment is not None:
                 f.write('<!--\n'+comment+'\n-->\n')
@@ -319,7 +338,7 @@ class ParamContainer(object):
 
 
 def tidy_container(cont):
-    """Modify the names in a ContainerXML and its organization.
+    """Modify the names in a ParamContainer and its organization.
 
     """
     newtag = convert_capword_to_lowercaseunderscore(cont._tag)
@@ -347,28 +366,49 @@ def convert_capword_to_lowercaseunderscore(name):
 
 
 if __name__ == '__main__':
-    params = ParamContainer(tag='params')
+    # params = ParamContainer(tag='params')
 
-    params._set_attrib('a0', 1)
-    params._set_attribs({'a1': 1, 'a2': 1})
+    # params._set_attrib('a0', 1)
+    # params._set_attribs({'a1': 1, 'a2': 1})
+
+    # params._set_child('child0', {'a0': 2, 'a1': 2})
+
+    # params2 = ParamContainer(tag='params')
+
+    # params2._set_attribs({'a1': 1, 'a2': 1})
+    # params2._set_attrib('a0', 1)
+
+    # params2._set_child('child0', {'a0': 2, 'a1': 2})
+
+    # assert params == params2
+
+    # c1 = ParamContainer(tag='child1')
+    # c1._set_attrib('a0', 10)
+
+    # params._set_as_child(c1)
+
+    # print(params)
+
+    # assert params != params2
+
+    params = ParamContainer(tag='params')
+    params._set_attribs({'a0': 1, 'a1': 1})
+    params._set_attrib('a2', 1)
+
+    params._print_as_xml()
 
     params._set_child('child0', {'a0': 2, 'a1': 2})
+    params.child0.a0 = 3
 
-    params2 = ParamContainer(tag='params')
+    params._print_as_xml()
 
-    params2._set_attribs({'a1': 1, 'a2': 1})
-    params2._set_attrib('a0', 1)
+    # params.a3 = 3
 
-    params2._set_child('child0', {'a0': 2, 'a1': 2})
+    # params.child0 = 3
 
-    assert params == params2
+    params._save_as_xml()
 
-    c1 = ParamContainer(tag='child1')
-    c1._set_attrib('a0', 10)
+    params_loaded = ParamContainer(path_file=params._tag + '.xml')
+    os.remove(params._tag + '.xml')
 
-    params._set_as_child(c1)
-
-    print(params)
-
-    assert params != params2
-
+    assert params_loaded == params

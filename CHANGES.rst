@@ -1,11 +1,11 @@
 
-0.0.8a1
--------
+0.0.9a
+------
 
-- Rewrite the parameter container.
+- New parameter container (API slightly changed).
 
-0.0.8a0
--------
+0.0.8a
+------
 
 - The fluiddyn package now only contains base files for the FluidDyn
   project. Other packages (fluidsim, fluidlab, ...) provide other
