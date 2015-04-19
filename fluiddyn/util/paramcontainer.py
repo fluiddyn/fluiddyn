@@ -1,11 +1,11 @@
 """Container for parameters using xml (:mod:`fluiddyn.util.containerxml`)
 =========================================================================
 
-.. currentmodule:: fluiddyn.util.containerxml
+.. currentmodule:: fluiddyn.util.paramcontainer
 
 Provides:
 
-.. autoclass:: ContainerXML
+.. autoclass:: ParamContainer
    :members:
    :private-members:
 
@@ -39,7 +39,14 @@ def _as_str(value):
         return value
 
 
-class ContainerXML(object):
+def _as_value(value):
+    try:
+        return literal_eval(value)
+    except (SyntaxError, ValueError):
+        return value
+
+
+class ParamContainer(object):
     """Structured container of values associated with xml objects.
 
     The objects ContainerXML can be used as containers of
@@ -100,82 +107,69 @@ class ContainerXML(object):
     tag : (None) str
         A tag for the root container.
 
-    parentxml : (None) xml.etree.ElementTree.Element
-        The parent element.
-
     attribs : (None) dict
         Some attributes.
 
     """
-    def __init__(self, path_file=None, elemxml=None, hdf5_object=None,
-                 tag=None, parentxml=None, attribs=None):
+    def __init__(self, tag=None, attribs=None,
+                 path_file=None, elemxml=None, hdf5_object=None):
 
-        self._set_attr('_tag_children', [])
+        self._set_internal_attr('_attribs', set())
+        self._set_internal_attr('_tag_children', set())
 
         if path_file is not None:
+            self._set_internal_attr('_path_file', path_file)
             if path_file.endswith('.xml'):
                 self._load_from_xml_file(path_file)
             elif path_file.endswith('.h5'):
-                self._load_from_hdf5_file(path_file, parentxml)
+                self._load_from_hdf5_file(path_file)
         elif elemxml is not None:
             self._load_from_elemxml(elemxml)
         elif hdf5_object is not None:
-            self._load_from_hdf5_objet(hdf5_object, parentxml)
+            self._load_from_hdf5_objet(hdf5_object)
         elif tag is not None:
-            self._init_elemxml(tag, parentxml)
+            self._set_internal_attr('_tag', tag)
+        else:
+            raise ValueError(
+                'To create an empty ParamContainer, '
+                'a tag has to be provided.')
 
         if attribs is not None:
             self._set_attribs(attribs)
 
-    def _init_elemxml(self, tag, parentxml):
-        self._set_attr('_tag', tag)
-        if parentxml is None:
-            elemxml = etree.Element(tag)
-        else:
-            elemxml = etree.SubElement(parentxml, tag)
-        self._set_attr('_elemxml', elemxml)
-        self._set_attr('_attribs', elemxml.attrib)
-
-    def _set_attr(self, key, value):
-        self.__dict__[key] = value
-
-    def _set_attr_xml(self, key, value):
-        self._set_attr(key, value)
-        self._elemxml.attrib[key] = _as_str(value)
-
     def __setattr__(self, key, value):
         if key in self.__dict__.keys():
-            self._set_attr_xml(key, value)
+            self._set_internal_attr(key, value)
         else:
             raise AttributeError(
                 key + ' is not already set in ' + self._tag +
                 '.\nThe attributes are: ' + str(self._attribs.keys()) +
                 '\nTo set a new attribute, use _set_attrib or _set_attribs.')
 
-    def __getattr__(self, key):
-        if key in self.__dict__.keys():
-            super(ContainerXML, self).__getattr__(key)
+    def __getattr__(self, attr):
+        if attr.startswith('_'):
+            raise AttributeError(
+                '{} object has no attribute {}'.format(self.__class__, attr))
         else:
             raise AttributeError(
-                key + ' is not an attribute of ' + self._tag +
-                '.\nThe attributes are: ' + str(self._attribs.keys()))
+                attr + ' is not an attribute of ' + self._tag +
+                '.\nThe attributes are: ' + str(list(self._attribs)))
 
     def __setitem__(self, key, value):
         self.__setattr__(key, value)
 
     def __getitem__(self, key):
-        return self.__dict__[key]
+        return self.__getattr__(key)
+
+    def _set_internal_attr(self, key, value):
+        self.__dict__[key] = value
 
     def _set_attrib(self, key, value):
-        """Add an attribute to the container."""
-        if key in self.__dict__:
-            raise ValueError(
-                key + ' is already used. If you know what you do,'
-                ' you could use _set_attr_xml')
-        self._set_attr_xml(key, value)
+        self.__dict__[key] = value
+        self._attribs.add(key)
 
     def _set_attribs(self, d):
-        """Add the attributes in the dict d to the container."""
+        """Add the attributes to the container."""
         for k, v in d.items():
             self._set_attrib(k, v)
 
@@ -183,32 +177,81 @@ class ContainerXML(object):
         """Add a child (of the same class) to the container."""
         if tag in self.__dict__:
             raise ValueError('The tag "{}" is already used.'.format(tag))
-        self.__dict__[tag] = self.__class__(tag=tag, attribs=attribs,
-                                            parentxml=self._elemxml)
-        self._tag_children.append(tag)
+        self.__dict__[tag] = self.__class__(tag=tag, attribs=attribs)
+        self._tag_children.add(tag)
 
     def _set_as_child(self, child):
         """Associate a ContainerXML as a child."""
-        if not isinstance(child, ContainerXML):
-            raise ValueError('child should be an ContainerXML instance.')
+        if not isinstance(child, ParamContainer):
+            raise ValueError('child should be a ParamContainer instance.')
         if child._tag in self.__dict__:
-            raise ValueError('The tag "{}" is already used.'.format(
-                child._tag))
+            raise ValueError(
+                'The tag "{}" is already used.'.format(child._tag))
         self.__dict__[child._tag] = child
-        self._tag_children.append(child._tag)
-        self._elemxml.append(child._elemxml)
+        self._tag_children.add(child._tag)
+
+    def _make_dict(self):
+        d = {'_tag': self._tag, '_attribs': self._attribs,
+             '_tag_children': self._tag_children}
+
+        for k in self._attribs.union(self._tag_children):
+            d[k] = self.__dict__[k]
+
+        return d
+
+    def __eq__(self, other):
+        return self._make_dict() == other._make_dict()
+
+    def _make_element_xml(self, parentxml=None):
+        if parentxml is None:
+            elemxml = etree.Element(self._tag)
+        else:
+            elemxml = etree.SubElement(parentxml, self._tag)
+
+        for key in self._attribs:
+            elemxml.attrib[key] = _as_str(self.__dict__[key])
+
+        for key in self._tag_children:
+            child = self.__dict__[key]
+            elemxml.append(child._make_element_xml(elemxml))
+
+        return elemxml
 
     def _make_xml_text(self):
         """Produce and return the xml text representing the container."""
-        return produce_text_element(self._elemxml)
+        elemxml = self._make_element_xml()
+        return produce_text_element(elemxml)
 
     def _print_as_xml(self):
         """Print the xml text representing the container."""
         print(self._make_xml_text())
 
     def __repr__(self):
-        return (super(ContainerXML, self).__repr__() +
+        return (super(ParamContainer, self).__repr__() +
                 '\n\n'+self._make_xml_text())
+
+    def _load_from_xml_file(self, path_file):
+        tree = etree.parse(path_file)
+        elemxml = tree.getroot()
+        self._load_from_elemxml(elemxml)
+
+    def _load_from_elemxml(self, elemxml):
+
+        self._set_internal_attr('_tag', elemxml.tag)
+
+        text = elemxml.text
+        if text is not None:
+            v = text.strip()
+            if len(v) > 0:
+                self._set_internal_attr('_value_text', _as_value(v))
+
+        for k, v in elemxml.attrib.items():
+            self._set_attrib(k, _as_value(v))
+
+        for childxml in elemxml:
+            self._set_internal_attr(
+                childxml.tag, self.__class__(elemxml=childxml))
+            self._tag_children.add(childxml.tag)
 
     def _save_as_xml(self, path_file, comment=None):
         """Save the xml text in a file."""
@@ -218,16 +261,6 @@ class ContainerXML(object):
                 f.write('<!--\n'+comment+'\n-->\n')
             f.write(self._make_xml_text())
 
-    def _load_from_xml_file(self, path_file):
-        self._set_attr('xml_path_file', path_file)
-        tree = etree.parse(path_file)
-        elemxml = tree.getroot()
-        self._set_attr('_elemxml', elemxml)
-        self._set_attr('_attribs', elemxml.attrib)
-        self._set_attr('_tag', elemxml.tag)
-
-        link_to_his_elemxml(self)
-
     def _save_as_hdf5(self, path_file=None, hdf5_object=None,
                       hdf5_parent=None):
         """Save in a hdf5 file."""
@@ -236,29 +269,26 @@ class ContainerXML(object):
             hdf5_object = hdf5_parent.create_group(self._tag)
 
         if hdf5_object is None:
-            if path_file is None:
-                path_file = ''
-            if not path_file.endswith('.h5'):
-                path_file = os.path.join(path_file, self._tag+'.h5')
+            if path_file is None or not path_file.endswith('.h5'):
+                path_file = os.path.join(path_file, self._tag + '.h5')
             with H5File(path_file, 'w') as f:
                 f.attrs.create('_tag', self._tag)
                 self._save_as_hdf5(hdf5_object=f)
         elif path_file is None:
-            for key in self._attribs.keys():
-                hdf5_object.attrs.create(key, self[key])
+            for key in self._attribs:
+                hdf5_object.attrs.create(key, self.__dict__[key])
             for key in self._tag_children:
                 group = hdf5_object.create_group(key)
-                self[key]._save_as_hdf5(hdf5_object=group)
+                self.__dict__[key]._save_as_hdf5(hdf5_object=group)
         else:
             raise ValueError('If hdf5_object is not None,'
                              'path_file should be None.')
 
-    def _load_from_hdf5_file(self, path_file, parentxml):
-        self._set_attr('xml_path_file', path_file)
+    def _load_from_hdf5_file(self, path_file):
         with H5File(path_file, 'r') as f:
-            self._load_from_hdf5_objet(f, parentxml)
+            self._load_from_hdf5_objet(f)
 
-    def _load_from_hdf5_objet(self, hdf5_object, parentxml):
+    def _load_from_hdf5_objet(self, hdf5_object):
 
         attrs = dict(hdf5_object.attrs)
 
@@ -269,7 +299,8 @@ class ContainerXML(object):
                 attrs.pop('_tag')
             except KeyError:
                 tag = 'root_file'
-        self._init_elemxml(tag, parentxml)
+
+        self._set_internal_attr('_tag', tag)
 
         for key in attrs.keys():
             if ' ' in key:
@@ -283,68 +314,61 @@ class ContainerXML(object):
 
             elif isinstance(hdf5_object[tag], h5py.Group):
                 self.__dict__[tag] = self.__class__(
-                    hdf5_object=hdf5_object[tag], parentxml=self._elemxml)
-                self._tag_children.append(tag)
+                    hdf5_object=hdf5_object[tag])
+                self._tag_children.add(tag)
 
 
-def associate_with_containerxml(elemxml, parentcontxml):
-    tag = elemxml.tag
-    contxml = parentcontxml.__class__(tag=tag)
-    contxml._set_attr('_elemxml', elemxml)
-
-    parentcontxml._set_attr(tag, contxml)
-    parentcontxml._tag_children.append(tag)
-    link_to_his_elemxml(contxml)
-
-
-def link_to_his_elemxml(contxml):
-    elemxml = contxml._elemxml
-
-    text = elemxml.text
-    if text is not None:
-        v = text.strip()
-        try:
-            v = literal_eval(v)
-        except (SyntaxError, ValueError):
-            pass
-        contxml._set_attr('xml_value_text', v)
-
-    for k, v in elemxml.attrib.items():
-        try:
-            v = literal_eval(v)
-        except (SyntaxError, ValueError):
-            pass
-        contxml._set_attr(k, v)
-
-    for childxml in elemxml:
-        associate_with_containerxml(childxml, parentcontxml=contxml)
-
-
-def tidy_containerxml(contxml):
-    """Modify the names in a ContainerXML and its organisation.
+def tidy_container(cont):
+    """Modify the names in a ContainerXML and its organization.
 
     """
-    tag = contxml._tag
-    newtag = convert_capword_to_lowercaseunderscore(tag)
-    contxml._set_attr('_tag', newtag)
-    elemxml = contxml._elemxml
-    elemxml.tag = newtag
+    newtag = convert_capword_to_lowercaseunderscore(cont._tag)
+    cont._tag = newtag
 
-    for itag, tagchild in enumerate(contxml._tag_children):
-        newtag = convert_capword_to_lowercaseunderscore(tagchild)
-        contxml._tag_children[itag] = newtag
-        contxml.__dict__[newtag] = contxml.__dict__.pop(tagchild)
-        tidy_containerxml(contxml.__dict__[newtag])
+    for oldtag in cont._tag_children:
+        newtag = convert_capword_to_lowercaseunderscore(oldtag)
+        cont._tag_children.remove(oldtag)
+        cont._tag_children.add(newtag)
+        cont.__dict__[newtag] = cont.__dict__.pop(oldtag)
+        tidy_container(cont.__dict__[newtag])
 
-    for tagchild in contxml._tag_children:
-        child = contxml.__dict__[tagchild]
+    for tag in cont._tag_children:
+        child = cont.__dict__[tag]
 
         if len(child._tag_children) == 0 and len(child._attribs) == 0:
-            contxml.__dict__[tagchild] = child.xml_value_text
-            elemxml.remove(elemxml.find(tagchild))
-            elemxml.attrib[tagchild] = str(child.xml_value_text)
+            value_text = child._value_text
+            cont.__dict__.pop(tag)
+            cont._set_attrib(tag, value_text)
 
 
 def convert_capword_to_lowercaseunderscore(name):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
+
+if __name__ == '__main__':
+    params = ParamContainer(tag='params')
+
+    params._set_attrib('a0', 1)
+    params._set_attribs({'a1': 1, 'a2': 1})
+
+    params._set_child('child0', {'a0': 2, 'a1': 2})
+
+    params2 = ParamContainer(tag='params')
+
+    params2._set_attribs({'a1': 1, 'a2': 1})
+    params2._set_attrib('a0', 1)
+
+    params2._set_child('child0', {'a0': 2, 'a1': 2})
+
+    assert params == params2
+
+    c1 = ParamContainer(tag='child1')
+    c1._set_attrib('a0', 10)
+
+    params._set_as_child(c1)
+
+    print(params)
+
+    assert params != params2
+
