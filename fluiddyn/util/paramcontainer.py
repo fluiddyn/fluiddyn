@@ -173,7 +173,7 @@ class ParamContainer(object):
         self.__setattr__(key, value)
 
     def __getitem__(self, key):
-        return self.__getattr__(key)
+        return self.__getattribute__(key)
 
     def _set_internal_attr(self, key, value):
         self.__dict__[key] = value
