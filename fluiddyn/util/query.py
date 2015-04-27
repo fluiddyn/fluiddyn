@@ -18,14 +18,18 @@ Provides
 
 """
 
-
 import sys
-import os
+import subprocess
 
 try:
     input = raw_input
 except NameError:
     pass
+
+
+def call_bash(commands):
+    subprocess.call(['/bin/bash', '-c', commands])
+
 
 def query_yes_no(question, default="yes"):
     """Ask a yes/no question and return the answer.
@@ -44,12 +48,12 @@ def query_yes_no(question, default="yes"):
     Returns
     -------
 
-    answer : bool 
+    answer : bool
        The returned answer.
     """
-    valid = {"yes":True, "y":True,
-             "no":False, "n":False}
-    if default == None:
+    valid = {"yes": True, "y": True,
+             "no": False, "n": False}
+    if default is None:
         prompt = " [y/n] "
     elif default == "yes":
         prompt = " [Y/n] "
@@ -66,7 +70,7 @@ def query_yes_no(question, default="yes"):
         elif choice in valid:
             return valid[choice]
         else:
-            sys.stdout.write("Please respond with 'yes' or 'no' "\
+            sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
 
 
@@ -82,12 +86,6 @@ def query(question, default=None):
         return answer
 
 
-
-
-
-
-
-
 def num_from_str(s):
     """Return a num computed from a string."""
     try:
@@ -96,7 +94,8 @@ def num_from_str(s):
         try:
             return float(s)
         except ValueError:
-            raise ValueError('Can not convert the string into a numeric value.')
+            raise ValueError(
+                'Can not convert the string into a numeric value.')
 
 
 def query_number(question):
@@ -110,26 +109,11 @@ def query_number(question):
             pass
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 def run_asking_agreement(command):
     """Use query_yes_no to ask if a command should be run."""
-    
+
     question = (
-        'Should the command "\n'
-        +command+'\n" be run ?')
+        'Should the command "\n' +
+        command + '\n" be run ?')
     if query_yes_no(question, default='no'):
-        os.system(command)
-
-
-
+        call_bash(command)
