@@ -16,6 +16,7 @@ from __future__ import print_function
 import os
 import datetime
 import stat
+import subprocess
 
 from fluiddyn.util.query import run_asking_agreement
 
@@ -25,6 +26,13 @@ class ClusterOAR(object):
     nb_cores_per_node = 12
 
     def __init__(self):
+
+        # check if this script is run on a frontal with oar installed
+        oar_installed = not subprocess.check_call(['oarsub', '--version'],
+                                                  stdout=subprocess.PIPE)
+        if not oar_installed:
+            raise ValueError(
+                'This script should be run on a cluster with oar installed.')
 
         self.commands_setting_env = [
             'source /etc/profile',
@@ -50,7 +58,7 @@ class ClusterOAR(object):
                 raise ValueError('Too many cores...')
 
         str_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        path_launching_script = 'launcher_oar_' + str_time
+        path_launching_script = 'oar_launcher_' + str_time
         if os.path.exists(path_launching_script):
             raise ValueError('path_launching_script already exists...')
 
