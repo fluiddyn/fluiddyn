@@ -85,8 +85,13 @@ class ClusterOAR(object):
             "#OAR -l {{cluster='{}'}}/node=1/core={},walltime={}\n\n").format(
                 name_run, self.name_cluster, nb_cores, walltime)
 
+        txt += 'echo "hostname: "$HOSTNAME'
+
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
-        txt += 'mpirun -np {} python {}\n'.format(nb_cores, path)
+        if nb_cores > 1:
+            txt += 'mpirun -np {} '.format(nb_cores)
+
+        txt += 'python {}\n'.format(path)
 
         return txt
