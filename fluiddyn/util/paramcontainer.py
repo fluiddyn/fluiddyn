@@ -21,6 +21,7 @@ except ImportError:
     import xml.etree.ElementTree as etree
 
 from ast import literal_eval
+from numpy import array
 
 import six
 
@@ -40,6 +41,8 @@ def _as_str(value):
 
 
 def _as_value(value):
+    if value.startswith('array('):
+        return eval(value)
     try:
         return literal_eval(value)
     except (SyntaxError, ValueError):

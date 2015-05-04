@@ -46,15 +46,19 @@ class ClusterOAR(object):
             'oardel $JOB_ID')
 
     def submit_script(self, path, name_run='fluiddyn',
-                      nb_cores=1, walltime='24:00:00', nb_mpi_processes=None):
+                      nb_nodes=1,
+                      nb_cores_per_node=1,
+                      walltime='24:00:00',
+                      nb_mpi_processes=None,
+                      omp_num_threads=None):
 
         if not os.path.exists(path):
             raise ValueError('script does not exists! path:\n' + path)
 
         if nb_mpi_processes is None:
-            nb_mpi_processes = nb_cores
+            nb_mpi_processes = nb_cores_per_node
 
-            if nb_cores > self.nb_cores_per_node:
+            if nb_cores_per_node > self.nb_cores_per_node:
                 raise ValueError('Too many cores...')
 
         str_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -63,7 +67,9 @@ class ClusterOAR(object):
             raise ValueError('path_launching_script already exists...')
 
         txt = self._create_txt_launching_script(
-            path, name_run, nb_cores, walltime)
+            path, name_run,
+            nb_nodes, nb_cores_per_node, walltime,
+            nb_mpi_processes=nb_mpi_processes)
 
         with open(path_launching_script, 'w') as f:
             f.write(txt)
@@ -77,20 +83,28 @@ class ClusterOAR(object):
         # print('contain of the script:\n\n', txt)
         run_asking_agreement(launching_command)
 
-    def _create_txt_launching_script(self, path, name_run, nb_cores, walltime):
+    def _create_txt_launching_script(
+            self, path, name_run,
+            nb_nodes, nb_cores_per_node,
+            walltime,
+            nb_mpi_processes=None):
+
+        if nb_mpi_processes is None:
+            nb_mpi_processes = nb_cores_per_node
+
         txt = ('#!/bin/bash\n\n')
 
         txt += (
             '#OAR -n {}\n'
             "#OAR -l {{cluster='{}'}}/node=1/core={},walltime={}\n\n").format(
-                name_run, self.name_cluster, nb_cores, walltime)
+                name_run, self.name_cluster, nb_cores_per_node, walltime)
 
-        txt += 'echo "hostname: "$HOSTNAME'
+        txt += 'echo "hostname: "$HOSTNAME\n\n'
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
-        if nb_cores > 1:
-            txt += 'mpirun -np {} '.format(nb_cores)
+        if nb_mpi_processes > 1:
+            txt += 'mpirun -np {} '.format(nb_mpi_processes)
 
         txt += 'python {}\n'.format(path)
 
