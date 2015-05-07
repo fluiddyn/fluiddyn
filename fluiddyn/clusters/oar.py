@@ -74,13 +74,11 @@ class ClusterOAR(object):
         with open(path_launching_script, 'w') as f:
             f.write(txt)
 
-        os.chmod(path_launching_script, stat.S_IXUSR)
+        os.chmod(path_launching_script,
+                 stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
 
         launching_command = 'oarsub -S ./' + path_launching_script
-
-        print('launching command:\n', launching_command, '\n\n')
-
-        # print('contain of the script:\n\n', txt)
+        print('A launcher for the script {} has been created.'.format(path))
         run_asking_agreement(launching_command)
 
     def _create_txt_launching_script(
@@ -104,7 +102,7 @@ class ClusterOAR(object):
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
         if nb_mpi_processes > 1:
-            txt += 'mpirun -np {} '.format(nb_mpi_processes)
+            txt += 'exec mpirun -np {} '.format(nb_mpi_processes)
 
         txt += 'python {}\n'.format(path)
 
