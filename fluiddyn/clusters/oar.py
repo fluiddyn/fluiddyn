@@ -43,14 +43,16 @@ class ClusterOAR(object):
         self.useful_commands = (
             'oarsub -S script.sh',
             'oarstat -u',
-            'oardel $JOB_ID')
+            'oardel $JOB_ID'
+            'oarsub -C $JOB_ID')
 
     def submit_script(self, path, name_run='fluiddyn',
                       nb_nodes=1,
                       nb_cores_per_node=1,
                       walltime='24:00:00',
                       nb_mpi_processes=None,
-                      omp_num_threads=None):
+                      omp_num_threads=None,
+                      idempotent=False):
 
         if not os.path.exists(path):
             raise ValueError('script does not exists! path:\n' + path)
@@ -77,7 +79,13 @@ class ClusterOAR(object):
         os.chmod(path_launching_script,
                  stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
 
-        launching_command = 'oarsub -S ./' + path_launching_script
+        launching_command = 'oarsub --checkpoint 600'
+
+        if idempotent:
+            launching_command += ' -t idempotent'
+
+        launching_command += ' -S ./' + path_launching_script
+
         print('A launcher for the script {} has been created.'.format(path))
         run_asking_agreement(launching_command)
 
