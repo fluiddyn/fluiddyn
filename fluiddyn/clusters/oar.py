@@ -28,8 +28,13 @@ class ClusterOAR(object):
     def __init__(self):
 
         # check if this script is run on a frontal with oar installed
-        oar_installed = not subprocess.check_call(['oarsub', '--version'],
-                                                  stdout=subprocess.PIPE)
+        try:
+            subprocess.check_call(['oarsub', '--version'],
+                                  stdout=subprocess.PIPE)
+            oar_installed = True
+        except OSError:
+            oar_installed = False
+
         if not oar_installed:
             raise ValueError(
                 'This script should be run on a cluster with oar installed.')
