@@ -51,13 +51,12 @@ class ClusterOAR(object):
             'oardel $JOB_ID'
             'oarsub -C $JOB_ID')
 
-    def submit_script(self, path, name_run='fluiddyn',
-                      nb_nodes=1,
-                      nb_cores_per_node=1,
-                      walltime='24:00:00',
-                      nb_mpi_processes=None,
-                      omp_num_threads=None,
-                      idempotent=False):
+    def submit_script(
+        self, path, name_run='fluiddyn',
+        nb_nodes=1, nb_cores_per_node=1,
+        walltime='24:00:00',
+        nb_mpi_processes=None, omp_num_threads=None,
+        idempotent=False, delay_signal_walltime=300):
 
         if not os.path.exists(path):
             raise ValueError('script does not exists! path:\n' + path)
@@ -84,7 +83,7 @@ class ClusterOAR(object):
         os.chmod(path_launching_script,
                  stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
 
-        launching_command = 'oarsub --checkpoint 600'
+        launching_command = 'oarsub --checkpoint ' + str(delay_signal_walltime)
 
         if idempotent:
             launching_command += ' -t idempotent'
