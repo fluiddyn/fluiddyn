@@ -106,7 +106,7 @@ class ClusterOAR(object):
 
         txt += (
             '#OAR -n {}\n'
-            "#OAR -l {{cluster='{}'}}/node=1/core={},walltime={}\n\n").format(
+            "#OAR -l {{cluster='{}'}}/nodes=1/core={},walltime={}\n\n").format(
                 name_run, self.name_cluster, nb_cores_per_node, walltime)
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
