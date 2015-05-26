@@ -11,8 +11,6 @@ Provides:
 
 """
 
-import sys
-
 from fluiddyn.clusters.oar import ClusterOAR
 
 

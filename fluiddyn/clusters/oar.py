@@ -52,11 +52,11 @@ class ClusterOAR(object):
             'oarsub -C $JOB_ID')
 
     def submit_script(
-        self, path, name_run='fluiddyn',
-        nb_nodes=1, nb_cores_per_node=1,
-        walltime='24:00:00',
-        nb_mpi_processes=None, omp_num_threads=None,
-        idempotent=False, delay_signal_walltime=300):
+            self, path, name_run='fluiddyn',
+            nb_nodes=1, nb_cores_per_node=1,
+            walltime='24:00:00',
+            nb_mpi_processes=None, omp_num_threads=None,
+            idempotent=False, delay_signal_walltime=300):
 
         if not os.path.exists(path):
             raise ValueError('script does not exists! path:\n' + path)
