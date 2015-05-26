@@ -18,6 +18,7 @@ from fluiddyn.clusters.oar import ClusterOAR
 
 class Froggy(ClusterOAR):
     name_cluster = 'froggy'
+    has_to_add_name_cluster = False
     nb_cores_per_node = 16
     frontends = ['']
 

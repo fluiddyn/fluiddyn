@@ -16,7 +16,7 @@ from __future__ import print_function
 import os
 import datetime
 import stat
-import subprocess
+import subprocess32 as subprocess
 
 from fluiddyn.util.query import run_asking_agreement
 
@@ -54,7 +54,7 @@ class ClusterOAR(object):
     def submit_script(
             self, path, name_run='fluiddyn',
             nb_nodes=1, nb_cores_per_node=1,
-            walltime='24:00:00',
+            walltime='24:00:00', project=None,
             nb_mpi_processes=None, omp_num_threads=None,
             idempotent=False, delay_signal_walltime=300):
 
@@ -83,7 +83,13 @@ class ClusterOAR(object):
         os.chmod(path_launching_script,
                  stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
 
-        launching_command = 'oarsub --checkpoint ' + str(delay_signal_walltime)
+        launching_command = 'oarsub'
+
+        if project is not None:
+            launching_command += ' --project ' + project
+
+        if delay_signal_walltime is not None:
+            launching_command += ' --checkpoint ' + str(delay_signal_walltime)
 
         if idempotent:
             launching_command += ' -t idempotent'
@@ -104,10 +110,13 @@ class ClusterOAR(object):
 
         txt = ('#!/bin/bash\n\n')
 
-        txt += (
-            '#OAR -n {}\n'
-            "#OAR -l {{cluster='{}'}}/nodes=1/core={},walltime={}\n\n").format(
-                name_run, self.name_cluster, nb_cores_per_node, walltime)
+        txt += '#OAR -n {}\n'.format(name_run)
+        txt += "#OAR -l "
+        if self.has_to_add_name_cluster:
+            txt += "{{cluster='{}'}}".format(self.name_cluster)
+
+        txt += "/nodes=1/core={},walltime={}\n\n".format(
+            nb_cores_per_node, walltime)
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
 
