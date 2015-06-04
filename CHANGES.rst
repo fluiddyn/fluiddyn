@@ -1,4 +1,9 @@
 
+0.0.9a
+------
+
+- New parameter container (API slightly changed).
+
 0.0.8a
 ------
 

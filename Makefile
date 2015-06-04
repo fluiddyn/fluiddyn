@@ -4,3 +4,6 @@ clean_so:
 
 tests:
 	python -m unittest discover
+
+develop:
+	python setup.py develop

@@ -8,7 +8,7 @@ Utilities (:mod:`fluiddyn.util`)
    :toctree:
 
    util
-   containerxml
+   paramcontainer
    constants
    query
    timer

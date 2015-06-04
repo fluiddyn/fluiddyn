@@ -54,13 +54,13 @@ def _verif_names_modules(name_mod, path_h5_file, key_file):
         name_mod = name_mod.encode('utf-8')
 
     exp_TC_old = 'fluidlab.experiments.taylorcouette_'
-    exp_TC_new = 'fluiddyn.lab.exp.taylorcouette.'
+    exp_TC_new = 'fluidlab.exp.taylorcouette.'
 
     new_names_modules = {
-        exp_TC_old+'linearprofil': exp_TC_new+'linearprofile',
-        exp_TC_old+'quadprofil': exp_TC_new+'quadprofile',
-        exp_TC_old+'2layers': exp_TC_new+'twolayers',
-        'fluidlab.tanks': 'fluiddyn.lab.tanks'
+        exp_TC_old + 'linearprofil': exp_TC_new + 'linearprofile',
+        exp_TC_old + 'quadprofil': exp_TC_new + 'quadprofile',
+        exp_TC_old + '2layers': exp_TC_new + 'twolayers',
+        'fluidlab.tanks': 'fluidlab.tanks'
     }
 
     if name_mod in new_names_modules.keys():
@@ -68,8 +68,5 @@ def _verif_names_modules(name_mod, path_h5_file, key_file):
         import h5py
         with h5py.File(path_h5_file, 'r+') as f:
             f.attrs[key_file] = name_mod
-
-    if name_mod.startswith('fluidlab'):
-        raise ValueError('Use of module ' + name_mod)
 
     return name_mod
