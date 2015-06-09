@@ -1,5 +1,5 @@
 ========
-FluidPy Core
+FluidDyn
 ========
 
 *Framework for studying fluid dynamics.*
