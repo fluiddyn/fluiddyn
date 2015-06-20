@@ -16,19 +16,19 @@ import inspect
 import shutil
 import datetime
 import psutil
+from importlib import import_module
 
+import contextlib
 
 import h5py
 import numpy as np
 from scipy.interpolate import interp1d
+import matplotlib.pyplot as plt
 
-from importlib import import_module
 
 from fluiddyn import io
-
 from fluiddyn.util import mpi
-
-import fluiddyn
+import fluiddyn as fld
 
 
 def import_class(module_name, class_name):
@@ -70,14 +70,14 @@ def load_exp(str_path=None, *args, **kwargs):
     idepth = -1
     while path is None and idepth < depth_path_max:
         idepth += 1
-        paths = glob.glob(io.FLUIDDYN_PATH_EXP+'/'+
-                          idepth*'*/'+'*'+str_path+'*')
-        if len(paths)>0:
+        paths = glob.glob(io.FLUIDDYN_PATH_EXP+'/' +
+                          idepth*'*/' + '*' + str_path + '*')
+        if len(paths) > 0:
             path = paths[0]
 
     if path is None:
         raise ValueError(
-"""Haven't been able to find a path corresponding to str_path.
+            """Haven't been able to find a path corresponding to str_path.
 You can try to increase the value of the constant depth_path_max
 (FLUIDDYN_PATH_EXP: {}
 str_path: {}).""".format(io.FLUIDDYN_PATH_EXP, str_path))
@@ -100,7 +100,7 @@ str_path: {}).""".format(io.FLUIDDYN_PATH_EXP, str_path))
         class_name = class_name[0]
         module_exp = module_exp[0]
 
-    module_exp = fluiddyn._verif_names_modules(
+    module_exp = fld._verif_names_modules(
         module_exp, path_h5_file, key_file='module_exp')
 
     # fromlist has to be a not-empty so that __import__('A.B',
@@ -111,9 +111,6 @@ str_path: {}).""".format(io.FLUIDDYN_PATH_EXP, str_path))
     Exp = module_exp.__dict__[class_name]  # .decode("utf-8")]
 
     return Exp(*args, str_path=path, **kwargs)
-
-
-
 
 
 def create_object_from_file(str_path, *args, **kwargs):
@@ -172,14 +169,6 @@ def create_object_from_file(str_path, *args, **kwargs):
     return Class(*args, str_path=str_path, **kwargs)
 
 
-
-
-
-
-
-
-
-
 def decimate(sig, q, nwindow=None, axis=-1):
     """Decimate a signal."""
     if nwindow is None:
@@ -212,12 +201,11 @@ def decimate(sig, q, nwindow=None, axis=-1):
     return sigdec
 
 
-
 class FunctionLinInterp(object):
     """Function defined by a linear interpolation."""
     def __init__(self, x, f):
-        if (not isinstance(x, (list, tuple, np.ndarray))
-            or not isinstance(f, (list, tuple, np.ndarray))):
+        if (not isinstance(x, (list, tuple, np.ndarray)) or
+                not isinstance(f, (list, tuple, np.ndarray))):
             raise ValueError('x and f should be sequence.')
 
         self.x = np.array(x, np.float64)
@@ -237,53 +225,40 @@ class FunctionLinInterp(object):
         return self.func(x)
 
     def plot(self):
-        
-        create_figs = CreateFigs(
-            SAVE_FIG=False, 
-            FOR_BEAMER=False, 
-            fontsize=20
-        )
+
+        fig = plt.figure()
+
         size_axe = [0.13, 0.16, 0.84, 0.76]
+        ax = fig.add_axes(size_axe)
 
-        fig, ax1 = create_figs.figure_axe(
-            name_file='fig_function',
-            fig_width_mm=190, fig_height_mm=150,
-            size_axe=size_axe
-        )
+        ax.set_xlabel(r'$x$')
+        ax.set_ylabel(r'$y$')
+        ax.plot(self.x, self.f, 'k-.')
 
-        ax1.set_xlabel(r'$x$')
-        ax1.set_ylabel(r'$y$')
-        ax1.plot(self.x, self.f, 'k-.')
-
-        create_figs.show()
-
-
-
+        fld.show()
 
 
 def gradient_colors(nb_colors, color_start=None,
-                   color_end=None):
+                    color_end=None):
     """Produce a color gradient."""
     if color_start is None:
-        color_start = [1,0,0]
+        color_start = [1, 0, 0]
     if color_end is None:
-        color_end = [0,0,1]
+        color_end = [0, 0, 1]
     # start at black, finish at white
     gradient = [color_start]
     # If only one color, return black
-    if nb_colors == 1: return gradient
-    # Calcuate a color at each evenly spaced value 
+    if nb_colors == 1:
+        return gradient
+    # Calcuate a color at each evenly spaced value
     # of t = i / n from i in 0 to 1
     for t in range(1, nb_colors):
         gradient.append(
-            [color_start[j] 
+            [color_start[j]
              + (float(t)/(nb_colors-1))*(color_end[j]-color_start[j])
              for j in range(3)
              ])
     return gradient
-
-
-
 
 
 def run_from_ipython():
@@ -295,14 +270,10 @@ def run_from_ipython():
         return False
 
 
-
-
 class Params(object):
     """Minimalist object to store some parameters."""
     def __repr__(self):
         return dict.__repr__(self.__dict__)
-
-
 
 
 def get_memory_usage():
@@ -335,29 +306,18 @@ def print_size_in_Mo(arr, string=None):
         print(string.ljust(30), ':', mem, 'Mo')
 
 
-
-
-import contextlib
-
-
 @contextlib.contextmanager
 def print_options(*args, **kwargs):
     """Set print option
-    
+
     example:
     >>> with print_options(precision=3, suppress=True):
     >>>     print something
     """
     original = np.get_printoptions()
     np.set_printoptions(*args, **kwargs)
-    yield 
+    yield
     np.set_printoptions(**original)
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
