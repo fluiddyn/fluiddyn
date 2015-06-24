@@ -50,7 +50,7 @@ structured. Here is a list of the first-level packages.
    output
    io
    util
-
+   clusters
 
 More
 ----
