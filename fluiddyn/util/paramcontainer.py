@@ -21,7 +21,6 @@ except ImportError:
     import xml.etree.ElementTree as etree
 
 from ast import literal_eval
-from numpy import array
 
 import six
 
