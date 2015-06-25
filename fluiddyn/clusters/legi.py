@@ -1,12 +1,18 @@
 """
 LEGI clusters (:mod:`fluiddyn.clusters.legi`)
-===========================================
+=============================================
 
 .. currentmodule:: fluiddyn.clusters.legi
 
 Provides:
 
-.. autoclass:: Calcul8
+.. autoclass:: Calcul3
+   :members:
+
+.. autoclass:: Calcul9
+   :members:
+
+.. autoclass:: Calcul7
    :members:
 
 """

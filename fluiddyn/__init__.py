@@ -26,15 +26,9 @@ simul
 
 """
 
-try:
-    import fluidsim
-    simul = fluidsim
-except ImportError:
-    pass
+from fluiddyn.util.util import create_object_from_file
 
-from fluiddyn.util.util import load_exp, create_object_from_file
-
-import fluiddyn.util.constants as constants
+from fluiddyn.util import constants
 
 from fluiddyn._version import __version__
 

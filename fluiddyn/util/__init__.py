@@ -13,12 +13,10 @@ Utilities (:mod:`fluiddyn.util`)
    query
    timer
    deamons
-   operator
+   signal
    logger
 
 """
 
 from fluiddyn.util.util import (
-    Params, load_exp, decimate,
-    FunctionLinInterp, gradient_colors, time_as_str
-)
+    Params, time_as_str)

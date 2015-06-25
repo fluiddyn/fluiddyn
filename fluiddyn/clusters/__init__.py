@@ -11,5 +11,6 @@ Provides:
 
    oar
    legi
+   ciment
 
 """
