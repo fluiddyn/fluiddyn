@@ -34,9 +34,8 @@ class Timer(object):
     def wait_till_tick(self):
         """Block till the next tick."""
         tnow = time.time()
-        tsleep = (self.time_between_ticks
-                  -(tnow - self.tstart)%self.time_between_ticks
-                  )
+        tsleep = (self.time_between_ticks -
+                  (tnow - self.tstart) % self.time_between_ticks)
         this_period = int((tnow - self.tstart)/self.time_between_ticks)
         if this_period == self.last_period:
             self.last_period = this_period+1
@@ -47,15 +46,11 @@ class Timer(object):
         # print('tsleep = ', tsleep)
         time.sleep(tsleep)
 
-
-
-
     def restart(self):
         self.tstart = time.time()
 
 
 if __name__ == '__main__':
-
 
     tstart = time.time()
 
@@ -72,9 +67,3 @@ if __name__ == '__main__':
     tend = time.time()
 
     print(tend-tstart)
-
-
-
-
-
-

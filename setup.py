@@ -15,7 +15,10 @@ lines = long_description.splitlines(True)
 long_description = ''.join(lines[8:])
 
 # Get the version from the relevant file
-execfile('fluiddyn/_version.py')
+d = {}
+execfile('fluiddyn/_version.py', d)
+__version__ = d['__version__']
+
 # Get the development status from the version string
 if 'a' in __version__:
     devstatus = 'Development Status :: 3 - Alpha'
@@ -58,6 +61,7 @@ setup(name='fluiddyn',
           'Programming Language :: Cython',
           'Programming Language :: C'],
       packages=find_packages(exclude=['doc', 'digiflow', 'script']),
-      install_requires=['numpy', 'matplotlib', 'scipy', 'psutil'],
+      install_requires=['numpy', 'matplotlib', 'scipy', 'psutil',
+                        'subprocess32'],
       extras_require=dict(
           doc=['Sphinx>=1.1', 'numpydoc']))
