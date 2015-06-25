@@ -29,10 +29,10 @@ documented, free and open-source software.
 License
 -------
 
-FluidDyn is distributed under the CeCILL_ License, a GPL compatible
+FluidDyn is distributed under the CeCILL-B_ License, a BSD compatible
 french license.
 
-.. _CeCILL: http://www.cecill.info/index.en.html
+.. _CeCILL-B: http://www.cecill.info/index.en.html
 
 Installation
 ------------

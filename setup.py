@@ -42,8 +42,9 @@ setup(name='fluiddyn',
           'Intended Audience :: Science/Research',
           'Intended Audience :: Education',
           'Topic :: Scientific/Engineering',
-          'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
-          # actually CeCILL License (GPL compatible license for French laws)
+          'License :: OSI Approved :: BSD License',
+          # Actually CeCILL-B License (BSD compatible license for French laws,
+          # see http://www.cecill.info/index.en.html
           #
           # Specify the Python versions you support here. In particular,
           # ensure that you indicate whether you support Python 2,
