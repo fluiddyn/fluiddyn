@@ -18,13 +18,19 @@ import time
 import smtplib
 from email.mime.text import MIMEText
 
+
 class Logger(object):
     """Logger used for log and emails."""
-    def __init__(self, storage_file_name='storage_file', email_from=None, email_to=None,
+    def __init__(self, path='log.txt',
+                 email_to=None, email_from=None,
                  email_title='title',
                  email_delay=2*3600):
-        self.storage_file_name = storage_file_name
-        self.email_from = email_from
+
+        if email_delay is None:
+            email_delay = 2*3600
+
+        self.path = path
+        self.email_from = email_from or email_to
         self.email_to = email_to
         self.email_title = email_title
         self.email_delay = email_delay
@@ -34,20 +40,23 @@ class Logger(object):
     def print_log(self, *args, **kargs):
         """Replaces the Python 3 print function."""
         self._normal_print(*args, **kargs)
+        self.write(*args, **kargs)
 
+    def write(self, *args, **kargs):
         end = kargs.setdefault('end', '\n')
-        with open(self.storage_file_name, 'a') as f:
+        with open(self.path, 'a') as f:
             f.write(' '.join([str(arg) for arg in args]) + end)
 
     def send_mail_if_has_to(self):
         """Sends an email if no email was sent recently."""
-        if time.time() - self.time_last_email >= self.email_delay:
-            self.send_mail()
-            self.time_last_email = time.time()
+        if self.email_to is not None:
+            if time.time() - self.time_last_email >= self.email_delay:
+                self.send_mail()
+                self.time_last_email = time.time()
 
     def send_mail(self):
         """Sends the content of the storage file as an email"""
-        with open(self.storage_file_name, 'rb') as fp:
+        with open(self.path, 'rb') as fp:
             msg = MIMEText(fp.read())
         msg['Subject'] = self.email_title
         msg['From'] = self.email_from

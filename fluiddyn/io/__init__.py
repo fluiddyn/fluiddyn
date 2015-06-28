@@ -22,12 +22,24 @@ Provides:
 import os
 
 FLUIDDYN_PATH_EXP = os.environ.get('FLUIDDYN_PATH_EXP')
+if FLUIDDYN_PATH_EXP is not None:
+    raise DeprecationWarning(
+        'FLUIDDYN_PATH_EXP is depreciated: use FLUIDLAB_PATH.')
+
+FLUIDLAB_PATH = os.environ.get('FLUIDLAB_PATH')
 if FLUIDDYN_PATH_EXP is None:
-    FLUIDDYN_PATH_EXP = os.path.expanduser('~/Exp_data')
+    FLUIDLAB_PATH = os.path.expanduser('~/Exp_data')
+
 
 FLUIDDYN_PATH_SIM = os.environ.get('FLUIDDYN_PATH_SIM')
-if FLUIDDYN_PATH_SIM is None:
-    FLUIDDYN_PATH_SIM = os.path.expanduser('~/Sim_data')
+if FLUIDDYN_PATH_SIM is not None:
+    raise DeprecationWarning(
+        'FLUIDDYN_PATH_SIM is depreciated: use FLUIDSIM_PATH.')
+
+FLUIDSIM_PATH = os.environ.get('FLUIDSIM_PATH')
+if FLUIDSIM_PATH is None:
+    FLUIDSIM_PATH = os.path.expanduser('~/Sim_data')
+
 
 FLUIDDYN_PATH_SCRATCH = os.environ.get('FLUIDDYN_PATH_SCRATCH')
 
@@ -37,6 +49,7 @@ if FLUIDDYN_PATH_WARNING is None:
 
 if not os.path.exists(FLUIDDYN_PATH_WARNING):
     os.makedirs(FLUIDDYN_PATH_WARNING)
+
 
 def _write_warning(*args, **kargs):
     if 'end' in kargs:
@@ -50,6 +63,4 @@ def _write_warning(*args, **kargs):
         f.write(' '.join(strings)+end)
 
 
-
 from .redirect_stdout import stdout_redirected
-
