@@ -7,10 +7,9 @@ Welcome to FluidDyn's documentation!
 The project FluidDyn aims at promoting the use of open-source Python
 software in research in fluid dynamics.  The project provides some
 Python packages specialized for different tasks, in particular
-`fluidlab <https://pypi.python.org/pypi/fluidlab>`_ for doing
-experiments in the laboratory and `fluidsim
-<https://pypi.python.org/pypi/fluidsim>`_ for running numerical
-simulations.
+`fluidlab <https://pypi.python.org/pypi/fluidlab>`_ for laboratory
+experiments and `fluidsim <https://pypi.python.org/pypi/fluidsim>`_
+for numerical simulations.
 
 The project is still in a planning stage so it is still
 pretty unstable and many of its planned features have not yet been
@@ -42,15 +41,13 @@ Modules Reference
 In order to discover FluidDyn, the best is to see how it is
 structured. Here is a list of the first-level packages.
 
-.. currentmodule:: fluiddyn
-
 .. autosummary::
    :toctree: generated/
 
-   output
-   io
-   util
-   clusters
+   fluiddyn.output
+   fluiddyn.io
+   fluiddyn.util
+   fluiddyn.clusters
 
 More
 ----

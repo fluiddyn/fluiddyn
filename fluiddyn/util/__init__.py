@@ -1,6 +1,6 @@
 """
-Utilities (:mod:`fluiddyn.util`)
-================================
+Utilities
+=========
 
 .. currentmodule:: fluiddyn.util
 

@@ -1,6 +1,6 @@
 """
-Clusters (:mod:`fluiddyn.clusters`)
-===================================
+Clusters
+========
 
 .. currentmodule:: fluiddyn.clusters
 

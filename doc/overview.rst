@@ -134,7 +134,7 @@ Other specialized packages are part of the FluidDyn project:
 - `fluidsim <https://pypi.python.org/pypi/fluidsim>`_ (see the
   `documentation <http://pythonhosted.org/fluidsim/>`_)
 
-- `fluidlab <https://pypi.python.org/pypi/fluidlab>`_(see the
+- `fluidlab <https://pypi.python.org/pypi/fluidlab>`_ (see the
   `documentation <http://pythonhosted.org/fluidlab/>`_)
 
   

@@ -1,6 +1,6 @@
 """
-Scientific output toolkit (:mod:`fluiddyn.output`)
-==================================================
+Scientific output toolkit
+=========================
 
 .. _output:
 .. currentmodule:: fluiddyn.output
