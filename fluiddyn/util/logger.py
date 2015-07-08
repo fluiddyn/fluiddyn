@@ -35,7 +35,7 @@ class Logger(object):
         self.email_title = email_title
         self.email_delay = email_delay
         self._normal_print = print
-        self.time_last_email = time.clock() - self.email_delay
+        self.time_last_email = time.time() - self.email_delay
 
     def print_log(self, *args, **kargs):
         """Replaces the Python 3 print function."""
@@ -65,11 +65,11 @@ class Logger(object):
         s = smtplib.SMTP('localhost')
         s.sendmail(self.email_from, [self.email_to], msg.as_string())
         s.quit()
-
+        print('sent')
 
 if __name__ == '__main__':
-    logger = Logger('storage_file', 'aymeric.rodriguez@legi.cnrs.fr',
-                    'aymeric.rodriguez@minesdedouai.fr', 'itworks', 9)
+    logger = Logger('storage_file', 'aymeric.rodriguez@minesdedouai.fr',
+                    'aymeric.rodriguez@legi.cnrs.fr', 'itworks', 9)
     print = logger.print_log
     print('toto')
     print('no...', 'paf', end='')
