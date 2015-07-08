@@ -16,10 +16,10 @@ Provides:
    digiflow
    dantec
 
-
 """
 
 import os
+
 
 FLUIDDYN_PATH_EXP = os.environ.get('FLUIDDYN_PATH_EXP')
 if FLUIDDYN_PATH_EXP is not None:
@@ -48,6 +48,7 @@ FLUIDDYN_PATH_SCRATCH = os.environ.get('FLUIDDYN_PATH_SCRATCH')
 FLUIDDYN_PATH_WARNING = os.environ.get('FLUIDDYN_PATH_WARNING')
 if FLUIDDYN_PATH_WARNING is None:
     FLUIDDYN_PATH_WARNING = os.path.expanduser('~/.fluiddyn')
+
 
 if not os.path.exists(FLUIDDYN_PATH_WARNING):
     os.makedirs(FLUIDDYN_PATH_WARNING)

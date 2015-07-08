@@ -15,14 +15,15 @@ import glob
 import inspect
 import shutil
 import datetime
+
 import psutil
 from importlib import import_module
 
 import contextlib
 
-import h5py
-import numpy as np
 
+import numpy as np
+import h5py
 
 from fluiddyn.util import mpi
 import fluiddyn as fld
