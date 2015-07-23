@@ -4,5 +4,11 @@ Run in a terminal from this directory::
 
 Also useful::
 
-  rm -rf generated
   make clean
+  make cleanall
+
+Dependencies to build the documentation:
+
+- sphinx
+- numpydoc
+

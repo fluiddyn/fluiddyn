@@ -16,6 +16,7 @@ from __future__ import division, print_function
 
 import time
 
+
 class Timer(object):
     """Timer ticking with a particular period.
 
@@ -48,6 +49,9 @@ class Timer(object):
 
     def restart(self):
         self.tstart = time.time()
+
+    def get_time_till_start(self):
+        return time.time() - self.tstart
 
 
 if __name__ == '__main__':

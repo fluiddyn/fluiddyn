@@ -20,10 +20,6 @@ import numbers
 import h5py
 
 
-
-
-
-
 class H5File(h5py.File):
     """HDF5 file."""
 
@@ -32,10 +28,9 @@ class H5File(h5py.File):
 
         """
         group_params = self.create_group(keydict)
-        if len(dicttosave)>0:
+        if len(dicttosave) > 0:
             for k, v in dicttosave.items():
                 group_params.create_dataset(k, data=v)
-
 
     def load_dict(self, keydict):
         """Load a group as a dictionnary.
@@ -56,7 +51,6 @@ class H5File(h5py.File):
         for k, v in dicttosave.items():
             group_params.create_dataset(k, data=v)
 
-
     def save_dict_of_ndarrays(self, dicttosave, dtype=np.float32):
         """Save ndarrays in the file."""
 
@@ -75,8 +69,6 @@ class H5File(h5py.File):
                 dset_p = self[k]
                 dset_p.resize((nb_saved_times+1,)+v.shape[1:])
                 dset_p[nb_saved_times] = v
-
-
 
     def load(self, times_slice=None):
         """Load data."""
@@ -122,12 +114,6 @@ class H5File(h5py.File):
         return dict_return
 
 
+# if __name__ == '__main__':
 
-
-
-
-
-
-if __name__ == '__main__':
-
-    pass
+#     pass
