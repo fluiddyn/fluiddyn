@@ -14,9 +14,14 @@ Provides:
 
 from __future__ import print_function
 
+import os
+import sys
 import time
 import smtplib
 from email.mime.text import MIMEText
+import traceback
+
+from fluiddyn.util import time_as_str
 
 
 class Logger(object):
@@ -37,6 +42,38 @@ class Logger(object):
         self._normal_print = print
         self.time_last_email = time.time() - self.email_delay
 
+        base, ext = os.path.splitext(self.path)
+        self.path_logerr = base + '_stderr' + ext
+
+        if self.email_to is None:
+            send_mail = False
+        else:
+            send_mail = self.send_mail
+
+        old_excepthook = sys.excepthook
+
+        def my_excepthook(ex_cls, ex, tb):
+            str_ex = ex_cls.__name__
+            str_time = time_as_str()
+
+            with open(self.path, 'a') as f:
+                f.write(
+                    'Python error ({}) at {}\n'.format(str_ex, str_time))
+
+            with open(self.path_logerr, 'a') as f:
+                f.write('-' * 40 +
+                        '\nError at {}\n'.format(str_time) +
+                        '-' * 40 + '\n' +
+                        ''.join(traceback.format_exception(ex_cls, ex, tb)) +
+                        '\n')
+
+            if send_mail and ex_cls != KeyboardInterrupt:
+                self.send_mail(exception=str_ex)
+
+            old_excepthook(ex_cls, ex, tb)
+
+        sys.excepthook = my_excepthook
+
     def print_log(self, *args, **kargs):
         """Replaces the Python 3 print function."""
         self._normal_print(*args, **kargs)
@@ -54,18 +91,33 @@ class Logger(object):
                 self.send_mail()
                 self.time_last_email = time.time()
 
-    def send_mail(self):
+    def send_mail(self, exception=False):
         """Sends the content of the storage file as an email"""
-        with open(self.path, 'rb') as fp:
-            msg = MIMEText(fp.read())
-        msg['Subject'] = self.email_title
+        with open(self.path, 'rb') as f:
+            txt = f.read()
+
+        if not exception:
+            subject = self.email_title
+        else:
+            subject = exception + ', ' + self.email_title
+
+            if os.path.exists(self.path_logerr):
+                with open(self.path_logerr, 'rb') as f:
+                    txt += f.read()
+
+        msg = MIMEText(txt)
+        msg['Subject'] = subject
         msg['From'] = self.email_from
         msg['To'] = self.email_to
 
         s = smtplib.SMTP('localhost')
         s.sendmail(self.email_from, [self.email_to], msg.as_string())
         s.quit()
-        print('sent')
+        print('Email sent at ' + time_as_str())
+
+    # def __del__(self):
+    #     sys.excepthook = self._excepthook
+
 
 if __name__ == '__main__':
     logger = Logger('storage_file', 'aymeric.rodriguez@minesdedouai.fr',
