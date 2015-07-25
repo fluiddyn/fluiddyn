@@ -11,7 +11,7 @@ Provides:
    :toctree:
 
    txt
-   csv
+   mycsv
    binary
    hdf5
    digiflow

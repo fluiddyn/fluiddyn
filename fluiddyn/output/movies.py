@@ -1,8 +1,9 @@
-"""
-Utilities for creating movies (:mod:`fluiddyn.output.movies`)
+"""Utilities for creating movies (:mod:`fluiddyn.output.movies`)
 ===============================================================
 
-.. currentmodule:: fluiddyn.output.movies
+.. warning::
+
+   Don't use this file. Now movies can be made with matplotlib.animation.
 
 Provides
 
@@ -13,7 +14,7 @@ Provides
 
 
 Warning: this file is a little bit buggy because the memory is not
-released when figures are not plotted. Also it is much to slow for
+released when figures are not plotted. Also it is much too slow for
 real time movies. These problems have to be solved!
 
 """
@@ -21,7 +22,6 @@ from __future__ import division, print_function
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib
 
 import os
 
@@ -30,7 +30,7 @@ import gc
 from glob import glob
 
 from fluiddyn.io.hdf5 import H5File
-from fluiddyn.util.timer import Timer
+# from fluiddyn.util.timer import Timer
 import fluiddyn.output.figs as figs
 
 
@@ -58,7 +58,6 @@ class MoviesFromData:
             self.nx = eta.shape[1]
             self.ny = eta.shape[0]
 
-
         P0 = 1
         Lh = 50.
         deltak = 2*np.pi/Lh
@@ -70,7 +69,6 @@ class MoviesFromData:
         self.x = self.Lx/self.nx * np.arange(self.nx)/self.Lf
         self.y = self.Ly/self.ny * np.arange(self.ny)/self.Lf
 
-
         self.param_movie = {
             'itlim': [0, len(self.files)-1],
             'xlim': [0, self.Lx],
@@ -80,21 +78,11 @@ class MoviesFromData:
             'size_axe': [0.11, 0.11, 0.88, 0.81],
             'vmax': eta.max()}
 
-
-
-
-
-
-
-
     def get_frame(self, i):
         with H5File(self.files[i]) as f:
             data = f['Obj_state_phys']['eta'][...]
             tframe = f['Obj_state_phys'].attrs['time']
             return data, tframe
-
-
-
 
     def plot_one_frame(self, ax, field, tframe):
         # ax.clear()
@@ -106,8 +94,6 @@ class MoviesFromData:
             self.x, self.y, 1+field,
             vmin=1-self.param_movie['vmax'], vmax=1+self.param_movie['vmax'])
         return pc
-
-
 
     def prepare_fig(self, it=0):
 
@@ -137,9 +123,6 @@ class MoviesFromData:
 
         return fig, ax
 
-
-
-
     def set_xlim(self, xlim):
         self.xlim = xlim
 
@@ -148,7 +131,6 @@ class MoviesFromData:
 
     def set_fps(self, fps):
         self.fps = fps
-
 
     def play_movie(self, **kwargs):
 
@@ -173,11 +155,7 @@ class MoviesFromData:
             field, tframe = self.get_frame(it)
             self.plot_one_frame(ax, field, tframe)
             plt.draw()
-            # timer.wait_till_tick()
-
-
-
-
+            # timer.wait_tick()
 
     def save_images(self, **kwargs):
 
@@ -199,8 +177,6 @@ class MoviesFromData:
             fig.saveifhasto(name_file='im{:05d}'.format(it), format='png')
             plt.close(fig)
             gc.collect()
-
-
 
     def save_movie_from_images(self, ):
         pass

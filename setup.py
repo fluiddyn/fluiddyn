@@ -61,7 +61,7 @@ setup(name='fluiddyn',
           'Programming Language :: Cython',
           'Programming Language :: C'],
       packages=find_packages(exclude=['doc', 'digiflow', 'script']),
-      install_requires=['numpy', 'matplotlib', 'scipy', 'psutil',
-                        'subprocess32'],
+      install_requires=['numpy', 'matplotlib', 'scipy', 'h5py',
+                        'psutil', 'subprocess32'],
       extras_require=dict(
           doc=['Sphinx>=1.1', 'numpydoc']))

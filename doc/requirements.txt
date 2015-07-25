@@ -1,0 +1,8 @@
+numpy
+matplotlib
+scipy
+h5py
+psutil
+subprocess32
+Sphinx>=1.1
+numpydoc

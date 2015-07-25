@@ -46,9 +46,9 @@ class Logger(object):
         self.path_logerr = base + '_stderr' + ext
 
         if self.email_to is None:
-            send_mail = False
+            send_email = False
         else:
-            send_mail = self.send_mail
+            send_email = self.send_email
 
         old_excepthook = sys.excepthook
 
@@ -67,8 +67,8 @@ class Logger(object):
                         ''.join(traceback.format_exception(ex_cls, ex, tb)) +
                         '\n')
 
-            if send_mail and ex_cls != KeyboardInterrupt:
-                self.send_mail(exception=str_ex)
+            if send_email and ex_cls != KeyboardInterrupt:
+                self.send_email(exception=str_ex)
 
             old_excepthook(ex_cls, ex, tb)
 
@@ -84,14 +84,14 @@ class Logger(object):
         with open(self.path, 'a') as f:
             f.write(' '.join([str(arg) for arg in args]) + end)
 
-    def send_mail_if_has_to(self):
+    def send_email_if_has_to(self):
         """Sends an email if no email was sent recently."""
         if self.email_to is not None:
             if time.time() - self.time_last_email >= self.email_delay:
-                self.send_mail()
+                self.send_email()
                 self.time_last_email = time.time()
 
-    def send_mail(self, exception=False):
+    def send_email(self, exception=False):
         """Sends the content of the storage file as an email"""
         with open(self.path, 'rb') as f:
             txt = f.read()
@@ -111,7 +111,7 @@ class Logger(object):
         msg['To'] = self.email_to
 
         s = smtplib.SMTP('localhost')
-        s.sendmail(self.email_from, [self.email_to], msg.as_string())
+        s.sendemail(self.email_from, [self.email_to], msg.as_string())
         s.quit()
         print('Email sent at ' + time_as_str())
 
@@ -127,8 +127,8 @@ if __name__ == '__main__':
     print('no...', 'paf', end='')
     print('Hellooo...')
 
-    logger.send_mail_if_has_to()
-    logger.send_mail_if_has_to()
+    logger.send_email_if_has_to()
+    logger.send_email_if_has_to()
     time.sleep(10)
-    logger.send_mail_if_has_to()
-    logger.send_mail_if_has_to()
+    logger.send_email_if_has_to()
+    logger.send_email_if_has_to()
