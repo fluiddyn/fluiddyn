@@ -1,9 +1,5 @@
-cython
 numpy
 matplotlib
 scipy
-mock
-psutil
-subprocess32
 Sphinx>=1.1
 numpydoc

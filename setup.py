@@ -27,9 +27,18 @@ elif 'b' in __version__:
 else:
     devstatus = 'Development Status :: 5 - Production/Stable'
 
+
+on_rtd = os.environ.get('READTHEDOCS')
+if on_rtd:
+    install_requires = []
+else:
+    install_requires = ['numpy', 'matplotlib', 'scipy', 'h5py',
+                        'psutil', 'subprocess32']
+
+
 setup(name='fluiddyn',
       version=__version__,
-      description=('framework for studying fluid dynamics.'),
+      description=('Framework for studying fluid dynamics.'),
       long_description=long_description,
       keywords='Fluid dynamics, research',
       author='Pierre Augier',
@@ -60,8 +69,7 @@ setup(name='fluiddyn',
           # 'Programming Language :: Python :: 3.4',
           'Programming Language :: Cython',
           'Programming Language :: C'],
-      packages=find_packages(exclude=['doc', 'digiflow', 'script']),
-      install_requires=['numpy', 'matplotlib', 'scipy', 'h5py',
-                        'psutil', 'subprocess32'],
+      packages=find_packages(exclude=['doc', 'scripts']),
+      install_requires=install_requires,
       extras_require=dict(
           doc=['Sphinx>=1.1', 'numpydoc']))
