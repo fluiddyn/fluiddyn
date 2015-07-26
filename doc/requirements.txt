@@ -2,7 +2,7 @@ cython
 numpy
 matplotlib
 scipy
-h5py
+mock
 psutil
 subprocess32
 Sphinx>=1.1
