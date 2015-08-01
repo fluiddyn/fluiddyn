@@ -1,5 +1,5 @@
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 import os
 here = os.path.abspath(os.path.dirname(__file__))
@@ -28,14 +28,13 @@ else:
     devstatus = 'Development Status :: 5 - Production/Stable'
 
 
-packages = ['fluiddyn']
+packages = find_packages()
 install_requires = ['numpy', 'matplotlib', 'scipy', 'psutil']
 
 on_rtd = os.environ.get('READTHEDOCS')
 if not on_rtd:
     install_requires += ['h5py', 'subprocess32']
-else:
-    packages += ['fluidrtd']
+    packages.remove('fluidrtd')
 
 
 setup(name='fluiddyn',
