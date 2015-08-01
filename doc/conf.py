@@ -17,18 +17,9 @@ import os
 # to be able to build the doc without h5py with Read the docs
 on_rtd = os.environ.get('READTHEDOCS')
 if on_rtd:
-    try:
-        from mock import Mock as MagicMock
-    except:
-        pass
-    else:
-        class Mock(MagicMock):
-            @classmethod
-            def __getattr__(cls, name):
-                    return Mock()
-
-        MOCK_MODULES = ['h5py']
-        sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+    # this package comes from fluiddyn
+    from fluidrtd import mock_modules
+    mock_modules(['h5py', 'subprocess32'])
 
 
 import fluiddyn as fld
