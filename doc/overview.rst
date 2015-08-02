@@ -132,10 +132,10 @@ The package fluiddyn provides utilities for
 Other specialized packages are part of the FluidDyn project:
 
 - `fluidsim <https://pypi.python.org/pypi/fluidsim>`_ (see the
-  `documentation <http://pythonhosted.org/fluidsim/>`__)
+  `documentation <http://fluidsim.readthedocs.org>`__)
 
 - `fluidlab <https://pypi.python.org/pypi/fluidlab>`_ (see the
-  `documentation <http://pythonhosted.org/fluidlab/>`_)
+  `documentation <http://fluidlab.readthedocs.org>`_)
 
   
 

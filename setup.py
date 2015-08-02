@@ -27,20 +27,13 @@ elif 'b' in __version__:
 else:
     devstatus = 'Development Status :: 5 - Production/Stable'
 
-
 packages = find_packages(exclude=['doc'])
-
-print('packages fluiddyn:', packages)
-
 install_requires = ['numpy', 'matplotlib', 'scipy', 'psutil']
 
-# dirty way to check that we are not on a readthedocs server...
-if not os.path.exists('/home/docs/checkouts/readthedocs.org'):
-    print('not on rtd')
+on_rtd = os.environ.get('READTHEDOCS')
+if not on_rtd:
     install_requires += ['h5py', 'subprocess32']
-    packages.remove('fluidrtd')
-else:
-    print('on rtd')
+
 
 setup(name='fluiddyn',
       version=__version__,

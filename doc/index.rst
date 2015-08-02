@@ -20,8 +20,8 @@ the same name, which is the base package on which the other packages
 depend on. For the specific documentations of these specialized
 packages, follow these links:
 
-- `fluidsim documentation <http://pythonhosted.org/fluidsim/>`_
-- `fluidlab documentation <http://pythonhosted.org/fluidlab/>`_
+- `fluidsim documentation <http://fluidsim.readthedocs.org>`_
+- `fluidlab documentation <http://fluidlab.readthedocs.org>`_
 
 
 User Guide

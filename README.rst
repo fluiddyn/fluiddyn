@@ -4,7 +4,7 @@ FluidDyn
 
 *Framework for studying fluid dynamics.*
 
-`Package Documentation <http://pythonhosted.org/fluiddyn>`__
+`Package Documentation <http://fluiddyn.readthedocs.org>`__
 
 FluidDyn is a framework for studying fluid dynamics. Most of the
 features are actually implemented in other packages (fluidsim,
