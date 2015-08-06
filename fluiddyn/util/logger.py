@@ -29,7 +29,8 @@ class Logger(object):
     def __init__(self, path='log.txt',
                  email_to=None, email_from=None,
                  email_title='title',
-                 email_delay=2*3600):
+                 email_delay=2*3600,
+                 email_server='localhost'):
 
         if email_delay is None:
             email_delay = 2*3600
@@ -39,6 +40,7 @@ class Logger(object):
         self.email_to = email_to
         self.email_title = email_title
         self.email_delay = email_delay
+        self.email_server = email_server
         self._normal_print = print
         self.time_last_email = time.time() - self.email_delay
 
@@ -110,8 +112,8 @@ class Logger(object):
         msg['From'] = self.email_from
         msg['To'] = self.email_to
 
-        s = smtplib.SMTP('localhost')
-        s.sendemail(self.email_from, [self.email_to], msg.as_string())
+        s = smtplib.SMTP(self.email_server)
+        s.sendmail(self.email_from, [self.email_to], msg.as_string())
         s.quit()
         print('Email sent at ' + time_as_str())
 
