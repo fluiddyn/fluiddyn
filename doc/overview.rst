@@ -39,10 +39,10 @@ dynamics for coding in the field of (geophysical) fluid dynamics.
 Open-source
 ^^^^^^^^^^^
 
-FluidDyn is an open-source software distributed under the CeCILL_
-License, a GPL compatible french license.
+FluidDyn is an open-source software distributed under the CeCILL-B_
+License, a BSD compatible french license.
 
-.. _CeCILL: http://www.cecill.info/index.en.html
+.. _CeCILL-B: http://www.cecill.info/index.en.html
 
 
 Python programming language
@@ -132,10 +132,10 @@ The package fluiddyn provides utilities for
 Other specialized packages are part of the FluidDyn project:
 
 - `fluidsim <https://pypi.python.org/pypi/fluidsim>`_ (see the
-  `documentation <http://pythonhosted.org/fluidsim/>`_)
+  `documentation <http://fluidsim.readthedocs.org>`__)
 
-- `fluidlab <https://pypi.python.org/pypi/fluidlab>`_(see the
-  `documentation <http://pythonhosted.org/fluidlab/>`_)
+- `fluidlab <https://pypi.python.org/pypi/fluidlab>`_ (see the
+  `documentation <http://fluidlab.readthedocs.org>`_)
 
   
 

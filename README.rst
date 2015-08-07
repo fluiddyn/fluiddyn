@@ -4,7 +4,7 @@ FluidDyn
 
 *Framework for studying fluid dynamics.*
 
-`Package Documentation <http://pythonhosted.org/fluiddyn>`__
+`Package Documentation <http://fluiddyn.readthedocs.org>`__
 
 FluidDyn is a framework for studying fluid dynamics. Most of the
 features are actually implemented in other packages (fluidsim,
@@ -29,10 +29,10 @@ documented, free and open-source software.
 License
 -------
 
-FluidDyn is distributed under the CeCILL_ License, a GPL compatible
+FluidDyn is distributed under the CeCILL-B_ License, a BSD compatible
 french license.
 
-.. _CeCILL: http://www.cecill.info/index.en.html
+.. _CeCILL-B: http://www.cecill.info/index.en.html
 
 Installation
 ------------
@@ -43,7 +43,7 @@ Package Index <https://pypi.python.org/pypi/fluiddyn/>`__.
 
 The development mode is often useful. From the root directory::
 
-  sudo python setup.py develop
+  python setup.py develop
 
 Tests
 -----

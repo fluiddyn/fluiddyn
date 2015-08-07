@@ -1,6 +1,6 @@
 """
-Scientific output toolkit (:mod:`fluiddyn.output`)
-==================================================
+Scientific output toolkit
+=========================
 
 .. _output:
 .. currentmodule:: fluiddyn.output
@@ -13,3 +13,10 @@ Scientific output toolkit (:mod:`fluiddyn.output`)
    latextables
 
 """
+
+# temporary to avoid the error where matplotlib is not installed
+try:
+    from fluiddyn.output.figs import show
+except ImportError:
+    pass
+

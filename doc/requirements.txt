@@ -1,0 +1,5 @@
+numpy
+matplotlib
+scipy
+Sphinx>=1.1
+numpydoc

@@ -1,6 +1,6 @@
 """
-Clusters (:mod:`fluiddyn.clusters`)
-===================================
+Clusters
+========
 
 .. currentmodule:: fluiddyn.clusters
 
@@ -11,5 +11,6 @@ Provides:
 
    oar
    legi
+   ciment
 
 """

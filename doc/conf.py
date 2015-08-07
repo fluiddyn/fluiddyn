@@ -14,6 +14,14 @@
 import sys
 import os
 
+# to be able to build the doc without h5py with Read the docs
+on_rtd = os.environ.get('READTHEDOCS')
+if on_rtd:
+    # this package comes from fluiddyn
+    from fluidrtd import mock_modules
+    mock_modules(['h5py', 'subprocess32'])
+
+
 import fluiddyn as fld
 
 
@@ -139,7 +147,7 @@ html_short_title = 'FluidDyn '+release
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
+html_static_path = []
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.

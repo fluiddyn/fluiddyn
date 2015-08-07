@@ -12,8 +12,11 @@ else:
     rank = comm.Get_rank()
 
     if nb_proc > 1:
+
+        old_excepthook = sys.excepthook
+
         def my_excepthook(ex_cls, ex, tb):
-            sys.__excepthook__(ex_cls, ex, tb)
+            old_excepthook(ex_cls, ex, tb)
             MPI.COMM_WORLD.Abort()
 
         sys.excepthook = my_excepthook

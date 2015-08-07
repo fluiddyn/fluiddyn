@@ -1,9 +1,18 @@
+"""Debug utility
+================
+
+Provides:
+
+.. autofunction:: ipydebug
+
+"""
 
 from IPython.terminal.embed import InteractiveShellEmbed
 import inspect
 
 
 def ipydebug():
+    """Launch an Ipython shell"""
 
     ipshell = InteractiveShellEmbed()
 

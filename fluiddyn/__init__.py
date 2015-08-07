@@ -26,28 +26,12 @@ simul
 
 """
 
-try:
-    import fluidsim
-    simul = fluidsim
-except ImportError:
-    pass
-
-from fluiddyn.util.util import load_exp, create_object_from_file
-
-import fluiddyn.util.constants as constants
-
+from fluiddyn.util.util import create_object_from_file
+from fluiddyn.util import constants
 from fluiddyn._version import __version__
 
-# temporary to avoid the error where matplotlib is not installed
-try:
-    from fluiddyn.output.figs import show
-except ImportError:
-    pass
 
-from fluiddyn.util.debug_with_ipython import ipydebug
-
-
-# temporary, for compatibility with fluidlab...
+# temporary, for compatibility with an old fluidlab...
 def _verif_names_modules(name_mod, path_h5_file, key_file):
 
     if isinstance(name_mod, str):
