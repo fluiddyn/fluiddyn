@@ -17,6 +17,7 @@ import os
 import datetime
 import stat
 # Warning: subprocess32 should not be used on Windows
+import sys
 if sys.platform.startswith('win'):
     import subprocess
 else:
