@@ -2,8 +2,6 @@
 Utilities
 =========
 
-.. currentmodule:: fluiddyn.util
-
 .. autosummary::
    :toctree:
 
@@ -15,6 +13,7 @@ Utilities
    deamons
    signal
    logger
+   userconfig
 
 """
 
