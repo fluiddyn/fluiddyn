@@ -35,4 +35,4 @@ def ipynb_to_rst(path='ipynb'):
                 has_to_be_compiled = False
 
         if has_to_be_compiled:
-            call_bash('cd ipynb && ipython nbconvert --to rst ' + filename)
+            call_bash('cd ipynb && jupyter nbconvert --to rst ' + filename)
