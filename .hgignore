@@ -4,13 +4,12 @@ syntax: glob
 *.pyc
 *~
 *temp
-*.html
 
 \#*\#
 
 doc/_build/*
 doc/**generated/*
-doc/html.zip
+doc/**.zip
 doc/ipynb/*_files/*.png
 doc/ipynb/*.rst
 
