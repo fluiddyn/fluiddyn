@@ -1,8 +1,8 @@
 .. FluidDyn documentation master file, created by
    sphinx-quickstart on Sun Mar  2 12:15:31 2014.
 
-Welcome to FluidDyn's documentation!
-====================================
+FluidDyn documentation
+======================
 
 The project FluidDyn aims at promoting the use of open-source Python
 software in research in fluid dynamics.  The project provides some
