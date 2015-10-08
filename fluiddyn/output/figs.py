@@ -250,9 +250,11 @@ class Figure(matplotlib.figure.Figure):
             if not os.path.exists(self.path_save):
                 os.mkdir(self.path_save)
 
-            name_file = name_file + '.' + format
+            if not name_file.endswith('.' + format):
+                name_file += '.' + format
+            
             if verbose:
-                print('Save figure in file '+name_file)
+                print('Save figure in file ' + name_file)
 
             super(Figure, self).savefig(self.path_save + '/' + name_file,
                                         format=format)
