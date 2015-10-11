@@ -15,7 +15,10 @@ lines = long_description.splitlines(True)
 long_description = ''.join(lines[8:])
 
 # Get the version from the relevant file
-exec(open('fluiddyn/_version.py').read())
+from runpy import run_path
+d = run_path('fluiddyn/_version.py')
+__version__ = d['__version__']
+
 # Get the development status from the version string
 if 'a' in __version__:
     devstatus = 'Development Status :: 3 - Alpha'
@@ -24,14 +27,17 @@ elif 'b' in __version__:
 else:
     devstatus = 'Development Status :: 5 - Production/Stable'
 
+
+install_requires=['numpy', 'matplotlib', 'psutil']
+# Even though we also use scipy, we don't require its installation
+# because it can be heavy to install.
+
 # subprocess32 should not be used on Windows and should not be
 # a required dependency
-if sys.platform.startswith('win'):
-    install_requires=['numpy', 'matplotlib', 'scipy', 'psutil']
-else:
-    install_requires=['numpy', 'matplotlib', 'scipy', 'psutil',
-                        'subprocess32']
-    
+if not sys.platform.startswith('win'):
+    install_requires.append('subprocess32')
+
+
 setup(name='fluiddyn',
       version=__version__,
       description=('framework for studying fluid dynamics.'),

@@ -18,10 +18,7 @@ implemented.
 This documentation presents the project FluidDyn and the package of
 the same name, which is the base package on which the other packages
 depend on. For the specific documentations of these specialized
-packages, follow these links:
-
-- `fluidlab documentation <http://fluidlab.readthedocs.org>`_
-- `fluidsim documentation <http://fluidsim.readthedocs.org>`_
+packages, follow the links above.
 
 
 User Guide
@@ -32,7 +29,6 @@ User Guide
 
    overview
    install
-   tutorials
 
 
 Modules Reference

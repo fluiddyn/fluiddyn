@@ -38,7 +38,6 @@ Mercurial and Bitbucket, you can also read this short tutorial:
 
    mercurial_bitbucket
 
-
 If you really don't want to use Mercurial, you can also just manually
 download the package from `the Bitbucket page
 <https://bitbucket.org/fluiddyn/fluiddyn>`__ or from `the PyPI page
@@ -48,9 +47,8 @@ download the package from `the Bitbucket page
 Install in development mode
 ---------------------------
 
-
-The development mode is very convenient. From the root directory of
-the project, run::
+The development mode is often very convenient. From the root directory
+of the project, run::
 
   sudo python setup.py develop
 
@@ -58,17 +56,10 @@ Of course you can also install FluidDyn in the standard ways,
 downloading the package and doing ``python setup.py install`` or just
 using pip by running ``pip install fluiddyn``.
 
-
 To build the C and Cython extensions::
 
   python setup.py build_ext --inplace
 
-
-Run the tests
--------------
-
-You can run some unit tests by running ``python -m unittest discover``
-from the root directory or from any of the "test"
-directories.
-
-
+After the installation, it is a good practice to run the unit tests by
+running ``python -m unittest discover`` from the root directory or
+from any of the "test" directories.

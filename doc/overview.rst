@@ -76,8 +76,9 @@ using this language in research.
 
 - **Large and professional community.**
 
-- **Easy to optimise** with profiling tools (cProfile, pstats) and `Cython
-  <http://cython.org/>`_.
+- **Easy to optimise**, in particular with profiling tools (cProfile,
+  pstats) and Python "compilers" like `Cython <http://cython.org/>`_ and
+  `Pythran <http://pythonhosted.org/pythran/>`_.
 
 - **Easily extended with modules written in C, C++ or Fortran.**
 

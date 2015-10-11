@@ -10,7 +10,7 @@ Utilities
    constants
    query
    timer
-   deamons
+   daemons
    signal
    logger
    userconfig
