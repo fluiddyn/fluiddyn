@@ -22,11 +22,21 @@ this page, I focus on what is needed to use and develop FluidDyn.
 Set-up Mercurial
 ----------------
 
-Install Mercurial and create a file ``~/.hgrc`` with (at least) something like::
+Install Mercurial and create a file ``~/.hgrc`` with something like::
 
   [ui]
   username=myusername  <email@adress.org>
+  editor=emacs -nw
 
+  [web]
+  cacerts = /etc/ssl/certs/ca-certificates.crt
+
+  [extensions]
+  color =
+  hgext.extdiff =
+
+  [extdiff]
+  cmd.meld =
 
 Get help
 --------
@@ -38,8 +48,6 @@ Get help::
 or for a specific command (here ``clone``)::
 
   hg help clone
-
-
 
 Get the FluidDyn repository
 ---------------------------
@@ -54,14 +62,11 @@ There are at least two methods...
    run it from the directory where you want to have the root directory
    of FluidDyn.
 
-
 2. Go where you want to have the root directory of FluidDyn and run::
 
-     hg clone https://bitbucket.org/paugier/fluiddyn
+     hg clone https://bitbucket.org/fluiddyn/fluiddyn
 
    Then modify the file .hg/hgrc in the created directory.
-
-
 
 Workflow
 --------
@@ -106,8 +111,6 @@ To push the state of your working repository to your Bitbucket repository::
 The inverse command is::
 
   hg pull
-
-
 
 
 Create a repository from nothing

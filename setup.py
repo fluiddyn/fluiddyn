@@ -34,7 +34,7 @@ install_requires=['numpy', 'matplotlib', 'psutil']
 
 # subprocess32 should not be used on Windows and should not be
 # a required dependency
-if not sys.platform.startswith('win'):
+if not sys.platform.startswith('win') and sys.version_info[0] < 3:
     install_requires.append('subprocess32')
 
 

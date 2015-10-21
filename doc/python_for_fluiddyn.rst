@@ -1,27 +1,26 @@
-Python for FluidDyn
-===================
+A good Python environment
+=========================
 
 Since FluidDyn aims at being used by new Python users, we have put
 together some advice for starting with Python. 
 
 
-Install a good Python
----------------------
+Install a good scientific Python environment
+--------------------------------------------
 
-By a "good Python", I mean a recent version of Python with recent
-versions of the main packages for sciences installed (SciPy, NumPy,
-Matplotlib, IPython, h5py, etc.).
+By a "good Python environment", I mean a recent version of Python with
+recent versions of the main packages for sciences installed (SciPy,
+NumPy, Matplotlib, IPython, h5py, etc.).
 
 
 Python 2.7 and Python 3
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Python 3 is cleaner but still significantly slower... In 2014, I would
-advice to try to write Python 2-3 compatible code (with some ``try``
-and ``from __future__`` statements and using for example the package
-`future <http://python-future.org/>`_)... and to run the program with
-Python 2.7.
-
+Python 3 is cleaner and better but still significantly slower... In
+2014, I think we have to try to write Python 2-3 compatible code (with
+some ``try`` and ``from __future__`` statements and using for example
+the package `future <http://python-future.org/>`_)... but then that we
+can continue to run the program with Python 2.7.
 
 
 Python on Windows
@@ -34,9 +33,6 @@ Windows (cmd) is just surprisingly bad. DO NOT use it since you could
 get some silly problems and there are simple alternatives. For
 example, you could use `Console2 with bash
 <https://www.google.com/search?q=console2+git+bash>`_ instead.
-
-
-
 
 
 Recent Python version on not so recent Linux
@@ -276,11 +272,8 @@ Advice
     pylint --help-msg=no-member
 
 - Use an editor running fly checks (for example Emacs with `Flycheck
-  <http://flycheck.readthedocs.org/en/latest/index.html>`_).
-
-
-
-
+  <http://flycheck.readthedocs.org>`_, see `an example showing how to
+  setup emacs <https://bitbucket.org/fluiddyn/fluid_emacs.d>`_).
 
 
 ---------------------------------------------
