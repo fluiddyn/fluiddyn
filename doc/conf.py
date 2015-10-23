@@ -47,7 +47,6 @@ extensions = [
     'sphinx.ext.viewcode', 'sphinx.ext.autosummary',
     'numpydoc',
     'mathmacro',
-    'IPython.sphinxext.ipython_directive'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -133,7 +132,7 @@ html_theme = 'sphinxdoc'
 #html_title = None
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-html_short_title = 'FluidDyn '+release
+html_short_title = 'FluidDyn ' + release
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.

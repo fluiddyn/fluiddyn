@@ -15,8 +15,8 @@ lines = long_description.splitlines(True)
 long_description = ''.join(lines[8:])
 
 # Get the version from the relevant file
-d = {}
-execfile('fluiddyn/_version.py', d)
+from runpy import run_path
+d = run_path('fluiddyn/_version.py')
 __version__ = d['__version__']
 
 # Get the development status from the version string
@@ -27,17 +27,20 @@ elif 'b' in __version__:
 else:
     devstatus = 'Development Status :: 5 - Production/Stable'
 
-packages = find_packages(exclude=['doc'])
-install_requires = ['numpy', 'matplotlib', 'scipy', 'psutil']
 
-on_rtd = os.environ.get('READTHEDOCS')
-if not on_rtd:
-    install_requires += ['h5py', 'subprocess32']
+install_requires=['numpy', 'matplotlib', 'psutil']
+# Even though we also use scipy, we don't require its installation
+# because it can be heavy to install.
+
+# subprocess32 should not be used on Windows and should not be
+# a required dependency
+if not sys.platform.startswith('win') and sys.version_info[0] < 3:
+    install_requires.append('subprocess32')
 
 
 setup(name='fluiddyn',
       version=__version__,
-      description=('Framework for studying fluid dynamics.'),
+      description=('framework for studying fluid dynamics.'),
       long_description=long_description,
       keywords='Fluid dynamics, research',
       author='Pierre Augier',
@@ -53,9 +56,8 @@ setup(name='fluiddyn',
           'Intended Audience :: Science/Research',
           'Intended Audience :: Education',
           'Topic :: Scientific/Engineering',
-          'License :: OSI Approved :: BSD License',
-          # Actually CeCILL-B License (BSD compatible license for French laws,
-          # see http://www.cecill.info/index.en.html
+          'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+          # actually CeCILL License (GPL compatible license for French laws)
           #
           # Specify the Python versions you support here. In particular,
           # ensure that you indicate whether you support Python 2,
@@ -68,7 +70,7 @@ setup(name='fluiddyn',
           # 'Programming Language :: Python :: 3.4',
           'Programming Language :: Cython',
           'Programming Language :: C'],
-      packages=packages,
+      packages=find_packages(exclude=['doc', 'digiflow', 'script']),
       install_requires=install_requires,
       extras_require=dict(
           doc=['Sphinx>=1.1', 'numpydoc']))

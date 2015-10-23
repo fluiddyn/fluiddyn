@@ -290,14 +290,19 @@ class ParamContainer(object):
             hdf5_object = hdf5_parent.create_group(self._tag)
 
         if hdf5_object is None:
-            if path_file is None or not path_file.endswith('.h5'):
+            if path_file is None:
+                path_file = ''
+            if not path_file.endswith('.h5'):
                 path_file = os.path.join(path_file, self._tag + '.h5')
             with H5File(path_file, 'w') as f:
                 f.attrs.create('_tag', self._tag)
                 self._save_as_hdf5(hdf5_object=f)
         elif path_file is None:
             for key in self._attribs:
-                hdf5_object.attrs.create(key, self.__dict__[key])
+                value = self.__dict__[key]
+                if value is None:
+                    value = 'None'
+                hdf5_object.attrs.create(key, value)
             for key in self._tag_children:
                 group = hdf5_object.create_group(key)
                 self.__dict__[key]._save_as_hdf5(hdf5_object=group)
@@ -323,6 +328,11 @@ class ParamContainer(object):
 
         self._set_internal_attr('_tag', tag)
 
+        # detect None attributes 
+        for k, v in attrs.items():
+            if v == 'None':
+                attrs[k] = None
+        
         for key in attrs.keys():
             if ' ' in key:
                 attrs[key.replace(' ', '_')] = attrs.pop(key)

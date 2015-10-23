@@ -1,14 +1,14 @@
 .. FluidDyn documentation master file, created by
    sphinx-quickstart on Sun Mar  2 12:15:31 2014.
 
-Welcome to FluidDyn's documentation!
-====================================
+FluidDyn documentation
+======================
 
 The project FluidDyn aims at promoting the use of open-source Python
 software in research in fluid dynamics.  The project provides some
 Python packages specialized for different tasks, in particular
-`fluidlab <https://pypi.python.org/pypi/fluidlab>`_ for laboratory
-experiments and `fluidsim <https://pypi.python.org/pypi/fluidsim>`_
+`fluidlab <http://fluidlab.readthedocs.org>`_ for laboratory
+experiments and `fluidsim <http://fluidsim.readthedocs.org>`_
 for numerical simulations.
 
 The project is still in a planning stage so it is still
@@ -18,10 +18,7 @@ implemented.
 This documentation presents the project FluidDyn and the package of
 the same name, which is the base package on which the other packages
 depend on. For the specific documentations of these specialized
-packages, follow these links:
-
-- `fluidsim documentation <http://fluidsim.readthedocs.org>`_
-- `fluidlab documentation <http://fluidlab.readthedocs.org>`_
+packages, follow the links above.
 
 
 User Guide
@@ -32,7 +29,6 @@ User Guide
 
    overview
    install
-   tutorials
 
 
 Modules Reference

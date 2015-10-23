@@ -11,6 +11,7 @@ Scientific output toolkit
    figs
    movies
    latextables
+   colorchart
 
 """
 

@@ -16,7 +16,12 @@ from __future__ import print_function
 import os
 import datetime
 import stat
-import subprocess32 as subprocess
+# Warning: subprocess32 should not be used on Windows
+import sys
+if sys.platform.startswith('win'):
+    import subprocess
+else:
+    import subprocess32 as subprocess
 
 from fluiddyn.util.query import run_asking_agreement
 

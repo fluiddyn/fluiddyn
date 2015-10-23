@@ -2,8 +2,6 @@
 Utilities
 =========
 
-.. currentmodule:: fluiddyn.util
-
 .. autosummary::
    :toctree:
 
@@ -12,9 +10,10 @@ Utilities
    constants
    query
    timer
-   deamons
+   daemons
    signal
    logger
+   userconfig
 
 """
 
