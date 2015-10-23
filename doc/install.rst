@@ -1,29 +1,41 @@
-Installation
-============
+Installation and advice
+=======================
 
+Advice on Python
+----------------
 
-Get a good scientific Python environment
-----------------------------------------
-
-FluidDyn works with Python 2.7. It would not be difficult to support
-Python 2.6 but I think that for science, it is important and not
-difficult to use a recent version of Python and of the main libraries
-(mainly NumPy, Matplotlib, SciPy).  See this page:
+FluidDyn should be used also by scientists that are not experienced in
+Python. We provide some advice on how to work with Python and how to
+get a good Python environment:
 
 .. toctree::
    :maxdepth: 1
 
-   python_for_fluiddyn
-
-**Remark:** we also discussed in this page how to use `virtualenv`,
-which is very very convenient.
-
-**Dependencies:** it is recommended to install NumPy and Matplotlib
-before installing FluidDyn.
+   advice_on_Python
+   get_good_Python_env
 
 
-Basic install
--------------
+Dependencies
+------------
+
+It is strongly recommended to install `NumPy
+<http://docs.scipy.org/doc/numpy/user/install.html>`_ and `Matplotlib
+<http://matplotlib.org/users/installing.html>`_ before installing FluidDyn.
+
+FluidDyn also depends on `psutil
+<https://pypi.python.org/pypi/psutil>`_, but it will be automatically
+installed during the installation of FluidDyn so you do not actually
+care.
+
+FluidDyn also used some other packages for some particular tasks, as
+in particular Scipy and h5py. Since they can be difficult to get for
+some small hardware, they are not considered as real dependencies, but
+be prepared to get ImportError if you try to do something using these
+packages without them.
+
+
+Basic installation
+------------------
 
 FluidDyn can be installed from the Python Package Index by the command::
 
