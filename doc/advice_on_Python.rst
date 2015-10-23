@@ -32,9 +32,9 @@ and there is no compiler to tell you that something is
 wrong. Automatic checking of the code is enough to avoid most of these
 silly errors so anyone has to use it.
 
-The style in Python is also quite important so any Python developer
-has to get used to code properly. The best way is to code with a fly
-checker that tells you as soon as you do something wrong.
+The style in Python is also really important (see below) so any Python
+developer has to get used to code properly. The best way is to code
+with a fly checker that tells you as soon as you do something wrong.
 
 Most experienced Python programmers use an good Python editor with fly
 checking and it is really very useful. So of course beginners have to
@@ -59,6 +59,28 @@ directory)::
   pylint fluiddyn
   pylint -E fluiddyn.lab.probes
   pylint --help-msg=no-member
+
+
+The style is important
+----------------------
+
+Most of the time, we have to follow the Style Guide for Python Code,
+the so-called `"pep 8" <https://www.python.org/dev/peps/pep-0008/>`_).
+It is not just for fun. On the long term, it really helps.
+
+In particular,
+
+- limit all lines to a maximum of 79 characters.  
+- most of the time, comments before the code. At least not in very
+  long lines of more than 79 characters.
+- names of the modules in lower case.
+- names of the classes in CamelCase, i.e. LikeThis.
+- no space before a comma and a space after.
+- no tabulation! four spaces.
+- no trailing white space.
+- documentation of the functions in a docstring.  
+- Python is in English. It is a good idea to write Python modules all
+  in English.
 
 
 Use virtualenv
