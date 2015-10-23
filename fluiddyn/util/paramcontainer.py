@@ -330,7 +330,7 @@ class ParamContainer(object):
 
         # detect None attributes 
         for k, v in attrs.items():
-            if v == 'None':
+            if isinstance(v, str) and v == 'None':
                 attrs[k] = None
         
         for key in attrs.keys():
