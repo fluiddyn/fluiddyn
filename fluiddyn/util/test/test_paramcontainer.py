@@ -11,7 +11,7 @@ class TestContainer(unittest.TestCase):
         params._set_attrib('a0', 1)
         params._set_attribs({'a1': 1, 'a2': 1})
 
-        params._set_child('child0', {'a0': 2, 'a1': 2})
+        params._set_child('child0', {'a0': 2, 'a1': None})
         params.child0.a0 = []
         params.child0.a0.append(1)
 
