@@ -17,11 +17,12 @@ from __future__ import print_function
 import os
 import sys
 import time
-import smtplib
-from email.mime.text import MIMEText
+# import smtplib
+# from email.mime.text import MIMEText
 import traceback
 
 from fluiddyn.util import time_as_str
+from fluiddyn.util.mail import send_email
 
 
 class Logger(object):
@@ -36,8 +37,16 @@ class Logger(object):
             email_delay = 2*3600
 
         self.path = path
-        self.email_from = email_from or email_to
         self.email_to = email_to
+        self.has_to_send_email = email_to is not None
+
+        if email_from is not None:
+            self.email_from = email_from
+        elif isinstance(email_to, (list, tuple)):
+            self.email_from = email_to[0]
+        else:
+            self.email_from = email_to
+
         self.email_title = email_title
         self.email_delay = email_delay
         self.email_server = email_server
@@ -47,20 +56,16 @@ class Logger(object):
         base, ext = os.path.splitext(self.path)
         self.path_logerr = base + '_stderr' + ext
 
-        if self.email_to is None:
-            send_email = False
-        else:
-            send_email = self.send_email
-
         old_excepthook = sys.excepthook
 
         def my_excepthook(ex_cls, ex, tb):
-            str_ex = ex_cls.__name__
+            name_exception = ex_cls.__name__
             str_time = time_as_str()
 
             with open(self.path, 'a') as f:
                 f.write(
-                    'Python error ({}) at {}\n'.format(str_ex, str_time))
+                    'Python error ({}) at {}\n'.format(
+                        name_exception, str_time))
 
             with open(self.path_logerr, 'a') as f:
                 f.write('-' * 40 +
@@ -69,8 +74,8 @@ class Logger(object):
                         ''.join(traceback.format_exception(ex_cls, ex, tb)) +
                         '\n')
 
-            if send_email and ex_cls != KeyboardInterrupt:
-                self.send_email(exception=str_ex)
+            if self.has_to_send_email and ex_cls != KeyboardInterrupt:
+                self.send_email(name_exception=name_exception)
 
             old_excepthook(ex_cls, ex, tb)
 
@@ -88,33 +93,41 @@ class Logger(object):
 
     def send_email_if_has_to(self):
         """Sends an email if no email was sent recently."""
-        if self.email_to is not None:
+        if self.has_to_send_email:
             if time.time() - self.time_last_email >= self.email_delay:
                 self.send_email()
                 self.time_last_email = time.time()
 
-    def send_email(self, exception=False):
+    def send_email(self, name_exception=None):
         """Sends the content of the storage file as an email"""
         with open(self.path, 'rb') as f:
             txt = f.read()
 
-        if not exception:
+        if name_exception is None:
             subject = self.email_title
         else:
-            subject = exception + ', ' + self.email_title
+            subject = name_exception + ', ' + self.email_title
 
             if os.path.exists(self.path_logerr):
                 with open(self.path_logerr, 'rb') as f:
                     txt += f.read()
 
-        msg = MIMEText(txt)
-        msg['Subject'] = subject
-        msg['From'] = self.email_from
-        msg['To'] = self.email_to
+        # msg = MIMEText(txt)
+        # msg['Subject'] = subject
+        # msg['From'] = self.email_from
+        # msg['To'] = self.email_to
 
-        s = smtplib.SMTP(self.email_server)
-        s.sendmail(self.email_from, [self.email_to], msg.as_string())
-        s.quit()
+        # s = smtplib.SMTP(self.email_server)
+        # s.sendmail(self.email_from, [self.email_to], msg.as_string())
+        # s.quit()
+
+        send_email(
+            subject, txt,
+            address_recipients=self.email_from,
+            address_sender=self.email_to,
+            server=self.email_server,
+            files=None)
+
         print('Email sent at ' + time_as_str())
 
     # def __del__(self):
