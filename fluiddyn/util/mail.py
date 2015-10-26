@@ -12,6 +12,7 @@ from __future__ import print_function
 import os
 import time
 import smtplib
+import socket
 
 # For guessing MIME type based on file name extension
 import mimetypes
@@ -68,6 +69,8 @@ def send_email(subject, txt, address_recipients, address_sender=None,
 
     """
 
+    print(address_recipients)
+    
     if isinstance(address_recipients, str):
         address_recipients = [address_recipients]
 
@@ -88,7 +91,7 @@ def send_email(subject, txt, address_recipients, address_sender=None,
 
     if files is None:
         files = []
-
+        
     # sub parts: the enclosed files
     for path in files:
         # Guess the content type based on the file's extension.  Encoding
@@ -104,25 +107,30 @@ def send_email(subject, txt, address_recipients, address_sender=None,
         with open(path, 'rb') as fp:
             if maintype == 'text':
                 # Note: we should handle calculating the charset
-                msg = MIMEText(fp.read(), _subtype=subtype)
+                part = MIMEText(fp.read(), _subtype=subtype)
             elif maintype == 'image':
-                msg = MIMEImage(fp.read(), _subtype=subtype)
+                part = MIMEImage(fp.read(), _subtype=subtype)
             elif maintype == 'audio':
-                msg = MIMEAudio(fp.read(), _subtype=subtype)
+                part = MIMEAudio(fp.read(), _subtype=subtype)
             else:
-                msg = MIMEBase(maintype, subtype)
-                msg.set_payload(fp.read())
+                part = MIMEBase(maintype, subtype)
+                part.set_payload(fp.read())
                 # Encode the payload using Base64
-                encoders.encode_base64(msg)
+                encoders.encode_base64(part)
         # set the filename parameter
-        msg.add_header('Content-Disposition', 'attachment',
-                       filename=os.path.split(path)[1])
+        part.add_header('Content-Disposition', 'attachment',
+                        filename=os.path.split(path)[1])
 
-    server = smtplib.SMTP(host=server)
+        msg.attach(part)
+    try:
+        server = smtplib.SMTP(host=server)
+    except socket.gaierror as e:
+        print('socket.gaierror: you may have to setup a local SMTP server.')
+        raise e
     server.sendmail(address_sender, address_recipients, msg.as_string())
     server.quit()
 
 
 if __name__ == '__main__':
 
-    send_email('email test', 'blablabla\n'*3, 'pierre.augier@legi.cnrs.fr')
+    send_email('email test', 'blablabla\n'*3, '@legi.cnrs.fr')

@@ -40,13 +40,7 @@ class Logger(object):
         self.email_to = email_to
         self.has_to_send_email = email_to is not None
 
-        if email_from is not None:
-            self.email_from = email_from
-        elif isinstance(email_to, (list, tuple)):
-            self.email_from = email_to[0]
-        else:
-            self.email_from = email_to
-
+        self.email_from = email_from
         self.email_title = email_title
         self.email_delay = email_delay
         self.email_server = email_server
@@ -91,14 +85,14 @@ class Logger(object):
         with open(self.path, 'a') as f:
             f.write(' '.join([str(arg) for arg in args]) + end)
 
-    def send_email_if_has_to(self):
+    def send_email_if_has_to(self, figures=None):
         """Sends an email if no email was sent recently."""
         if self.has_to_send_email:
             if time.time() - self.time_last_email >= self.email_delay:
-                self.send_email()
+                self.send_email(figures=figures)
                 self.time_last_email = time.time()
 
-    def send_email(self, name_exception=None):
+    def send_email(self, name_exception=None, figures=None):
         """Sends the content of the storage file as an email"""
         with open(self.path, 'rb') as f:
             txt = f.read()
@@ -112,21 +106,24 @@ class Logger(object):
                 with open(self.path_logerr, 'rb') as f:
                     txt += f.read()
 
-        # msg = MIMEText(txt)
-        # msg['Subject'] = subject
-        # msg['From'] = self.email_from
-        # msg['To'] = self.email_to
-
-        # s = smtplib.SMTP(self.email_server)
-        # s.sendmail(self.email_from, [self.email_to], msg.as_string())
-        # s.quit()
-
+        if figures is None:
+            files = None
+        else:
+            path_tmp = '/tmp/fluiddyn_' + time_as_str()
+            os.makedirs(path_tmp)
+            files = []
+            for i, fig in enumerate(figures):
+                fname = 'fig_{}.png'.format(i)
+                path = os.path.join(path_tmp, fname)
+                fig.savefig(path)
+                files.append(path)
+                    
         send_email(
             subject, txt,
-            address_recipients=self.email_from,
-            address_sender=self.email_to,
+            address_recipients=self.email_to,
+            address_sender=self.email_from,
             server=self.email_server,
-            files=None)
+            files=files)
 
         print('Email sent at ' + time_as_str())
 
@@ -135,12 +132,11 @@ class Logger(object):
 
 
 if __name__ == '__main__':
-    logger = Logger('storage_file', 'aymeric.rodriguez@minesdedouai.fr',
-                    'aymeric.rodriguez@legi.cnrs.fr', 'itworks', 9)
+    logger = Logger('storage_file', 'pierre.augier@ens-lyon.org',
+                    'pierre.augier@legi.cnrs.fr',
+                    email_title='itworks', email_delay=9)
     print = logger.print_log
-    print('toto')
-    print('no...', 'paf', end='')
-    print('Hellooo...')
+    print('fluiddyn, blablabla')
 
     logger.send_email_if_has_to()
     logger.send_email_if_has_to()
