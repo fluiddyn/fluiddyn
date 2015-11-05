@@ -19,6 +19,7 @@ UNDERLINE = '\033[4m'
 
 def print_fail(*args, **kwargs):
     if len(args) > 0:
+        args = list(args)
         args[0] = FAIL + BOLD + args[0]
         args[-1] += ENDC
 
@@ -26,6 +27,7 @@ def print_fail(*args, **kwargs):
 
 def print_warning(*args, **kwargs):
     if len(args) > 0:
+        args = list(args)
         args[0] = WARNING + args[0]
         args[-1] += ENDC
 
