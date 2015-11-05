@@ -14,6 +14,7 @@ Utilities
    signal
    logger
    userconfig
+   terminal_colors
 
 """
 
