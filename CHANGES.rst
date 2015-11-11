@@ -1,4 +1,9 @@
 
+0.0.12
+------
+
+- Better email sending, with enclosed files.
+
 0.0.11
 ------
 
