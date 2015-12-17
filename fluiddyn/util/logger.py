@@ -17,8 +17,6 @@ from __future__ import print_function
 import os
 import sys
 import time
-# import smtplib
-# from email.mime.text import MIMEText
 import traceback
 
 from fluiddyn.util import time_as_str

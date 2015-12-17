@@ -18,6 +18,7 @@ UNDERLINE = '\033[4m'
 
 
 def print_fail(*args, **kwargs):
+    """Print in bold with "FAIL" font"""
     if len(args) > 0:
         args = list(args)
         args[0] = FAIL + BOLD + args[0]
@@ -25,12 +26,12 @@ def print_fail(*args, **kwargs):
 
     print(*args, **kwargs)
 
+
 def print_warning(*args, **kwargs):
+    """Print with "WARNING" font"""
     if len(args) > 0:
         args = list(args)
         args[0] = WARNING + args[0]
         args[-1] += ENDC
 
     print(*args, **kwargs)
-
-    

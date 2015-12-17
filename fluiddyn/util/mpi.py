@@ -1,3 +1,4 @@
+from __future__ import print_function
 
 import sys
 
@@ -6,6 +7,7 @@ try:
 except ImportError:
     nb_proc = 1
     rank = 0
+    printby0 = print
 else:
     comm = MPI.COMM_WORLD
     nb_proc = comm.size
@@ -20,3 +22,9 @@ else:
             MPI.COMM_WORLD.Abort()
 
         sys.excepthook = my_excepthook
+
+    standard_print = print
+
+    def printby0(*args, **kwargs):
+        if rank == 0:
+            standard_print(*args, **kwargs)
