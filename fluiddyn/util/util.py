@@ -30,7 +30,12 @@ import fluiddyn as fld
 
 
 def import_class(module_name, class_name):
-    module = import_module(module_name)
+    try:
+        module = import_module(module_name)
+    except ImportError as err:
+        msg = 'Error while attempting to import module '+module_name+'\n'
+        raise ImportError(msg + err.message)
+
     try:
         return module.__dict__[class_name]
     except KeyError:

@@ -54,7 +54,6 @@ if FLUIDDYN_PATH_WARNING is None:
 if not os.path.exists(FLUIDDYN_PATH_WARNING):
     os.makedirs(FLUIDDYN_PATH_WARNING)
 
-
 def _write_warning(*args, **kargs):
     if 'end' in kargs:
         end = kargs['end']

@@ -30,7 +30,6 @@ from fluiddyn.util.util import create_object_from_file
 from fluiddyn.util import constants
 from fluiddyn._version import __version__
 
-
 # temporary, for compatibility with an old fluidlab...
 def _verif_names_modules(name_mod, path_h5_file, key_file):
 
