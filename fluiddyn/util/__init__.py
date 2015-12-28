@@ -15,6 +15,7 @@ Utilities
    logger
    userconfig
    terminal_colors
+   serieofarrays
 
 """
 
