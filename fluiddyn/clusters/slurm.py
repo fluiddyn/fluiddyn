@@ -65,9 +65,10 @@ class ClusterSlurm(object):
 
     def submit_script(
             self, path, name_run='fluiddyn',
+            path_launching_script=None,
             nb_nodes=1, nb_cores_per_node=None,
             walltime='24:00:00', nb_mpi_processes=None,
-            output='output_file.o',
+            output=None, nb_times_resume=0,
             jobid=None, project='2014-11-24', requeue=False,
             nb_switches=None, max_waittime=None):
         """
@@ -75,7 +76,9 @@ class ClusterSlurm(object):
         ----------
         path : string
             Path of the simulation script. Usually located at:
-            $FLD/scripts/launch
+            $FLS/scripts/launch
+        path_launching_script: string
+            Path of the slurm jobscript
         nb_nodes : integer
             Sets number of MPI processes = nb_nodes * nb_cores_per_node
         nb_cores_per_node : integer
@@ -85,6 +88,8 @@ class ClusterSlurm(object):
             Maximum walltime for the job is fixed for a cluster, the default value
         nb_mpi_processes : integer
             Number of MPI processes, set automatically
+        output : string
+            Name of file to store standard output
         jobid : integer
             Run under already allocated job
         project : string
@@ -96,7 +101,8 @@ class ClusterSlurm(object):
         max_waittime : string
             Max time to wait for optimum
         """
-
+        
+        path = os.path.expandvars(path)
         if not os.path.exists(path):
             raise ValueError('script does not exists! path:\n' + path)
 
@@ -107,16 +113,26 @@ class ClusterSlurm(object):
 
         if nb_mpi_processes is None:
             nb_mpi_processes = nb_cores_per_node * nb_nodes
+        
+        if path_launching_script is None:
+            str_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+            path_launching_script = 'slurm_launcher_' + str_time + '.sh'
 
-        str_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        path_launching_script = 'slurm_launcher_' + str_time
         if os.path.exists(path_launching_script):
             raise ValueError('path_launching_script already exists...')
+        
+        if 'slurm_resumer' in path_launching_script:
+            resume = True
+        else:
+            resume = False
+
+        if output is None:
+            output = path_launching_script[:-3] + '.out'
 
         txt = self._create_txt_launching_script(
             path, name_run, project,
             nb_nodes, nb_cores_per_node, walltime,
-            nb_mpi_processes, output)
+            nb_mpi_processes, output, resume)
 
         with open(path_launching_script, 'w') as f:
             f.write(txt)
@@ -131,6 +147,10 @@ class ClusterSlurm(object):
 
         if requeue:
             launching_command += ' --requeue'
+        
+        if resume:
+            dependencies = raw_input('Enter jobid dependencies :').split()
+            launching_command += ' --dependency=afterok:' + ':'.join(dependencies)
 
         if nb_switches is not None and max_waittime is not None:
             launching_command += ' --switches=' + str(nb_switches) + \
@@ -141,10 +161,21 @@ class ClusterSlurm(object):
         print('A launcher for the script {} has been created.'.format(path))
         run_asking_agreement(launching_command)
 
+        for n in range(0, nb_times_resume):
+            self.submit_script(
+                 path='$FLS/scripts/util/resume_from_path.py',
+                 path_launching_script='slurm_resumer_' + str_time + '_' + str(n) + '.sh',
+                 nb_nodes=nb_nodes, nb_cores_per_node=nb_cores_per_node,
+                 walltime=walltime, nb_mpi_processes=nb_mpi_processes,
+                 output=output,
+                 jobid=jobid, project=project, requeue=True,
+                 nb_switches=nb_switches, max_waittime=max_waittime)
+
     def _create_txt_launching_script(
             self, path, name_run, project,
             nb_nodes, nb_cores_per_node, walltime,
-            nb_mpi_processes, output):
+            nb_mpi_processes, output,
+            resume_script=False):
         """
         Example
         -------
@@ -193,10 +224,16 @@ class ClusterSlurm(object):
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
+        if resume_script:
+            txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' ./" + output + ")\n"
+
         if nb_mpi_processes > 1:
             txt += 'aprun -n {} '.format(nb_mpi_processes)
-
-        txt += 'python {} > {} 2>&1\n\n'.format(path, output)
+        
+        if resume_script:
+            txt += 'python {} $PATH_RUN > {} 2>&1\n\n'.format(path, output)
+        else:
+            txt += 'python {} > {} 2>&1\n\n'.format(path, output)
 
         txt += '\n'.join(self.commands_unsetting_env) + '\n\n'
         return txt
