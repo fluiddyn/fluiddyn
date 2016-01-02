@@ -191,12 +191,22 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         else:
             self.set_index_slices(*index_slices)
 
+    def get_arrays(self):
+        return tuple(a for a in self.iter_arrays())
+
+    def get_name_files(self):
+        return tuple(n for n in self.iter_name_files())
+
     def get_array_from_name(self, name):
         return imread(os.path.join(self.path_dir, name))
 
     def get_array_from_indices(self, *indices):
         return self.get_array_from_name(
             self.compute_name_from_indices(*indices))
+
+    def get_array_from_index(self, index):
+        indices = [t for t in self.iter_indices()][index]
+        return self.get_array_from_indices(*indices)
 
     def get_paths_all_files(self):
         str_glob = os.path.join(self.path_dir, self.base_name + '*')
@@ -207,26 +217,21 @@ class SerieOfArraysFromFiles(SerieOfArrays):
     def verify_all_fields_present(self):
         raise ValueError('Not yet implemented.')
 
-    def __iter__(self):
-        lists = [range(*s) for s in self._index_slices]
-        for l in itertools.product(*lists):
-            yield self.compute_name_from_indices(*l)
-
     def iter_indices(self):
         lists = [range(*s) for s in self._index_slices]
         for l in itertools.product(*lists):
             yield l
 
     def iter_name_files(self):
-        lists = [range(*s) for s in self._index_slices]
-        for l in itertools.product(*lists):
+        for l in self.iter_indices():
             yield self.compute_name_from_indices(*l)
 
+    __iter__ = iter_name_files
+
     def iter_path_files(self):
-        lists = [range(*s) for s in self._index_slices]
-        for l in itertools.product(*lists):
+        for name in self.iter_name_files():
             yield os.path.join(
-                self.path_dir, self.compute_name_from_indices(*l))
+                self.path_dir, name)
 
     def iter_arrays(self):
         for name in self.iter_name_files():
@@ -354,36 +359,34 @@ class SeriesOfArrays(object):
 
     """
     def __init__(self, serie_arrays, give_indslices_from_indserie,
-                 ind_start=0, ind_stop=None):
+                 ind_stop=None):
         self.serie_arrays = serie_arrays
         self.give_indslices_from_indserie = give_indslices_from_indserie
 
-        self.ind_start = ind_start
-
         if ind_stop is None:
-            iserie = self.ind_start
+            iserie = -1
             cond = True
             while cond:
+                iserie += 1
                 serie_arrays.set_index_slices(
                     *self.give_indslices_from_indserie(iserie))
-                name_files = [name for name in serie_arrays.iter_name_files()]
+                name_files = serie_arrays.get_name_files()
                 cond = all([serie_arrays.isfile(name) for name in name_files])
-                iserie += 1
             ind_stop = iserie
         else:
-            for iserie in range(ind_start, ind_stop):
+            for iserie in range(ind_stop):
                 serie_arrays.set_index_slices(
                     *self.give_indslices_from_indserie(iserie))
                 name_files = [name for name in serie_arrays.iter_name_files()]
                 if not all([serie_arrays.isfile(name) for name in name_files]):
                     break
 
-        self.iserie = self.ind_start
+        self.iserie = 0
         self.ind_stop = ind_stop
-        self.nb_series = iserie - self.ind_start
+        self.nb_series = iserie
 
     def __iter__(self):
-        for iserie in range(self.ind_start, self.ind_stop):
+        for iserie in range(self.ind_stop):
             self.serie_arrays.set_index_slices(
                 *self.give_indslices_from_indserie(iserie))
             yield self.serie_arrays
@@ -394,6 +397,11 @@ class SeriesOfArrays(object):
                 *self.give_indslices_from_indserie(self.iserie))
             self.iserie += 1
             return self.serie_arrays
+
+    def get_serie_from_index(self, index):
+        self.serie_arrays.set_index_slices(
+            *self.give_indslices_from_indserie(index))
+        return self.serie_arrays
 
 
 if __name__ == '__main__':
@@ -440,7 +448,7 @@ if __name__ == '__main__':
 
     def give_indslices_from_indserie(iserie):
         indslices = copy(serie_arrays._index_slices_all_files)
-        indslices[0] = [2*iserie, 2*iserie+2, 1]
+        indslices[0] = [iserie+1, iserie+2]
         return indslices
 
     series = SeriesOfArrays(serie_arrays, give_indslices_from_indserie)
