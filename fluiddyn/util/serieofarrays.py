@@ -6,14 +6,14 @@ Provides classes to iterate over files.
 
 Example::
 
-  serie_arrays = SerieOfArraysFromFiles(path)
+  serie = SerieOfArraysFromFiles(path)
 
   def give_indslices_from_indserie(iserie):
-      indslices = copy(serie_arrays._index_slices_all_files)
+      indslices = copy(serie._index_slices_all_files)
       indslices[0] = [iserie, iserie+1, 1]
       return indslices
 
-  series = SeriesOfArrays(serie_arrays, give_indslices_from_indserie)
+  series = SeriesOfArrays(serie, give_indslices_from_indserie)
 
   for serie in series:
       print([name for name in serie])
@@ -72,8 +72,12 @@ class SerieOfArrays(object):
             self.path_dir = path
             self.filename_given = glob(path + '/*')[0].split('/')[-1]
         else:
-            raise ValueError('The provided path does not exist:\n'
-                             + path)
+            l = glob(path)
+            if len(l) == 0:
+                raise ValueError('The provided path does not exist:\n'
+                                 + path)
+
+            self.path_dir, self.filename_given = os.path.split(l[0])
 
         if '.' in self.filename_given:
             self.extension_file = self.filename_given.split('.')[-1]
@@ -112,14 +116,16 @@ class SerieOfArraysFromFiles(SerieOfArrays):
     over which iterate.
 
     """
-    def __init__(self, path, index_slices=None, base_name=None):
+    def __init__(self, path, index_slices=None):
 
         super(SerieOfArraysFromFiles, self).__init__(path)
 
-        if base_name is None:
-            base_name = ''.join(
-                itertools.takewhile(str.isalpha, self.filename_given))
-        self.base_name = base_name
+        self.base_name = ''.join(
+            itertools.takewhile(lambda c: not str.isdigit(c),
+                                self.filename_given))
+
+        if not str.isalpha(self.base_name[-1]):
+            self.base_name = self.base_name[:-1]
 
         # remove base_name
         remains = self.filename_given[len(self.base_name):]
@@ -213,6 +219,10 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         paths = glob(str_glob)
         paths.sort()
         return paths
+
+    def get_paths_files(self):
+        return [os.path.join(self.path_dir, name)
+                for name in self.get_name_files()]
 
     def verify_all_fields_present(self):
         raise ValueError('Not yet implemented.')
@@ -350,7 +360,7 @@ class SeriesOfArrays(object):
     Arguments
     ---------
 
-    serie_arrays: SerieOfArrays
+    serie: SerieOfArrays
 
     give_indslices_from_indserie: function
 
@@ -358,9 +368,9 @@ class SeriesOfArrays(object):
       indices used to compute a file name.
 
     """
-    def __init__(self, serie_arrays, give_indslices_from_indserie,
+    def __init__(self, serie, give_indslices_from_indserie,
                  ind_stop=None):
-        self.serie_arrays = serie_arrays
+        self.serie = serie
         self.give_indslices_from_indserie = give_indslices_from_indserie
 
         if ind_stop is None:
@@ -368,17 +378,17 @@ class SeriesOfArrays(object):
             cond = True
             while cond:
                 iserie += 1
-                serie_arrays.set_index_slices(
+                serie.set_index_slices(
                     *self.give_indslices_from_indserie(iserie))
-                name_files = serie_arrays.get_name_files()
-                cond = all([serie_arrays.isfile(name) for name in name_files])
+                name_files = serie.get_name_files()
+                cond = all([serie.isfile(name) for name in name_files])
             ind_stop = iserie
         else:
             for iserie in range(ind_stop):
-                serie_arrays.set_index_slices(
+                serie.set_index_slices(
                     *self.give_indslices_from_indserie(iserie))
-                name_files = [name for name in serie_arrays.iter_name_files()]
-                if not all([serie_arrays.isfile(name) for name in name_files]):
+                name_files = [name for name in serie.iter_name_files()]
+                if not all([serie.isfile(name) for name in name_files]):
                     break
 
         self.iserie = 0
@@ -387,21 +397,27 @@ class SeriesOfArrays(object):
 
     def __iter__(self):
         for iserie in range(self.ind_stop):
-            self.serie_arrays.set_index_slices(
+            self.serie.set_index_slices(
                 *self.give_indslices_from_indserie(iserie))
-            yield self.serie_arrays
+            yield self.serie
 
     def get_next_serie(self):
         if self.iserie < self.ind_stop:
-            self.serie_arrays.set_index_slices(
+            self.serie.set_index_slices(
                 *self.give_indslices_from_indserie(self.iserie))
             self.iserie += 1
-            return self.serie_arrays
+            return self.serie
 
     def get_serie_from_index(self, index):
-        self.serie_arrays.set_index_slices(
+        self.serie.set_index_slices(
             *self.give_indslices_from_indserie(index))
-        return self.serie_arrays
+        return self.serie
+
+    def get_name_all_files(self):
+        names = set()
+        for serie in self:
+            names.update(serie.get_name_files())
+        return names
 
 
 if __name__ == '__main__':
@@ -413,14 +429,14 @@ if __name__ == '__main__':
     #     '/c001a.png'
     # )
 
-    # serie_arrays = SerieOfArraysFromFiles(path)
+    # serie = SerieOfArraysFromFiles(path)
 
     # def give_indslices_from_indserie(iserie):
-    #     indslices = copy(serie_arrays._index_slices_all_files)
+    #     indslices = copy(serie._index_slices_all_files)
     #     indslices[0] = [iserie, iserie+1]
     #     return indslices
 
-    # series = SeriesOfArrays(serie_arrays, give_indslices_from_indserie)
+    # series = SeriesOfArrays(serie, give_indslices_from_indserie)
 
     # for serie in series:
     #     print([name for name in serie])
@@ -428,30 +444,29 @@ if __name__ == '__main__':
     # print('\nOther test')
 
     # def give_indslices_from_indserie(iserie):
-    #     indslices = copy(serie_arrays._index_slices_all_files)
+    #     indslices = copy(serie._index_slices_all_files)
     #     indslices[0] = [iserie, iserie+2, 1]
     #     indslices[1] = [1]
     #     return indslices
 
-    # series = SeriesOfArrays(serie_arrays, give_indslices_from_indserie)
+    # series = SeriesOfArrays(serie, give_indslices_from_indserie)
 
     # for serie in series:
     #     print([name for name in serie])
-
 
     path = (
         os.environ['HOME'] +
         '/Dev/howtopiv/samples/Karman'
     )
 
-    serie_arrays = SerieOfArraysFromFiles(path, base_name='PIVlab_Karman')
+    serie = SerieOfArraysFromFiles(path, base_name='PIVlab_Karman')
 
     def give_indslices_from_indserie(iserie):
-        indslices = copy(serie_arrays._index_slices_all_files)
+        indslices = copy(serie._index_slices_all_files)
         indslices[0] = [iserie+1, iserie+2]
         return indslices
 
-    series = SeriesOfArrays(serie_arrays, give_indslices_from_indserie)
+    series = SeriesOfArrays(serie, give_indslices_from_indserie)
 
     for serie in series:
         print([name for name in serie])
