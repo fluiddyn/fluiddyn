@@ -8,12 +8,12 @@ Example::
 
   serie = SerieOfArraysFromFiles(path)
 
-  def give_indslices_from_indserie(iserie):
+  def indslices_from_indserie(iserie):
       indslices = copy(serie._index_slices_all_files)
       indslices[0] = [iserie, iserie+1, 1]
       return indslices
 
-  series = SeriesOfArrays(serie, give_indslices_from_indserie)
+  series = SeriesOfArrays(serie, indslices_from_indserie)
 
   for serie in series:
       print([name for name in serie])
@@ -362,16 +362,23 @@ class SeriesOfArrays(object):
 
     serie: SerieOfArrays
 
-    give_indslices_from_indserie: function
+    indslices_from_indserie: str or function
 
       The function has to take an integer and to return an iterable of
       indices used to compute a file name.
 
     """
-    def __init__(self, serie, give_indslices_from_indserie,
+    def __init__(self, serie, indslices_from_indserie,
                  ind_stop=None):
         self.serie = serie
-        self.give_indslices_from_indserie = give_indslices_from_indserie
+
+        if isinstance(indslices_from_indserie, str):
+            l_range = indslices_from_indserie.split(',')
+            indslices_from_indserie = lambda i: [
+                [eval(s) for s in s_range.split(':')]
+                for s_range in l_range]
+
+        self.indslices_from_indserie = indslices_from_indserie
 
         if ind_stop is None:
             iserie = -1
@@ -379,14 +386,14 @@ class SeriesOfArrays(object):
             while cond:
                 iserie += 1
                 serie.set_index_slices(
-                    *self.give_indslices_from_indserie(iserie))
+                    *self.indslices_from_indserie(iserie))
                 name_files = serie.get_name_files()
                 cond = all([serie.isfile(name) for name in name_files])
             ind_stop = iserie
         else:
             for iserie in range(ind_stop):
                 serie.set_index_slices(
-                    *self.give_indslices_from_indserie(iserie))
+                    *self.indslices_from_indserie(iserie))
                 name_files = [name for name in serie.iter_name_files()]
                 if not all([serie.isfile(name) for name in name_files]):
                     break
@@ -398,19 +405,19 @@ class SeriesOfArrays(object):
     def __iter__(self):
         for iserie in range(self.ind_stop):
             self.serie.set_index_slices(
-                *self.give_indslices_from_indserie(iserie))
+                *self.indslices_from_indserie(iserie))
             yield self.serie
 
     def get_next_serie(self):
         if self.iserie < self.ind_stop:
             self.serie.set_index_slices(
-                *self.give_indslices_from_indserie(self.iserie))
+                *self.indslices_from_indserie(self.iserie))
             self.iserie += 1
             return self.serie
 
     def get_serie_from_index(self, index):
         self.serie.set_index_slices(
-            *self.give_indslices_from_indserie(index))
+            *self.indslices_from_indserie(index))
         return self.serie
 
     def get_name_all_files(self):
@@ -431,25 +438,25 @@ if __name__ == '__main__':
 
     # serie = SerieOfArraysFromFiles(path)
 
-    # def give_indslices_from_indserie(iserie):
+    # def indslices_from_indserie(iserie):
     #     indslices = copy(serie._index_slices_all_files)
     #     indslices[0] = [iserie, iserie+1]
     #     return indslices
 
-    # series = SeriesOfArrays(serie, give_indslices_from_indserie)
+    # series = SeriesOfArrays(serie, indslices_from_indserie)
 
     # for serie in series:
     #     print([name for name in serie])
 
     # print('\nOther test')
 
-    # def give_indslices_from_indserie(iserie):
+    # def indslices_from_indserie(iserie):
     #     indslices = copy(serie._index_slices_all_files)
     #     indslices[0] = [iserie, iserie+2, 1]
     #     indslices[1] = [1]
     #     return indslices
 
-    # series = SeriesOfArrays(serie, give_indslices_from_indserie)
+    # series = SeriesOfArrays(serie, indslices_from_indserie)
 
     # for serie in series:
     #     print([name for name in serie])
@@ -461,12 +468,12 @@ if __name__ == '__main__':
 
     serie = SerieOfArraysFromFiles(path, base_name='PIVlab_Karman')
 
-    def give_indslices_from_indserie(iserie):
+    def indslices_from_indserie(iserie):
         indslices = copy(serie._index_slices_all_files)
         indslices[0] = [iserie+1, iserie+2]
         return indslices
 
-    series = SeriesOfArrays(serie, give_indslices_from_indserie)
+    series = SeriesOfArrays(serie, indslices_from_indserie)
 
     for serie in series:
         print([name for name in serie])
