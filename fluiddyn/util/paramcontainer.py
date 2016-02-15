@@ -354,23 +354,34 @@ def tidy_container(cont):
 
     """
     newtag = convert_capword_to_lowercaseunderscore(cont._tag)
-    cont._tag = newtag
+    cont._set_internal_attr('_tag', newtag)
 
     for oldtag in cont._tag_children:
         newtag = convert_capword_to_lowercaseunderscore(oldtag)
         cont._tag_children.remove(oldtag)
         cont._tag_children.add(newtag)
         cont.__dict__[newtag] = cont.__dict__.pop(oldtag)
+
+        if isinstance(cont.__dict__[newtag], str):
+            print(cont.__dict__[newtag])
         tidy_container(cont.__dict__[newtag])
 
+
+    tag_child_to_remove = []
     for tag in cont._tag_children:
         child = cont.__dict__[tag]
-
         if len(child._tag_children) == 0 and len(child._attribs) == 0:
-            value_text = child._value_text
+            try:
+                value_text = child._value_text
+            except AttributeError:
+                value_text = ''
             cont.__dict__.pop(tag)
+            tag_child_to_remove.append(tag)
             cont._set_attrib(tag, value_text)
 
+    for tag in tag_child_to_remove:
+        cont._tag_children.remove(tag)
+            
 
 def convert_capword_to_lowercaseunderscore(name):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
