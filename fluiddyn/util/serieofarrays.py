@@ -228,7 +228,11 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         raise ValueError('Not yet implemented.')
 
     def iter_indices(self):
-        lists = [range(*s) for s in self._index_slices]
+        islices = list(self._index_slices)
+        for i, islice in enumerate(islices):
+            if len(islice) == 1:
+                islices[i] = [islice[0], islice[0]+1]
+        lists = [range(*s) for s in islices]
         for l in itertools.product(*lists):
             yield l
 
