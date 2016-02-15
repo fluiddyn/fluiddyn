@@ -69,7 +69,7 @@ class ClusterSlurm(object):
             nb_nodes=1, nb_cores_per_node=None,
             walltime='24:00:00', nb_mpi_processes=None,
             output=None, nb_times_resume=0,
-            jobid=None, project='2014-11-24', requeue=False,
+            jobid=None, project='2015-16-46', requeue=False,
             nb_switches=None, max_waittime=None):
         """
         Parameters
@@ -150,7 +150,7 @@ class ClusterSlurm(object):
         
         if resume:
             dependencies = raw_input('Enter jobid dependencies :').split()
-            launching_command += ' --dependency=afterok:' + ':'.join(dependencies)
+            launching_command += ' --dependency=afternotok:' + ':'.join(dependencies)
 
         if nb_switches is not None and max_waittime is not None:
             launching_command += ' --switches=' + str(nb_switches) + \
