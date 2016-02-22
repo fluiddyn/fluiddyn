@@ -354,6 +354,9 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
         self._index_slices = index_slices
 
+    def get_nb_files(self):
+        return len([i for i in self.iter_indices()])
+
 
 class SeriesOfArrays(object):
     """Series of arrays.
@@ -364,7 +367,7 @@ class SeriesOfArrays(object):
     Arguments
     ---------
 
-    serie: SerieOfArrays
+    serie: SerieOfArrays or str
 
     indslices_from_indserie: str or function
 
@@ -374,7 +377,13 @@ class SeriesOfArrays(object):
     """
     def __init__(self, serie, indslices_from_indserie,
                  ind_stop=None):
-        self.serie = serie
+        if isinstance(serie, str):
+            serie = SerieOfArraysFromFiles(serie)
+        if isinstance(serie, SerieOfArraysFromFiles):
+            self.serie = serie
+        else:
+            raise ValueError(
+                'serie should be a str or a SerieOfArraysFromFiles.')
 
         if isinstance(indslices_from_indserie, str):
             l_range = indslices_from_indserie.split(',')
