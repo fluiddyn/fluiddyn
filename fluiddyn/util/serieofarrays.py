@@ -214,13 +214,13 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         indices = [t for t in self.iter_indices()][index]
         return self.get_array_from_indices(*indices)
 
-    def get_paths_all_files(self):
+    def get_path_all_files(self):
         str_glob = os.path.join(self.path_dir, self.base_name + '*')
         paths = glob(str_glob)
         paths.sort()
         return paths
 
-    def get_paths_files(self):
+    def get_path_files(self):
         return [os.path.join(self.path_dir, name)
                 for name in self.get_name_files()]
 
