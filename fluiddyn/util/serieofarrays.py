@@ -434,10 +434,13 @@ class SeriesOfArrays(object):
         return self.serie
 
     def get_name_all_files(self):
-        names = set()
+        names_all = []
         for serie in self:
-            names.update(serie.get_name_files())
-        return names
+            names = serie.get_name_files()
+            for name in names:
+                if name not in names_all:
+                    names_all.append(name)
+        return names_all
 
 
 if __name__ == '__main__':
