@@ -21,11 +21,11 @@ def parse_timestamp(str):
     """Converts a timestamp to a time.struct_time object."""
 
     try:
-        time = time.strptime(str, "%d-%H:%M:%S")
+        time_struct = time.strptime(str, "%d-%H:%M:%S")
     except ValueError:
-        time = time.strptime(str, "%H:%M:%S")
+        time_struct = time.strptime(str, "%H:%M:%S")
 
-    return time
+    return time_struct
 
 
 def time_gteq(timestr1, timestr2):

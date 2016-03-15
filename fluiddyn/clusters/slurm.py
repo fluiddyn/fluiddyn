@@ -223,15 +223,15 @@ class ClusterSlurm(object):
         txt += '#SBATCH -A {}\n\n'.format(project)
         
         txt += "#SBATCH -t {}\n".format(self.max_walltime)
-        txt += "#SBATCH --min-time {}\n".format(walltime)
+        txt += "#SBATCH --time-min {}\n".format(walltime)
         txt += "#SBATCH -N {}\n".format(nb_nodes)
         if nb_cores_per_node > 0:
             txt += "#SBATCH --ntasks-per-node={}\n".format(nb_cores_per_node)
 
         txt += "#SBATCH -n {}\n\n".format(nb_mpi_processes)
 
-        txt += '#SBATCH --mail-type=FAIL'
-        txt += '#SBATCH --mail-user=avmo@kth.se'
+        txt += '#SBATCH --mail-type=FAIL\n'
+        txt += '#SBATCH --mail-user=avmo@kth.se\n'
         txt += '#SBATCH -e job-%J.err\n'
         txt += '#SBATCH -o job-%J.out\n\n'
 
