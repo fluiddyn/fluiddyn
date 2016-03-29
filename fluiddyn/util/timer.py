@@ -53,6 +53,27 @@ class Timer(object):
     def get_time_till_start(self):
         return time.time() - self.tstart
 
+class Timer2(Timer):
+    """ Timer ticking for a numpy array of time.
+	This time array can be irregular.
+
+"""
+    def __init__(self, timing):
+        self.timing = [(ti - min(timing) ) for ti in timing[1:] ]
+        self.tstart = time.time()
+
+    def wait_tick(self):
+        """Block till the next tick."""
+        tnow = time.time() - self.tstart
+        if self.timing:
+            while self.timing[0] -tnow < 0:
+                self.timing = self.timing[1:]
+        if self.timing:
+            tsleep = self.timing[0] -tnow
+            self.timing = self.timing[1:]
+            time.sleep(tsleep)
+        return time.time() - self.tstart
+
 
 if __name__ == '__main__':
 
