@@ -265,9 +265,18 @@ class ParamContainer(object):
             self._set_attrib(k, _as_value(v))
 
         for childxml in elemxml:
+            tag = childxml.tag
+
+            l = [c for c in elemxml if c.tag == tag]
+            
+            if len(l) > 1:
+                if len(childxml.attrib) == 1:
+                    tag += '_' + str(childxml.attrib.items()[0][1])
+                    childxml.tag = tag
+            
             self._set_internal_attr(
-                childxml.tag, self.__class__(elemxml=childxml))
-            self._tag_children.add(childxml.tag)
+                tag, self.__class__(elemxml=childxml))
+            self._tag_children.add(tag)
 
     def _save_as_xml(self, path_file=None, comment=None):
         """Save the xml text in a file."""
