@@ -264,16 +264,22 @@ class ParamContainer(object):
         for k, v in elemxml.attrib.items():
             self._set_attrib(k, _as_value(v))
 
+        tags_multiple = []
+
         for childxml in elemxml:
             tag = childxml.tag
 
             l = [c for c in elemxml if c.tag == tag]
-            
-            if len(l) > 1:
+
+            if len(l) > 1 or tag in tags_multiple:
+                if tag not in tags_multiple:
+                    tags_multiple.append(tag)
+
                 if len(childxml.attrib) == 1:
-                    tag += '_' + str(childxml.attrib.items()[0][1])
+                    k = childxml.attrib.keys()[0]
+                    tag += '_' + str(childxml.attrib.pop(k))
                     childxml.tag = tag
-            
+
             self._set_internal_attr(
                 tag, self.__class__(elemxml=childxml))
             self._tag_children.add(tag)
@@ -375,7 +381,6 @@ def tidy_container(cont):
             print(cont.__dict__[newtag])
         tidy_container(cont.__dict__[newtag])
 
-
     tag_child_to_remove = []
     for tag in cont._tag_children:
         child = cont.__dict__[tag]
@@ -390,7 +395,7 @@ def tidy_container(cont):
 
     for tag in tag_child_to_remove:
         cont._tag_children.remove(tag)
-            
+
 
 def convert_capword_to_lowercaseunderscore(name):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)

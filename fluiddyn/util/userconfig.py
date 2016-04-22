@@ -27,7 +27,7 @@ def load_user_conf_files(namepackage='fluiddyn', possible_conf_files=None):
             conf_files.append(_path)
             conf_vars = _run_path(_path, init_globals=conf_vars)
 
-    conf_vars = {k: v for k, v in conf_vars.items() if not k.startswith('_')}
+    conf_vars = {k: v for k, v in conf_vars.items() if not k.startswith('__')}
 
     config = {k: v for k, v in conf_vars.items()}
     config['home'] = home
