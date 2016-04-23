@@ -20,4 +20,4 @@ Utilities
 """
 
 from fluiddyn.util.util import (
-    Params, time_as_str)
+    Params, time_as_str, config_logging)

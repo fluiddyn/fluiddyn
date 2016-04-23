@@ -180,6 +180,9 @@ class ParamContainer(object):
     def _set_internal_attr(self, key, value):
         self.__dict__[key] = value
 
+    def _set_doc(self, doc):
+        self._set_internal_attr('_doc', doc)
+
     def _set_attrib(self, key, value):
         """Add an attribute to the container."""
         self.__dict__[key] = value

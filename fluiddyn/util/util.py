@@ -15,6 +15,7 @@ import glob
 import inspect
 import shutil
 import datetime
+import logging
 
 import psutil
 from importlib import import_module
@@ -173,3 +174,14 @@ def print_options(*args, **kwargs):
     np.set_printoptions(*args, **kwargs)
     yield
     np.set_printoptions(**original)
+
+
+def config_logging(level='info'):
+    level = level.lower()
+    if level == 'info':
+        level = logging.INFO
+    elif level == 'debug':
+        level = logging.DEBUG
+
+    logging.basicConfig(format='%(levelname)s: %(message)s',
+                        level=level)
