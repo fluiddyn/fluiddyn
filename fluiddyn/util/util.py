@@ -176,12 +176,27 @@ def print_options(*args, **kwargs):
     np.set_printoptions(**original)
 
 
-def config_logging(level='info'):
+def config_logging(level='info', name='fluiddyn'):
     level = level.lower()
     if level == 'info':
         level = logging.INFO
     elif level == 'debug':
         level = logging.DEBUG
 
-    logging.basicConfig(format='%(levelname)s: %(message)s',
-                        level=level)
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(level)
+
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(levelname)s: %(message)s')
+    ch.setFormatter(formatter)
+
+    # add the handlers to the logger
+    logger.addHandler(ch)
+
+    # hack to solve a "bug" in ipython notebook:
+    # http://stackoverflow.com/questions/31403679/python-logging-module-duplicated-console-output-ipython-notebook-qtconsole
+    logger.propagate = False
