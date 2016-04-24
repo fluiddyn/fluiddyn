@@ -387,9 +387,11 @@ class SeriesOfArrays(object):
 
         if isinstance(indslices_from_indserie, str):
             l_range = indslices_from_indserie.split(',')
-            indslices_from_indserie = lambda i: [
-                [eval(s) for s in s_range.split(':')]
-                for s_range in l_range]
+
+            def indslices_from_indserie(i):
+                return [
+                    [eval(s) for s in s_range.split(':')]
+                    for s_range in l_range]
 
         self.indslices_from_indserie = indslices_from_indserie
 
@@ -416,10 +418,22 @@ class SeriesOfArrays(object):
         self.nb_series = iserie
 
     def __iter__(self):
-        for iserie in range(self.ind_stop):
+
+        if hasattr(self, 'index_series'):
+            index_series = self.index_series
+        else:
+            index_series = range(self.ind_stop)
+
+        for iserie in index_series:
             self.serie.set_index_slices(
                 *self.indslices_from_indserie(iserie))
             yield self.serie
+
+    def __len__(self):
+        return len([s for s in self])
+
+    def set_index_series(self, index_series):
+        self.index_series = index_series
 
     def get_next_serie(self):
         if self.iserie < self.ind_stop:
