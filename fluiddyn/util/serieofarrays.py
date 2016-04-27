@@ -405,6 +405,8 @@ class SeriesOfArrays(object):
                 name_files = serie.get_name_files()
                 cond = all([serie.isfile(name) for name in name_files])
             ind_stop = iserie
+        elif ind_stop == 0:
+            iserie = 0
         else:
             for iserie in range(ind_stop):
                 serie.set_index_slices(
