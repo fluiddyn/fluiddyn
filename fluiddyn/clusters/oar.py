@@ -47,8 +47,7 @@ class ClusterOAR(object):
         self.commands_setting_env = [
             'source /etc/profile',
             'module load python/2.7.8',
-            'source /home/users/$USER/useful'
-            '/save/opt/mypysqueeze/bin/activate']
+            'source /home/users/$USER/mypy2.7/bin/activate']
 
         self.useful_commands = (
             'oarsub -S script.sh',
@@ -64,13 +63,13 @@ class ClusterOAR(object):
             idempotent=False, delay_signal_walltime=300):
 
         if not os.path.exists(path):
-            raise ValueError('script does not exists! path:\n' + path)
+            raise ValueError('The script does not exists! path:\n' + path)
 
-        if nb_mpi_processes is None:
-            nb_mpi_processes = nb_cores_per_node
+        if nb_cores_per_node is None and nb_mpi_processes is not None:
+            nb_cores_per_node = nb_mpi_processes
 
-            if nb_cores_per_node > self.nb_cores_per_node:
-                raise ValueError('Too many cores...')
+        if nb_cores_per_node > self.nb_cores_per_node:
+            raise ValueError('Too many cores...')
 
         str_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         path_launching_script = 'oar_launcher_' + str_time
@@ -110,9 +109,6 @@ class ClusterOAR(object):
             walltime,
             nb_mpi_processes=None):
 
-        if nb_mpi_processes is None:
-            nb_mpi_processes = nb_cores_per_node
-
         txt = ('#!/bin/bash\n\n')
 
         txt += '#OAR -n {}\n'.format(name_run)
@@ -126,9 +122,11 @@ class ClusterOAR(object):
         txt += 'echo "hostname: "$HOSTNAME\n\n'
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
-
-        if nb_mpi_processes > 1:
-            txt += 'exec mpirun -np {} '.format(nb_mpi_processes)
+        
+        txt += 'exec '
+        
+        if nb_mpi_processes is not None:
+            txt += 'mpirun -np {} '.format(nb_mpi_processes)
 
         txt += 'python {}\n'.format(path)
 

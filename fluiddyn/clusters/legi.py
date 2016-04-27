@@ -38,7 +38,7 @@ class Calcul7(ClusterOAR):
     name_cluster = 'calcul7'
     has_to_add_name_cluster = False
     nb_cores_per_node = 16
-    frontends = ['nrj1sv223']
+    frontends = ['nrj1sv223', 'nrj1sv224']
 
     def __init__(self):
 
@@ -47,5 +47,4 @@ class Calcul7(ClusterOAR):
         self.commands_setting_env = [
             'source /etc/profile',
             'module load python/2.7.9',
-            'source /home/users/$USER/useful'
-            '/save/opt/mypy2.7.9_jessie/bin/activate']
+            'source /home/users/$USER/opt/mypy2.7/bin/activate']
