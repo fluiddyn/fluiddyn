@@ -60,9 +60,10 @@ class ClusterOAR(object):
             nb_nodes=1, nb_cores_per_node=1,
             walltime='24:00:00', project=None,
             nb_mpi_processes=None, omp_num_threads=None,
-            idempotent=False, delay_signal_walltime=300):
+            idempotent=False, delay_signal_walltime=300,
+            network_address=None):
 
-        if not os.path.exists(path):
+        if not os.path.exists(path.split(' ')[0]):
             raise ValueError('The script does not exists! path:\n' + path)
 
         if nb_cores_per_node is None and nb_mpi_processes is not None:
@@ -79,7 +80,8 @@ class ClusterOAR(object):
         txt = self._create_txt_launching_script(
             path, name_run,
             nb_nodes, nb_cores_per_node, walltime,
-            nb_mpi_processes=nb_mpi_processes)
+            nb_mpi_processes=nb_mpi_processes,
+            network_address=network_address)
 
         with open(path_launching_script, 'w') as f:
             f.write(txt)
@@ -107,14 +109,17 @@ class ClusterOAR(object):
             self, path, name_run,
             nb_nodes, nb_cores_per_node,
             walltime,
-            nb_mpi_processes=None):
+            nb_mpi_processes=None, network_address=None):
 
-        txt = ('#!/bin/bash\n\n')
+        txt = ('#!/bin/bash\n\n'
+               '#OAR -n {}\n'.format(name_run))
 
-        txt += '#OAR -n {}\n'.format(name_run)
         txt += "#OAR -l "
-        if self.has_to_add_name_cluster:
-            txt += "{{cluster='{}'}}".format(self.name_cluster)
+
+        if self.has_to_add_name_cluster and network_address is None:
+            txt += "{cluster='" + self.name_cluster + "'}"
+        elif network_address is not None:
+            txt += "{network_address='" + network_address + "'}"
 
         txt += "/nodes=1/core={},walltime={}\n\n".format(
             nb_cores_per_node, walltime)
@@ -122,9 +127,9 @@ class ClusterOAR(object):
         txt += 'echo "hostname: "$HOSTNAME\n\n'
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
-        
+
         txt += 'exec '
-        
+
         if nb_mpi_processes is not None:
             txt += 'mpirun -np {} '.format(nb_mpi_processes)
 
