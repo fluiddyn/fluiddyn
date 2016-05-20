@@ -79,6 +79,11 @@ class SerieOfArrays(object):
 
             self.path_dir, self.filename_given = os.path.split(l[0])
 
+        path = os.path.join(self.path_dir, self.filename_given)
+        if not os.path.isfile(path):
+            raise ValueError('The path given does not point towards a file '
+                             'but towards:\n' + path)
+            
         if '.' in self.filename_given:
             self.extension_file = self.filename_given.split('.')[-1]
         else:
@@ -376,7 +381,7 @@ class SeriesOfArrays(object):
 
     """
     def __init__(self, serie, indslices_from_indserie,
-                 ind_stop=None):
+                 ind_start=0, ind_stop=None, ind_step=1):
         if isinstance(serie, str):
             serie = SerieOfArraysFromFiles(serie)
         if isinstance(serie, SerieOfArraysFromFiles):
@@ -396,35 +401,41 @@ class SeriesOfArrays(object):
         self.indslices_from_indserie = indslices_from_indserie
 
         if ind_stop is None:
-            iserie = -1
+            iserie = ind_start - 1
             cond = True
             while cond:
-                iserie += 1
+                iserie += ind_step
                 serie.set_index_slices(
                     *self.indslices_from_indserie(iserie))
                 name_files = serie.get_name_files()
                 cond = all([serie.isfile(name) for name in name_files])
             ind_stop = iserie
-        elif ind_stop == 0:
-            iserie = 0
         else:
-            for iserie in range(ind_stop):
+            for iserie in range(ind_start, ind_stop, ind_step):
                 serie.set_index_slices(
                     *self.indslices_from_indserie(iserie))
                 name_files = [name for name in serie.iter_name_files()]
                 if not all([serie.isfile(name) for name in name_files]):
                     break
+            ind_stop = iserie
 
-        self.iserie = 0
+        self.nb_series = len(range(ind_start, ind_stop, ind_step))
+        self.iserie = ind_start
+        self.ind_start = ind_start
         self.ind_stop = ind_stop
-        self.nb_series = iserie
+        self.ind_step = ind_step
+
+        if self.nb_series == 0:
+            print(
+"""warning: this SeriesOfArrays has been initialized with parameters such that 
+no serie of images has been found.""")
 
     def __iter__(self):
 
         if hasattr(self, 'index_series'):
             index_series = self.index_series
         else:
-            index_series = range(self.ind_stop)
+            index_series = range(self.ind_start, self.ind_stop, self.ind_step)
 
         for iserie in index_series:
             self.serie.set_index_slices(

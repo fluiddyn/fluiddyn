@@ -11,6 +11,7 @@ Toolkit for various tasks (:mod:`fluiddyn.util.util`)
 from __future__ import division, print_function
 
 import os
+import sys
 import glob
 import inspect
 import shutil
@@ -187,7 +188,7 @@ def config_logging(level='info', name='fluiddyn'):
     logger.setLevel(level)
 
     # create console handler with a higher log level
-    ch = logging.StreamHandler()
+    ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(level)
 
     # create formatter and add it to the handlers

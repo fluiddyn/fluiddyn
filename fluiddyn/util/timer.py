@@ -67,7 +67,7 @@ class TimerIrregular(Timer):
         """Block till the next tick."""
         tnow = time.time() - self.tstart
         if self.timing:
-            while self.timing[0] - tnow < 0:
+            while self.timing and self.timing[0] - tnow < 0:
                 self.timing = self.timing[1:]
         if self.timing:
             tsleep = self.timing[0] - tnow
