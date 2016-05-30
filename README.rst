@@ -2,15 +2,19 @@
 FluidDyn
 ========
 
-*Framework for studying fluid dynamics.*
+|release| |docs|
 
-`Package Documentation <http://fluiddyn.readthedocs.org>`__
+.. |release| image:: https://img.shields.io/pypi/v/fluiddyn.svg
+   :target: https://pypi.python.org/pypi/fluiddyn/
+   :alt: Latest version
+
+.. |docs| image:: https://readthedocs.org/projects/fluiddyn/badge/?version=latest
+   :target: http://fluiddyn.readthedocs.org
+   :alt: Documentation status
 
 FluidDyn is a framework for studying fluid dynamics. Most of the
 features are actually implemented in other packages (fluidsim,
-fluidlab).  The project is still in a testing stage so it is still
-pretty unstable and many of its planned features have not yet been
-implemented.
+fluidlab, fluidimage).
 
 It is the evolution of two other projects previously developed by
 `Pierre Augier
@@ -38,7 +42,7 @@ Installation
 ------------
 
 You can get the source code from `Bitbucket
-<https://bitbucket.org/paugier/fluiddyn>`__ or from `the Python
+<https://bitbucket.org/fluiddyn/fluiddyn>`__ or from `the Python
 Package Index <https://pypi.python.org/pypi/fluiddyn/>`__.
 
 The development mode is often useful. From the root directory::

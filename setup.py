@@ -2,9 +2,11 @@
 from setuptools import setup, find_packages
 
 import os
+from runpy import run_path
+import sys
+
 here = os.path.abspath(os.path.dirname(__file__))
 
-import sys
 if sys.version_info[:2] < (2, 7) or (3, 0) <= sys.version_info[0:2] < (3, 2):
     raise RuntimeError("Python version 2.7 or >= 3.2 required.")
 
@@ -12,10 +14,9 @@ if sys.version_info[:2] < (2, 7) or (3, 0) <= sys.version_info[0:2] < (3, 2):
 with open(os.path.join(here, 'README.rst')) as f:
     long_description = f.read()
 lines = long_description.splitlines(True)
-long_description = ''.join(lines[8:])
+long_description = ''.join(lines[14:])
 
 # Get the version from the relevant file
-from runpy import run_path
 d = run_path('fluiddyn/_version.py')
 __version__ = d['__version__']
 
