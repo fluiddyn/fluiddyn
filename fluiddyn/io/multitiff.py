@@ -11,7 +11,7 @@ import glob
 
 def reorganize_single_frame_3Dscannedpiv_data(
         files, Nlevel, outputdir = '.',
-        outputext = 'tif'):
+        outputext = 'tif', erase=False):
     """
     Reorganize data from multi tiff to a hierarchy of folders for each level
 
@@ -40,7 +40,7 @@ def reorganize_single_frame_3Dscannedpiv_data(
         except:
             os.makedirs(outputdir + '/level{}'.format(ind+1))
 
-    if isfolder !=0:
+    if not erase and isfolder !=0:
         resp = raw_input("Some folders already exist\n Do you want to continue? (y/n)")
         if resp == "y":
             pass
@@ -65,7 +65,7 @@ def reorganize_single_frame_3Dscannedpiv_data(
             im.close()
 
 def reorganize_double_frame_3Dscannedpiv_data(files, Nlevel, outputdir = '.',
-                                              outputext = 'tif'):
+                                              outputext = 'tif', erase=False):
     """
     Reorganize data from multi tiff to a hierarchy of folders for each level
 
@@ -91,7 +91,7 @@ def reorganize_double_frame_3Dscannedpiv_data(files, Nlevel, outputdir = '.',
         except:
             os.makedirs(outputdir + '/level{}'.format(ind+1))
 
-    if isfolder:
+    if not erase and isfolder:
         resp = raw_input("Some folders already exist\n Do you want to continue? (y/n)")
         if resp == "y":
             pass
@@ -119,7 +119,7 @@ def reorganize_double_frame_3Dscannedpiv_data(files, Nlevel, outputdir = '.',
             im.close()
 
 def reorganize_single_frame_2Dpiv_data(files,  outputdir = '.',
-                                       outputext = 'tif'):
+                                       outputext = 'tif', erase=False):
     """
     Reorganize data from multi tiff to a hierarchy of folders for each level
 
@@ -147,7 +147,7 @@ def reorganize_single_frame_2Dpiv_data(files,  outputdir = '.',
     except:
         os.makedirs(outputdir)
 
-    if isfolder:
+    if not erase and isfolder:
         resp = raw_input("Some folders already exist\n Do you want to continue? (y/n)")
         if resp == "y":
             pass
@@ -173,7 +173,7 @@ def reorganize_single_frame_2Dpiv_data(files,  outputdir = '.',
 
 
 def reorganize_double_frame_2Dpiv_data(files,  outputdir = '.',
-                                     outputext = 'tif'):
+                                     outputext = 'tif', erase=False):
     """
     Reorganize data from multi tiff to a hierarchy of folders for each level
 
@@ -201,7 +201,7 @@ def reorganize_double_frame_2Dpiv_data(files,  outputdir = '.',
     except:
         os.makedirs(outputdir)
 
-    if isfolder:
+    if not erase and isfolder:
         resp = raw_input("Some folders already exist\n Do you want to continue? (y/n)")
         if resp == "y":
             pass
