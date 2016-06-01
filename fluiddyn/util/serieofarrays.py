@@ -229,8 +229,9 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return [os.path.join(self.path_dir, name)
                 for name in self.get_name_files()]
 
-    def verify_all_fields_present(self):
-        raise ValueError('Not yet implemented.')
+    def check_all_files_exist(self):
+        name_files = self.get_name_files()
+        return all([self.isfile(name) for name in name_files])
 
     def iter_indices(self):
         islices = list(self._index_slices)
@@ -292,8 +293,8 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
         indices: iterable of int.
         """
-        name_file = (self.base_name + self._separator_base_index
-                     + self._compute_strindices_from_indices(*indices))
+        name_file = (self.base_name + self._separator_base_index +
+                     self._compute_strindices_from_indices(*indices))
         if self.extension_file != '':
             name_file = name_file + '.' + self.extension_file
 
@@ -398,26 +399,28 @@ class SeriesOfArrays(object):
                     [eval(s) for s in s_range.split(':')]
                     for s_range in l_range]
 
+        if indslices_from_indserie(0) == indslices_from_indserie(1):
+            raise ValueError(
+                'It seems that the function indslices_from_indserie '
+                'does not depend on the index.')
+
         self.indslices_from_indserie = indslices_from_indserie
 
         if ind_stop is None:
-            iserie = ind_start - 1
+            iserie = ind_start - ind_step
             cond = True
             while cond:
                 iserie += ind_step
                 serie.set_index_slices(
                     *self.indslices_from_indserie(iserie))
-                name_files = serie.get_name_files()
-                cond = all([serie.isfile(name) for name in name_files])
-            ind_stop = iserie
+                cond = serie.check_all_files_exist()
         else:
             for iserie in range(ind_start, ind_stop, ind_step):
                 serie.set_index_slices(
                     *self.indslices_from_indserie(iserie))
-                name_files = [name for name in serie.iter_name_files()]
-                if not all([serie.isfile(name) for name in name_files]):
+                if not serie.check_all_files_exist():
                     break
-            ind_stop = iserie
+        ind_stop = iserie
 
         self.nb_series = len(range(ind_start, ind_stop, ind_step))
         self.iserie = ind_start
