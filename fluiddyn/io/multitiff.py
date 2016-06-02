@@ -6,11 +6,13 @@ Multitiff
 """
 from __future__ import print_function
 
-from PIL import Image
+import sys
 import time
 import os
 import glob
 from math import ceil, log10
+
+from PIL import Image
 
 from fluiddyn.util.query import query_yes_no
 
@@ -21,9 +23,17 @@ def _should_we_stop():
     return True
 
 
-def _save_new_file(im, base_path, outputext):
-    with im.convert(mode='I') as new_im:
-        new_im.save(base_path + '.' + outputext)
+def _save_new_file(im, base_path, outputext, erase=False):
+    path_save = base_path + '.' + outputext
+    if not erase and os.path.exists(path_save):
+        return
+    if outputext == 'jp2':
+        with im.convert(mode='L') as new_im:
+            new_im.save(path_save,
+                        quality_mode='rate', quality_layers=[8])
+    else:
+        with im.convert(mode='I') as new_im:
+            new_im.save(path_save)
 
 
 def reorganize_single_frame_3Dscannedpiv_data(files, Nlevel, outputdir='.',
@@ -175,30 +185,25 @@ def reorganize_single_frame_2Dpiv_data(
     dir_exists = False
 
     if os.path.exists(outputdir):
-        (mode, ino, dev, nlink, uid, gid,
-         size, atime, mtime, ctime) = os.stat(files[0])
-        t = time.gmtime(mtime)
-        outputdir += ('_' + str(t.tm_year) + '-' + str(t.tm_mday) +
-                      '-' + str(t.tm_hour))
-
-    if os.path.exists(outputdir):
         dir_exists = True
     else:
         os.makedirs(outputdir)
 
-    if not erase and dir_exists and _should_we_stop():
-        return
+    # if not erase and dir_exists and _should_we_stop():
+        # return
 
     for path_tiff in files:
         t_start = time.time()
-        print('convert and save file\n' +
-              path_tiff + '\n in directory\n' + outputdir)
+        print('Convert and save file\n' +
+              path_tiff + '\nin directory\n' + outputdir)
         with Image.open(path_tiff) as im:
             index_im_in_tiff = 0
             while True:
                 try:
                     im.seek(index_im_in_tiff)
-                    print('\r' + index_im, end='')
+                    print('\r file {}; in {:.2f} s'.format(
+                        index_im, time.time() - t_start), end='')
+                    sys.stdout.flush()
                     base_path = (
                         outputdir +
                         ('/im{' + format_index + '}').format(index_im))
@@ -207,9 +212,9 @@ def reorganize_single_frame_2Dpiv_data(
                     index_im_in_tiff += 1
                 except EOFError:
                     break
-        print('end convert file {} in {} s'.format(
+        print('\nEnd convert file {} in {} s'.format(
             os.path.split(path_tiff)[0], time.time() - t_start))
-
+        sys.stdout.flush()
 
 def reorganize_double_frame_2Dpiv_data(
         files, outputdir='.', outputext='tif', erase=False):
