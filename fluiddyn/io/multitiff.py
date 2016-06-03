@@ -36,7 +36,7 @@ def _save_new_file(im, base_path, outputext, erase=False):
             new_im.save(path_save)
 
 
-def reorganize_single_frame_3Dscannedpiv_data(files, Nlevel, outputdir='.',
+def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
                                               outputext='tif', erase=False):
     """
     Reorganize data from multi tiff to a hierarchy of folders for each level
@@ -45,7 +45,7 @@ def reorganize_single_frame_3Dscannedpiv_data(files, Nlevel, outputdir='.',
     ----------
 
     - files : root of the names of files: example files = 'van_karman_flow*'
-    - Nlevel: number of levels in the scanned PIV
+    - nb_levels: number of levels in the scanned PIV
     - outputdir = '.': output folder
     - outputext : the output files extension
 
@@ -59,38 +59,45 @@ def reorganize_single_frame_3Dscannedpiv_data(files, Nlevel, outputdir='.',
     """
 
     files = glob.glob(files)
-    n = 0
+    
+    # wrong ! to be improved
+    nb_images = int(round(len(files) * 200. / nb_levels))
+    print(nb_images)
+    format_index = ':0{}d'.format(int(ceil(log10(nb_images))))
+
+    index_im = 0
 
     dir_exists = False
-
-    for ind in range(Nlevel):
-        try:
-            os.stat(outputdir + '/level{}'.format(ind+1))
+    
+    for ind in range(nb_levels):
+        if os.path.exists(outputdir + '/level{}'.format(ind)):
             dir_exists = True
-        except:
-            os.makedirs(outputdir + '/level{}'.format(ind+1))
+        else:
+            os.makedirs(outputdir + '/level{}'.format(ind))
 
-    if not erase and dir_exists and _should_we_stop():
-        return
-
-    for name_tiff in files:
-        with Image.open(name_tiff) as im:
-            nf = 0
+    for path_tiff in files:
+        t_start = time.time()
+        print('Convert and save file\n' +
+              path_tiff + '\nin directory\n' + outputdir)
+        with Image.open(path_tiff) as im:
+            index_im_in_tiff = 0
             while True:
                 try:
-                    im.seek(nf)
-                    name = outputdir + '/level{}/im{}'.format(
-                        n % Nlevel + 1, n/Nlevel)
-                    with im.convert(mode='I') as im2:
-                        im2.save(name + '.' + outputext)
-                    n += 1
-                    nf +=1
+                    im.seek(index_im_in_tiff)
+                    print('\r file {}; in {:.2f} s'.format(
+                        index_im, time.time() - t_start), end='')
+                    sys.stdout.flush()
+                    base_path = (outputdir + '/level{}/im{}').format(
+                        index_im % nb_levels, index_im/nb_levels)
+                    _save_new_file(im, base_path, outputext)
+                    index_im += 1
+                    index_im_in_tiff +=1
                 except EOFError:
                     break
 
 
 def reorganize_double_frame_3Dscannedpiv_data(
-        files, Nlevel, outputdir='.', outputext='tif', erase=False):
+        files, nb_levels, outputdir='.', outputext='tif', erase=False):
     """
     Reorganize data from multi tiff to a hierarchy of folders for each level
 
@@ -98,7 +105,7 @@ def reorganize_double_frame_3Dscannedpiv_data(
     ----------
 
     - files : root of the names of files: example files = 'van_karman_flow*'
-    - Nlevel: number of levels in the scanned PIV
+    - nb_levels: number of levels in the scanned PIV
     - outputdir = '.': output folder
     - outputext : the output files extension
 
@@ -118,7 +125,7 @@ def reorganize_double_frame_3Dscannedpiv_data(
     n = 0
     isfolder = 0
 
-    for ind in range(Nlevel):
+    for ind in range(nb_levels):
         try:
             os.stat(outputdir + '/level{}'.format(ind+1))
             isfolder += 1
@@ -139,12 +146,12 @@ def reorganize_double_frame_3Dscannedpiv_data(
         while True:
             try:
                 im.seek(nf)
-                if (n/Nlevel) % 2 == 0:
+                if (n/nb_levels) % 2 == 0:
                     name = outputdir + '/level{}/im{}a'.format(
-                        n % Nlevel + 1, n/(2*Nlevel))
+                        n % nb_levels + 1, n/(2*nb_levels))
                 else:
                     name = outputdir + '/level{}/im{}b'.format(
-                        n % Nlevel + 1, n/(2*Nlevel))
+                        n % nb_levels + 1, n/(2*nb_levels))
                 im2 = im.convert(mode='I')
                 im2.save(name + '.' + outputext)
                 im2.close()
