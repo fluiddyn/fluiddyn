@@ -62,7 +62,8 @@ def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
     
     # wrong ! to be improved
     nb_images = int(round(len(files) * 200. / nb_levels))
-    print(nb_images)
+    if nb_images == 0:
+        return
     format_index = ':0{}d'.format(int(ceil(log10(nb_images))))
 
     index_im = 0
@@ -186,18 +187,16 @@ def reorganize_single_frame_2Dpiv_data(
 
     # wrong ! to be improved
     nb_images = len(files) * 200
+    if nb_images == 0:
+        return
     format_index = ':0{}d'.format(int(ceil(log10(nb_images))))
 
     index_im = 0
     dir_exists = False
-
     if os.path.exists(outputdir):
         dir_exists = True
     else:
         os.makedirs(outputdir)
-
-    # if not erase and dir_exists and _should_we_stop():
-        # return
 
     for path_tiff in files:
         t_start = time.time()
