@@ -93,9 +93,10 @@ def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
                 except EOFError:
                     break
                 else:
-                    base_path = (outputdir + '/level{' + format_level +
-                                 '}/im{' + format_index + '}').format(
-                                     index_im % nb_levels, index_im/nb_levels)
+                    base_path = (
+                        outputdir + '/level{' + format_level +
+                        '}/im{' + format_index + '}').format(
+                            index_im % nb_levels, index_im//nb_levels)
                     if _save_new_file(im, base_path, outputext):
                         print('\r file {}; in {:.2f} s'.format(
                             index_im, time.time() - t_start), end='')
@@ -168,7 +169,7 @@ def reorganize_double_frame_3Dscannedpiv_data(
                     base_path = (
                         outputdir + '/level{' + format_level + '}/im{' +
                         format_index + '}' + letter).format(
-                            index_im % nb_levels, index_im/nb_levels)
+                            index_im % nb_levels, index_im // nb_levels)
                     if _save_new_file(im, base_path, outputext):
                         print('\r file {}; in {:.2f} s'.format(
                             index_im, time.time() - t_start), end='')
