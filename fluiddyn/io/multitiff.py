@@ -78,8 +78,9 @@ def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
     index_im = 0
 
     for ind in range(nb_levels):
-        if not os.path.exists(outputdir + '/level{}'.format(ind)):
-            os.makedirs(outputdir + '/level{}'.format(ind))
+        dir_lev = (outputdir + '/level{' + format_level + '}').format(ind)
+        if not os.path.exists(dir_lev):
+            os.makedirs(dir_lev)
 
     for path_tiff in files:
         t_start = time.time()
@@ -147,8 +148,9 @@ def reorganize_double_frame_3Dscannedpiv_data(
     index_im = 0
 
     for ind in range(nb_levels):
-        if not os.path.exists(outputdir + '/level{}'.format(ind)):
-            os.makedirs(outputdir + '/level{}'.format(ind))
+        dir_lev = (outputdir + '/level{' + format_level + '}').format(ind)
+        if not os.path.exists(dir_lev):
+            os.makedirs(dir_lev)
 
     for path_tiff in files:
         t_start = time.time()
