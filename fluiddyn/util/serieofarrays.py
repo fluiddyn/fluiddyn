@@ -45,7 +45,7 @@ from copy import copy
 import itertools
 
 try:
-    from scipy.ndimage import imread
+    from matplotlib.image import imread
 except ImportError:
     from scipy.misc import imread
 
@@ -83,7 +83,7 @@ class SerieOfArrays(object):
         if not os.path.isfile(path):
             raise ValueError('The path given does not point towards a file '
                              'but towards:\n' + path)
-            
+
         if '.' in self.filename_given:
             self.extension_file = self.filename_given.split('.')[-1]
         else:
