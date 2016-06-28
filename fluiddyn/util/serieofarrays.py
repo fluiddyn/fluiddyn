@@ -44,10 +44,7 @@ from copy import copy
 
 import itertools
 
-try:
-    from matplotlib.image import imread
-except ImportError:
-    from scipy.misc import imread
+from fluiddyn.io.image import imread
 
 
 class SerieOfArrays(object):
@@ -429,9 +426,8 @@ class SeriesOfArrays(object):
         self.ind_step = ind_step
 
         if self.nb_series == 0:
-            print(
-"""warning: this SeriesOfArrays has been initialized with parameters such that 
-no serie of images has been found.""")
+            print('warning: this SeriesOfArrays has been initialized with '
+                  'parameters such that no serie of images has been found.')
 
     def __iter__(self):
 
