@@ -68,7 +68,9 @@ class SerieOfArrays(object):
         elif os.path.isdir(path):
             self.path_dir = path
             sep = os.path.sep
-            self.filename_given = glob(path + sep + '*')[0].split(sep)[-1]
+            filelist = glob(path + sep + '*')
+            filelist.sort()
+            self.filename_given = filelist[0].split(sep)[-1]
         else:
             l = glob(path)
             if len(l) == 0:
@@ -305,15 +307,15 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         ----------
 
         file_name: str
-        """        
+        """
         str_indices = file_name[len(self.base_name):]
-        
+
         if self._separator_base_index != '':
             str_indices = str_indices[1:]
 
         if self.extension_file != '':
             str_indices = str_indices[:-(len(self.extension_file)+1)]
-            
+
         remains = str_indices
         indices = []
         for i_ind in range(self.nb_indices):
