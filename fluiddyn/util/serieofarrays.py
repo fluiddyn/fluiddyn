@@ -415,13 +415,14 @@ class SeriesOfArrays(object):
                 serie.set_index_slices(
                     *self.indslices_from_indserie(iserie))
                 cond = serie.check_all_files_exist()
+            iserie -= 1
         else:
             for iserie in range(ind_start, ind_stop, ind_step):
                 serie.set_index_slices(
                     *self.indslices_from_indserie(iserie))
                 if not serie.check_all_files_exist():
                     break
-        ind_stop = iserie
+        ind_stop = iserie + 1
 
         self.nb_series = len(range(ind_start, ind_stop, ind_step))
         self.iserie = ind_start
