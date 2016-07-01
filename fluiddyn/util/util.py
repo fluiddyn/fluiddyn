@@ -62,24 +62,31 @@ def copy_me_in(dest='~'):
     return path_caller
 
 
+def get_pathfile_from_strpath(str_path, ext='h5'):
+
+    if str_path.endswith('.' + ext) and os.path.exists(str_path):
+        return str_path
+
+    if os.path.isdir(str_path):
+        path_glob = str_path + os.path.sep + '*'
+    else:
+        path_glob = '*' + str_path + '*'
+    
+    paths = glob.glob(path_glob)
+    for p in paths:
+        if p.endswith('.' + ext):
+            return p
+        
+    raise ValueError(
+        "Haven't been able to find a path corresponding to str_path."
+        "(str_path: {}).".format(str_path))
+
+
 def create_object_from_file(str_path, *args, **kwargs):
     """Create an object from a file."""
-    path = None
-    if os.path.isabs(str_path):
-        path = str_path
 
-    paths = glob.glob('*'+str_path+'*')
-
-    for p in paths:
-        if p.endswith('h5'):
-            path = p
-            break
-
-    if path is None:
-        raise ValueError(
-            "Haven't been able to find a path corresponding to str_path."
-            "(str_path: {}).".format(str_path))
-
+    path = get_pathfile_from_strpath(str_path, ext='h5')
+    
     # temporary... for compatibility
     with h5py.File(path, 'r+') as f:
         keys = f.attrs.keys()
