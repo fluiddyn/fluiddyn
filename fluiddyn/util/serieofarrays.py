@@ -63,6 +63,7 @@ class SerieOfArrays(object):
 
     """
     def __init__(self, path):
+        path = os.path.expanduser(path)
         if os.path.isfile(path):
             self.path_dir, self.filename_given = os.path.split(path)
         elif os.path.isdir(path):
