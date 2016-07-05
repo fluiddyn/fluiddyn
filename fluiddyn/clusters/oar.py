@@ -23,7 +23,7 @@ if sys.platform.startswith('win'):
 else:
     import subprocess32 as subprocess
 
-from fluiddyn.util.query import run_asking_agreement
+from fluiddyn.util.query import run_asking_agreement, call_bash
 
 
 class ClusterOAR(object):
@@ -61,8 +61,9 @@ class ClusterOAR(object):
             walltime='24:00:00', project=None,
             nb_mpi_processes=None, omp_num_threads=None,
             idempotent=False, delay_signal_walltime=300,
-            network_address=None):
+            network_address=None, ask=True):
 
+        path = os.path.expanduser(path)
         if not os.path.exists(path.split(' ')[0]):
             raise ValueError('The script does not exists! path:\n' + path)
 
@@ -75,7 +76,10 @@ class ClusterOAR(object):
         str_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         path_launching_script = 'oar_launcher_' + str_time
         if os.path.exists(path_launching_script):
-            raise ValueError('path_launching_script already exists...')
+            i = 1
+            while os.path.exists(path_launching_script + '_' + str(i)):
+                i += 1
+            path_launching_script += '_' + str(i)
 
         txt = self._create_txt_launching_script(
             path, name_run,
@@ -103,7 +107,12 @@ class ClusterOAR(object):
         launching_command += ' -S ./' + path_launching_script
 
         print('A launcher for the script {} has been created.'.format(path))
-        run_asking_agreement(launching_command)
+        if ask:
+            run_asking_agreement(launching_command)
+        else:
+            print('The script is submitted with the command:\n',
+                  launching_command)
+            call_bash(launching_command)
 
     def _create_txt_launching_script(
             self, path, name_run,

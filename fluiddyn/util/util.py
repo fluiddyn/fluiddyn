@@ -46,10 +46,15 @@ def import_class(module_name, class_name):
             'module_name: ' + module_name)
 
 
-def time_as_str():
+def time_as_str(decimal=0):
     """Return a string coding the time."""
     dt = datetime.datetime.now()
-    return dt.strftime('%Y-%m-%d_%H-%M-%S')
+    ret = dt.strftime('%Y-%m-%d_%H-%M-%S')
+    if decimal > 0:
+        if not isinstance(decimal, int):
+            raise TypeError
+        ret += '.{:06d}'.format(dt.microsecond)[:decimal+1]
+    return ret
 
 
 def copy_me_in(dest='~'):
@@ -153,7 +158,7 @@ def print_memory_usage(string):
     if mpi.nb_proc > 1:
         mem = mpi.comm.allreduce(mem, op=mpi.MPI.SUM)
     if mpi.rank == 0:
-        print((string+':').ljust(30), mem, 'Mo')
+        print((string + ':').ljust(30), mem, 'Mo')
 
 
 def print_size_in_Mo(arr, string=None):
