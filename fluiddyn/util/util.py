@@ -76,12 +76,12 @@ def get_pathfile_from_strpath(str_path, ext='h5'):
         path_glob = str_path + os.path.sep + '*'
     else:
         path_glob = '*' + str_path + '*'
-    
+
     paths = glob.glob(path_glob)
     for p in paths:
         if p.endswith('.' + ext):
             return p
-        
+
     raise ValueError(
         "Haven't been able to find a path corresponding to str_path."
         "(str_path: {}).".format(str_path))
@@ -91,7 +91,7 @@ def create_object_from_file(str_path, *args, **kwargs):
     """Create an object from a file."""
 
     path = get_pathfile_from_strpath(str_path, ext='h5')
-    
+
     # temporary... for compatibility
     with h5py.File(path, 'r+') as f:
         keys = f.attrs.keys()
@@ -189,7 +189,7 @@ def print_options(*args, **kwargs):
     np.set_printoptions(**original)
 
 
-def config_logging(level='info', name='fluiddyn'):
+def config_logging(level='info', name='fluiddyn', file=None):
     level = level.lower()
     if level == 'info':
         level = logging.INFO
@@ -200,7 +200,9 @@ def config_logging(level='info', name='fluiddyn'):
     logger.setLevel(level)
 
     # create console handler with a higher log level
-    ch = logging.StreamHandler(sys.stdout)
+    if file is None:
+        file = sys.stdout
+    ch = logging.StreamHandler(file)
     ch.setLevel(level)
 
     # create formatter and add it to the handlers
