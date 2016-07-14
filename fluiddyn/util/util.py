@@ -1,10 +1,6 @@
 """
-Toolkit for various tasks (:mod:`fluiddyn.util.util`)
-=====================================================
-
-
-.. autofunction:: create_object_from_file
-
+Toolkit (:mod:`fluiddyn.util.util`)
+===================================
 
 """
 
@@ -27,11 +23,12 @@ import contextlib
 import numpy as np
 import h5py
 
-from fluiddyn.util import mpi
+from . import mpi
 import fluiddyn as fld
 
 
 def import_class(module_name, class_name):
+    """Import a class from its name."""
     try:
         module = import_module(module_name)
     except ImportError as err:
@@ -62,13 +59,13 @@ def copy_me_in(dest='~'):
     stack = inspect.stack()
     path_caller = stack[1][1]
     name_file = os.path.basename(path_caller)
-    name_file_dest = name_file+'_'+time_as_str()
+    name_file_dest = name_file + '_' + time_as_str()
     shutil.copyfile(path_caller, os.path.join(dest, name_file_dest))
     return path_caller
 
 
 def get_pathfile_from_strpath(str_path, ext='h5'):
-
+    """Get the path of a file with a particular extension from a string."""
     if str_path.endswith('.' + ext) and os.path.exists(str_path):
         return str_path
 
@@ -131,7 +128,7 @@ def create_object_from_file(str_path, *args, **kwargs):
 
 
 def run_from_ipython():
-    """Check wether the code is run from Ipython."""
+    """Check whether the code is run from Ipython."""
     try:
         __IPYTHON__
         return True
@@ -190,6 +187,7 @@ def print_options(*args, **kwargs):
 
 
 def config_logging(level='info', name='fluiddyn', file=None):
+    """Configure a logging with a particular level and output file."""
     level = level.lower()
     if level == 'info':
         level = logging.INFO

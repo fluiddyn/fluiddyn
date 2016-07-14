@@ -1,19 +1,9 @@
-"""
-IO for text files (:mod:`fluiddyn.io.txt`)
-==========================================
+"""IO for text files (:mod:`fluiddyn.io.txt`)
+=============================================
 
-.. currentmodule:: fluiddyn.io.txt
+With recent version of Numpy, it is most of the time better to use np.loadtxt
+and np.savetxt...
 
-Provides the functions :func:`num_from_str`,
-:func:`quantities_from_txt_file` and
-:func:`save_quantities_in_txt_file`.
-
-
-.. autofunction:: num_from_str
-
-.. autofunction:: quantities_from_txt_file
-
-.. autofunction:: save_quantities_in_txt_file
 
 """
 
@@ -104,8 +94,7 @@ def save_quantities_in_txt_file(name_file, args, erase=False):
             'The file '+name_file+' already exists. '+
             'What do you want to do?\n'+
             "[Don't save / erase file and save / modify name] ",
-            default="Don't save"
-            )
+            default="Don't save")
         if answer.lower().startswith('do'):
             print('The quantities have not been saved.')
             return
@@ -123,15 +112,6 @@ def save_quantities_in_txt_file(name_file, args, erase=False):
                 f.write(repr(args[iq][iv]))
                 f.write(' ')
             f.write('\n')
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':

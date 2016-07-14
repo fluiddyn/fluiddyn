@@ -3,7 +3,6 @@ Input/output streams
 ====================
 
 .. _io:
-.. currentmodule:: fluiddyn.io
 
 Provides:
 
@@ -16,6 +15,8 @@ Provides:
    hdf5
    digiflow
    dantec
+   multitiff
+   redirect_stdout
 
 """
 

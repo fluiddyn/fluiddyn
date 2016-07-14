@@ -1,6 +1,6 @@
 """
-IO for csv files (:mod:`fluiddyn.io.csv`)
-==========================================
+IO for csv files (:mod:`fluiddyn.io.mycsv`)
+===========================================
 
 Provides:
 
