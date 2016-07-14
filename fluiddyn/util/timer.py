@@ -17,6 +17,25 @@ from __future__ import division, print_function
 import time
 
 
+def parse_timestamp(str):
+    """Converts a timestamp to a time.struct_time object."""
+
+    try:
+        time_struct = time.strptime(str, "%d-%H:%M:%S")
+    except ValueError:
+        time_struct = time.strptime(str, "%H:%M:%S")
+
+    return time_struct
+
+
+def time_gteq(timestr1, timestr2):
+    """Compares two timestamps strings and returns a greater than or equals comparison."""
+
+    time1 = parse_timestamp(timestr1) 
+    time2 = parse_timestamp(timestr2)
+    return (time1 >= time2)
+
+
 class Timer(object):
     """Timer ticking with a particular period.
 
