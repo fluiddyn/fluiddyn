@@ -1,4 +1,15 @@
 
+0.0.13
+------
+
+- Configure logging.
+
+- Clusters slurm.
+
+- Multitiff.  
+
+- Better paramcontainer and serieofarrays.
+
 0.0.12
 ------
 
