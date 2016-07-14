@@ -1,6 +1,13 @@
+"""Redirect stdoutput
+=====================
+
+
+"""
+
 import os
 import sys
 from contextlib import contextmanager
+
 
 def fileno(file_or_fd):
     fd = getattr(file_or_fd, 'fileno', lambda: file_or_fd)()
@@ -8,15 +15,18 @@ def fileno(file_or_fd):
         raise ValueError("Expected a file (`.fileno()`) or a file descriptor")
     return fd
 
+
 @contextmanager
 def stdout_redirected(to=os.devnull, stdout=None):
+    """Redirect stdout to os.devnull"""
     if stdout is None:
-       stdout = sys.stdout
+        stdout = sys.stdout
 
     stdout_fd = fileno(stdout)
     # copy stdout_fd before it is overwritten
-    #NOTE: `copied` is inheritable on Windows when duplicating a standard stream
-    with os.fdopen(os.dup(stdout_fd), 'wb') as copied: 
+    # NOTE: `copied` is inheritable on Windows when duplicating a standard
+    # stream
+    with os.fdopen(os.dup(stdout_fd), 'wb') as copied:
         stdout.flush()  # flush library buffers that dup2 knows nothing about
         try:
             os.dup2(fileno(to), stdout_fd)  # $ exec >&to
@@ -24,9 +34,9 @@ def stdout_redirected(to=os.devnull, stdout=None):
             with open(to, 'wb') as to_file:
                 os.dup2(to_file.fileno(), stdout_fd)  # $ exec > to
         try:
-            yield stdout # allow code to be run with the redirected stdout
+            yield stdout  # allow code to be run with the redirected stdout
         finally:
             # restore stdout to its previous value
-            #NOTE: dup2 makes stdout_fd inheritable unconditionally
+            # NOTE: dup2 makes stdout_fd inheritable unconditionally
             stdout.flush()
             os.dup2(copied.fileno(), stdout_fd)  # $ exec >&copied

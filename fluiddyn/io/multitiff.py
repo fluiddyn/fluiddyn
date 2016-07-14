@@ -2,6 +2,10 @@
 Multitiff
 =========
 
+.. autofunction:: reorganize_single_frame_3Dscannedpiv_data
+.. autofunction:: reorganize_double_frame_3Dscannedpiv_data
+.. autofunction:: reorganize_single_frame_2Dpiv_data
+.. autofunction:: reorganize_double_frame_2Dpiv_data
 
 """
 from __future__ import print_function, division

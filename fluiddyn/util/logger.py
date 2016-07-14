@@ -1,8 +1,6 @@
 """
-Logger (:mod:`fluiddyn.util.logger`)
-====================================
-
-.. currentmodule:: fluiddyn.util.logger
+Logger sending emails (:mod:`fluiddyn.util.logger`)
+===================================================
 
 Provides:
 
@@ -24,7 +22,7 @@ from fluiddyn.util.mail import send_email
 
 
 class Logger(object):
-    """Logger used for log and emails."""
+    """Logger that can send emails."""
     def __init__(self, path='log.txt',
                  email_to=None, email_from=None,
                  email_title='title',
@@ -115,7 +113,7 @@ class Logger(object):
                 path = os.path.join(path_tmp, fname)
                 fig.savefig(path)
                 files.append(path)
-                    
+
         send_email(
             subject, txt,
             address_recipients=self.email_to,

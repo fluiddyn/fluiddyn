@@ -2,19 +2,7 @@
 Utilities to query (:mod:`fluiddyn.util.query`)
 ===============================================
 
-.. currentmodule:: fluiddyn.util.query
-
-Provides
-
-.. autosummary::
-   :toctree:
-
-   num_from_str
-   query
-   query_number
-   query_yes_no
-   run_asking_agreement
-
+.. autofunction:: query_yes_no
 
 """
 
