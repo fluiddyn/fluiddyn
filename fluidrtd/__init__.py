@@ -9,10 +9,10 @@ import os
 import sys
 
 try:
-    from unittest.mock import MagicMock
+    from unittest.mock import Mock
 except ImportError:
     # Python 2
-    from mock import Mock as MagicMock
+    from mock import Mock
 
 
 on_rtd = os.environ.get('READTHEDOCS')
@@ -20,9 +20,9 @@ on_rtd = os.environ.get('READTHEDOCS')
 
 def mock_modules(modules):
 
-    class Mock(MagicMock):
+    class MyMock(Mock):
         @classmethod
         def __getattr__(cls, name):
             return Mock()
 
-    sys.modules.update((mod_name, Mock()) for mod_name in modules)
+    sys.modules.update((mod_name, MyMock()) for mod_name in modules)

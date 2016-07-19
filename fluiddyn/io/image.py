@@ -57,7 +57,7 @@ def imsave(path, array, format=None, as_int=False):
 def imread_h5(path):
     """Read image(s) stored in a HDF5 file."""
 
-    with ImageH5File(h5path, 'r') as f:
+    with ImageH5File(path, 'r') as f:
         return f.load(group='images')
 
 
@@ -93,7 +93,7 @@ class ImageH5File(H5File):
     def load(self, group):
         """Load images in the HDF5 file."""
 
-        images = f[group]
+        images = self[group]
         nb_images = len(images)
         if nb_images == 1:
             dset = images.items()[0][1]

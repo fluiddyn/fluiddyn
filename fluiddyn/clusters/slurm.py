@@ -1,8 +1,6 @@
 """
 Slurm clusters (:mod:`fluiddyn.clusters.slurm`)
-===========================================
-
-.. currentmodule:: fluiddyn.clusters.slurm
+===============================================
 
 Provides:
 
@@ -16,15 +14,10 @@ from __future__ import print_function
 import os
 import datetime
 import stat
-# Warning: subprocess32 should not be used on Windows
-import sys
-if sys.platform.startswith('win'):
-    import subprocess
-else:
-    import subprocess32 as subprocess
 
-from fluiddyn.util.query import run_asking_agreement
-from fluiddyn.util.timer import time_gteq
+from . import subprocess
+from ..util.query import run_asking_agreement
+from ..util.timer import time_gteq
 
 
 class ClusterSlurm(object):
