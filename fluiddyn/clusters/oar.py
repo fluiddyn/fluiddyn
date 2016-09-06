@@ -41,7 +41,7 @@ class ClusterOAR(object):
 
         self.commands_setting_env = [
             'source /etc/profile',
-            'module load python/2.7.8',
+            'module load python/2.7.9',
             'source /home/users/$USER/mypy2.7/bin/activate']
 
         self.useful_commands = (
@@ -80,6 +80,7 @@ class ClusterOAR(object):
             path, name_run,
             nb_nodes, nb_cores_per_node, walltime,
             nb_mpi_processes=nb_mpi_processes,
+            omp_num_threads=omp_num_threads,
             network_address=network_address)
 
         with open(path_launching_script, 'w') as f:
@@ -113,7 +114,7 @@ class ClusterOAR(object):
             self, path, name_run,
             nb_nodes, nb_cores_per_node,
             walltime,
-            nb_mpi_processes=None, network_address=None):
+            nb_mpi_processes=None, omp_num_threads=None, network_address=None):
 
         txt = ('#!/bin/bash\n\n'
                '#OAR -n {}\n'.format(name_run))
@@ -131,6 +132,9 @@ class ClusterOAR(object):
         txt += 'echo "hostname: "$HOSTNAME\n\n'
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
+
+        txt += "export OMP_NUM_THREADS={}\n\n".format(
+            omp_num_threads)
 
         txt += 'exec '
 
