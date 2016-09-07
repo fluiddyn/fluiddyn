@@ -133,8 +133,9 @@ class ClusterOAR(object):
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
-        txt += "export OMP_NUM_THREADS={}\n\n".format(
-            omp_num_threads)
+        if omp_num_threads is not None:
+            txt += 'export OMP_NUM_THREADS={}\n\n'.format(
+                omp_num_threads)
 
         txt += 'exec '
 
