@@ -99,8 +99,9 @@ class ClusterSlurm(object):
         """
         
         path = os.path.expandvars(path)
-        if not os.path.exists(path):
-            raise ValueError('script does not exists! path:\n' + path)
+        script = path.split()[0]
+        if not os.path.exists(script):
+            raise ValueError('script does not exists! path:\n' + script)
 
         if nb_cores_per_node is None:
             nb_cores_per_node = self.nb_cores_per_node
