@@ -47,13 +47,22 @@ class Beskow(ClusterSlurm):
 class Triolith(ClusterSlurm):
     name_cluster = 'triolith'
     nb_cores_per_node = 16
-    default_project ='2015-16-46'
-    cmd_run = 'mpprun'
+    default_project ='SNIC2015-16-46'
+    cmd_run = 'mpirun'
     max_walltime = '7-00:00:00'
 
     def __init__(self):
         super(Triolith, self).__init__()
         self.check_name_cluster('SNIC_RESOURCE')
+
+        self.commands_setting_env = [
+            'module add python/2.7.12',
+            'module add gcc/4.9.0 openmpi/1.6.2-build1',
+            'module add hdf5/1.8.11-i1214-parallel',
+            'source $LOCAL_PYTHON/bin/activate']
+
+        self.commands_unsetting_env = [
+            'deactivate']
 
 
 class Abisko(ClusterSlurm):
