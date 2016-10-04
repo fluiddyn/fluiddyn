@@ -2,14 +2,27 @@ import os
 import numpy as np
 from PIL import Image
 try:
-    from scipy.ndimage import imread
+    from cv2 import imread as _imread, IMREAD_ANYDEPTH
+    use_opencv = True
 except ImportError:
-    from scipy.misc import imread
+    use_opencv = False
+    try:
+        from scipy.ndimage import imread as _imread
+    except ImportError:
+        from scipy.misc import imread as _imread
 
 from .hdf5 import H5File
 
 
 __all__ = ['imread', 'imsave', 'imread_h5', 'imsave_h5']
+
+
+def imread(path, *args, **kwargs):
+    """Wrapper for OpenCV/SciPy imread functions."""
+    if use_opencv:
+        return _imread(path, IMREAD_ANYDEPTH)
+    else:
+        return _imread(path, *args, **kwargs)
 
 
 def imsave(path, array, format=None, as_int=False):
