@@ -1,46 +1,63 @@
 General overview
 ================
 
-This document is very much a work in progress. If you have any
-questions, comments, complaints, or suggestions, please send them to
-me (pierre.augier (AT) legi.cnrs.fr).
+This document is a work in progress. If you have any questions, comments,
+complaints, or suggestions, please send them to me (pierre.augier (AT)
+legi.cnrs.fr).
+
+The project FluidDyn
+--------------------
 
 Design Goals
-------------
+^^^^^^^^^^^^
 
-FluidDyn is for me a first step to try to start a collaborative
-dynamics for coding in the field of (geophysical) fluid dynamics.
+I work on the project FluidDyn first to have good tools for my research. But it
+is also for me a way to contribute to launch a collaborative dynamics in coding
+in the field of (geophysical) fluid dynamics. I see the opportunities for my
+community of using tools and methods of the open-source world. It seems to me
+that we could greatly improve our global productivity since the way it works
+now is so bad.
 
-..
-   Apart from using a nice tool, I started the FluidDyn project in order
-   to increase the global productivity of researchers in the field of
-   fluid dynamics and finally to help to do together better research.
+Numerics is everywhere in research: for numerical simulations but also for
+analytic and experimental studies.  Unfortunately, many researchers have
+contempt for coding and software.  Many very bad practices are so common that
+there is a huge waste of time, energy, ideas and money!  So many lines of code
+are badly coded so they are surely full of bugs and of course not reusable.  So
+many pieces of code are lost when the PhD student who has written them goes
+away.
 
-   Numerics is everywhere in research. Of course numerical simulations
-   but also for analytical work and experiment studies. However, to do
-   good research, it is better not to lose time on the numerics and to
-   think to the problem you study rather than to the numerics.
+A big change seems to be necessary but it is a real challenge.  First, the
+organization of research does not help...  The competition between researchers,
+groups and universities is strong, which can discourage collaborations and
+planning in the community.
 
-   If we consider the way the scientific community works on developing
-   tools for research, there is a huge waste of time, energy, ideas and
-   money! So many lines of code are badly coded, for example in a way
-   they can not be reused.. So many ideas are rewritten so many times. So
-   many pieces of code are lost when the PhD that have written them go
-   away.
+Then, bad habits are difficult to give up, especially when they are efficient
+on the short range and when the bosses in research feel uncomfortable with new
+tools and methods.
 
-   There are many reasons for that. The organisation of research does not
-   help... The competition between researchers, groups and universities
-   is strong, which can discourage collaborations and planning in the
-   community. But there is also and maybe mainly technical reasons.  The
-   languages: Bash (with awk, sed and co...), compiled languages (mostly
-   fortran, C and C++) and company software like Matlab.
+The example of the dominant languages/tools is interesting.  Bash (or even csh,
+with awk, sed...)  should be used only for very specific and simple tasks.
+Compiled languages (Fortran, C and C++) should not be used for everything.
+Even though the commercial programs like Matlab or Labview can be useful and
+efficient for individuals and groups, they have huge limitations and are for
+the community a big problem.
 
+Finally, education is also a big issue.  It is incredible to see universities,
+institutes and laboratories paying big amounts of money to be able to use
+Matlab for research and at the same time spending a lot of effort to learn
+Matlab to their students.
+
+We need a dynamics in open-source coding in science and in particular in fluid
+dynamics. I think Python is a perfect tool for us. FluidDyn is a tool to test
+this and to increase freedom and efficiency in science with open-source
+methods.
 
 Open-source
 ^^^^^^^^^^^
 
-FluidDyn is an open-source software distributed under the CeCILL-B_
-License, a BSD compatible french license.
+FluidDyn is an open-source project. The package fluidyn is distributed under
+the CeCILL-B_ License, a BSD compatible french license done in particular by
+the `CNRS <http://www.cnrs.fr/>`_.
 
 .. _CeCILL-B: http://www.cecill.info/index.en.html
 
@@ -48,9 +65,10 @@ License, a BSD compatible french license.
 Python programming language
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Since it is still necessary to convince some people in the field that
-it is a good idea to use Python, here is a list of some reasons for
-using this language in research.
+FluidDyn is mostly a set of Python packages. They are written mostly in Python
+with also small bits of Cython, C and C++.  Since it is still necessary to
+convince some people in the field that it is a good idea to use Python, here is
+a list of some reasons for using this language in research.
 
 - **Free and open-source**: the main implementations of the language
   (Cpython, PyPy, etc.) and the libraries.
@@ -61,13 +79,13 @@ using this language in research.
   should be one-- and preferably only one --obvious way to do it"
   principle.
 
-- **Multi-paradigm programming language**: in particular object-oriented,
-  functional and sequential.
+- **Multi-paradigm programming language**: sequential, object-oriented and
+  functional.
 
 - **Portability**: Linux-GNU, Unix in general so Mac OS and also
   Windows!
 
-- **Normalised and very simple install procedure.**
+- **Simple install procedure for packages.**
 
 - **General-purpose useful outside science**: from simple scripting
   to complex object-oriented software and web development (for example
@@ -104,8 +122,6 @@ using this language in research.
 
   * mpi4py: MPI for Python.
 
-  * ...
-
 
 If you use Matlab, these comparisons can be interesting:
 
@@ -113,77 +129,26 @@ If you use Matlab, these comparisons can be interesting:
 
 - http://phillipmfeldman.org/Python/Advantages_of_Python_Over_Matlab.html
 
-
-Presentation
-------------
-
-The FluidDyn project is a framework for developing research codes. It
-should show good practices and clean examples.
-
-
-Main features
-^^^^^^^^^^^^^
-
-The package fluiddyn provides utilities for
-
-- :ref:`input-output in different file formats <io>`
-
-- making :ref:`figures, movies, ... <output>`
-
-Other specialized packages are part of the FluidDyn project:
-
-- `fluidsim <https://pypi.python.org/pypi/fluidsim>`_ (see the
-  `documentation <http://fluidsim.readthedocs.org>`__)
-
-- `fluidlab <https://pypi.python.org/pypi/fluidlab>`_ (see the
-  `documentation <http://fluidlab.readthedocs.org>`_)
-
-  
-
-..
-   - :ref:`working in the laboratory <lab>`
-
-     * using :ref:`acquisition boards <lab.boards>`
-
-     * controlling devices as :ref:`tanks <tanks>`, :ref:`pumps <pumps>`, ...
-
-     * working with a Raspberry Pi,
-
-     * doing relatively complex :ref:`experiments <exp>`,
-
-     * ...
-
-   - :ref:`numerical simulations <simul>`
-
-     * ...
-
-     * ...
-
-
-
-
-
 Simplicity
 ^^^^^^^^^^
 
-Object-oriented... In particular experiments and simulations are
-represented by objects. Easy to create, load, filter, select, loop
-over, ...
+The FluidDyn packages are written to be easy-to-use and nice to develop.  The
+object-oriented development is very interesting in this respect.  In particular
+experiments and simulations are represented by objects, which are easy to
+create, load, filter, select and loop over.
 
-
-Example: the files contains information to be loaded. Thus, it should
-be possible to create an object associated with the data in a file
-by running::
+Example: the data files contains information to be loaded. Thus, it should be
+possible to create an object associated with the data in a file by running::
 
     torque = fld.create_object_from_file(str_file='torque_*_2014-26')
-
-
 
 Documented and tested
 ^^^^^^^^^^^^^^^^^^^^^
 
-Importance of documentation and testing functions.
-
+The FluidDyn project is a framework for developing research codes. It should
+show good practices and clean examples. It has also to be quite stable and
+sure. Therefore, a lot of effort is put in having unit tests and a quite good
+documentation with examples and tutorials.
 
 Why fluids?
 ^^^^^^^^^^^
@@ -204,3 +169,18 @@ Why experiments and numerics?
 Common tools, common methods. Has to work together. Fruitful to
 connect.
 
+
+Main features of the base package fluiddyn
+------------------------------------------
+
+The base package fluiddyn provides utilities for
+
+- :ref:`input-output in different file formats <io>`
+
+- making :ref:`figures <output>`
+
+- launching jobs on :ref:`clusters <clusters>`
+
+- storing parameters.
+
+- handling series of files.
