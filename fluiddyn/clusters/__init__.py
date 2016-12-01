@@ -2,6 +2,7 @@
 Clusters
 ========
 
+.. _clusters:
 .. currentmodule:: fluiddyn.clusters
 
 Provides:

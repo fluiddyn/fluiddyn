@@ -43,7 +43,7 @@ class ClusterSlurm(object):
         self.commands_setting_env = []
         self.useful_commands = (
             'sbatch -J script.sh',
-            'squeue -u',
+            'squeue -u $USER',
             'scancel $SLURM_JOB_ID',
             'scontrol hold $SLURM_JOB_ID',
             'scontrol release $SLURM_JOB_ID')
@@ -59,7 +59,7 @@ class ClusterSlurm(object):
                       walltime='23:59:58',
                       output=None, nb_runs=1,
                       jobid=None, project=None, requeue=False,
-                      nb_switches=None, max_waittime=None):
+                      nb_switches=None, max_waittime=None, email=None):
         """
         Parameters
         ----------
@@ -90,7 +90,7 @@ class ClusterSlurm(object):
         max_waittime : string
             Max time to wait for optimum
         """
-        
+
         path = os.path.expandvars(path)
         if not os.path.exists(path):
             raise ValueError('script does not exists! path:\n' + path)
@@ -107,21 +107,25 @@ class ClusterSlurm(object):
                 nb_mpi_processes = 1
             else:
                 nb_mpi_processes = nb_cores_per_node * nb_nodes
-        
+
         if path_launching_script is None:
             str_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-            path_launching_script = 'slurm_launcher_' + str_time + '.sh'
+            path_launching_script = 'launcher_' + str_time + '.sh'
 
         if os.path.exists(path_launching_script):
-            raise ValueError('path_launching_script already exists...')
-        
+            i = 1
+            while os.path.exists(path_launching_script + '_' + str(i)):
+                i += 1
+            path_launching_script += '_' + str(i)
+
         if 'slurm_resumer' in path_launching_script:
             resume = True
         else:
             resume = False
 
         if time_gteq(walltime, self.max_walltime):
-            raise ValueError('Walltime requested exceeds permitted maximum walltime.')
+            raise ValueError(
+                'Walltime requested exceeds permitted maximum walltime.')
 
         if output is None:
             output = path_launching_script[:-3] + '.out'
@@ -132,7 +136,7 @@ class ClusterSlurm(object):
         txt = self._create_txt_launching_script(
             path, name_run, project,
             nb_nodes, nb_cores_per_node, walltime,
-            nb_mpi_processes, output, resume)
+            nb_mpi_processes, output, resume, email)
 
         with open(path_launching_script, 'w') as f:
             f.write(txt)
@@ -147,7 +151,7 @@ class ClusterSlurm(object):
 
         if requeue:
             launching_command += ' --requeue'
-        
+
         if resume:
             dependencies = raw_input('Enter jobid dependencies :').split()
             launching_command += ' --dependency=afternotok:' + ':'.join(dependencies)
@@ -160,7 +164,7 @@ class ClusterSlurm(object):
 
         print('A launcher for the script {} has been created.'.format(path))
         run_asking_agreement(launching_command)
-        
+
         nb_times_resume = int(nb_runs) - 1
         for n in range(0, nb_times_resume):
             nb_runs = 1
@@ -169,7 +173,7 @@ class ClusterSlurm(object):
             path_launching_script= 'slurm_resumer_' + str_time + '_' + str(n) + '.sh'
             self.submit_script(path, name_run, path_launching_script,
                                nb_nodes, nb_cores_per_node, nb_mpi_processes,
-                               walltime,                 
+                               walltime,
                                output, nb_runs,
                                jobid, project, requeue,
                                nb_switches, max_waittime)
@@ -178,7 +182,7 @@ class ClusterSlurm(object):
             self, path, name_run, project,
             nb_nodes, nb_cores_per_node, walltime,
             nb_mpi_processes, output,
-            resume_script=False):
+            resume_script=False, email=None):
         """
         Example
         -------
@@ -213,18 +217,21 @@ class ClusterSlurm(object):
         txt = ('#!/bin/bash -l\n\n')
 
         txt += '#SBATCH -J {}\n\n'.format(name_run)
-        txt += '#SBATCH -A {}\n\n'.format(project)
-        
-        txt += "#SBATCH -t {}\n".format(self.max_walltime)
-        txt += "#SBATCH --time-min {}\n".format(walltime)
-        txt += "#SBATCH -N {}\n".format(nb_nodes)
+        if project is not None:
+            txt += '#SBATCH -A {}\n\n'.format(project)
+
+        txt += "#SBATCH --time={}\n".format(self.max_walltime)
+        txt += "#SBATCH --time-min={}\n".format(walltime)
+        txt += "#SBATCH --nodes={}\n".format(nb_nodes)
         if nb_cores_per_node > 0:
             txt += "#SBATCH --ntasks-per-node={}\n".format(nb_cores_per_node)
 
-        txt += "#SBATCH -n {}\n\n".format(nb_mpi_processes)
+        txt += "#SBATCH --ntasks={}\n\n".format(nb_mpi_processes)
 
-        txt += '#SBATCH --mail-type=FAIL\n'
-        txt += '#SBATCH --mail-user=avmo@kth.se\n'
+        if email is not None:
+            txt += '#SBATCH --mail-type=FAIL\n'
+            txt += '#SBATCH --mail-user={}\n'.format(email)
+
         txt += '#SBATCH -e job-%J.err\n'
         txt += '#SBATCH -o job-%J.out\n\n'
 
@@ -237,7 +244,7 @@ class ClusterSlurm(object):
 
         if nb_mpi_processes > 1:
             txt += '{} -n {} '.format(self.cmd_run, nb_mpi_processes)
-        
+
         if resume_script:
             txt += 'python {} $PATH_RUN > {} 2>&1\n\n'.format(path, output)
         else:

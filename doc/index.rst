@@ -4,16 +4,16 @@
 FluidDyn documentation
 ======================
 
-The project FluidDyn aims at promoting the use of open-source Python
-software in research in fluid dynamics.  The project provides some
-Python packages specialized for different tasks, in particular
-`fluidlab <http://fluidlab.readthedocs.org>`_ for laboratory
-experiments and `fluidsim <http://fluidsim.readthedocs.org>`_
-for numerical simulations.
+The project FluidDyn aims at promoting the use of open-source Python software
+in research in fluid dynamics.  The project provides some Python packages
+specialized for different tasks, in particular
 
-The project is still in a planning stage so it is still
-pretty unstable and many of its planned features have not yet been
-implemented.
+- `fluidlab <http://fluidlab.readthedocs.org>`_ for laboratory experiments,
+
+- `fluidimage <http://fluidimage.readthedocs.io>`_ for processing of images of
+  fluid,
+
+- `fluidsim <http://fluidsim.readthedocs.org>`_ for numerical simulations.
 
 This documentation presents the project FluidDyn and the package of
 the same name, which is the base package on which the other packages
@@ -40,10 +40,10 @@ structured. Here is a list of the first-level packages.
 .. autosummary::
    :toctree: generated/
 
-   fluiddyn.output
    fluiddyn.io
    fluiddyn.util
    fluiddyn.clusters
+   fluiddyn.output
 
 More
 ----

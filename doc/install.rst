@@ -43,17 +43,18 @@ FluidDyn can be installed from the Python Package Index by the command::
 
 The ``--pre`` option of pip allows the installation of a pre-release version.
 
+You can also download the source-code and run::
+
+  python setup.py install
 
 Install in development mode
 ---------------------------
 
-FluidDyn is still in alpha version ("testing for
-developers"!). Moreover, it has been designed to be used by
-scientists-developers. Thus, there is a high probability that you will
-have to modify the code or even write a new class in the package.  So
-I would advice to work "as a developer", i.e. to get the source code
-and to use revision control and the development mode of the Python
-installer.
+FluidDyn is still in beta version ("testing for users"). Moreover, it has been
+designed to be used by scientists-developers. Thus, there is a high probability
+that you will have to modify the code or even write a new class in the package.
+So I would advice to work "as a developer", i.e. to get the source code and to
+use revision control and the development mode of the Python installer.
 
 For FluidDyn, I use the revision control software Mercurial and the
 main repository is hosted `here
@@ -77,9 +78,6 @@ The development mode is often very convenient. From the root directory
 of the project, run::
 
   python setup.py develop
-
-Of course you can also install FluidDyn in the standard ways,
-downloading the sources and doing ``python setup.py install``.
 
 After the installation, it is a good practice to run the unit tests by
 running ``python -m unittest discover`` from the root directory or
