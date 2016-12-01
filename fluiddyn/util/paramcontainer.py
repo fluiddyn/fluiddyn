@@ -128,7 +128,8 @@ class ParamContainer(object):
 
         self._set_internal_attr('_attribs', set())
         self._set_internal_attr('_tag_children', set())
-
+        self._set_doc('')
+        
         if path_file is not None:
             self._set_internal_attr('_path_file', path_file)
             if path_file.endswith('.xml'):
@@ -183,6 +184,9 @@ class ParamContainer(object):
     def _set_doc(self, doc):
         self._set_internal_attr('_doc', doc)
 
+    def _print_doc(self):
+        print(self._doc)
+        
     def _set_attrib(self, key, value):
         """Add an attribute to the container."""
         self.__dict__[key] = value
@@ -293,7 +297,8 @@ class ParamContainer(object):
             path_file = self._tag + '.xml'
 
         if os.path.exists(path_file):
-            raise ValueError('The file already exists.')
+            raise ValueError('The file {} already exists.'.format(
+                path_file))
 
         with open(path_file, 'w') as f:
             if comment is not None:

@@ -90,16 +90,19 @@ def create_object_from_file(str_path, *args, **kwargs):
     path = get_pathfile_from_strpath(str_path, ext='h5')
 
     # temporary... for compatibility
-    with h5py.File(path, 'r+') as f:
-        keys = f.attrs.keys()
-        if 'class' in keys and 'class_name' not in keys:
-            f.attrs['class_name'] = f.attrs['class']
-        if 'module_tank' in keys and 'module_name' not in keys:
-            f.attrs['module_name'] = f.attrs['module_tank']
-        else:
-            if path.endswith('tank.h5') and 'module_name' not in keys:
-                f.attrs['module_name'] = 'fluiddyn.lab.tanks'
-
+    try:
+        with h5py.File(path, 'r+') as f:
+            keys = f.attrs.keys()
+            if 'class' in keys and 'class_name' not in keys:
+                f.attrs['class_name'] = f.attrs['class']
+            if 'module_tank' in keys and 'module_name' not in keys:
+                f.attrs['module_name'] = f.attrs['module_tank']
+            else:
+                if path.endswith('tank.h5') and 'module_name' not in keys:
+                    f.attrs['module_name'] = 'fluiddyn.lab.tanks'
+    except IOError:
+        pass
+                    
     with h5py.File(path, 'r') as f:
         class_name = f.attrs['class_name']
         module_name = f.attrs['module_name']
