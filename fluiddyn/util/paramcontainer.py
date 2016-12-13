@@ -14,6 +14,7 @@ Provides:
 from __future__ import division, print_function
 
 import os
+from copy import copy
 
 try:
     from lxml import etree
@@ -318,14 +319,35 @@ class ParamContainer(object):
             if not path_file.endswith('.h5'):
                 path_file = os.path.join(path_file, self._tag + '.h5')
             with H5File(path_file, 'w') as f:
-                f.attrs.create('_tag', self._tag)
+                try:
+                    tag = self._tag.encode('utf8')
+                except AttributeError:
+                    tag = self._tag
+                f.attrs.create('_tag', tag)
                 self._save_as_hdf5(hdf5_object=f)
         elif path_file is None:
             for key in self._attribs:
                 value = self.__dict__[key]
                 if value is None:
                     value = 'None'
-                hdf5_object.attrs.create(key, value)
+                try:
+                    value = value.encode('utf8')
+                except AttributeError:
+                    pass
+
+                if isinstance(value, list):
+                    value = copy(value)
+                    for i, v in enumerate(value):
+                        try:
+                            value[i] = v.encode('utf8')
+                        except AttributeError:
+                            pass
+                
+                try:
+                    hdf5_object.attrs.create(key, value)
+                except TypeError:
+                    print(key, value, type(value))
+                    raise
             for key in self._tag_children:
                 group = hdf5_object.create_group(key)
                 self.__dict__[key]._save_as_hdf5(hdf5_object=group)
@@ -341,13 +363,32 @@ class ParamContainer(object):
 
         attrs = dict(hdf5_object.attrs)
 
+        for k, v in attrs.items():
+            try:
+                attrs[k] = v.decode('utf8')
+            except AttributeError:
+                pass
+
+            if isinstance(v, list):
+                for i, v2 in enumerate(v):
+                    try:
+                        v[i] = v2.decode('utf8')
+                    except AttributeError:
+                        pass
+        
         tag = hdf5_object.name.split('/')[-1]
+
         if tag == '':
             try:
                 tag = hdf5_object.attrs['_tag']
                 attrs.pop('_tag')
             except KeyError:
                 tag = 'root_file'
+
+        try:
+            tag = tag.decode('utf8')
+        except AttributeError:
+            pass
 
         self._set_internal_attr('_tag', tag)
 

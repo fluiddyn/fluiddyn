@@ -191,7 +191,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             self.compute_indices_from_filename(file_name)
             for file_name in file_names]
 
-        indices_indices = zip(*indices_all_files)
+        indices_indices = list(zip(*indices_all_files))
         self._index_slices_all_files = []
         for i_ind in range(self.nb_indices):
             self._index_slices_all_files.append(
@@ -397,7 +397,7 @@ class SeriesOfArrays(object):
 
             def indslices_from_indserie(i):
                 return [
-                    [eval(s) for s in s_range.split(':')]
+                    [eval(s, {'i': i}) for s in s_range.split(':')]
                     for s_range in l_range]
 
         if indslices_from_indserie(0) == indslices_from_indserie(1):
