@@ -16,6 +16,8 @@ Provides the classes :class:`DigiflowImage` and :class:`DigiflowMovie`.
 
 from __future__ import division, print_function
 
+from builtins import range
+from builtins import object
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -183,7 +185,7 @@ class DigiflowImage(object):
             infop.keys = []
             infop.params = []
             infop.dunno = []
-            for ip in xrange(nplanes):
+            for ip in range(nplanes):
                 infop.codes.append(int(
                     '{0:x}'.format(f.readt(1, 'uint32'))))
                 infop.keys.append(f.readt(32, 's'))
@@ -462,7 +464,7 @@ class DigiflowMovie(object):
 
         with open(self.path_file, 'rb') as f:
             f.seek(self.iPtrFrame[iframe_start])
-            for iframe in xrange(nb_frames):
+            for iframe in range(nb_frames):
                 # ret[iframe].flat = f.readt(self.size_im, 'uint8')
                 ret[iframe].flat = np.fromfile(
                     f, dtype=np.uint8, count=self.size_im)
@@ -539,7 +541,7 @@ class DigiflowMovie(object):
         if i_stop > self.nb_frames - 1:
             i_stop = self.nb_frames - 1
 
-        inds_t = range(i_start, i_stop+1, i_step)
+        inds_t = list(range(i_start, i_stop+1, i_step))
 
         time_serie = np.zeros([self.shape_im[0], len(inds_t)])
 

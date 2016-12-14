@@ -46,7 +46,7 @@ def _verif_names_modules(name_mod, path_h5_file, key_file):
         'fluidlab.tanks': 'fluidlab.tanks'
     }
 
-    if name_mod in new_names_modules.keys():
+    if name_mod in list(new_names_modules.keys()):
         name_mod = new_names_modules[name_mod]
         import h5py
         with h5py.File(path_h5_file, 'r+') as f:

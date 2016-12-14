@@ -3,8 +3,12 @@
 
 """
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import object
 import os
-import ConfigParser
+import configparser
 
 from PIL import Image
 
@@ -17,7 +21,7 @@ from fluiddyn.io.binary import BinFile
 def read_seq(name):
     if not name.endswith('.seq'):
         name += '.seq'
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.readfp(open(name))
     l = config.items(config.sections()[0])
     d = {k.replace(' ', '_'): v for k, v in l}

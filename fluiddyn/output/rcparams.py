@@ -30,7 +30,7 @@ def set_rcparams(fontsize=18, for_article=True, for_beamer=False,
             'font.sans-serif': 'Computer Modern Roman',
             'ps.usedistiller': 'xpdf'}
 
-        for k, v in params_tmp.items():
+        for k, v in list(params_tmp.items()):
             params[k] = v
 
     if for_beamer:

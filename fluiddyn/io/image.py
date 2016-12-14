@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import numpy as np
 from PIL import Image
@@ -96,11 +97,11 @@ class ImageH5File(H5File):
         images = self[group]
         nb_images = len(images)
         if nb_images == 1:
-            dset = images.items()[0][1]
+            dset = list(images.items())[0][1]
             return dset[...]
         else:
             dico = {}
-            for k, v in images.iteritems():
+            for k, v in images.items():
                 dico[k] = v[...]
 
             return dico
@@ -108,7 +109,7 @@ class ImageH5File(H5File):
     def save_attrs(self, dictattrs):
         """Save the `dictattrs` as attributes."""
 
-        for k, v in dictattrs.items():
+        for k, v in list(dictattrs.items()):
             self.attrs[k] = v
 
     def save_dict(self, keydict, dicttosave, **kwargs):
@@ -117,5 +118,5 @@ class ImageH5File(H5File):
         group = self.create_group(keydict)
         print(kwargs)
         if len(dicttosave) > 0:
-            for k, v in dicttosave.items():
+            for k, v in list(dicttosave.items()):
                 group.create_dataset(k, data=v, **kwargs)

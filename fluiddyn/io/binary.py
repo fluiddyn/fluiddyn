@@ -15,6 +15,7 @@ Provides the class :class:`BinFile`.
 from __future__ import division, print_function
 
 
+from builtins import range
 import struct
 import zlib
 import io as _io
@@ -23,7 +24,7 @@ import io as _io
 def chunks(l, n):
     """ Yield successive n-sized chunks from l.
     """
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i+n]
 
 
@@ -55,7 +56,7 @@ class BinFile(_io.FileIO):
         'q': 'q',
         'int64': 'q'}
 
-    keys_types = dcodetypes.keys()
+    keys_types = list(dcodetypes.keys())
 
     def __init__(self, file_path, mode='rb', byteorder=None):
         if 'b' not in mode:

@@ -20,6 +20,8 @@ real time movies. These problems have to be solved!
 """
 from __future__ import division, print_function
 
+from builtins import range
+from builtins import object
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -34,7 +36,7 @@ from fluiddyn.io.hdf5 import H5File
 import fluiddyn.output.figs as figs
 
 
-class MoviesFromData:
+class MoviesFromData(object):
     """A class for creating movies."""
 
     def __init__(self, path_dir=None,
@@ -134,7 +136,7 @@ class MoviesFromData:
 
     def play_movie(self, **kwargs):
 
-        for k, v in kwargs.items():
+        for k, v in list(kwargs.items()):
             self.param_movie[k] = v
 
         self.figures = figs.Figures(
@@ -159,7 +161,7 @@ class MoviesFromData:
 
     def save_images(self, **kwargs):
 
-        for k, v in kwargs.items():
+        for k, v in list(kwargs.items()):
             self.param_movie[k] = v
 
         self.figures = figs.Figures(

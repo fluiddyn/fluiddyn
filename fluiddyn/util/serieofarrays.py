@@ -37,9 +37,14 @@ API:
 
 from __future__ import division, print_function
 
+from past.builtins import basestring
+from builtins import zip
+from builtins import chr
+from builtins import str
+from builtins import range
+from builtins import object
 import os
 from glob import glob
-
 from copy import copy
 
 import itertools
@@ -239,7 +244,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         for i, islice in enumerate(islices):
             if len(islice) == 1:
                 islices[i] = [islice[0], islice[0]+1]
-        lists = [range(*s) for s in islices]
+        lists = [list(range(*s)) for s in islices]
         for l in itertools.product(*lists):
             yield l
 
@@ -384,7 +389,8 @@ class SeriesOfArrays(object):
     """
     def __init__(self, serie, indslices_from_indserie,
                  ind_start=0, ind_stop=None, ind_step=1):
-        if isinstance(serie, str):
+        if isinstance(serie, basestring):
+            serie = str(serie)
             serie = SerieOfArraysFromFiles(serie)
         if isinstance(serie, SerieOfArraysFromFiles):
             self.serie = serie
@@ -392,7 +398,7 @@ class SeriesOfArrays(object):
             raise ValueError(
                 'serie should be a str or a SerieOfArraysFromFiles.')
 
-        if isinstance(indslices_from_indserie, str):
+        if isinstance(indslices_from_indserie, basestring):
             l_range = indslices_from_indserie.split(',')
 
             def indslices_from_indserie(i):
@@ -424,7 +430,7 @@ class SeriesOfArrays(object):
                     break
         ind_stop = iserie + 1
 
-        self.nb_series = len(range(ind_start, ind_stop, ind_step))
+        self.nb_series = len(list(range(ind_start, ind_stop, ind_step)))
         self.iserie = ind_start
         self.ind_start = ind_start
         self.ind_stop = ind_stop
@@ -439,7 +445,8 @@ class SeriesOfArrays(object):
         if hasattr(self, 'index_series'):
             index_series = self.index_series
         else:
-            index_series = range(self.ind_start, self.ind_stop, self.ind_step)
+            index_series = list(range(
+                self.ind_start, self.ind_stop, self.ind_step))
 
         for iserie in index_series:
             self.serie.set_index_slices(

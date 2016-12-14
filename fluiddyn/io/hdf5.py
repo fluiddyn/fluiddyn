@@ -15,6 +15,7 @@ Provides the class :class:`H5File`.
 
 from __future__ import division, print_function
 
+from builtins import range
 import numpy as np
 import numbers
 import h5py
@@ -29,7 +30,7 @@ class H5File(h5py.File):
         """
         group_params = self.create_group(keydict)
         if len(dicttosave) > 0:
-            for k, v in dicttosave.items():
+            for k, v in list(dicttosave.items()):
                 group_params.create_dataset(k, data=v)
 
     def load_dict(self, keydict):
@@ -38,7 +39,7 @@ class H5File(h5py.File):
         """
         group_params = self[keydict]
         params = {}
-        for k, v_in_file in group_params.items():
+        for k, v_in_file in list(group_params.items()):
             v = v_in_file[...]
             if not isinstance(v, (float, int)) and v.ndim == 0:
                 v = v.item()
@@ -48,24 +49,24 @@ class H5File(h5py.File):
     def update_dict(self, keydict, dicttosave):
 
         group_params = self[keydict]
-        for k, v in dicttosave.items():
+        for k, v in list(dicttosave.items()):
             group_params.create_dataset(k, data=v)
 
     def save_dict_of_ndarrays(self, dicttosave, dtype=np.float32):
         """Save ndarrays in the file."""
 
-        for k, v in dicttosave.items():
+        for k, v in list(dicttosave.items()):
             if isinstance(v, numbers.Number):
                 v = [v]
             dicttosave[k] = np.array(v, dtype=dtype)
 
-        if k not in self.keys():
-            for k, v in dicttosave.items():
+        if k not in list(self.keys()):
+            for k, v in list(dicttosave.items()):
                 self.create_dataset(k, data=v,
                                     maxshape=(None,)+v.shape[1:])
         else:
             nb_saved_times = self[k].shape[0]
-            for k, v in dicttosave.items():
+            for k, v in list(dicttosave.items()):
                 dset_p = self[k]
                 dset_p.resize((nb_saved_times+1,)+v.shape[1:])
                 dset_p[nb_saved_times] = v
@@ -73,10 +74,10 @@ class H5File(h5py.File):
     def load(self, times_slice=None):
         """Load data."""
         dict_return = {}
-        for k in self.attrs.keys():
+        for k in list(self.attrs.keys()):
             dict_return[k] = self.attrs[k]
 
-        for k in self.keys():
+        for k in list(self.keys()):
             dict_return[k] = self[k][...]
 
         if times_slice is not None:
@@ -108,7 +109,7 @@ class H5File(h5py.File):
                     its.append(it)
             its = list(its)
 
-            for k in self.keys():
+            for k in list(self.keys()):
                 dict_return[k] = dict_return[k][its]
 
         return dict_return

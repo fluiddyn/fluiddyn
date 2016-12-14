@@ -11,6 +11,10 @@ Provides:
 
 from __future__ import print_function
 
+from builtins import input
+from builtins import str
+from builtins import range
+from builtins import object
 import os
 import datetime
 import stat
@@ -153,7 +157,7 @@ class ClusterSlurm(object):
             launching_command += ' --requeue'
 
         if resume:
-            dependencies = raw_input('Enter jobid dependencies :').split()
+            dependencies = input('Enter jobid dependencies :').split()
             launching_command += ' --dependency=afternotok:' + ':'.join(dependencies)
 
         if nb_switches is not None and max_waittime is not None:

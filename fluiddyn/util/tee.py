@@ -7,6 +7,7 @@ http://stackoverflow.com/a/16551730
 """
 
 
+from builtins import object
 class MultiFile(object):
     """MultiFile
 

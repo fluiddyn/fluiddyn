@@ -27,9 +27,9 @@ def load_user_conf_files(namepackage='fluiddyn', possible_conf_files=None):
             conf_files.append(_path)
             conf_vars = _run_path(_path, init_globals=conf_vars)
 
-    conf_vars = {k: v for k, v in conf_vars.items() if not k.startswith('__')}
+    conf_vars = {k: v for k, v in list(conf_vars.items()) if not k.startswith('__')}
 
-    config = {k: v for k, v in conf_vars.items()}
+    config = {k: v for k, v in list(conf_vars.items())}
     config['home'] = home
     config['possible_conf_files'] = possible_conf_files
     config['conf_files'] = conf_files
@@ -41,5 +41,5 @@ if __name__ == '__main__':
     config = load_user_conf_files()
 
     glob = globals()
-    for _k, _v in config.items():
+    for _k, _v in list(config.items()):
         glob[_k] = _v

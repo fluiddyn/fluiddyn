@@ -14,6 +14,8 @@ Provides:
 
 from __future__ import division, print_function
 
+from builtins import range
+from builtins import object
 import time
 
 
@@ -100,7 +102,7 @@ if __name__ == '__main__':
     tstart = time.time()
 
     timer = Timer(2)
-    for it in xrange(10):
+    for it in range(10):
         # print(it, end=' ')
 
         # time.sleep(float(it)/5)

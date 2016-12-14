@@ -6,6 +6,9 @@ Simple operations on signals (:mod:`fluiddyn.util.signal`)
 
 from __future__ import division, print_function
 
+from builtins import zip
+from builtins import range
+from builtins import object
 import numpy as np
 from scipy import ndimage
 from scipy.interpolate import interp1d
@@ -141,7 +144,7 @@ def smooth(x, window_len=11, window='hanning'):
 
     if x.ndim != 1:
         ret = np.empty(x.shape)
-        for i0 in xrange(x.shape[0]):
+        for i0 in range(x.shape[0]):
             ret[i0] = smooth(x[i0], window_len=window_len, window=window)
         return ret
 

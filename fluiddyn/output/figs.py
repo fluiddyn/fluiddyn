@@ -16,6 +16,8 @@ Provides
 
 from __future__ import division, print_function
 
+from builtins import str
+from builtins import object
 import sys
 import os
 
@@ -186,7 +188,7 @@ class Figure(matplotlib.figure.Figure):
 
         # Ugly workaround to be able to use the function plt.figure
         fig = plt.figure(**kwargs)
-        for k, v in fig.__dict__.items():
+        for k, v in list(fig.__dict__.items()):
             self.__dict__[k] = v
 
         if name_file is not None:

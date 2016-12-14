@@ -13,6 +13,8 @@ Provides the classes :class:`NS3DFieldFile`.
 
 from __future__ import division, print_function
 
+from builtins import range
+from builtins import object
 import sys
 
 import numpy as np

@@ -39,7 +39,7 @@ class CSVFile(_io.FileIO):
         # find dtypes from first line
         dtypes = []
         try:
-            row = self.reader.next()
+            row = next(self.reader)
         except StopIteration:
             ret = {}
             for key in keys:

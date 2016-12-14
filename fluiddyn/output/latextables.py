@@ -13,6 +13,7 @@ Utilities for creating latex tables (:mod:`fluiddyn.output.latextables`)
 
 from __future__ import division, print_function
 
+from builtins import object
 import os
 
 class LatexTable(object):

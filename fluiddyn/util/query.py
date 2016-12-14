@@ -6,6 +6,7 @@ Utilities to query (:mod:`fluiddyn.util.query`)
 
 """
 
+from builtins import input
 import sys
 import subprocess
 
@@ -68,7 +69,7 @@ def query(question, default=None):
     """Query an anwer to a general question."""
     sys.stdout.write(question)
 
-    answer = input()
+    answer = eval(input())
 
     if default is not None and answer == '':
         return default
@@ -92,7 +93,7 @@ def query_number(question):
     """Query a number."""
     while True:
         sys.stdout.write(question+' ')
-        answer = input()
+        answer = eval(input())
         try:
             return num_from_str(answer)
         except ValueError:

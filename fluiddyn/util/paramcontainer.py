@@ -13,6 +13,8 @@ Provides:
 
 from __future__ import division, print_function
 
+from builtins import str
+from builtins import object
 import os
 from copy import copy
 
@@ -195,7 +197,7 @@ class ParamContainer(object):
 
     def _set_attribs(self, d):
         """Add the attributes to the container."""
-        for k, v in d.items():
+        for k, v in list(d.items()):
             self._set_attrib(k, v)
 
     def _set_child(self, tag, attribs=None):
@@ -269,7 +271,7 @@ class ParamContainer(object):
             if len(v) > 0:
                 self._set_internal_attr('_value_text', _as_value(v))
 
-        for k, v in elemxml.attrib.items():
+        for k, v in list(elemxml.attrib.items()):
             self._set_attrib(k, _as_value(v))
 
         tags_multiple = []
@@ -284,7 +286,7 @@ class ParamContainer(object):
                     tags_multiple.append(tag)
 
                 if len(childxml.attrib) == 1:
-                    k = childxml.attrib.keys()[0]
+                    k = list(childxml.attrib.keys())[0]
                     tag += '_' + str(childxml.attrib.pop(k))
                     childxml.tag = tag
 
@@ -363,7 +365,7 @@ class ParamContainer(object):
 
         attrs = dict(hdf5_object.attrs)
 
-        for k, v in attrs.items():
+        for k, v in list(attrs.items()):
             try:
                 attrs[k] = v.decode('utf8')
             except AttributeError:
@@ -393,16 +395,16 @@ class ParamContainer(object):
         self._set_internal_attr('_tag', tag)
 
         # detect None attributes 
-        for k, v in attrs.items():
+        for k, v in list(attrs.items()):
             if isinstance(v, str) and v == 'None':
                 attrs[k] = None
         
-        for key in attrs.keys():
+        for key in list(attrs.keys()):
             if ' ' in key:
                 attrs[key.replace(' ', '_')] = attrs.pop(key)
 
         self._set_attribs(attrs)
-        for tag in hdf5_object.keys():
+        for tag in list(hdf5_object.keys()):
             if isinstance(hdf5_object[tag], h5py.Dataset):
                 value = hdf5_object[tag][...]
                 self._set_attrib(tag, value)

@@ -6,6 +6,7 @@ Toolkit (:mod:`fluiddyn.util.util`)
 
 from __future__ import division, print_function
 
+from builtins import object
 import os
 import sys
 import glob
@@ -92,7 +93,7 @@ def create_object_from_file(str_path, *args, **kwargs):
     # temporary... for compatibility
     try:
         with h5py.File(path, 'r+') as f:
-            keys = f.attrs.keys()
+            keys = list(f.attrs.keys())
             if 'class' in keys and 'class_name' not in keys:
                 f.attrs['class_name'] = f.attrs['class']
             if 'module_tank' in keys and 'module_name' not in keys:

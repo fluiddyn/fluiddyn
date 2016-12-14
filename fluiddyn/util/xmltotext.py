@@ -16,7 +16,7 @@ def produce_text_element(elem, level=0):
         text = elem.text.strip()
     else:
         text = ''
-    attr_text = ' '.join([k+'="'+v+'"' for k, v in elem.attrib.items()])
+    attr_text = ' '.join([k+'="'+v+'"' for k, v in list(elem.attrib.items())])
 
     if len(children) == 0 and len(text) == 0:
         if len(attr_text) > 0:
