@@ -17,8 +17,14 @@ def fileno(file_or_fd):
 
 
 @contextmanager
-def stdout_redirected(to=os.devnull, stdout=None):
+def stdout_redirected(doit=True, to=os.devnull, stdout=None):
     """Redirect stdout to os.devnull"""
+    if not doit:
+        try:
+            yield
+        finally:
+            return
+
     if stdout is None:
         stdout = sys.stdout
 
