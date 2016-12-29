@@ -1,9 +1,8 @@
 General overview
 ================
 
-This document is a work in progress. If you have any questions, comments,
-complaints, or suggestions, please send them to me (pierre.augier (AT)
-legi.cnrs.fr).
+This document is a work in progress. If you have any questions, comments or
+suggestions, please send them to me (pierre.augier (AT) legi.cnrs.fr).
 
 The project FluidDyn
 --------------------
@@ -36,11 +35,11 @@ on the short range and when the bosses in research feel uncomfortable with new
 tools and methods.
 
 The example of the dominant languages/tools is interesting.  Bash (or even csh,
-with awk, sed...)  should be used only for very specific and simple tasks.
+with awk and sed)  should be used only for very specific and simple tasks.
 Compiled languages (Fortran, C and C++) should not be used for everything.
 Even though the commercial programs like Matlab or Labview can be useful and
 efficient for individuals and groups, they have huge limitations and are for
-the community a big problem.
+the community a problem.
 
 Finally, education is also a big issue.  It is incredible to see universities,
 institutes and laboratories paying big amounts of money to be able to use
@@ -48,9 +47,9 @@ Matlab for research and at the same time spending a lot of effort to learn
 Matlab to their students.
 
 We need a dynamics in open-source coding in science and in particular in fluid
-dynamics. I think Python is a perfect tool for us. FluidDyn is a tool to test
-this and to increase freedom and efficiency in science with open-source
-methods.
+dynamics. I think Python and its scientific environment is a great opportunity
+for us. FluidDyn is a tool to test this hypothesis and to increase equality,
+freedom and efficiency in fluid dynamics with open-source methods.
 
 Open-source
 ^^^^^^^^^^^
@@ -140,6 +139,7 @@ create, load, filter, select and loop over.
 Example: the data files contains information to be loaded. Thus, it should be
 possible to create an object associated with the data in a file by running::
 
+    import fluiddyn as fld
     torque = fld.create_object_from_file(str_file='torque_*_2014-26')
 
 Documented and tested
@@ -153,10 +153,9 @@ documentation with examples and tutorials.
 Why fluids?
 ^^^^^^^^^^^
 
-Many tasks that can be done using FluidDyn are not specific to fluid
-dynamics research. But it is simpler to write a more specific software
-so FluidDyn is first thought to be used specifically for the study of
-fluid dynamics.
+Many tasks that can be done using FluidDyn are not specific to fluid dynamics
+research. But it is simpler to write a more specific software so FluidDyn is
+first thought to be used specifically for fluid dynamics.
 
 There are other specific Python packages for astronomy (`Astropy
 <http://www.astropy.org/>`_) and biology (`Biopython
@@ -166,8 +165,9 @@ There are other specific Python packages for astronomy (`Astropy
 Why experiments and numerics?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Common tools, common methods. Has to work together. Fruitful to
-connect.
+Experiments and numerics share common tools and common methods. It is very
+fruitful to connect these two approaches and therefore, they have to work
+together.
 
 
 Main features of the base package fluiddyn

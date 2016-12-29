@@ -51,10 +51,10 @@ Install in development mode
 ---------------------------
 
 FluidDyn is still in beta version ("testing for users"). Moreover, it has been
-designed to be used by scientists-developers. Thus, there is a high probability
-that you will have to modify the code or even write a new class in the package.
-So I would advice to work "as a developer", i.e. to get the source code and to
-use revision control and the development mode of the Python installer.
+designed to be used by scientists-developers. Thus, you may have to modify the
+code or even write a new class in the package.  So I would advice to work "as a
+developer", i.e. to get the source code and to use revision control and the
+development mode of the Python installer.
 
 For FluidDyn, I use the revision control software Mercurial and the
 main repository is hosted `here

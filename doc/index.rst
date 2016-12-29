@@ -55,6 +55,7 @@ More
    FluidDyn in PyPI  <https://pypi.python.org/pypi/fluiddyn/>
    to_do
    changes
+   authors
 
 
 Indices and tables

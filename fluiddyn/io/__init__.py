@@ -1,10 +1,11 @@
-"""
-Input/output streams
-====================
+"""Input/output streams
+=======================
 
 .. _io:
 
-Provides:
+Loading data from files and saving data to files are very common
+tasks. However, we can loose a lot of time with silly problems. This subpackage
+provides utilities for input in / output to different formats of files:
 
 .. autosummary::
    :toctree:
