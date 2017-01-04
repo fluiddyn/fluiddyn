@@ -240,7 +240,7 @@ class ParamContainer(object):
 
         for key in self._tag_children:
             child = self.__dict__[key]
-            elemxml.append(child._make_element_xml(elemxml))
+            child._make_element_xml(elemxml)
 
         return elemxml
 

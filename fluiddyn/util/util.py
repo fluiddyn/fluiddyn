@@ -33,8 +33,8 @@ def import_class(module_name, class_name):
     try:
         module = import_module(module_name)
     except ImportError as err:
-        msg = 'Error while attempting to import module '+module_name+'\n'
-        raise ImportError(msg + err.message)
+        msg = 'Error while attempting to import module ' + module_name + '\n'
+        raise ImportError(msg + err.args[0])
 
     try:
         return module.__dict__[class_name]
