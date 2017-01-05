@@ -23,7 +23,7 @@ if sys.platform.startswith('win'):
 else:
     import subprocess32 as subprocess
 
-from fluiddyn.util.query import run_asking_agreement
+from fluiddyn.util.query import run_asking_agreement, call_bash
 from fluiddyn.util.timer import time_gteq
 
 
@@ -66,7 +66,8 @@ class ClusterSlurm(object):
                       walltime='23:59:58',
                       output=None, nb_runs=1,
                       jobid=None, project=None, requeue=False,
-                      nb_switches=None, max_waittime=None):
+                      nb_switches=None, max_waittime=None,
+                      ask=True, bash=True):
         """
         Parameters
         ----------
@@ -167,7 +168,16 @@ class ClusterSlurm(object):
         launching_command += ' ./' + path_launching_script
 
         print('A launcher for the script {} has been created.'.format(path))
-        run_asking_agreement(launching_command)
+        if ask:
+            run_asking_agreement(launching_command)
+        else:
+            print('The script is submitted with the command:\n',
+                  launching_command)
+            if bash:
+                call_bash(launching_command)
+            else:
+                subprocess.call(launching_command.split())
+
         
         nb_times_resume = int(nb_runs) - 1
         for n in range(0, nb_times_resume):
