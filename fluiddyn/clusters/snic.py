@@ -17,14 +17,13 @@ Provides:
 
 """
 
-from fluiddyn.clusters.slurm import ClusterSlurm
+from .slurm import ClusterSlurm
 
 
 class Beskow(ClusterSlurm):
     name_cluster = 'beskow'
     nb_cores_per_node = 32
-    default_project ='2015-16-46'
-    cmd_run = 'aprun'
+    cmd_run_interactive = 'aprun'
     max_walltime = '23:59:59'
 
     def __init__(self):
@@ -47,8 +46,7 @@ class Beskow(ClusterSlurm):
 class Triolith(ClusterSlurm):
     name_cluster = 'triolith'
     nb_cores_per_node = 16
-    default_project ='SNIC2015-16-46'
-    cmd_run = 'mpirun'
+    cmd_run_interactive = 'mpirun'
     max_walltime = '7-00:00:00'
 
     def __init__(self):
@@ -68,7 +66,6 @@ class Triolith(ClusterSlurm):
 class Abisko(ClusterSlurm):
     name_cluster = 'abisko'
     nb_cores_per_node = 48
-    default_project ='SNIC2015-16-46'  
     max_walltime = '7-00:00:00'
 
     def __init__(self):

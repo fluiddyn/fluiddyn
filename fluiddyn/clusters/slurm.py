@@ -16,7 +16,6 @@ from __future__ import print_function
 import os
 import datetime
 import stat
-# Warning: subprocess32 should not be used on Windows
 import sys
 if sys.platform.startswith('win'):
     import subprocess
@@ -32,6 +31,7 @@ class ClusterSlurm(object):
     nb_cores_per_node = 32
     default_project = None
     cmd_run = 'srun'
+    cmd_run_interactive = None
     max_walltime = '24:00:00'
 
     def __init__(self):
@@ -49,25 +49,23 @@ class ClusterSlurm(object):
 
         self.commands_setting_env = []
         self.useful_commands = (
-            'sbatch -J script.sh',
-            'squeue -u',
-            'scancel $SLURM_JOB_ID',
-            'scontrol hold $SLURM_JOB_ID',
-            'scontrol release $SLURM_JOB_ID')
+            'sbatch',
+            'squeue -u $USER',
+            'scancel',
+            'scontrol hold',
+            'scontrol release')
         self.commands_unsetting_env = []
 
     def check_name_cluster(self, env='HOSTNAME'):
         if self.name_cluster not in os.getenv(env):
             raise ValueError('Cluster name mismatch detected; expected ' + self.name_cluster)
 
-    def submit_script(self, path, name_run='fluiddyn',
-                      path_launching_script=None,
-                      nb_nodes=1, nb_cores_per_node=None, nb_mpi_processes=None,
-                      walltime='23:59:58',
-                      output=None, nb_runs=1,
-                      jobid=None, project=None, requeue=False,
-                      nb_switches=None, max_waittime=None,
-                      ask=True, bash=True):
+    def submit_script(
+        self, path, name_run='fluiddyn', path_launching_script=None,
+        nb_nodes=1, nb_cores_per_node=None, nb_mpi_processes=None,
+        walltime='23:59:58', nb_runs=1, jobid=None, project=None,
+        requeue=False, nb_switches=None, max_waittime=None,
+        ask=True, bash=True, email=None, interactive=False):
         """
         Parameters
         ----------
@@ -85,8 +83,6 @@ class ClusterSlurm(object):
             Number of MPI processes, set automatically
         walltime : string
             Minimum walltime for the job
-        output : string
-            Name of file to store standard output
         jobid : integer
             Run under already allocated job
         project : string
@@ -97,8 +93,16 @@ class ClusterSlurm(object):
             Max / Optimum switches
         max_waittime : string
             Max time to wait for optimum
+        ask : boolean
+            If set True, prompt before submitting the script
+        bash : boolean
+            Submit script via bash, instead of using subprocess.call
+        email : string
+            Email address to notify in case of failed jobs
+        interactive : boolean
+            Uses `cmd_run_interactive` instead of `cmd_run` (default: `srun`) in job scripts 
+
         """
-        
         path = os.path.expandvars(path)
         script = path.split()[0]
         if not os.path.exists(script):
@@ -132,22 +136,8 @@ class ClusterSlurm(object):
         if time_gteq(walltime, self.max_walltime):
             raise ValueError('Walltime requested exceeds permitted maximum walltime.')
 
-        if output is None:
-            output = path_launching_script[:-3] + '.out'
-
         if project is None:
             project = self.default_project
-
-        txt = self._create_txt_launching_script(
-            path, name_run, project,
-            nb_nodes, nb_cores_per_node, walltime,
-            nb_mpi_processes, output, resume)
-
-        with open(path_launching_script, 'w') as f:
-            f.write(txt)
-
-        os.chmod(path_launching_script,
-                 stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
 
         launching_command = 'sbatch'
 
@@ -160,11 +150,23 @@ class ClusterSlurm(object):
         if resume:
             dependencies = raw_input('Enter jobid dependencies :').split()
             launching_command += ' --dependency=afternotok:' + ':'.join(dependencies)
+        else:
+            dependencies = []
 
         if nb_switches is not None and max_waittime is not None:
             launching_command += ' --switches=' + str(nb_switches) + \
                                  '{@' + max_waittime + '}'
 
+        txt = self._create_txt_launching_script(
+            path_launching_script, path, name_run, project, nb_nodes,
+            nb_cores_per_node, walltime, nb_mpi_processes, dependencies,
+            email, interactive, resume)
+
+        with open(path_launching_script, 'w') as f:
+            f.write(txt)
+
+        os.chmod(path_launching_script,
+                 stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
         launching_command += ' ./' + path_launching_script
 
         print('A launcher for the script {} has been created.'.format(path))
@@ -185,18 +187,17 @@ class ClusterSlurm(object):
             requeue = False
             path = '$FLS/scripts/util/resume_from_path.py'
             path_launching_script= 'slurm_resumer_' + str_time + '_' + str(n) + '.sh'
-            self.submit_script(path, name_run, path_launching_script,
-                               nb_nodes, nb_cores_per_node, nb_mpi_processes,
-                               walltime,                 
-                               output, nb_runs,
-                               jobid, project, requeue,
-                               nb_switches, max_waittime)
+            self.submit_script(
+                path, name_run, path_launching_script,
+                nb_nodes, nb_cores_per_node, nb_mpi_processes,
+                walltime, nb_runs, jobid, project,
+                requeue, nb_switches, max_waittime,
+                ask, bash, email, interactive)
 
     def _create_txt_launching_script(
-            self, path, name_run, project,
-            nb_nodes, nb_cores_per_node, walltime,
-            nb_mpi_processes, output,
-            resume_script=False):
+            self, path_launching_script, path, name_run, project, nb_nodes,
+            nb_cores_per_node, walltime, nb_mpi_processes, dependencies,
+            email, interactive, resume_script):
         """
         Example
         -------
@@ -224,15 +225,16 @@ class ClusterSlurm(object):
             #SBATCH -o output_file.o
 
             # Run the executable named myexe
-            # and write the output into my_output_file
-            aprun -n 128 ./myexe > my_output_file 2>&1
+            srun -n 128 ./myexe
         """
 
-        txt = ('#!/bin/bash -l\n\n')
+        logfile = 'SLURM.{}'.format(name_run)
+        logfile_stdout = logfile + '.${SLURM_JOBID}.stdout'
+        logfile_stderr = logfile + '.${SLURM_JOBID}.stderr'
 
+        txt = ('#!/bin/bash -l\n\n')
         txt += '#SBATCH -J {}\n\n'.format(name_run)
         txt += '#SBATCH -A {}\n\n'.format(project)
-        
         txt += "#SBATCH -t {}\n".format(self.max_walltime)
         txt += "#SBATCH --time-min {}\n".format(walltime)
         txt += "#SBATCH -N {}\n".format(nb_nodes)
@@ -240,26 +242,40 @@ class ClusterSlurm(object):
             txt += "#SBATCH --ntasks-per-node={}\n".format(nb_cores_per_node)
 
         txt += "#SBATCH -n {}\n\n".format(nb_mpi_processes)
+        if email is not None:
+            txt += '#SBATCH --mail-type=FAIL\n'
+            txt += '#SBATCH --mail-user={}\n'.format(email)
 
-        txt += '#SBATCH --mail-type=FAIL\n'
-        txt += '#SBATCH --mail-user=avmo@kth.se\n'
-        txt += '#SBATCH -e job-%J.err\n'
-        txt += '#SBATCH -o job-%J.out\n\n'
+        txt += '#SBATCH -e {}.%J.stderr\n'.format(logfile)
+        txt += '#SBATCH -o {}.%J.stdout\n\n'.format(logfile)
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
+        txt += (
+            'echo `date` JOBID $SLURM_JOBID {} {}\n{}' +
+            ' >> SLURM_JOB.log\n\n').format(path_launching_script, logfile_stdout, path)
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
         if resume_script:
-            txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' ./" + output + ")\n"
+            jobid = dependencies[1]
+            main_logfile = 'SLURM.{}.{}.stdout'.format(name_run, jobid)
+            txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' {}\n".format(main_logfile)
+
+        if interactive:
+            cmd = self.cmd_run_interactive
+        else:
+            cmd = self.cmd_run
 
         if nb_mpi_processes > 1:
-            txt += '{} -n {} '.format(self.cmd_run, nb_mpi_processes)
+            txt += '{} -n {} '.format(cmd, nb_mpi_processes)
         
         if resume_script:
-            txt += 'python {} $PATH_RUN > {} 2>&1\n\n'.format(path, output)
+            txt += 'python {} $PATH_RUN'.format(path)
         else:
-            txt += 'python {} > {} 2>&1\n\n'.format(path, output)
+            txt += 'python {}'.format(path)
 
-        txt += '\n'.join(self.commands_unsetting_env) + '\n\n'
+        if interactive:
+            txt += ' > {} 2>&1'.format(logfile_stdout)
+
+        txt += '\n' +'\n'.join(self.commands_unsetting_env)
         return txt
