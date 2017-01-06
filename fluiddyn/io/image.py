@@ -47,10 +47,22 @@ def imsave(path, array, format=None, as_int=False):
     im = Image.fromarray(array, mode)
 
     if format is None:
-        if mode == 'F':
+        if mode == 'F' or \
+           any([path.endswith(ext) for ext in ('.tif', '.tiff')]):
             format = 'TIFF'
         else:
             format = 'PNG'
+            
+    if format == 'TIFF':
+        if not any([path.endswith(ext) for ext in ('.tif', '.tiff')]):
+            path += '.tiff'
+    elif format == 'PNG':
+        if not any([path.endswith(ext) for ext in ('.png', '.PNG')]):
+            if path.endswith('.tif'):
+                path = path[:-len('.tif')]
+            if path.endswith('.tiff'):
+                path = path[:-len('.tiff')]
+            path += '.png'
 
     im.save(path, format)
 
@@ -116,7 +128,7 @@ class ImageH5File(H5File):
         """Save the dictionary `dicttosave` in the file."""
 
         group = self.create_group(keydict)
-        print(kwargs)
+
         if len(dicttosave) > 0:
             for k, v in list(dicttosave.items()):
                 group.create_dataset(k, data=v, **kwargs)

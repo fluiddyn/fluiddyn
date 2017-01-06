@@ -45,7 +45,7 @@ from builtins import range
 from builtins import object
 import os
 from glob import glob
-from copy import copy
+from copy import copy, deepcopy
 
 import itertools
 
@@ -91,7 +91,7 @@ class SerieOfArrays(object):
                              'but towards:\n' + path)
 
         if '.' in self.filename_given:
-            self.extension_file = self.filename_given.split('.')[-1]
+            self.extension_file = '.'.join(self.filename_given.split('.')[1:])
         else:
             self.extension_file = ''
 
@@ -132,21 +132,21 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         super(SerieOfArraysFromFiles, self).__init__(path)
 
         self.base_name = ''.join(
-            itertools.takewhile(lambda c: not str.isdigit(c),
+            itertools.takewhile(lambda c: not c.isdigit(),
                                 self.filename_given))
 
-        if not str.isalpha(self.base_name[-1]):
+        if not self.base_name[-1].isalpha():
             self.base_name = self.base_name[:-1]
 
         # remove base_name
-        remains = self.filename_given[len(self.base_name):]
+        remains = unicode(self.filename_given[len(self.base_name):])
 
         # remove extension
         if self.extension_file != '':
             remains = remains[:-(1+len(self.extension_file))]
 
         # separator between base and index
-        if not str.isdigit(remains[0]):
+        if not remains[0].isdigit():
             self._separator_base_index = remains[0]
             remains = remains[1:]
         else:
@@ -156,10 +156,10 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         self._index_lens = []
         self._index_separators = []
         while len(remains) != 0:
-            if str.isdigit(remains[0]):
+            if remains[0].isdigit():
                 test_type = str.isdigit
                 self._index_types.append('digit')
-            elif str.isalpha(remains[0]):
+            elif remains[0].isalpha():
                 test_type = str.isalpha
                 self._index_types.append('alpha')
             index = ''.join(itertools.takewhile(test_type, remains))
@@ -314,7 +314,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
         file_name: str
         """
-        str_indices = file_name[len(self.base_name):]
+        str_indices = unicode(file_name[len(self.base_name):])
 
         if self._separator_base_index != '':
             str_indices = str_indices[1:]
@@ -389,11 +389,15 @@ class SeriesOfArrays(object):
     """
     def __init__(self, serie, indslices_from_indserie,
                  ind_start=0, ind_stop=None, ind_step=1):
+
+        serie0 = serie
+        indslices_from_indserie0 = indslices_from_indserie
+
         if isinstance(serie, basestring):
             serie = str(serie)
             serie = SerieOfArraysFromFiles(serie)
         if isinstance(serie, SerieOfArraysFromFiles):
-            self.serie = serie
+            self.serie = serie = deepcopy(serie)
         else:
             raise ValueError(
                 'serie should be a str or a SerieOfArraysFromFiles.')
@@ -438,7 +442,11 @@ class SeriesOfArrays(object):
 
         if self.nb_series == 0:
             print('warning: this SeriesOfArrays has been initialized with '
-                  'parameters such that no serie of images has been found.')
+                  'parameters such that no serie of images has been found:\n'
+                  'serie={},\nindslices_from_indserie={}, '.format(
+                      serie0, indslices_from_indserie0) +
+                  'ind_start={}, ind_stop={}, ind_step={}.'.format(
+                      ind_start, ind_stop, ind_step))
 
     def __iter__(self):
 

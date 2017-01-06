@@ -6,8 +6,10 @@ http://stackoverflow.com/a/16551730
 
 """
 
+# bug
+# from builtins import object
 
-from builtins import object
+
 class MultiFile(object):
     """MultiFile
 

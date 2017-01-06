@@ -192,6 +192,10 @@ def print_options(*args, **kwargs):
 
 def config_logging(level='info', name='fluiddyn', file=None):
     """Configure a logging with a particular level and output file."""
+
+    if not level:
+        return
+
     level = level.lower()
     if level == 'info':
         level = logging.INFO
