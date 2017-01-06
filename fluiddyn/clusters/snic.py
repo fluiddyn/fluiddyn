@@ -18,6 +18,7 @@ Provides:
 """
 
 from .slurm import ClusterSlurm
+from os import getenv
 
 
 class Beskow(ClusterSlurm):
@@ -79,3 +80,12 @@ class Abisko(ClusterSlurm):
             'source $LOCAL_PYTHON/bin/activate']
 
         self.commands_unsetting_env = []
+
+
+_host = getenv('SNIC_RESOURCE')
+if _host == 'beskow':
+    ClusterSNIC = Beskow
+elif _host == 'triolith':
+    ClusterSNIC = Triolith
+elif _host == 'abisko':
+    ClusterSNIC = Abisko

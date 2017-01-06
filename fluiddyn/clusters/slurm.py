@@ -251,7 +251,7 @@ class ClusterSlurm(object):
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
         txt += (
-            'echo `date` JOBID $SLURM_JOBID {} {}\n{}' +
+            r'printf "\n`date` JOBID $SLURM_JOBID {} {}\n{}"' +
             ' >> SLURM_JOB.log\n\n').format(path_launching_script, logfile_stdout, path)
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
