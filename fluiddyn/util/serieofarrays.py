@@ -139,7 +139,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             self.base_name = self.base_name[:-1]
 
         # remove base_name
-        remains = unicode(self.filename_given[len(self.base_name):])
+        remains = str(self.filename_given[len(self.base_name):])
 
         # remove extension
         if self.extension_file != '':
@@ -314,7 +314,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
         file_name: str
         """
-        str_indices = unicode(file_name[len(self.base_name):])
+        str_indices = str(file_name[len(self.base_name):])
 
         if self._separator_base_index != '':
             str_indices = str_indices[1:]
