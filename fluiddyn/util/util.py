@@ -103,7 +103,7 @@ def create_object_from_file(str_path, *args, **kwargs):
                     f.attrs['module_name'] = 'fluiddyn.lab.tanks'
     except IOError:
         pass
-                    
+
     with h5py.File(path, 'r') as f:
         class_name = f.attrs['class_name']
         module_name = f.attrs['module_name']
@@ -112,14 +112,14 @@ def create_object_from_file(str_path, *args, **kwargs):
         class_name = class_name[0]
         module_name = module_name[0]
 
-    # temporary... for compatibility
-    if class_name.startswith('<class '):
-        class_name = class_name[8:-2].split('.')[-1]
-        with h5py.File(path, 'r+') as f:
-            f.attrs['class_name'] = class_name
+    # # temporary... for compatibility
+    # if class_name.startswith('<class '):
+    #     class_name = class_name[8:-2].split('.')[-1]
+    #     with h5py.File(path, 'r+') as f:
+    #         f.attrs['class_name'] = class_name
 
-    module_name = fld._verif_names_modules(
-        module_name, path, key_file='module_name')
+    # module_name = fld._verif_names_modules(
+    #     module_name, path, key_file='module_name')
 
     # fromlist has to be a not-empty so that __import__('A.B',
     # ...)  returns B rather than A.

@@ -30,26 +30,26 @@ from fluiddyn.util.util import create_object_from_file
 from fluiddyn.util import constants
 from fluiddyn._version import __version__
 
-# temporary, for compatibility with an old fluidlab...
-def _verif_names_modules(name_mod, path_h5_file, key_file):
+# # temporary, for compatibility with an old fluidlab...
+# def _verif_names_modules(name_mod, path_h5_file, key_file):
 
-    if isinstance(name_mod, str):
-        name_mod = name_mod.encode('utf-8')
+#     if isinstance(name_mod, str):
+#         name_mod = name_mod.encode('utf-8')
 
-    exp_TC_old = 'fluidlab.experiments.taylorcouette_'
-    exp_TC_new = 'fluidlab.exp.taylorcouette.'
+#     exp_TC_old = 'fluidlab.experiments.taylorcouette_'
+#     exp_TC_new = 'fluidlab.exp.taylorcouette.'
 
-    new_names_modules = {
-        exp_TC_old + 'linearprofil': exp_TC_new + 'linearprofile',
-        exp_TC_old + 'quadprofil': exp_TC_new + 'quadprofile',
-        exp_TC_old + '2layers': exp_TC_new + 'twolayers',
-        'fluidlab.tanks': 'fluidlab.tanks'
-    }
+#     new_names_modules = {
+#         exp_TC_old + 'linearprofil': exp_TC_new + 'linearprofile',
+#         exp_TC_old + 'quadprofil': exp_TC_new + 'quadprofile',
+#         exp_TC_old + '2layers': exp_TC_new + 'twolayers',
+#         'fluidlab.tanks': 'fluidlab.tanks'
+#     }
 
-    if name_mod in list(new_names_modules.keys()):
-        name_mod = new_names_modules[name_mod]
-        import h5py
-        with h5py.File(path_h5_file, 'r+') as f:
-            f.attrs[key_file] = name_mod
+#     if name_mod in list(new_names_modules.keys()):
+#         name_mod = new_names_modules[name_mod]
+#         import h5py
+#         with h5py.File(path_h5_file, 'r+') as f:
+#             f.attrs[key_file] = name_mod
 
-    return name_mod
+#     return name_mod
