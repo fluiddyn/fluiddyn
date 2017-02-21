@@ -26,6 +26,7 @@ fluiddyn.egg-info/*
 build/*
 dist/*.tar.gz
 dist*
+.tox/*
 
 *.so
 

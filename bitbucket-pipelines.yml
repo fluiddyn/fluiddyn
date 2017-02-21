@@ -3,12 +3,13 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: fluiddyn/python2-stable
+image: fluiddyn/python-stable
 
 pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
+          - pip install -U tox
           - pip --version
-          - make develop
-          - make tests
+          - tox --version
+          - tox
