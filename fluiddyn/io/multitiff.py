@@ -17,7 +17,10 @@ import os
 import glob
 from math import ceil, log10
 
-from PIL import Image
+try:
+    from PIL import Image
+except ImportError:
+    pass
 
 from fluiddyn.util.query import query_yes_no
 

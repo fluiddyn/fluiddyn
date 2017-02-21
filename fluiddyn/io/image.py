@@ -1,7 +1,11 @@
 from __future__ import print_function
 import os
 import numpy as np
-from PIL import Image
+
+try:
+    from PIL import Image
+except ImportError:
+    pass
 try:
     from scipy.ndimage import imread
 except ImportError:
@@ -52,7 +56,7 @@ def imsave(path, array, format=None, as_int=False):
             format = 'TIFF'
         else:
             format = 'PNG'
-            
+
     if format == 'TIFF':
         if not any([path.endswith(ext) for ext in ('.tif', '.tiff')]):
             path += '.tiff'

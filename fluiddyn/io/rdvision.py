@@ -10,7 +10,10 @@ from builtins import object
 import os
 import configparser
 
-from PIL import Image
+try:
+    from PIL import Image
+except ImportError:
+    pass
 
 import numpy as np
 
