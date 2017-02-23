@@ -17,14 +17,14 @@ Provides:
 
 """
 
-from fluiddyn.clusters.slurm import ClusterSlurm
+from .slurm import ClusterSlurm
+from os import getenv
 
 
 class Beskow(ClusterSlurm):
     name_cluster = 'beskow'
     nb_cores_per_node = 32
-    default_project ='2015-16-46'
-    cmd_run = 'aprun'
+    cmd_run_interactive = 'aprun'
     max_walltime = '23:59:59'
 
     def __init__(self):
@@ -47,19 +47,26 @@ class Beskow(ClusterSlurm):
 class Triolith(ClusterSlurm):
     name_cluster = 'triolith'
     nb_cores_per_node = 16
-    default_project ='2015-16-46'
-    cmd_run = 'mpprun'
+    cmd_run_interactive = 'mpirun'
     max_walltime = '7-00:00:00'
 
     def __init__(self):
         super(Triolith, self).__init__()
         self.check_name_cluster('SNIC_RESOURCE')
 
+        self.commands_setting_env = [
+            'module add python/2.7.12',
+            'module add gcc/4.9.0 openmpi/1.6.2-build1',
+            'module add hdf5/1.8.11-i1214-parallel',
+            'source $LOCAL_PYTHON/bin/activate']
+
+        self.commands_unsetting_env = [
+            'deactivate']
+
 
 class Abisko(ClusterSlurm):
     name_cluster = 'abisko'
     nb_cores_per_node = 48
-    default_project ='SNIC2015-16-46'  
     max_walltime = '7-00:00:00'
 
     def __init__(self):
@@ -73,3 +80,12 @@ class Abisko(ClusterSlurm):
             'source $LOCAL_PYTHON/bin/activate']
 
         self.commands_unsetting_env = []
+
+
+_host = getenv('SNIC_RESOURCE')
+if _host == 'beskow':
+    ClusterSNIC = Beskow
+elif _host == 'triolith':
+    ClusterSNIC = Triolith
+elif _host == 'abisko':
+    ClusterSNIC = Abisko
