@@ -16,5 +16,6 @@ tests_coverage:
 	coverage run -m unittest discover
 	coverage report
 	coverage html
+	coverage xml
 	@echo "Code coverage analysis complete. View detailed report:"
 	@echo "file://${PWD}/.coverage/index.html"
