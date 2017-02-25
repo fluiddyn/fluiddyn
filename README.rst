@@ -2,7 +2,7 @@
 FluidDyn
 ========
 
-|release| |docs|
+|release| |docs| |coverage|
 
 .. |release| image:: https://img.shields.io/pypi/v/fluiddyn.svg
    :target: https://pypi.python.org/pypi/fluiddyn/
