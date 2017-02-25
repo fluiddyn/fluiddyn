@@ -12,6 +12,10 @@ FluidDyn
    :target: http://fluiddyn.readthedocs.org
    :alt: Documentation status
 
+.. |coverage| image:: https://codecov.io/bb/fluiddyn/fluiddyn/branch/default/graph/badge.svg
+   :target: https://codecov.io/bb/fluiddyn/fluiddyn/branch/default/
+   :alt: Code coverage
+
 FluidDyn is a framework for studying fluid dynamics. Most of the features are
 actually implemented in other packages (`fluidlab
 <http://fluidlab.readthedocs.io>`_, `fluidimage
