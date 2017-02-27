@@ -39,10 +39,11 @@ class TestImage(unittest.TestCase):
         }
 
         self.images = {
-            'gray8': im(2 ** 8, np.uint8),
-            'gray16': im(2 ** 16, np.int32),
-            'gray16f': im(2 ** 16, np.float32),
-            'color8': im(2 ** 8, np.uint8, (10, 10, 3)),
+            'gray8': im(2 ** 8 - 1, np.uint8),
+            'gray16': im(2 ** 16 - 1, np.int32),
+            'gray8f': im(2 ** 8 - 1, np.float16),
+            'gray16f': im(2 ** 16 - 1, np.float32),
+            'color8': im(2 ** 8 - 1, np.uint8, (10, 10, 3)),
         }
 
     def tearDown(self):
