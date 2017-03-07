@@ -22,16 +22,15 @@ def _detect_mpi_type():
         'MP_CHILD': 'IBM PE',
         'MP_RANK': 'Sun CT',
         'MPIRUN_RANK': 'MVAPICH >= 1.1',
-        ENV_OVERRIDE : 'Unknown. Force loading mpi4py if available'
-        })
+        ENV_OVERRIDE: 'Unknown. Force loading mpi4py if available'})
 
     set_mpiexec_type = set(MPIEXEC_TYPE.keys())
-    set_os_env =  set(os.environ.keys())
+    set_os_env = set(os.environ.keys())
     set_detected_env = set_mpiexec_type.intersection(set_os_env)
     warning_msg = (
         'Warning: No known MPI environment variables detected.\n'
         'Try exporting environment variable {}=1 to skip MPI type check.\n'
-        ).format(ENV_OVERRIDE)
+    ).format(ENV_OVERRIDE)
 
     if len(set_detected_env) > 0:
         env = set_detected_env.pop()
@@ -44,7 +43,9 @@ def _detect_mpi_type():
         p = psutil.Process(os.getppid())
         process_name = p.name()
         if process_name in ['mpirun', 'mpiexec']:
-            print(warning_msg, 'Loading MPI anyways, since the program was launched using ', process_name)
+            print(warning_msg,
+                  'Loading MPI anyways, since the program was launched using ',
+                  process_name)
             return MPIEXEC_TYPE[ENV_OVERRIDE]
         else:
             return None  # Sequential mode

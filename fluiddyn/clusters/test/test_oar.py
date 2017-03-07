@@ -51,8 +51,8 @@ class TestCaseOAR(unittest.TestCase):
     ClusterNoCheck = ClusterNoCheck
 
     def setUp(self):
-        self.cluster = ClusterOAR()
-        self.clusternocheck = ClusterNoCheck()
+        self.cluster = self.Cluster()
+        self.clusternocheck = self.ClusterNoCheck()
 
         self._work_dir = 'tmp_test_oar'
         if not os.path.exists(self._work_dir):

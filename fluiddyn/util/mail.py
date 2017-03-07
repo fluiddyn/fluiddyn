@@ -133,4 +133,4 @@ def send_email(subject, txt, address_recipients, address_sender=None,
 
 if __name__ == '__main__':
 
-    send_email('email test', 'blablabla\n'*3, '@legi.cnrs.fr')
+    send_email('email test', 'blablabla\n'*3, 'pierre.augier@legi.cnrs.fr')
