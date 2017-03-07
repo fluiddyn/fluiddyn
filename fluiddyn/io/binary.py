@@ -76,8 +76,8 @@ class BinFile(_io.FileIO):
             else:
                 code_byte_order = _code_byte_order_from_str(byteorder)
 
-            fmt = (code_byte_order + '{0:d}'.format(nb_values)
-                   + self.dcodetypes[codetype])
+            fmt = (code_byte_order + '{0:d}'.format(nb_values) +
+                   self.dcodetypes[codetype])
             nb_bytes = struct.calcsize(fmt)
             raw = self.read(nb_bytes)
             if len(raw) != nb_bytes:
@@ -109,10 +109,13 @@ class BinFile(_io.FileIO):
         else:
             raise ValueError('Value of codetype not yet implemented')
 
-    def write_as(self, to_be_saved, codetype='s', byteorder=None, 
+    def write_as(self, to_be_saved, codetype='s', byteorder=None,
                  buffersize=1000):
 
         if codetype == 's':
+            if not isinstance(to_be_saved, bytes):
+                to_be_saved = to_be_saved.encode()
+
             self.write(to_be_saved)
         elif codetype in self.keys_types:
             if byteorder is None:
@@ -125,8 +128,8 @@ class BinFile(_io.FileIO):
                 raw = struct.pack(fmt, to_be_saved)
                 self.write(raw)
             else:
-                fmt_to_be_formated = (code_byte_order + '{0:d}'
-                                      + self.dcodetypes[codetype])
+                fmt_to_be_formated = (code_byte_order + '{0:d}' +
+                                      self.dcodetypes[codetype])
                 self._write_ndarray_with_buffer(
                     to_be_saved, fmt_to_be_formated, buffersize=buffersize)
 

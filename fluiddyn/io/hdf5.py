@@ -63,12 +63,12 @@ class H5File(h5py.File):
         if k not in list(self.keys()):
             for k, v in list(dicttosave.items()):
                 self.create_dataset(k, data=v,
-                                    maxshape=(None,)+v.shape[1:])
+                                    maxshape=(None,) + v.shape[1:])
         else:
             nb_saved_times = self[k].shape[0]
             for k, v in list(dicttosave.items()):
                 dset_p = self[k]
-                dset_p.resize((nb_saved_times+1,)+v.shape[1:])
+                dset_p.resize((nb_saved_times+1,) + v.shape[1:])
                 dset_p[nb_saved_times] = v
 
     def load(self, times_slice=None):

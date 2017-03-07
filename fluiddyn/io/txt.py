@@ -29,16 +29,15 @@ def num_from_str(s):
                 'Can not convert the string "'+s+'" into a numeric value.')
 
 
-
 def quantities_from_txt_file(name_file):
     """Read a txt file and return the numerical data."""
     if os.path.isabs(name_file):
         path_file = name_file
     else:
-        path_file = os.getcwd()+'/'+name_file
+        path_file = os.path.abspath(name_file)
 
     if not os.path.exists(path_file):
-        raise ValueError('file does not exist? path_file :\n'+path_file)
+        raise ValueError('file does not exist? path_file :\n' + path_file)
 
     f = open(path_file, 'r')
     lines = f.readlines()
@@ -71,8 +70,6 @@ def quantities_from_txt_file(name_file):
     return tuple(lol)
 
 
-
-
 def save_quantities_in_txt_file(name_file, args, erase=False):
     """Save array_like objects in a text file."""
     try:
@@ -92,8 +89,8 @@ def save_quantities_in_txt_file(name_file, args, erase=False):
 
     if os.path.isfile(name_file) and not erase:
         answer = query.query(
-            'The file '+name_file+' already exists. '+
-            'What do you want to do?\n'+
+            'The file ' + name_file + ' already exists. ' +
+            'What do you want to do?\n' +
             "[Don't save / erase file and save / modify name] ",
             default="Don't save")
         if answer.lower().startswith('do'):

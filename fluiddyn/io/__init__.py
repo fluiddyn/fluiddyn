@@ -5,14 +5,14 @@
 
 Loading data from files and saving data to files are very common
 tasks. However, we can loose a lot of time with silly problems. This subpackage
-provides utilities for input in / output to different formats of files:
+provides utilities for input/output to different file formats:
 
 .. autosummary::
    :toctree:
 
+   binary
    txt
    mycsv
-   binary
    hdf5
    digiflow
    dantec
@@ -23,6 +23,7 @@ provides utilities for input in / output to different formats of files:
 
 from builtins import str
 import os
+from .redirect_stdout import stdout_redirected
 
 
 FLUIDDYN_PATH_EXP = os.environ.get('FLUIDDYN_PATH_EXP')
@@ -57,6 +58,7 @@ if FLUIDDYN_PATH_WARNING is None:
 if not os.path.exists(FLUIDDYN_PATH_WARNING):
     os.makedirs(FLUIDDYN_PATH_WARNING)
 
+
 def _write_warning(*args, **kargs):
     if 'end' in kargs:
         end = kargs['end']
@@ -69,4 +71,4 @@ def _write_warning(*args, **kargs):
         f.write(' '.join(strings)+end)
 
 
-from .redirect_stdout import stdout_redirected
+__all__ = ['stdout_redirected']
