@@ -10,12 +10,6 @@ from builtins import input
 import sys
 import subprocess
 
-try:
-    input = raw_input
-except NameError:
-    pass
-
-
 def call_bash(commands):
     subprocess.call(['/bin/bash', '-c', commands])
 
@@ -69,7 +63,7 @@ def query(question, default=None):
     """Query an anwer to a general question."""
     sys.stdout.write(question)
 
-    answer = eval(input())
+    answer = input()
 
     if default is not None and answer == '':
         return default

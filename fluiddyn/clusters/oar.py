@@ -26,21 +26,9 @@ from ..util.query import run_asking_agreement, call_bash
 class ClusterOAR(object):
     name_cluster = ''
     nb_cores_per_node = 12
+    has_to_add_name_cluster = False
 
     def __init__(self):
-
-        # check if this script is run on a frontal with oar installed
-        try:
-            subprocess.check_call(['oarsub', '--version'],
-                                  stdout=subprocess.PIPE)
-            oar_installed = True
-        except OSError:
-            oar_installed = False
-
-        if not oar_installed:
-            raise ValueError(
-                'This script should be run on a cluster with oar installed.')
-
         self.commands_setting_env = [
             'source /etc/profile',
             'module load python/2.7.9',
@@ -52,13 +40,23 @@ class ClusterOAR(object):
             'oardel $JOB_ID'
             'oarsub -C $JOB_ID')
 
+    def check_oar(self):
+        """check if this script is run on a frontal with oar installed"""
+        try:
+            subprocess.check_call(['oarsub', '--version'],
+                                  stdout=subprocess.PIPE)
+        except OSError:
+            raise OSError('oar does not seem to be installed.')
+
     def submit_script(
             self, path, name_run='fluiddyn',
             nb_nodes=1, nb_cores_per_node=1,
             walltime='24:00:00', project=None,
             nb_mpi_processes=None, omp_num_threads=None,
             idempotent=False, delay_signal_walltime=300,
-            network_address=None, ask=True):
+            network_address=None, ask=True, submit=True):
+
+        self.check_oar()
 
         path = os.path.expanduser(path)
         if not os.path.exists(path.split(' ')[0]):
@@ -105,12 +103,13 @@ class ClusterOAR(object):
         launching_command += ' -S ./' + path_launching_script
 
         print('A launcher for the script {} has been created.'.format(path))
-        if ask:
-            run_asking_agreement(launching_command)
-        else:
-            print('The script is submitted with the command:\n',
-                  launching_command)
-            call_bash(launching_command)
+        if submit:
+            if ask:
+                run_asking_agreement(launching_command)
+            else:
+                print('The script is submitted with the command:\n',
+                      launching_command)
+                call_bash(launching_command)
 
     def _create_txt_launching_script(
             self, path, name_run,
