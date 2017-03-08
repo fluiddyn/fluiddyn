@@ -9,8 +9,8 @@ Scientific output toolkit
    :toctree:
 
    figs
-   movies
-   latextables
+   rcparams
+   util
    colorchart
 
 """
@@ -22,4 +22,3 @@ try:
     fluiddyn.show = show
 except ImportError:
     pass
-

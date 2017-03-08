@@ -1,24 +1,31 @@
 
-import fluiddyn.output.figs as figs
 
 import unittest
+import os
+from shutil import rmtree
+
+from ..figs import Figures
 
 
-class SimpleTestCase(unittest.TestCase):
+class TestFigs(unittest.TestCase):
+    """Test fluiddyn.output.figs module."""
     def setUp(self):
-        self.figures = figs.Figures(hastosave=True)
+        self._work_dir = 'test_fluiddyn_output_figs'
+        if not os.path.exists(self._work_dir):
+            os.mkdir(self._work_dir)
 
-    # def test_create_figure(self):
-    #     self.figures.new_figure()
+        self.figures = Figures(self._work_dir, hastosave=True,
+                               for_article=False)
 
-    # def test_save(self):
-    #     fig = self.figures.new_figure(name_file='testfig')
-    #     fig.saveifhasto(verbose=False)
-    #     nfiles = glob('testfig.*')
-    #     for nfile in nfiles:
-    #         os.remove(nfile)
+    def tearDown(self):
+        rmtree(self._work_dir)
+
+    def test_save(self):
+
+        fig = self.figures.new_figure(
+            'figure0.png', fig_width_mm=40, fig_height_mm=40)
+        fig.saveifhasto()
 
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
-    figs.show()
+    unittest.main(exit=True)

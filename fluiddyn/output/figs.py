@@ -24,6 +24,9 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib
 
+from ..util import run_from_ipython
+from .rcparams import set_rcparams
+
 
 class Figures(object):
     """Represent a set of figures.
@@ -32,27 +35,30 @@ class Figures(object):
 
     Parameters
     ----------
-    (for the __init__ method)
-
-    hastosave : bool
-        If True, the function `Figure.saveifhasto` save the figure.
 
     path_save : str
         Related to the path where to save.
 
+    hastosave : bool
+        If True, the function `Figure.saveifhasto` save the figure.
+
     for_beamer : bool
         If True, use beamer layout.
+
+    for_article : bool
+        If True, use article layout.
 
     fontsize : {18, int}
         Font size of the text in the figures.
 
+    fontsize_pad : {9, int}
+        Font size of the pad in the figures.
     """
 
-    def __init__(self, hastosave=False,
-                 path_save=None,
+    def __init__(self, path_save=None, hastosave=False,
                  for_beamer=False,
                  for_article=False,
-                 fontsize=18):
+                 fontsize=18, fontsize_pad=9):
 
         self.hastosave = hastosave
 
@@ -63,35 +69,12 @@ class Figures(object):
         else:
             self.path_save = os.path.join(os.getcwd(), path_save)
 
-        if for_article or for_beamer:
-            params = {
-                # 'backend': 'ps',
-                'axes.labelsize': fontsize,
-                'font.size': fontsize,
-                'legend.fontsize': fontsize,
-                'axes.titlesize': fontsize,
-                'xtick.labelsize': fontsize,
-                'ytick.labelsize': fontsize,
-                'xtick.major.pad': 9,
-                'xtick.major.pad': 9,
-                'text.usetex': True,
-                'font.family': 'serif',
-                'font.serif': 'Computer Modern Roman',
-                'font.sans-serif': 'Computer Modern Roman',
-                'ps.usedistiller': 'xpdf'}
+        set_rcparams(fontsize, for_article, for_beamer, fontsize_pad=9)
 
-        if for_beamer:
-            params['font.family'] = 'sans-serif'
-            preamble = r'''\usepackage[cm]{sfmath}'''
-            plt.rc('text.latex', preamble=preamble)
-
-        if for_article or for_beamer:
-            plt.rcParams.update(params)
-
-    def new_figure(self, num=None,
+    def new_figure(self, name_file=None,
+                   num=None,
                    fig_width_mm=200, fig_height_mm=150,
-                   size_axe=None,
-                   name_file=None):
+                   size_axe=None):
         """Create a new Figure object and return it.
 
         Parameters
@@ -111,7 +94,7 @@ class Figures(object):
         name_file : str, optional
             Name of the file.
 
-"""
+        """
 
         one_inch_in_mm = 25.4
         fig_width_inches = float(fig_width_mm)/one_inch_in_mm
@@ -129,7 +112,7 @@ class Figures(object):
 
 
 def show(block=None):
-    """Show slightly more cleaver than plt.show."""
+    """Show slightly more cleaver than old version of plt.show."""
 
     if block is None:
         if run_from_ipython():
@@ -146,15 +129,6 @@ def show(block=None):
         plt.show(block=block)
     except TypeError:
         plt.show()
-
-
-def run_from_ipython():
-    """Find out if run from Ipython."""
-    try:
-        __IPYTHON__
-        return True
-    except NameError:
-        return False
 
 
 class Figure(matplotlib.figure.Figure):
@@ -188,7 +162,7 @@ class Figure(matplotlib.figure.Figure):
 
         # Ugly workaround to be able to use the function plt.figure
         fig = plt.figure(**kwargs)
-        for k, v in list(fig.__dict__.items()):
+        for k, v in fig.__dict__.items():
             self.__dict__[k] = v
 
         if name_file is not None:
@@ -211,27 +185,20 @@ class Figure(matplotlib.figure.Figure):
         self.canvas.set_window_title(title)
 
         if size_axe is not None:
-            ax = self.add_axes(size_axe)
-        else:
-            ax = plt.gca()
-
-        ax.hold(True)
+            self.add_axes(size_axe)
 
     def saveifhasto(self, name_file=None, hastosave=None,
-                    format='pdf', verbose=True):
+                    verbose=True):
         """Save the figure if `hastosave` is True.
 
         Parameters
         ----------
 
         name_file : str, optional
-            Name of the file.
+            Name of the file (the extension has to indicate the format).
 
         hastosave : bool, optional
             If True, save the figure.
-
-        format : {'pdf', 'eps', 'png', ...}, optional
-             File format.
 
         verbose : {True, bool}, optional
              Print nothing if False.
@@ -252,13 +219,9 @@ class Figure(matplotlib.figure.Figure):
             if not os.path.exists(self.path_save):
                 os.mkdir(self.path_save)
 
-            if not name_file.endswith('.' + format):
-                name_file += '.' + format
-            
+            path = os.path.join(self.path_save, name_file)
+
             if verbose:
-                print('Save figure in file ' + name_file)
+                print('Save figure in file\n' + path)
 
-            super(Figure, self).savefig(self.path_save + '/' + name_file,
-                                        format=format)
-
-            # 'pdftops -eps '+self.path_save+'/'+name_file
+            super(Figure, self).savefig(path)

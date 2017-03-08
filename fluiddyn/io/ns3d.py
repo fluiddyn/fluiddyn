@@ -96,8 +96,8 @@ class NS3DFieldFile(NS3DFile):
         nb_pts_one_field = self.nx*self.ny*self.nz
 
         with BinFile(self.path_file, byteorder=self.byteorder) as f:
-            f.seek(self.nb_bytes_header + ifield*(nb_pts_one_field+1)*8
-                   + 4 + self.nx*self.ny*iz*8)
+            f.seek(self.nb_bytes_header + ifield*(nb_pts_one_field+1)*8 +
+                   4 + self.nx*self.ny*iz*8)
             field = np.array(f.readt(self.nx*self.ny, 'float64'))
 
         return field.reshape([self.ny, self.nx])
@@ -131,7 +131,10 @@ class NS3DFieldFile(NS3DFile):
             f.write_as(8, 'uint32')
             # write the 6 fields
             for ifield in range(7):
-                field = self.read_field(ifield)
+                try:
+                    field = self.read_field(ifield)
+                except ValueError:
+                    break
                 f.write_as(nb_pts, 'uint32')
                 f.write_as(field.flatten(), 'float64')
                 f.write_as(nb_pts, 'uint32')
@@ -139,8 +142,7 @@ class NS3DFieldFile(NS3DFile):
         print('New file saved:\n' + new_path)
 
     def save_with_resol_changed(self, nx_new, ny_new, nz_new):
-
-        from fluiddyn.simul.operators.fft import easypyfft
+        from fluidsim.operators.fft import easypyfft
         print_with_emptyend('init. FFTW3DReal2Complex for input file...')
         op = easypyfft.FFTW3DReal2Complex(self.nx, self.ny, self.nz)
         print(' Done.')
@@ -314,11 +316,11 @@ if __name__ == '__main__':
         'nu=0.0001266_N=2.0_Tend=400_2015-01-09_19-18-52'
     )
 
-    ff0 = NS3DFieldFile(path_file=path_dir
-                        + '/velo_rho_vort.t=0400.045')
+    ff0 = NS3DFieldFile(path_file=path_dir +
+                        '/velo_rho_vort.t=0400.045')
 
-    ff1 = NS3DFieldFile(path_file=path_dir
-                        + '/velo_rho_vort.t=0400.045_64x64x32')
+    ff1 = NS3DFieldFile(path_file=path_dir +
+                        '/velo_rho_vort.t=0400.045_64x64x32')
 
 #     ff2 = NS3DFieldFile(path_file=path_dir
 #                         + '/velo_rho_vort.t=0005.010_128x128x32')

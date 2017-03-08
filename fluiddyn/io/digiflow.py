@@ -353,9 +353,9 @@ class DigiflowMovie(object):
 
     def __getitem__(self, arg):
 
-        itstart = 0
-        itstop = self.nb_frames-1
-        itstep = 1
+        # itstart = 0
+        # itstop = self.nb_frames-1
+        # itstep = 1
 
         # iystart = 0
         # iystop = self.shape_im[0]
@@ -470,7 +470,6 @@ class DigiflowMovie(object):
                     f, dtype=np.uint8, count=self.size_im)
                 f.seek(nb_values_to_jump, 1)
 
-
         if nb_frames == 1:
             return ret[0]
         else:
@@ -559,40 +558,35 @@ class DigiflowMovie(object):
         return time_serie
 
 
-    # def save(self):
-    #     pass
-
-
-def plot_im(im):
-    import fluiddyn.figs as figs
-
-    import matplotlib.pyplot as plt
-
-    figures = figs.Figures(
-        hastosave=False, for_beamer=False, fontsize=20)
-    size_axe = [0.15, 0.12, 0.8, 0.76]
-
-    fig = figures.new_figure(
-        name_file='fig_im',
-        fig_width_mm=170, fig_height_mm=220,
-        size_axe=size_axe)
-
-    ax1 = fig.gca()
-
-    ax1.set_xlabel(r'$x$ (pixels)')
-    ax1.set_ylabel(r'$z$ (pixels)')
-
-    pc = ax1.pcolormesh(im, cmap=plt.cm.hsv, shading='flat')
-
-    fig.colorbar(pc)
-
-    ax1.set_xlim([0, im.shape[1]])
-    ax1.set_ylim([0, im.shape[0]])
-
-    figs.show()
-
-
 if __name__ == '__main__':
+
+    def plot_im(im):
+        import fluiddyn.figs as figs
+
+        import matplotlib.pyplot as plt
+
+        figures = figs.Figures(
+            hastosave=False, for_beamer=False, fontsize=20)
+        size_axe = [0.15, 0.12, 0.8, 0.76]
+
+        fig = figures.new_figure(
+            name_file='fig_im',
+            fig_width_mm=170, fig_height_mm=220,
+            size_axe=size_axe)
+
+        ax1 = fig.gca()
+
+        ax1.set_xlabel(r'$x$ (pixels)')
+        ax1.set_ylabel(r'$z$ (pixels)')
+
+        pc = ax1.pcolormesh(im, cmap=plt.cm.hsv, shading='flat')
+
+        fig.colorbar(pc)
+
+        ax1.set_xlim([0, im.shape[1]])
+        ax1.set_ylim([0, im.shape[0]])
+
+        figs.show()
 
     path_file = (
         '/home/pa371/Data_reasons_pa371/Dropbox'
