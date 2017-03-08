@@ -142,7 +142,7 @@ class NS3DFieldFile(NS3DFile):
         print('New file saved:\n' + new_path)
 
     def save_with_resol_changed(self, nx_new, ny_new, nz_new):
-        from fluidsim.operators.fft import easypyfft
+        from ..util import easypyfft
         print_with_emptyend('init. FFTW3DReal2Complex for input file...')
         op = easypyfft.FFTW3DReal2Complex(self.nx, self.ny, self.nz)
         print(' Done.')
@@ -172,7 +172,10 @@ class NS3DFieldFile(NS3DFile):
             for ifield in range(4):
                 print('treat field {} (over 4)'.format(ifield))
                 print_with_emptyend('    read_field...')
-                field = self.read_field(ifield)
+                try:
+                    field = self.read_field(ifield)
+                except ValueError:
+                    break
                 print_with_emptyend(' Done.\n    _compute_field_new_resol...')
                 field_new = self._compute_field_new_resol(
                     field, op, op_new)
@@ -195,7 +198,7 @@ class NS3DFieldFile(NS3DFile):
         ny_min = min(self.ny, ny_new)
         nz_min = min(self.nz, nz_new)
 
-        f_Fourier = op.fft3d(field)
+        f_Fourier = op.fft(field)
         f_Fourier_new = np.zeros(op_new.shapeK, dtype=np.complex128)
 
         nkx = nx_min//2+1
@@ -221,7 +224,7 @@ class NS3DFieldFile(NS3DFile):
                     f_Fourier_new[-iz, iy, ix] = f_Fourier[-iz, iy, ix]
                     f_Fourier_new[-iz, -iy, ix] = f_Fourier[-iz, -iy, ix]
 
-        return op_new.ifft3d(f_Fourier_new)
+        return op_new.ifft(f_Fourier_new)
 
 
 class NS3DForcingInfoFile(NS3DFile):

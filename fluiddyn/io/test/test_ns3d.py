@@ -9,12 +9,11 @@ import os
 from glob import glob
 from shutil import rmtree, copy
 
-# import numpy as np
+from ..ns3d import NS3DFieldFile, NS3DForcingInfoFile
 
 input_dir = os.path.join(os.path.dirname(__file__), 'ns3d_files')
 input_files = glob(os.path.join(input_dir, '*'))
 
-from ..ns3d import NS3DFieldFile, NS3DForcingInfoFile
 
 
 class TestNS3D(unittest.TestCase):
@@ -54,7 +53,7 @@ class TestNS3D(unittest.TestCase):
         f.read_xy()
         f.read_field()
         f.save_with_byteorder_changed()
-
+        f.save_with_resol_changed(2, 2, 2)
 
 if __name__ == '__main__':
     unittest.main()
