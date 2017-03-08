@@ -65,6 +65,9 @@ def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
     outputext : str
       The output files extension
 
+    erase : {False, bool}
+      If erase, the existing files are replaced.
+
     Notes
     -----
 
@@ -106,7 +109,7 @@ def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
                         outputdir + '/level{' + format_level +
                         '}/im{' + format_index + '}').format(
                             index_im % nb_levels, index_im//nb_levels)
-                    if _save_new_file(im, base_path, outputext):
+                    if _save_new_file(im, base_path, outputext, erase):
                         print('\r file {}; in {:.2f} s'.format(
                             index_im, time.time() - t_start), end='')
                         sys.stdout.flush()
@@ -135,10 +138,13 @@ def reorganize_double_frame_3Dscannedpiv_data(
     outputext : str
       The output files extension
 
+    erase : {False, bool}
+      If erase, the existing files are replaced.
+
     Notes
     -----
 
-    Data is organize as:
+    Data is organized as:
     - outputdir/level1/im0.tif, outputdir/level1/im1.tif ...
     - outputdir/level2/im0.tif, outputdir/level2/im1.tif ...
 
@@ -181,7 +187,7 @@ def reorganize_double_frame_3Dscannedpiv_data(
                         outputdir + '/level{' + format_level + '}/im{' +
                         format_index + '}' + letter).format(
                             index_im % nb_levels, index_time // 2)
-                    if _save_new_file(im, base_path, outputext):
+                    if _save_new_file(im, base_path, outputext, erase):
                         print('\r file {}; in {:.2f} s'.format(
                             index_im, time.time() - t_start), end='')
                         sys.stdout.flush()
@@ -206,6 +212,9 @@ def reorganize_single_frame_2Dpiv_data(
 
     outputext : str
       The output files extension
+
+    erase : {False, bool}
+      If erase, the existing files are replaced.
 
     Notes
     -----
@@ -241,7 +250,7 @@ def reorganize_single_frame_2Dpiv_data(
                     base_path = (
                         outputdir +
                         ('/im{' + format_index + '}').format(index_im))
-                    if _save_new_file(im, base_path, outputext):
+                    if _save_new_file(im, base_path, outputext, erase):
                         print('\r file {}; in {:.2f} s'.format(
                             index_im, time.time() - t_start), end='')
                         sys.stdout.flush()
@@ -268,6 +277,9 @@ def reorganize_double_frame_2Dpiv_data(
 
     outputext : str
       The output files extension
+
+    erase : {False, bool}
+      If erase, the existing files are replaced.
 
     Notes
     -----
@@ -308,7 +320,7 @@ def reorganize_double_frame_2Dpiv_data(
                         outputdir +
                         ('/im{' + format_index + '}').format(index_im//2) +
                         letter)
-                    if _save_new_file(im, base_path, outputext):
+                    if _save_new_file(im, base_path, outputext, erase):
                         print('\r file {}; in {:.2f} s'.format(
                             index_im, time.time() - t_start), end='')
                         sys.stdout.flush()
