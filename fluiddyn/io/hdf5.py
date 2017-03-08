@@ -46,27 +46,29 @@ class H5File(h5py.File):
             params[k] = v
         return params
 
-    def update_dict(self, keydict, dicttosave):
+    # def update_dict(self, keydict, dicttosave):
 
-        group_params = self[keydict]
-        for k, v in list(dicttosave.items()):
-            group_params.create_dataset(k, data=v)
+    #     group_params = self[keydict]
+    #     for k, v in list(dicttosave.items()):
+    #         group_params.create_dataset(k, data=v)
 
     def save_dict_of_ndarrays(self, dicttosave, dtype=np.float32):
         """Save ndarrays in the file."""
 
+        dicttosave1 = {}
         for k, v in list(dicttosave.items()):
             if isinstance(v, numbers.Number):
                 v = [v]
-            dicttosave[k] = np.array(v, dtype=dtype)
+            a = np.array(v, dtype=dtype)
+            dicttosave1[k] = a[None, ...]
 
         if k not in list(self.keys()):
-            for k, v in list(dicttosave.items()):
+            for k, v in list(dicttosave1.items()):
                 self.create_dataset(k, data=v,
                                     maxshape=(None,) + v.shape[1:])
         else:
             nb_saved_times = self[k].shape[0]
-            for k, v in list(dicttosave.items()):
+            for k, v in list(dicttosave1.items()):
                 dset_p = self[k]
                 dset_p.resize((nb_saved_times+1,) + v.shape[1:])
                 dset_p[nb_saved_times] = v

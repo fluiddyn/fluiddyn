@@ -25,7 +25,7 @@ import numpy as np
 import h5py
 
 from . import mpi
-import fluiddyn as fld
+# import fluiddyn as fld
 
 
 def import_class(module_name, class_name):
