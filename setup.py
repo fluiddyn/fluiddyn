@@ -7,8 +7,8 @@ import sys
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-if sys.version_info[:2] < (2, 7) or (3, 0) <= sys.version_info[0:2] < (3, 2):
-    raise RuntimeError("Python version 2.7 or >= 3.2 required.")
+if sys.version_info[:2] < (2, 7) or (3, 0) <= sys.version_info[0:2] < (3, 3):
+    raise RuntimeError('Python version 2.7 or >= 3.3 required.')
 
 # Get the long description from the relevant file
 with open(os.path.join(here, 'README.rst')) as f:
@@ -29,7 +29,7 @@ else:
     devstatus = 'Development Status :: 5 - Production/Stable'
 
 
-install_requires=['numpy', 'matplotlib', 'psutil', 'future']
+install_requires = ['numpy', 'matplotlib', 'psutil', 'future']
 # Even though we also use scipy, we don't require its installation
 # because it can be heavy to install.
 
@@ -57,21 +57,18 @@ setup(name='fluiddyn',
           'Intended Audience :: Science/Research',
           'Intended Audience :: Education',
           'Topic :: Scientific/Engineering',
-          'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
-          # actually CeCILL License (GPL compatible license for French laws)
-          #
-          # Specify the Python versions you support here. In particular,
-          # ensure that you indicate whether you support Python 2,
-          # Python 3 or both.
+          'License :: OSI Approved :: BSD License',
+          # actually CeCILL-B License (BSD compatible license for French laws)
           'Programming Language :: Python',
           'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 2.7',
-          # 'Programming Language :: Python :: 3',
-          # 'Programming Language :: Python :: 3.3',
-          # 'Programming Language :: Python :: 3.4',
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.4',
+          'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.6',
           'Programming Language :: Cython',
           'Programming Language :: C'],
-      packages=find_packages(exclude=['doc', 'digiflow', 'script']),
+      packages=find_packages(exclude=['doc']),
       install_requires=install_requires,
       extras_require=dict(
           doc=['Sphinx>=1.1', 'numpydoc']))

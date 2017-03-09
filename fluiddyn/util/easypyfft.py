@@ -47,9 +47,9 @@ class FFTP2D(object):
             raise ValueError('nx and ny should be even')
         self.nx = nx
         self.ny = ny
-        self.shapeX = [ny, nx]
+        self.shapeX = (ny, nx)
         self.nkx = int(float(nx)/2+1)
-        self.shapeK = [ny, self.nkx]
+        self.shapeK = (ny, self.nkx)
         self.coef_norm = nx*ny
 
         self.fft2d = self.fftp2d
@@ -65,19 +65,26 @@ class FFTP2D(object):
     def ifftp2d(self, small_ff_fft, ARG_IS_COMPLEX=False):
         if not (isinstance(small_ff_fft[0, 0], complex)):
             print('Warning: not array of complexes')
-        print('small_ff_fft\n', small_ff_fft)
+        # print('small_ff_fft\n', small_ff_fft)
         big_ff_fft = np.empty(self.shapeX, dtype=np.complex128)
         big_ff_fft[:, 0:self.nkx] = small_ff_fft
         for iky in range(self.ny):
             big_ff_fft[iky, self.nkx:] = \
                 small_ff_fft[-iky, self.nkx-2:0:-1].conj()
 
-        print('big_ff_fft final\n', big_ff_fft)
+        # print('big_ff_fft final\n', big_ff_fft)
         result_ifft = fftp.ifft2(big_ff_fft*self.coef_norm)
         if np.max(np.imag(result_ifft)) > 10**(-8):
             print('ifft2: imaginary part of ifft not equal to zero,',
                   np.max(np.imag(result_ifft)))
         return np.real(result_ifft)
+
+    def compute_energy_from_Fourier(self, ff_fft):
+        return (np.sum(abs(ff_fft[:, 0])**2 + abs(ff_fft[:, -1])**2) +
+                2*np.sum(abs(ff_fft[:, 1:-1])**2))/2
+
+    def compute_energy_from_spatial(self, ff):
+        return np.mean(abs(ff)**2)/2
 
 
 class FFTW2DReal2Complex(object):
@@ -90,8 +97,8 @@ class FFTW2DReal2Complex(object):
                 'ImportError {0}. Instead fftpack can be used (?)', err)
         if nx % 2 != 0 or ny % 2 != 0:
             raise ValueError('nx and ny should be even')
-        shapeX = [ny, nx]
-        shapeK = [ny, nx//2 + 1]
+        shapeX = (ny, nx)
+        shapeK = (ny, nx//2 + 1)
 
         self.shapeX = shapeX
         self.shapeK = shapeK
@@ -112,8 +119,8 @@ class FFTW2DReal2Complex(object):
 
         self.coef_norm = nx*ny
 
-        self.get_shapeK_seq = self.get_shapeK_loc = lambda s: shapeK
-        self.get_shapeX_seq = self.get_shapeX_loc = lambda s: shapeX
+        self.get_shapeK_seq = self.get_shapeK_loc = lambda: shapeK
+        self.get_shapeX_seq = self.get_shapeX_loc = lambda: shapeX
 
     def fft2d(self, ff):
         self.arrayX[:] = ff
@@ -146,8 +153,8 @@ class FFTW3DReal2Complex(object):
                 "ImportError {0}. Instead fftpack can be used (?)", err)
         if nx % 2 != 0 or ny % 2 != 0 or nz % 2 != 0:
             raise ValueError('nx, ny and nz should be even')
-        shapeX = [nz, ny, nx]
-        shapeK = [nz, ny, nx//2 + 1]
+        shapeX = (nz, ny, nx)
+        shapeK = (nz, ny, nx//2 + 1)
 
         self.shapeX = shapeX
         self.shapeK = shapeK
@@ -229,7 +236,7 @@ class FFTW3DReal2Complex(object):
             raise ValueError('Not the same physical shape...')
 
         # check that the 2d fft is not with distributed memory...
-        if o2d.get_shapeX_loc() != o2d.get_shapeX_loc():
+        if o2d.get_shapeX_loc() != o2d.get_shapeX_seq():
             raise ValueError('2d fft is with distributed memory...')
 
         ind0seq_first, ind1seq_first = self.get_seq_indices_first_K()
@@ -265,8 +272,8 @@ class FFTW1D(object):
 
         if n % 2 != 0:
             raise ValueError('n should be even')
-        shapeX = [n]
-        shapeK = [n]
+        shapeX = (n,)
+        shapeK = (n,)
         self.shapeX = shapeX
         self.shapeK = shapeK
         self.arrayX = pyfftw.empty_aligned(shapeX, 'complex128')
@@ -304,13 +311,14 @@ class FFTW1DReal2Complex(object):
 
         if isinstance(arg, int):
             n = arg
-            shapeX = [n]
-            shapeK = [n//2+1]
+            shapeX = (n,)
+            shapeK = (n//2+1,)
         else:
             n = arg[axis]
             shapeX = arg
             shapeK = list(copy(arg))
             shapeK[axis] = n//2+1
+            shapeK = tuple(shapeK)
 
         if n % 2 != 0:
             raise ValueError('n should be even')

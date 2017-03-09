@@ -16,24 +16,17 @@ FluidDyn
    :target: https://codecov.io/bb/fluiddyn/fluiddyn/branch/default/
    :alt: Code coverage
 
-FluidDyn is a framework for studying fluid dynamics. Most of the features are
-actually implemented in other packages (`fluidlab
-<http://fluidlab.readthedocs.io>`_, `fluidimage
-<http://fluidimage.readthedocs.io>`_, `fluidsim
-<http://fluidsim.readthedocs.io>`_). The base package fluiddyn contains basic
-utilities.
+FluidDyn is a framework for research and teaching in fluid dynamics. The Python
+package fluiddyn contains basic utilities (file io, figures, clusters, mpi,
+etc.).  Most of the features of the FluidDyn project are actually implemented
+in `other packages <https://bitbucket.org/fluiddyn>`_ (in particular in
+`fluidlab <http://fluidlab.readthedocs.io>`_, `fluidimage
+<http://fluidimage.readthedocs.io>`_ and `fluidsim
+<http://fluidsim.readthedocs.io>`_).
 
-FluidDyn is the evolution of two other codes previously developed by `Pierre
-Augier <http://www.legi.grenoble-inp.fr/people/Pierre.Augier/>`_ (CNRS
-researcher at `LEGI <http://www.legi.grenoble-inp.fr>`_, Grenoble): Solveq2d (a
-numerical code to solve fluid equations in a periodic two-dimensional space
-with a pseudo-spectral method, developed at KTH, Stockholm) and FluidLab (a
-toolkit to do experiments, developed in the G. K. Batchelor Fluid Dynamics
-Laboratory at DAMTP, University of Cambridge).
-
-*Key words and ambitions*: fluid dynamics research with Python (2.7 or
->= 3.3); modular, object-oriented, collaborative, tested and
-documented, free and open-source software.
+*Key words and ambitions*: fluid dynamics research with Python (2.7 or >= 3.4);
+modular, object-oriented, collaborative, tested and documented, free and
+open-source software.
 
 License
 -------
@@ -46,9 +39,14 @@ french license.
 Installation
 ------------
 
+It is recommended to `install numpy <http://scipy.org/install.html>`_ before
+installing fluiddyn. The simplest way to install fluiddyn is by using pip::
+
+  pip install fluiddyn
+
 You can get the source code from `Bitbucket
-<https://bitbucket.org/fluiddyn/fluiddyn>`_ or from `the Python
-Package Index <https://pypi.python.org/pypi/fluiddyn/>`_.
+<https://bitbucket.org/fluiddyn/fluiddyn>`_ or from `the Python Package Index
+<https://pypi.python.org/pypi/fluiddyn/>`_.
 
 The development mode is often useful. From the root directory, run::
 
@@ -64,3 +62,14 @@ From the root directory::
 Or, from the root directory or any of the "test" directories::
 
   python -m unittest discover
+
+History
+-------
+
+FluidDyn is the evolution of two other codes previously developed by `Pierre
+Augier <http://www.legi.grenoble-inp.fr/people/Pierre.Augier/>`_ (CNRS
+researcher at `LEGI <http://www.legi.grenoble-inp.fr>`_, Grenoble): Solveq2d (a
+numerical code to solve fluid equations in a periodic two-dimensional space
+with a pseudo-spectral method, developed at KTH, Stockholm) and FluidLab (a
+toolkit to do experiments, developed in the G. K. Batchelor Fluid Dynamics
+Laboratory at DAMTP, University of Cambridge).

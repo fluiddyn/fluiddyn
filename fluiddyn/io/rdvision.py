@@ -3,12 +3,13 @@
 
 """
 
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 from builtins import object
 import os
-import configparser
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 
 try:
     from PIL import Image

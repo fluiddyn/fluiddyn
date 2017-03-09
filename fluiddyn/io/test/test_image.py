@@ -30,7 +30,8 @@ class TestImage(unittest.TestCase):
         self.paths = {
             None: 'test_image_none.png',
             'PNG': 'test_image.png',
-            # 'TIFF': 'test_image.tif', TIFF image saving with Pillow gives error
+            #  TIFF image saving with Pillow gives error
+            # 'TIFF': 'test_image.tif',
         }
 
         self.paths_h5 = {

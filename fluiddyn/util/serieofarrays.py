@@ -80,8 +80,7 @@ class SerieOfArrays(object):
         else:
             l = glob(path)
             if len(l) == 0:
-                raise ValueError('The provided path does not exist:\n'
-                                 + path)
+                raise ValueError('The provided path does not exist:\n' + path)
 
             self.path_dir, self.filename_given = os.path.split(l[0])
 

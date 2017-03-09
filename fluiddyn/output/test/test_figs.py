@@ -5,6 +5,7 @@ import os
 from shutil import rmtree
 
 from ..figs import Figures
+from ..util import gradient_colors
 
 
 class TestFigs(unittest.TestCase):
@@ -19,6 +20,10 @@ class TestFigs(unittest.TestCase):
 
     def tearDown(self):
         rmtree(self._work_dir)
+
+    def test_gradient_colors(self):
+        gradient_colors(4)
+        gradient_colors(5)
 
     def test_save(self):
 

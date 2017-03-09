@@ -1,5 +1,5 @@
 """
-Test digiflow module
+Test dantec module
 ====================
 
 """
@@ -8,22 +8,17 @@ import unittest
 import os
 from shutil import rmtree
 
-# import numpy as np
-
-from ..digiflow import DigiflowImage, DigiflowMovie
+from .. import dantec
 
 
-class TestDigiflow(unittest.TestCase):
-    """Test fluiddyn.io.digiflow module."""
+class TestDantex(unittest.TestCase):
+    """Test fluiddyn.io.dantec module."""
     def setUp(self):
-        self._work_dir = 'test_fluiddyn_io_digiflow'
+        self._work_dir = 'test_fluiddyn_io_dantec'
         if not os.path.exists(self._work_dir):
             os.mkdir(self._work_dir)
 
         os.chdir(self._work_dir)
-
-        self.path_dfi = 'myfile.dfi'
-        self.path_dfm = 'myfile.dfm'
 
     def tearDown(self):
         os.chdir('..')

@@ -1,4 +1,12 @@
 
+0.1.0
+-----
+
+- Clean-up code.
+- More unittests (coverage = 60%).
+- Compatible Python 2.7 and Python >= 3.4.
+- fluiddyn.util.easypyfft.
+
 0.0.13
 ------
 

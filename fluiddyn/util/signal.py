@@ -88,7 +88,7 @@ class FunctionLinInterp(object):
 
 
 def deriv(f, x=None, dx=None, method='diff'):
-
+    """Derive a 1D signal."""
     if dx is None:
         dx = np.diff(x)
 
@@ -96,7 +96,6 @@ def deriv(f, x=None, dx=None, method='diff'):
         x = (x[:-1]+x[1:])/2
         return x, np.diff(f) / dx
     elif method == 'convolve':
-
         return np.convolve(f, [1, -1]) / dx
     elif method == 'gaussian_filter':
         return ndimage.gaussian_filter1d(f, sigma=1, order=1, mode='wrap')/dx
@@ -113,7 +112,9 @@ def smooth(x, window_len=11, window='hanning'):
     transient parts are minimized in the begining and end part of the
     output signal.
 
-    input:
+    Parameters
+    ----------
+
         x: the input signal
         window_len: the dimension of the smoothing window; should be
         an odd integer
@@ -121,7 +122,9 @@ def smooth(x, window_len=11, window='hanning'):
         'bartlett', 'blackman'
             flat window will produce a moving average smoothing.
 
-    output:
+    Returns
+    -------
+
         the smoothed signal
 
     example:
@@ -159,7 +162,8 @@ def smooth(x, window_len=11, window='hanning'):
 
     if window not in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
         raise ValueError(
-"Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
+            "Window is on of 'flat', 'hanning', "
+            "'hamming', 'bartlett', 'blackman'")
 
     s = np.r_[x[window_len-1:0:-1], x, x[-1:-window_len:-1]]
     if window == 'flat':  # moving average
@@ -168,7 +172,7 @@ def smooth(x, window_len=11, window='hanning'):
         w = eval('np.'+window+'(window_len)')
 
     y = np.convolve(w/w.sum(), s, mode='valid')
-    return y[(window_len/2-1):-(window_len/2+1)]
+    return y[(window_len//2-1):-(window_len//2+1)]
 
 
 if __name__ == '__main__':

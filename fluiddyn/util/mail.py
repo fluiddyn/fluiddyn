@@ -10,7 +10,6 @@ Provides:
 from __future__ import print_function
 
 import os
-import time
 import smtplib
 import socket
 
@@ -69,8 +68,6 @@ def send_email(subject, txt, address_recipients, address_sender=None,
 
     """
 
-    print(address_recipients)
-    
     if isinstance(address_recipients, str):
         address_recipients = [address_recipients]
 
@@ -91,7 +88,7 @@ def send_email(subject, txt, address_recipients, address_sender=None,
 
     if files is None:
         files = []
-        
+
     # sub parts: the enclosed files
     for path in files:
         # Guess the content type based on the file's extension.  Encoding

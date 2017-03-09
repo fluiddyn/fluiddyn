@@ -11,18 +11,22 @@ Provides:
 """
 
 import csv
-import io as _io
 
 import numpy as np
 
 
-class CSVFile(_io.FileIO):
+class CSVFile(object):
 
     def __init__(self, *args, **kargs):
-        super(CSVFile, self).__init__(*args, **kargs)
-
-        self.reader = csv.DictReader(self)
+        self._textio = open(*args, **kargs)
+        self.reader = csv.DictReader(self._textio)
         self.fieldnames = self.reader.fieldnames
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._textio.close()
 
     def load_as_dict(self, keys=None, skiptimes=0):
         if keys is None:
@@ -54,8 +58,8 @@ class CSVFile(_io.FileIO):
                     dtype = np.int32
                 dtypes.append(dtype)
 
-        self.seek(0)
-        arr = np.loadtxt(self, delimiter=',', skiprows=1+skiptimes,
+        self._textio.seek(0)
+        arr = np.loadtxt(self._textio, delimiter=',', skiprows=1+skiptimes,
                          usecols=usecols).T
 
         ret = {}

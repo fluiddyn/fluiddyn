@@ -92,7 +92,7 @@ class Logger(object):
 
     def send_email(self, name_exception=None, figures=None):
         """Sends the content of the storage file as an email"""
-        with open(self.path, 'rb') as f:
+        with open(self.path, 'r') as f:
             txt = f.read()
 
         if name_exception is None:
@@ -101,7 +101,7 @@ class Logger(object):
             subject = name_exception + ', ' + self.email_title
 
             if os.path.exists(self.path_logerr):
-                with open(self.path_logerr, 'rb') as f:
+                with open(self.path_logerr, 'r') as f:
                     txt += f.read()
 
         if figures is None:
@@ -130,8 +130,8 @@ class Logger(object):
 
 
 if __name__ == '__main__':
-    logger = Logger('storage_file', 'pierre.augier@ens-lyon.org',
-                    'pierre.augier@legi.cnrs.fr',
+    logger = Logger('storage_file', '@ens-lyon.org',
+                    '@legi.cnrs.fr',
                     email_title='itworks', email_delay=9)
     print = logger.print_log
     print('fluiddyn, blablabla')
