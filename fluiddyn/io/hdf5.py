@@ -1,14 +1,13 @@
 """
 IO for HDF5 files (:mod:`fluiddyn.io.hdf5`)
-===============================================
-
-.. currentmodule:: fluiddyn.io.hdf5
-
-Provides the class :class:`H5File`.
+===========================================
 
 .. autoclass:: H5File
    :members:
 
+.. autofunction:: save_variables_h5
+
+.. autofunction:: load_variables_h5
 
 """
 
@@ -115,6 +114,74 @@ class H5File(h5py.File):
                 dict_return[k] = dict_return[k][its]
 
         return dict_return
+
+
+def save_variables_h5(path, variables, names=None):
+    """Save data in `variables` in the file `path`.
+
+    Parameters
+    ----------
+
+    path : str
+
+      Path of the file where the data are saved (has to end with '.py').
+
+    variables : dict
+
+      Contains the variables to be saved.
+
+    names : None or sequence of str.
+
+      If None, all variables in variables are saved, else, only the variables
+      with name in names of the variables to be saved.
+
+    Examples
+    --------
+
+    .. code::
+
+       a = 1
+       b = 'str'
+       c = np.ones(2)
+
+       save_variables_h5('myfile.py', locals(), ('a', 'b', 'c'))
+
+    or from a dictionary::
+
+       d = {'a': 1, 'b': 'str', 'c': np.ones(2)}
+       save_variables_h5('myfile.py', d)
+
+    """
+    if names is not None:
+        variables_all = variables
+        variables = {}
+        for name in names:
+            variables[name] = variables_all[name]
+
+    with h5py.File(path, 'w') as f:
+        for key, value in variables.items():
+            f.create_dataset(key, data=value)
+
+    
+def load_variables_h5(path):
+    """Load files created with the function `save_variables_h5`.
+
+    Parameters
+    ----------
+
+    path : str
+
+      Path towards a hdf5 file saved with `save_variables_h5`.
+
+    """
+
+    variables = {}
+
+    with h5py.File(path, 'r') as f:
+        for key, dataset in f.items():
+            variables[key] = dataset.value
+
+    return variables
 
 
 # if __name__ == '__main__':

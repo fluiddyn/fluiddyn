@@ -17,6 +17,7 @@ provides utilities for input/output to different file formats:
    digiflow
    dantec
    multitiff
+   in_py
    redirect_stdout
 
 """

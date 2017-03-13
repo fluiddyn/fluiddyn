@@ -10,31 +10,32 @@ from shutil import rmtree
 
 import numpy as np
 
-from ..hdf5 import H5File
+from ..hdf5 import H5File, save_variables_h5, load_variables_h5
 
 
 class TestHdf5(unittest.TestCase):
     """Test fluiddyn.io.hdf5 module."""
-    def setUp(self):
-        self._work_dir = 'test_fluiddyn_io_hdf5'
-        if not os.path.exists(self._work_dir):
-            os.mkdir(self._work_dir)
+    @classmethod
+    def setUpClass(cls):
+        cls._work_dir = 'test_fluiddyn_io_hdf5'
+        if not os.path.exists(cls._work_dir):
+            os.mkdir(cls._work_dir)
 
-        os.chdir(self._work_dir)
+        os.chdir(cls._work_dir)
 
-        self.path = 'myfile.h5'
-
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
         os.chdir('..')
-        rmtree(self._work_dir)
+        rmtree(cls._work_dir)
 
     def test_dict(self):
+        path = 'test_dict.h5'
         d = {'a': 1, 'b': 2}
 
-        with H5File(self.path, 'w') as f:
+        with H5File(path, 'w') as f:
             f.save_dict('d', d)
 
-        with H5File(self.path) as f:
+        with H5File(path) as f:
             d1 = f.load_dict('d')
 
         self.assertEqual(d, d1)
@@ -60,6 +61,32 @@ class TestHdf5(unittest.TestCase):
 
             f.load(times_slice=[0, 2, 0.1])
 
+    def test_functions(self):
+        path = 'test_functions0.h5'
 
+        a = 1
+        b = 'str'
+        c = np.ones(2)
+        d = 10
+        
+        save_variables_h5(path, locals(), ('a', 'b', 'c'))
+        variables1 = load_variables_h5(path)
+
+        self.assertEqual(a, variables1['a'])
+        self.assertEqual(b, variables1['b'])
+        self.assertTrue(np.allclose(c, variables1['c']))
+        
+        path = 'test_functions1.h5'
+        variables = {'a': a, 'b': b, 'c': c}
+        save_variables_h5(path, variables)
+        variables2 = load_variables_h5(path)
+
+        self.assertEqual(a, variables2['a'])
+        self.assertEqual(b, variables2['b'])
+        self.assertTrue(np.allclose(c, variables2['c']))
+        
+
+        
+            
 if __name__ == '__main__':
     unittest.main()
