@@ -10,10 +10,10 @@ from glob import glob
 from shutil import rmtree, copy
 
 from ..ns3d import NS3DFieldFile, NS3DForcingInfoFile
+from ..redirect_stdout import stdout_redirected
 
 input_dir = os.path.join(os.path.dirname(__file__), 'ns3d_files')
 input_files = glob(os.path.join(input_dir, '*'))
-
 
 
 class TestNS3D(unittest.TestCase):
@@ -46,14 +46,17 @@ class TestNS3D(unittest.TestCase):
         self.assertEqual(f_l.byteorder, 'little')
         self.assertEqual(f_b.byteorder, 'big')
 
-        f_l.save_with_byteorder_changed()
+        with stdout_redirected():
+            f_l.save_with_byteorder_changed()
 
     def test_field(self):
         f = NS3DFieldFile(self.path_field)
         f.read_xy()
         f.read_field()
-        f.save_with_byteorder_changed()
-        f.save_with_resol_changed(2, 2, 2)
+        with stdout_redirected():
+            f.save_with_byteorder_changed()
+            f.save_with_resol_changed(2, 2, 2)
+
 
 if __name__ == '__main__':
     unittest.main()
