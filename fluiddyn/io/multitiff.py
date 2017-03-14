@@ -15,14 +15,19 @@ import sys
 import time
 import os
 import glob
+import io
 from math import ceil, log10
 
 try:
+    import PIL
     from PIL import Image
+    if PIL.__version__ < '3.4.0':
+        print('imsave for multiframe TIFF not supported.')
 except ImportError:
     pass
 
 from fluiddyn.util.query import query_yes_no
+from .image import _image_from_array
 
 
 def _should_we_stop():
@@ -43,6 +48,28 @@ def _save_new_file(im, base_path, outputext, erase=False):
         with im.convert(mode='I') as new_im:
             new_im.save(path_save)
     return True
+
+
+def imsave(path, *arrays, as_int=False):
+    """Save a multi-frame image sequence.
+
+    As of now, a hackish method is used to create an intermediate GIF object.
+    PIL/Pillow has no interface to create multiframe TIFF objects, but allows
+    saving as multiframe TIFF files.
+
+    .. cf. [1] https://github.com/python-pillow/Pillow/issues/733
+           [2] https://github.com/python-pillow/Pillow/issues/2401
+
+    """
+    im_list = [_image_from_array(a, as_int) for a in arrays]
+    gif = im_list.pop(0)
+
+    with io.BytesIO() as output:
+        gif.save(output, format='GIF', save_all=True, append_images=im_list)
+        gif.close()
+
+        with Image.open(output) as im:
+            im.save(path, format='TIFF', save_all=True)
 
 
 def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',

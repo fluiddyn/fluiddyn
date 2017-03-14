@@ -30,15 +30,7 @@ def imread(path, *args, **kwargs):
         return _imread(path, *args, **kwargs)
 
 
-def imsave(path, array, format=None, as_int=False):
-    """
-    Alternative implementation of `scipy.misc.imsave` function.
-    Detects a compatible format based on the array dtype, rather than relying
-    on the file extension.
-
-    .. WARNING: setting `as_int=True` might lead to loss of precision.
-
-    """
+def _image_from_array(array, as_int):
     if as_int:
         if array.max() < 256:
             mode = 'L'
@@ -62,9 +54,22 @@ def imsave(path, array, format=None, as_int=False):
     # im = toimage(arr=array, mode=mode, channel_axis=2)
 
     im = Image.fromarray(array, mode)
+    return im
+
+
+def imsave(path, array, format=None, as_int=False):
+    """
+    Alternative implementation of `scipy.misc.imsave` function.
+    Detects a compatible format based on the array dtype, rather than relying
+    on the file extension.
+
+    .. WARNING: setting `as_int=True` might lead to loss of precision.
+
+    """
+    im = _image_from_array(array, as_int)
 
     if format is None:
-        if mode == 'F' or \
+        if im.mode == 'F' or \
            any([path.endswith(ext) for ext in ('.tif', '.tiff')]):
             format = 'TIFF'
         else:
