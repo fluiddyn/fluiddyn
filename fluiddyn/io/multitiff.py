@@ -50,15 +50,24 @@ def _save_new_file(im, base_path, outputext, erase=False):
     return True
 
 
-def imsave(path, *arrays, as_int=False):
+def imsave(path, arrays, as_int=False):
     """Save a multi-frame image sequence.
 
     As of now, a hackish method is used to create an intermediate GIF object.
     PIL/Pillow has no interface to create multiframe TIFF objects, but allows
     saving as multiframe TIFF files.
 
-    .. cf. [1] https://github.com/python-pillow/Pillow/issues/733
-           [2] https://github.com/python-pillow/Pillow/issues/2401
+    cf. [1] https://github.com/python-pillow/Pillow/issues/733
+        [2] https://www.bountysource.com/issues/41996550-creating-a-multiframe-image-object
+
+    Parameters
+    ----------
+    path : str
+        Output file name or full path.
+    arrays : array-like
+        A iterable containing multiple 2D numpy arrays, representing frames.
+    as_int : bool
+        Convert to integer or not.
 
     """
     im_list = [_image_from_array(a, as_int) for a in arrays]
