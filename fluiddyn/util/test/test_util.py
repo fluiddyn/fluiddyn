@@ -11,6 +11,7 @@ import unittest
 import numpy as np
 
 from .. import util
+from ...io.redirect_stdout import stdout_redirected
 
 
 class TestUtil(unittest.TestCase):
@@ -25,14 +26,15 @@ class TestUtil(unittest.TestCase):
         # util.create_object_from_file()
         util.run_from_ipython()
 
-        util.print_memory_usage('test')
-
-        util.print_size_in_Mo(np.arange(4))
+        with stdout_redirected():
+            util.print_memory_usage('test')
+            util.print_size_in_Mo(np.arange(4))
 
         with util.print_options():
             pass
 
         util.config_logging()
+
 
 if __name__ == '__main__':
     unittest.main()

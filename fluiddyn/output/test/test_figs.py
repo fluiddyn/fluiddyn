@@ -6,6 +6,7 @@ from shutil import rmtree
 
 from ..figs import Figures
 from ..util import gradient_colors
+from ...io.redirect_stdout import stdout_redirected
 
 
 class TestFigs(unittest.TestCase):
@@ -29,7 +30,8 @@ class TestFigs(unittest.TestCase):
 
         fig = self.figures.new_figure(
             'figure0.png', fig_width_mm=40, fig_height_mm=40)
-        fig.saveifhasto()
+        with stdout_redirected():
+            fig.saveifhasto()
 
 
 if __name__ == '__main__':

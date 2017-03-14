@@ -2,6 +2,7 @@
 import unittest
 import os
 from shutil import rmtree
+from runpy import run_path
 
 import numpy as np
 
@@ -37,10 +38,11 @@ class TestInPy(unittest.TestCase):
 
         d = {'a' : a, 'b': b, 'c': d}
         save_in_py('file_dict.py', d)
-        import file_dict as fd
-        self.assertEqual(d['a'], fd.a)
-        self.assertTrue(np.allclose(d['b'], fd.b))
-        self.assertTrue(np.allclose(d['c'], fd.c))
+
+        fd = run_path('file_dict.py')
+        self.assertEqual(d['a'], fd['a'])
+        self.assertTrue(np.allclose(d['b'], fd['b']))
+        self.assertTrue(np.allclose(d['c'], fd['c']))
 
 if __name__ == '__main__':
     unittest.main()

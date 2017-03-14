@@ -46,7 +46,7 @@ def save_in_py(path, variables, names=None):
     """
     if not path.endswith('.py'):
         raise ValueError
-    
+
     if names is not None:
         variables_all = variables
         variables = {}
@@ -55,6 +55,6 @@ def save_in_py(path, variables, names=None):
 
     np.set_printoptions(threshold=np.nan)
     with open(path, 'w') as f:
-        f.write('from numpy import *\n')
+        f.write('from numpy import array, nan\n')
         for key, value in variables.items():
             f.write(key + ' = ' + repr(value) + '\n')
