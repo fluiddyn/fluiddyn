@@ -37,7 +37,7 @@ class TestMultiTIFF(unittest.TestCase):
         self.n_frames = 5
         self.path = 'test.tif'
         arrays = [im(2 ** 8 - 1, np.int8) for i in range(self.n_frames)]
-        imsave(self.path, *arrays, as_int=True)
+        imsave(self.path, arrays, as_int=True)
 
     def tearDown(self):
         os.chdir('..')

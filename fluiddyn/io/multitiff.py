@@ -57,8 +57,8 @@ def imsave(path, arrays, as_int=False):
     PIL/Pillow has no interface to create multiframe TIFF objects, but allows
     saving as multiframe TIFF files.
 
-    cf. [1] https://github.com/python-pillow/Pillow/issues/733
-        [2] https://www.bountysource.com/issues/41996550-creating-a-multiframe-image-object
+    .. cf. [1] https://github.com/python-pillow/Pillow/issues/733
+           [2] https://github.com/python-pillow/Pillow/issues/2401
 
     Parameters
     ----------
