@@ -6,9 +6,10 @@ Utilities to query (:mod:`fluiddyn.util.query`)
 
 """
 
-from builtins import input
+import builtins
 import sys
 import subprocess
+
 
 def call_bash(commands):
     subprocess.call(['/bin/bash', '-c', commands])
@@ -48,7 +49,7 @@ def query_yes_no(question, default="yes"):
     while True:
         sys.stdout.write(question + prompt)
         sys.stdout.flush()
-        choice = input().lower()
+        choice = builtins.input().lower()
         if default is not None and choice == '':
             return valid[default]
         elif choice in valid:
@@ -63,7 +64,7 @@ def query(question, default=None):
     """Query an anwer to a general question."""
     sys.stdout.write(question)
 
-    answer = input()
+    answer = builtins.input()
 
     if default is not None and answer == '':
         return default
@@ -86,8 +87,8 @@ def num_from_str(s):
 def query_number(question):
     """Query a number."""
     while True:
-        sys.stdout.write(question+' ')
-        answer = eval(input())
+        sys.stdout.write(question + ' ')
+        answer = builtins.input()
         try:
             return num_from_str(answer)
         except ValueError:

@@ -6,7 +6,7 @@ Test SLURM and SNIC clusters
 import unittest
 import os
 from shutil import rmtree
-from .. import slurm, snic
+from .. import slurm, snic, cines
 from ...io import stdout_redirected
 
 
@@ -24,7 +24,7 @@ class ClusterSlurmMod(slurm.ClusterSlurm):
     def check_slurm(self):
         pass
 
-    def check_name_cluster(self, env):
+    def check_name_cluster(self, env='HOSTNAME'):
         os.environ[env] = self.name_cluster
         super(ClusterSlurmMod, self).check_name_cluster(env)
 
@@ -74,7 +74,8 @@ class SlurmTestCase(unittest.TestCase):
                 bash=False, email='johndoe@example.com', interactive=True)
 
         if os.path.exists(launcher):
-            raise ValueError('SLURM launching script {} was left behind'.format(launcher))
+            raise ValueError(
+                'SLURM launching script {} was left behind'.format(launcher))
 
 
 class BeskowMod(ClusterSlurmMod, snic.Beskow):
@@ -102,6 +103,15 @@ class AbiskoMod(ClusterSlurmMod, snic.Abisko):
 class AbiskoTestCase(SlurmTestCase):
     def setUp(self):
         super(AbiskoTestCase, self).setUp(AbiskoMod)
+
+
+class OccigenMod(ClusterSlurmMod, cines.Occigen):
+    pass
+
+
+class OccigenTestCase(SlurmTestCase):
+    def setUp(self):
+        super(OccigenTestCase, self).setUp(OccigenMod)
 
 
 if __name__ == '__main__':

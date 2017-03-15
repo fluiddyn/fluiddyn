@@ -83,11 +83,11 @@ class Logger(object):
         with open(self.path, 'a') as f:
             f.write(' '.join([str(arg) for arg in args]) + end)
 
-    def send_email_if_has_to(self, figures=None):
+    def send_email_if_has_to(self, name_exception=None, figures=None):
         """Sends an email if no email was sent recently."""
         if self.has_to_send_email:
             if time.time() - self.time_last_email >= self.email_delay:
-                self.send_email(figures=figures)
+                self.send_email(name_exception=name_exception, figures=figures)
                 self.time_last_email = time.time()
 
     def send_email(self, name_exception=None, figures=None):

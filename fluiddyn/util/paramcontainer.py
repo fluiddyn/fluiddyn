@@ -189,7 +189,7 @@ class ParamContainer(object):
 
     def _print_doc(self):
         print(self._doc)
-        
+
     def _set_attrib(self, key, value):
         """Add an attribute to the container."""
         self.__dict__[key] = value
@@ -237,6 +237,9 @@ class ParamContainer(object):
 
         for key in self._attribs:
             elemxml.attrib[key] = _as_str(self.__dict__[key])
+
+        if hasattr(self, '_value_text'):
+            elemxml.text = str(self._value_text)
 
         for key in self._tag_children:
             child = self.__dict__[key]
@@ -344,7 +347,7 @@ class ParamContainer(object):
                             value[i] = v.encode('utf8')
                         except AttributeError:
                             pass
-                
+
                 try:
                     hdf5_object.attrs.create(key, value)
                 except TypeError:

@@ -46,9 +46,6 @@ def produce_text_element(elem, level=0):
     return '\n'.join(lines)+'\n'
 
 
-
-
-
 def get_position_first_letter(text):
     i = 0
     pos_space = text.find(' ', i)
@@ -77,7 +74,6 @@ def format_too_long_text(text, lengthmax=79):
     lines.append(line)
 
     return '\n'.join(lines)
-
 
 
 def get_indent_after_tag(text):
@@ -119,12 +115,10 @@ def format_too_long_tagstart(text, lengthmax=79):
 
 if __name__ == '__main__':
 
-
     try:
         from lxml import etree
     except ImportError:
         import xml.etree.ElementTree as etree
-
 
     xmltext = """
 <data>
@@ -160,9 +154,6 @@ if __name__ == '__main__':
 
 """
 
-
-
     elem = etree.fromstring(xmltext)
-
 
     print(produce_text_element(elem))

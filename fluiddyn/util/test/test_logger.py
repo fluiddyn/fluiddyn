@@ -4,6 +4,8 @@ import os
 import unittest
 import smtplib
 
+import matplotlib.pyplot as plt
+
 from ..logger import Logger
 
 
@@ -27,11 +29,15 @@ class TestFFTW1DReal2Complex(unittest.TestCase):
     def test_logger(self):
         logger = Logger('storage_file.txt', 'test@test.org',
                         'test@test.com',
-                        email_title='test', email_delay=1)
+                        email_title='test', email_delay=0.02)
         logger.print_log('')
 
         with self.assertRaises(UnitTestException):
-            logger.send_email_if_has_to()
+            logger.send_email_if_has_to(
+                name_exception='', figures=[plt.figure()])
+
+        with self.assertRaises(UnitTestException):
+            raise UnitTestException
 
 
 if __name__ == '__main__':

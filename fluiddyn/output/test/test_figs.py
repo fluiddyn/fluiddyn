@@ -4,9 +4,18 @@ import unittest
 import os
 from shutil import rmtree
 
-from ..figs import Figures
+from .. import figs
+from ..figs import Figures, show
 from ..util import gradient_colors
 from ...io.redirect_stdout import stdout_redirected
+
+def do_nothing(*args):
+    pass
+
+
+figs.plt.show = do_nothing
+figs.plt.ion = do_nothing
+figs.plt.ioff = do_nothing
 
 
 class TestFigs(unittest.TestCase):
@@ -32,7 +41,7 @@ class TestFigs(unittest.TestCase):
             'figure0.png', fig_width_mm=40, fig_height_mm=40)
         with stdout_redirected():
             fig.saveifhasto()
-
+        show()
 
 if __name__ == '__main__':
     unittest.main(exit=True)

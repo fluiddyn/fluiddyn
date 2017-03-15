@@ -10,6 +10,10 @@ Provides:
    :members:
    :private-members:
 
+.. autoclass:: TimerIrregular
+   :members:
+   :private-members:
+
 """
 
 from __future__ import division, print_function
@@ -19,21 +23,21 @@ from builtins import object
 import time
 
 
-def parse_timestamp(str):
+def parse_timestamp(timestr):
     """Converts a timestamp to a time.struct_time object."""
 
     try:
-        time_struct = time.strptime(str, "%d-%H:%M:%S")
+        time_struct = time.strptime(timestr, "%d-%H:%M:%S")
     except ValueError:
-        time_struct = time.strptime(str, "%H:%M:%S")
+        time_struct = time.strptime(timestr, "%H:%M:%S")
 
     return time_struct
 
 
 def time_gteq(timestr1, timestr2):
-    """Compares two timestamps strings and returns a greater than or equals comparison."""
+    """Compares two timestamps strings."""
 
-    time1 = parse_timestamp(timestr1) 
+    time1 = parse_timestamp(timestr1)
     time2 = parse_timestamp(timestr2)
     return (time1 >= time2)
 

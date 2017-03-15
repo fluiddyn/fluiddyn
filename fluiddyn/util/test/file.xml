@@ -1,0 +1,50 @@
+<data>
+  blablabla   blablabla   blablabla   blablabla 
+  <country name="Liechtenstein">
+    <rank updated="yes">2</rank>
+    <year>2008</year>
+    <gdppc>141100</gdppc>
+    <neighbor name="Austria" direction="E" attr1="long long long" attr2="long long long" attr3="long long long">
+      
+      blablabla bliblibli bloublou blublu bloblo blablabla bliblibli bloublou blublu bloblo blablabla bliblibli bloublou blublu bloblo
+
+    </neighbor>
+    
+    <neighbor name="Switzerland" direction="W" longlonglongname="long long long string"/>
+  </country>
+  
+  <country name="Singapore">
+
+    <rank updated="yes">5 and a text which can actually be very very long
+    something quite long long long long long.</rank>
+    <year>2011</year>
+    <gdppc>59900</gdppc>
+    <neighbor name="Malaysia" direction="N"/>
+  </country>
+  <country name="Panama">
+    <rank updated="yes">69</rank>
+    <year>2011</year>
+    <gdppc>13600</gdppc>
+    <neighbor name="Costa Rica" direction="W"/>
+    <neighbor name="Colombia" direction="E"/>
+  </country>
+
+  <Points>
+    <Point index="0">
+      0
+    </Point>
+    <Point index="1">
+      1
+    </Point>
+  </Points>
+  <MyText quality="good">
+    Article premier
+    Le but de la société est le bonheur commun. Le gouvernement est institué pour garantir à l'homme la jouissance de ses droits naturels et imprescriptibles.
+    Article 2
+    Ces droits sont l'égalité, la liberté, la sûreté, la propriété.
+    Article 3
+    Tous les hommes sont égaux par nature et devant la loi.
+    Article 4
+    La loi est l'expression libre et solennelle de la volonté générale; elle est la même pour tous, soit qu'elle protège, soit qu'elle punisse; elle ne peut ordonner que ce qui est juste et utile à la société; elle ne peut défendre ce qui lui est nuisible."
+  </MyText>
+</data>

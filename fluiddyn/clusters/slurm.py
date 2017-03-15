@@ -59,7 +59,8 @@ class ClusterSlurm(object):
 
     def check_name_cluster(self, env='HOSTNAME'):
         if self.name_cluster not in os.getenv(env):
-            raise ValueError('Cluster name mismatch detected; expected ' + self.name_cluster)
+            raise ValueError('Cluster name mismatch detected; expected ' +
+                             self.name_cluster)
 
     def submit_script(self, path, path_resume=None, name_run='fluiddyn',
                       path_launching_script=None, retain_script=True,

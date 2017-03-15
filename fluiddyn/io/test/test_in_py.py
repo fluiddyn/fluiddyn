@@ -36,7 +36,7 @@ class TestInPy(unittest.TestCase):
         self.assertTrue(np.allclose(b, fg.b))
         self.assertTrue(np.allclose(c, fg.c))
 
-        d = {'a' : a, 'b': b, 'c': d}
+        d = {'a': a, 'b': b, 'c': d}
         save_in_py('file_dict.py', d)
 
         fd = run_path('file_dict.py')

@@ -58,11 +58,13 @@ def time_as_str(decimal=0):
 def copy_me_in(dest='~'):
     """Copy the file from where this function is called."""
     stack = inspect.stack()
+    # bug Python 2 when using os.chdir
     path_caller = stack[1][1]
     name_file = os.path.basename(path_caller)
-    name_file_dest = name_file + '_' + time_as_str()
-    shutil.copyfile(path_caller, os.path.join(dest, name_file_dest))
-    return path_caller
+    path_dest = os.path.abspath(os.path.expanduser(
+        os.path.join(dest, name_file + '_' + time_as_str())))
+    shutil.copyfile(path_caller, path_dest)
+    return path_dest
 
 
 def get_pathfile_from_strpath(str_path, ext='h5'):
