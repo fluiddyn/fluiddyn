@@ -1,4 +1,10 @@
 
+0.1.1
+-----
+
+- More unittests (coverage = 76%).
+- read/write functions h5py and in_py.
+
 0.1.0
 -----
 
