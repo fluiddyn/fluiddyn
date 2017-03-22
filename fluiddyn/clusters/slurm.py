@@ -230,7 +230,6 @@ class ClusterSlurm(object):
 
         logfile = 'SLURM.{}'.format(name_run)
         logfile_stdout = logfile + '.${SLURM_JOBID}.stdout'
-        logfile_stderr = logfile + '.${SLURM_JOBID}.stderr'
 
         txt = ('#!/bin/bash -l\n\n')
 
@@ -250,8 +249,8 @@ class ClusterSlurm(object):
             txt += '#SBATCH --mail-type=FAIL\n'
             txt += '#SBATCH --mail-user={}\n'.format(email)
 
-        txt += '#SBATCH -e {}.%J.stderr\n'.format(logfile_stderr)
-        txt += '#SBATCH -o {}.%J.stdout\n\n'.format(logfile_stdout)
+        txt += '#SBATCH -e {}.%J.stderr\n'.format(logfile)
+        txt += '#SBATCH -o {}.%J.stdout\n\n'.format(logfile)
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
         txt += (
