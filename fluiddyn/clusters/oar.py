@@ -18,6 +18,7 @@ from builtins import object
 import os
 import datetime
 import stat
+from sys import version_info as version
 
 from . import subprocess
 from ..util.query import run_asking_agreement, call_bash
@@ -31,8 +32,10 @@ class ClusterOAR(object):
     def __init__(self):
         self.commands_setting_env = [
             'source /etc/profile',
-            'module load python/2.7.9',
-            'source /home/users/$USER/mypy2.7/bin/activate']
+            'module load python/{}.{}.{}'.format(
+                version.major, version.minor, version.micro),
+            'source /home/users/$USER/opt/mypy{}.{}/bin/activate'.format(
+                version.major, version.minor)]
 
         self.useful_commands = (
             'oarsub -S script.sh',

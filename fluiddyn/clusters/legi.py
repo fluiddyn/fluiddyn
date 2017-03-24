@@ -47,15 +47,6 @@ class Calcul(ClusterOAR):
     frontends = ['nrj1sv223', 'nrj1sv224']
     job_count = 0
 
-    def __init__(self):
-
-        super(Calcul, self).__init__()
-
-        self.commands_setting_env = [
-            'source /etc/profile',
-            'module load python/2.7.9',
-            'source /home/users/$USER/opt/mypy2.7/bin/activate']
-
     def stall(self, name_run='fluiddyn', stall_after=1, t_sleep=30):
         """Stall job submission to wait for similar jobs to complete.
 
@@ -78,6 +69,7 @@ class Calcul(ClusterOAR):
             print('\rWaiting for', name_run, 'to finish...',
                   tnow - tstart, 'seconds', end=' ')
             time.sleep(t_sleep)
+
 
 class Calcul7(Calcul):
     name_cluster = 'calcul7'
