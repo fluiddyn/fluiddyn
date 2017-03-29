@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<ImaDoc>
+<Heading source="RDVision">
+<Project>16MILESTONE</Project>
+<DateExp>2016-06-01</DateExp>
+</Heading>
+<Camera source="RDVision">
+<CameraName>Dalsa 1M60 Panthera1</CameraName>
+<Objective/>
+<Aperture>0.00</Aperture>
+<OpticalFilter/>
+<ImageGain>16</ImageGain>
+<ImageOffset>0</ImageOffset>
+<TriggerMode>manual</TriggerMode>
+<TimeUnit>s</TimeUnit>
+<ExposureTime unit="TimeUnit">0.060</ExposureTime>
+<BurstTiming>
+<Time unit="TimeUnit">0</Time>
+<Dti unit="TimeUnit">0.100</Dti>
+<NbDti>2599</NbDti>
+</BurstTiming>
+<TimeOrigin>2016-06-01T17:40:25:153</TimeOrigin>
+</Camera>
+<TranslationMotor source="RDVision">
+<Nbslice></Nbslice>
+<ZStart/>
+<ZEnd/>
+</TranslationMotor>
+<Illumination source="manual">
+<SourceName></SourceName>
+<SourcePower unit="watt"></SourcePower>
+<MirrorFrequency unit="Hertz"></MirrorFrequency>
+<MirrorAmplitude unit="volt"></MirrorAmplitude>
+<MirrorOffset unit="volt"></MirrorOffset>
+</Illumination>
+<Tracor source="manual">
+<ParticleName></ParticleName>
+<ParticleDiameter unit="micron"></ParticleDiameter>
+<ParticleDensity unit=""></ParticleDensity>
+<DyeName></DyeName>
+<DyeConcentration unit="mg/l"></DyeConcentration>
+<DyeFlowRate unit="mg/l"></DyeFlowRate>
+</Tracor>
+</ImaDoc>

@@ -1,0 +1,22 @@
+[Sequence Settings]
+Sequence name=Dalsa2
+CommentSize=0
+Comment=
+Number of files=2
+Mode=2
+Format=1
+Agregat=1
+Width=1024
+Height=1024
+BytesPerPixel=2
+BitsPerPixel=12
+Image dimension=1
+FramePerSecond=-1
+Bin directory=G:\17SLOCET\testt\2017-03-21T16.06.23
+Bin repertoire=2017-03-21T16.06.23
+Bin File=Falcon_Master_Dalsa_4M180_
+Start Time=16:06:23
+TrigType=-1
+TrigTime=0
+TimeTrig=1643189.376473
+T0=1643189.376473

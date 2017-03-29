@@ -127,12 +127,14 @@ class ParamContainer(object):
 
     """
     def __init__(self, tag=None, attribs=None,
-                 path_file=None, elemxml=None, hdf5_object=None):
+                 path_file=None, elemxml=None, hdf5_object=None, doc='',
+                 parent=None):
 
-        self._set_internal_attr('_attribs', set())
-        self._set_internal_attr('_tag_children', set())
-        self._set_doc('')
-        
+        self._set_internal_attr('_key_attribs', list())
+        self._set_internal_attr('_tag_children', list())
+        self._set_internal_attr('_parent', parent)
+        self._set_doc(doc)
+
         if path_file is not None:
             self._set_internal_attr('_path_file', path_file)
             if path_file.endswith('.xml'):
@@ -154,7 +156,7 @@ class ParamContainer(object):
             self._set_attribs(attribs)
 
     def __setattr__(self, key, value):
-        if key in self._attribs:
+        if key in self._key_attribs:
             self._set_internal_attr(key, value)
         elif key in self._tag_children:
             if not isinstance(value, ParamContainer):
@@ -163,7 +165,7 @@ class ParamContainer(object):
         else:
             raise AttributeError(
                 key + ' is not already set in ' + self._tag +
-                '.\nThe attributes are: ' + str(self._attribs) +
+                '.\nThe attributes are: ' + str(self._key_attribs) +
                 '\nTo set a new attribute, use _set_attrib or _set_attribs.')
 
     def __getattr__(self, attr):
@@ -173,7 +175,7 @@ class ParamContainer(object):
         else:
             raise AttributeError(
                 attr + ' is not an attribute of ' + self._tag +
-                '.\nThe attributes are: ' + str(list(self._attribs)))
+                '.\nThe attributes are: ' + str(self._key_attribs))
 
     def __setitem__(self, key, value):
         self.__setattr__(key, value)
@@ -188,26 +190,60 @@ class ParamContainer(object):
         self._set_internal_attr('_doc', doc)
 
     def _print_doc(self):
+        full_tag = self._make_full_tag()
+        txt = 'Documentation for ' + full_tag
+
+        nb_points = full_tag.count('.')
+        if nb_points == 0:
+            char = '='
+        elif nb_points == 1:
+            char = '-'
+        elif nb_points == 2:
+            char = '~'
+        else:
+            char = '^'
+
+        print(txt + '\n' + char * len(txt))
+        if len(self._doc) > 0 and not self._doc.startswith('\n'):
+            print('')
         print(self._doc)
+        if len(self._doc) > 0 and not self._doc.endswith('\n'):
+            print('')
+
+    def _print_docs(self):
+        self._print_doc()
+        for tag in self._tag_children:
+            self[tag]._print_docs()
+
+    def _make_full_tag(self):
+        if self._parent is None:
+            return self._tag
+        else:
+            return self._parent._make_full_tag() + '.' + self._tag
 
     def _set_attrib(self, key, value):
         """Add an attribute to the container."""
         self.__dict__[key] = value
-        self._attribs.add(key)
+        self._key_attribs.append(key)
 
     def _set_attribs(self, d):
         """Add the attributes to the container."""
         for k, v in list(d.items()):
             self._set_attrib(k, v)
 
+    def _get_key_attribs(self):
+        self._key_attribs.sort()
+        return self._key_attribs
+
     def _set_child(self, tag, attribs=None):
         """Add a child (of the same class) to the container."""
         if tag in self.__dict__:
             raise ValueError('The tag "{}" is already used.'.format(tag))
-        self.__dict__[tag] = self.__class__(tag=tag, attribs=attribs)
-        self._tag_children.add(tag)
+        self.__dict__[tag] = self.__class__(
+            tag=tag, attribs=attribs, parent=self)
+        self._tag_children.append(tag)
 
-    def _set_as_child(self, child):
+    def _set_as_child(self, child, change_parent=True):
         """Associate a ParamContainer as a child."""
         if not isinstance(child, ParamContainer):
             raise ValueError('child should be a ParamContainer instance.')
@@ -215,14 +251,22 @@ class ParamContainer(object):
             raise ValueError(
                 'The tag "{}" is already used.'.format(child._tag))
         self.__dict__[child._tag] = child
-        self._tag_children.add(child._tag)
+        if change_parent:
+            child._set_internal_attr('_parent', self)
+        self._tag_children.append(child._tag)
 
     def _make_dict(self):
-        d = {'_tag': self._tag, '_attribs': self._attribs,
-             '_tag_children': self._tag_children}
+        self._key_attribs.sort()
+        d = {'tag': self._tag, 'key_attribs': self._key_attribs,
+             'tag_children': self._tag_children}
 
-        for k in self._attribs.union(self._tag_children):
-            d[k] = self.__dict__[k]
+        attribs = d['attribs'] = []
+        for k in self._key_attribs:
+            attribs.append(self.__dict__[k])
+
+        children = d['children'] = []
+        for k in self._tag_children:
+            children.append(self.__dict__[k]._make_dict())
 
         return d
 
@@ -235,7 +279,8 @@ class ParamContainer(object):
         else:
             elemxml = etree.SubElement(parentxml, self._tag)
 
-        for key in self._attribs:
+        self._key_attribs.sort()
+        for key in self._key_attribs:
             elemxml.attrib[key] = _as_str(self.__dict__[key])
 
         if hasattr(self, '_value_text'):
@@ -277,6 +322,8 @@ class ParamContainer(object):
         for k, v in list(elemxml.attrib.items()):
             self._set_attrib(k, _as_value(v))
 
+        self._key_attribs.sort()
+
         tags_multiple = []
 
         for childxml in elemxml:
@@ -295,7 +342,7 @@ class ParamContainer(object):
 
             self._set_internal_attr(
                 tag, self.__class__(elemxml=childxml))
-            self._tag_children.add(tag)
+            self._tag_children.append(tag)
 
     def _save_as_xml(self, path_file=None, comment=None):
         """Save the xml text in a file."""
@@ -331,7 +378,7 @@ class ParamContainer(object):
                 f.attrs.create('_tag', tag)
                 self._save_as_hdf5(hdf5_object=f)
         elif path_file is None:
-            for key in self._attribs:
+            for key in self._key_attribs:
                 value = self.__dict__[key]
                 if value is None:
                     value = 'None'
@@ -380,7 +427,7 @@ class ParamContainer(object):
                         v[i] = v2.decode('utf8')
                     except AttributeError:
                         pass
-        
+
         tag = hdf5_object.name.split('/')[-1]
 
         if tag == '':
@@ -397,11 +444,11 @@ class ParamContainer(object):
 
         self._set_internal_attr('_tag', tag)
 
-        # detect None attributes 
+        # detect None attributes
         for k, v in list(attrs.items()):
             if isinstance(v, str) and v == 'None':
                 attrs[k] = None
-        
+
         for key in list(attrs.keys()):
             if ' ' in key:
                 attrs[key.replace(' ', '_')] = attrs.pop(key)
@@ -415,7 +462,7 @@ class ParamContainer(object):
             elif isinstance(hdf5_object[tag], h5py.Group):
                 self.__dict__[tag] = self.__class__(
                     hdf5_object=hdf5_object[tag])
-                self._tag_children.add(tag)
+                self._tag_children.append(tag)
 
 
 def tidy_container(cont):
@@ -425,10 +472,9 @@ def tidy_container(cont):
     newtag = convert_capword_to_lowercaseunderscore(cont._tag)
     cont._set_internal_attr('_tag', newtag)
 
-    for oldtag in cont._tag_children:
+    for i, oldtag in enumerate(cont._tag_children):
         newtag = convert_capword_to_lowercaseunderscore(oldtag)
-        cont._tag_children.remove(oldtag)
-        cont._tag_children.add(newtag)
+        cont._tag_children[i] = newtag
         cont.__dict__[newtag] = cont.__dict__.pop(oldtag)
 
         if isinstance(cont.__dict__[newtag], str):
@@ -438,7 +484,7 @@ def tidy_container(cont):
     tag_child_to_remove = []
     for tag in cont._tag_children:
         child = cont.__dict__[tag]
-        if len(child._tag_children) == 0 and len(child._attribs) == 0:
+        if len(child._tag_children) == 0 and len(child._key_attribs) == 0:
             try:
                 value_text = child._value_text
             except AttributeError:

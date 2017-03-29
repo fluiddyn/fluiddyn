@@ -45,11 +45,10 @@ class H5File(h5py.File):
             params[k] = v
         return params
 
-    # def update_dict(self, keydict, dicttosave):
-
-    #     group_params = self[keydict]
-    #     for k, v in list(dicttosave.items()):
-    #         group_params.create_dataset(k, data=v)
+    def update_dict(self, keydict, dicttosave):
+        group_params = self[keydict]
+        for k, v in list(dicttosave.items()):
+            group_params.create_dataset(k, data=v)
 
     def save_dict_of_ndarrays(self, dicttosave, dtype=np.float32):
         """Save ndarrays in the file."""

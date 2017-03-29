@@ -1,4 +1,10 @@
 
+0.1.2
+-----
+
+- Better paramcontainer (ordered children + `_print_docs` method)
+- 
+
 0.1.1
 -----
 

@@ -26,7 +26,7 @@ def read_seq(name):
     if not name.endswith('.seq'):
         name += '.seq'
     config = configparser.ConfigParser()
-    config.readfp(open(name))
+    config.read([name])
     l = config.items(config.sections()[0])
     d = {k.replace(' ', '_'): v for k, v in l}
     return d

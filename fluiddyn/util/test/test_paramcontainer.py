@@ -16,11 +16,20 @@ class TestContainer(unittest.TestCase):
         cls.params = ParamContainer(tag='params')
         params = cls.params
         params._set_attrib('a0', 1)
-        params._set_attribs({'a1': 1, 'a2': 1})
+        params._set_attribs({'a1': 1, 'a2': 'a'})
 
         params._set_child('child0', {'a0': 2, 'a1': None})
         params.child0.a0 = []
         params.child0.a0.append(1)
+
+        params.child0._set_child('cc', {})
+
+        params.child0.cc._set_doc('Hello')
+
+        with stdout_redirected():
+            params._print_docs()
+
+        params._get_key_attribs()
 
         cls.txt = params._make_xml_text()
         cls._work_dir = 'test_fluiddyn_util_paramcontainer'

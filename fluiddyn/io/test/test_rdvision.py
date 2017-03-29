@@ -35,10 +35,10 @@ class TestDantex(unittest.TestCase):
         os.chdir('..')
         rmtree(cls._work_dir)
 
-    # def test(self):
-    #     read_xml(self.base_name)
-    #     read_sqb(self.base_name)
-    #     SetOfFiles(self.base_name)
+    def test(self):
+        read_xml(self.base_name)
+        read_sqb(self.base_name)
+        SetOfFiles(self.base_name)
 
 if __name__ == '__main__':
     unittest.main()

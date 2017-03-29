@@ -426,6 +426,10 @@ class SeriesOfArrays(object):
                 cond = serie.check_all_files_exist()
             iserie -= 1
         else:
+            if len(range(ind_start, ind_stop, ind_step)) == 0:
+                raise ValueError(
+                    'len(range(ind_start, ind_stop, ind_step)) == 0')
+
             for iserie in range(ind_start, ind_stop, ind_step):
                 serie.set_index_slices(
                     *self.indslices_from_indserie(iserie))
