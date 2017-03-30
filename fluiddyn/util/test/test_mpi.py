@@ -1,0 +1,83 @@
+"""
+Test mpi module
+===============
+
+"""
+
+import unittest
+import os
+from shutil import rmtree
+
+import numpy as np
+
+from ..mpi import _mpi_type, nb_proc, rank, printby0
+from ...io.redirect_stdout import stdout_redirected
+
+
+class TestMPI(unittest.TestCase):
+    """Test fluiddyn.util.mpi module."""
+
+    @classmethod
+    def barrier(cls):
+        if _mpi_type is not None:
+            from ..mpi import comm
+            comm.barrier()
+
+    @classmethod
+    def setUpClass(cls):
+        cls._work_dir = 'test_fluiddyn_util_mpi'
+        if rank == 0:
+            if not os.path.exists(cls._work_dir):
+                os.mkdir(cls._work_dir)
+
+        cls.barrier()
+        os.chdir(cls._work_dir)
+
+    @classmethod
+    def tearDownClass(cls):
+        os.chdir('..')
+        cls.barrier()
+        if rank == 0:
+            rmtree(cls._work_dir)
+
+    def test_print(self):
+        msg_write = 'test by rank ='
+        with open('test_print.txt', 'w') as output:
+            with stdout_redirected(to=output):
+                printby0(msg_write, rank, end='')
+
+        with open('test_print.txt') as output:
+            msg_read = output.readlines()
+            if not (msg_write + ' 0' == msg_read[0] or len(msg_read) > 1):
+                raise IOError('fluiddyn.util.mpi.printby0 not working as expected')
+
+    @unittest.skipIf(nb_proc == 1, 'Meant for testing if mpi4py works.')
+    def test_scatter_gather(self):
+        """Test MPI Scatter and Gather functions for numpy objects."""
+
+        from ..mpi import comm, MPI
+
+        N_loc = 4
+        N = N_loc * nb_proc
+        if comm.rank == 0:
+            arr = np.arange(N, dtype=np.float64)
+        else:
+            arr = np.empty(N, dtype=np.float64)
+
+        arr_loc = np.empty(N_loc, dtype=np.float64)
+        comm.Scatter([arr, MPI.DOUBLE], [arr_loc, MPI.DOUBLE])
+
+        arr_loc *= 2
+        if comm.rank == 0:
+            arr2 = np.empty(N, dtype=np.float64)
+        else:
+            arr2 = None
+
+        comm.Gather([arr_loc, MPI.DOUBLE], [arr2, MPI.DOUBLE])
+
+        if rank == 0:
+            np.testing.assert_array_equal(arr * 2, arr2)
+
+
+if __name__ == '__main__':
+    unittest.main()
