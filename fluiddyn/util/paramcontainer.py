@@ -189,7 +189,15 @@ class ParamContainer(object):
     def _set_doc(self, doc):
         self._set_internal_attr('_doc', doc)
 
-    def _print_doc(self):
+    def _contains_doc(self):
+        if len(self._doc) > 0:
+            return True
+        for tag in self._tag_children:
+            if self[tag]._contains_doc():
+                return True
+        return False
+
+    def _get_formatted_doc(self):
         full_tag = self._make_full_tag()
         txt = 'Documentation for ' + full_tag
 
@@ -203,17 +211,34 @@ class ParamContainer(object):
         else:
             char = '^'
 
-        print(txt + '\n' + char * len(txt))
+        txt += '\n' + char * len(txt) + '\n'
+
+        if len(self._doc) == 0:
+            return txt + '\n'
+
         if len(self._doc) > 0 and not self._doc.startswith('\n'):
-            print('')
-        print(self._doc)
+            txt += '\n'
+
+        txt += self._doc
         if len(self._doc) > 0 and not self._doc.endswith('\n'):
-            print('')
+            txt += '\n'
+
+        return txt
+
+    def _print_doc(self):
+        print(self._get_formatted_doc())
+
+    def _get_formatted_docs(self):
+        txt = self._get_formatted_doc()
+        for tag in self._tag_children:
+            if not txt.endswith('\n\n'):
+                txt += '\n'
+            txt += self[tag]._get_formatted_docs()
+
+        return txt
 
     def _print_docs(self):
-        self._print_doc()
-        for tag in self._tag_children:
-            self[tag]._print_docs()
+        print(self._get_formatted_docs())
 
     def _make_full_tag(self):
         if self._parent is None:
@@ -344,19 +369,27 @@ class ParamContainer(object):
                 tag, self.__class__(elemxml=childxml))
             self._tag_children.append(tag)
 
-    def _save_as_xml(self, path_file=None, comment=None):
+    def _save_as_xml(self, path_file=None, comment=None, find_new_name=False):
         """Save the xml text in a file."""
         if path_file is None:
             path_file = self._tag + '.xml'
 
         if os.path.exists(path_file):
-            raise ValueError('The file {} already exists.'.format(
-                path_file))
+            if not find_new_name:
+                raise ValueError('The file {} already exists.'.format(
+                    path_file))
+            else:
+                base = path_file.split('.xml')[0]
+                i = 1
+                while os.path.exists(base + '_{}.xml'.format(i)):
+                    i += 1
+                path_file = base + '_{}.xml'.format(i)
 
         with open(path_file, 'w') as f:
             if comment is not None:
                 f.write('<!--\n'+comment+'\n-->\n')
             f.write(self._make_xml_text())
+        return path_file
 
     def _save_as_hdf5(self, path_file=None, hdf5_object=None,
                       hdf5_parent=None):
