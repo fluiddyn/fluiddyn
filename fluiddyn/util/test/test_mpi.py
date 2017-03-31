@@ -46,6 +46,7 @@ class TestMPI(unittest.TestCase):
             with stdout_redirected(to=output):
                 printby0(msg_write, rank, end='')
 
+        self.barrier()
         with open('test_print.txt') as output:
             msg_read = output.readlines()
             if not (msg_write + ' 0' == msg_read[0] or len(msg_read) > 1):
