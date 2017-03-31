@@ -63,7 +63,7 @@ class SerieOfArrays(object):
 
     Attributes
     ----------
-    path_dir : str
+    path : str
         The path of the base directory.
 
     """
@@ -78,9 +78,16 @@ class SerieOfArrays(object):
             filelist.sort()
             self.filename_given = filelist[0].split(sep)[-1]
         else:
+            if len(path) == 0:
+                raise ValueError(
+                    'The provided (empty) string does not point on any '
+                    'existing path.')
+            
             l = glob(path)
             if len(l) == 0:
-                raise ValueError('The provided path does not exist:\n' + path)
+                raise ValueError(
+                    'The provided string does not point on any existing path. '
+                    'The string is:\n' + path)
 
             self.path_dir, self.filename_given = os.path.split(l[0])
 
