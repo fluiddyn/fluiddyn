@@ -24,9 +24,7 @@ except ImportError:
     import xml.etree.ElementTree as etree
 
 from ast import literal_eval
-
 import six
-
 import re
 
 from fluiddyn.io.hdf5 import H5File
@@ -279,6 +277,12 @@ class ParamContainer(object):
         if change_parent:
             child._set_internal_attr('_parent', self)
         self._tag_children.append(child._tag)
+
+    def _make_dict_attribs(self):
+        d = {}
+        for k in self._key_attribs:
+            d[k] = self.__dict__[k]
+        return d
 
     def _make_dict(self):
         self._key_attribs.sort()
