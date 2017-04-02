@@ -211,14 +211,17 @@ class ParamContainer(object):
 
         txt += '\n' + char * len(txt) + '\n'
 
-        if len(self._doc) == 0:
+        doc = self._doc.strip()
+
+        if len(doc) == 0:
             return txt + '\n'
 
-        if len(self._doc) > 0 and not self._doc.startswith('\n'):
+        if len(doc) > 0:
             txt += '\n'
 
-        txt += self._doc
-        if len(self._doc) > 0 and not self._doc.endswith('\n'):
+        txt += doc
+
+        if len(doc) > 0:
             txt += '\n'
 
         return txt

@@ -2,11 +2,10 @@
 from __future__ import division, print_function
 
 import os
-import sys
-from copy import deepcopy, copy
+from copy import deepcopy
 import subprocess
 
-from PyQt4 import QtGui, QtCore
+from matplotlib.backends.qt_compat import QtGui, QtCore
 
 from fluiddyn.util import time_as_str
 
@@ -134,13 +133,16 @@ class QtParamContainer(object):
             self.verticalLayout.addWidget(self.pushButton_launch)
             self.pushButton_launch.released.connect(self.launch)
 
-    def reset_default_values(self):
-        for key in self.params._get_key_attribs():
+    def set_values(self, params):
+        for key in params._get_key_attribs():
             self.lines_edit[key].setText(_translate(
-                'MainWindow', repr(self.params[key]), None))
+                'MainWindow', repr(params[key]), None))
 
-        for tag in self.params._tag_children:
-            self.qt_params_children[tag].reset_default_values()
+        for tag in params._tag_children:
+            self.qt_params_children[tag].set_values(params[tag])
+
+    def reset_default_values(self):
+        self.set_values(self.params)
 
     def produce_params(self):
         params = deepcopy(self.params)
@@ -160,12 +162,11 @@ class QtParamContainer(object):
 
     def launch(self):
         params = self.produce_params()
-        d = eval(params._value_text)
 
         path_dir = 'tmp_fluiddyn_params'
         if not os.path.exists(path_dir):
             os.mkdir(path_dir)
-        
+
         path = params._save_as_xml(
             path_file=os.path.join(
                 path_dir, params._tag + time_as_str() + '.xml'),
