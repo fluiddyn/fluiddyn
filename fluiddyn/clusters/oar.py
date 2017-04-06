@@ -59,12 +59,29 @@ class ClusterOAR(object):
             idempotent=False, delay_signal_walltime=300,
             network_address=None, ask=True, submit=True):
 
-        self.check_oar()
-
         path = os.path.expanduser(path)
         if not os.path.exists(path.split(' ')[0]):
             raise ValueError('The script does not exists! path:\n' + path)
 
+        if not path.startswith('python '):
+            command = 'python ' + path
+
+        self.submit_command(command, name_run=name_run,
+            nb_nodes=nb_nodes, nb_cores_per_node=nb_cores_per_node,
+            walltime=walltime, project=project,
+            nb_mpi_processes=nb_mpi_processes, omp_num_threads=omp_num_threads,
+            idempotent=idempotent, delay_signal_walltime=delay_signal_walltime,
+            network_address=network_address, ask=ask, submit=submit)
+
+    def submit_command(self, command, name_run='fluiddyn',
+            nb_nodes=1, nb_cores_per_node=1,
+            walltime='24:00:00', project=None,
+            nb_mpi_processes=None, omp_num_threads=None,
+            idempotent=False, delay_signal_walltime=300,
+            network_address=None, ask=True, submit=True):
+
+        self.check_oar()
+        
         if nb_cores_per_node is None and nb_mpi_processes is not None:
             nb_cores_per_node = nb_mpi_processes
 
@@ -80,7 +97,7 @@ class ClusterOAR(object):
             path_launching_script += '_' + str(i)
 
         txt = self._create_txt_launching_script(
-            path, name_run,
+            command, name_run,
             nb_nodes, nb_cores_per_node, walltime,
             nb_mpi_processes=nb_mpi_processes,
             omp_num_threads=omp_num_threads,
@@ -105,7 +122,8 @@ class ClusterOAR(object):
 
         launching_command += ' -S ./' + path_launching_script
 
-        print('A launcher for the script {} has been created.'.format(path))
+        print('A launcher for the command "{}" has been created.'.format(
+            command))
         if submit:
             if ask:
                 run_asking_agreement(launching_command)
@@ -115,7 +133,7 @@ class ClusterOAR(object):
                 call_bash(launching_command)
 
     def _create_txt_launching_script(
-            self, path, name_run,
+            self, command, name_run,
             nb_nodes, nb_cores_per_node,
             walltime,
             nb_mpi_processes=None, omp_num_threads=None, network_address=None):
@@ -146,6 +164,6 @@ class ClusterOAR(object):
         if nb_mpi_processes is not None:
             txt += 'mpirun -np {} '.format(nb_mpi_processes)
 
-        txt += 'python {}\n'.format(path)
+        txt += command + '\n'
 
         return txt

@@ -6,6 +6,7 @@ Test oar clusters
 import unittest
 import os
 from shutil import rmtree
+import subprocess
 
 from ...io import stdout_redirected
 
@@ -14,6 +15,13 @@ from ..legi import Calcul, Calcul3, Calcul9, Calcul7, Calcul8
 from ..ciment import Froggy
 
 path_test = 'tmp_test'
+
+try:
+    subprocess.check_call(['oarsub', '--version'],
+                          stdout=subprocess.PIPE)
+    oar = True
+except OSError:
+    oar = False
 
 
 class ClusterNoCheck(ClusterOAR):
@@ -59,13 +67,17 @@ class TestCaseOAR(unittest.TestCase):
             os.mkdir(self._work_dir)
         os.chdir(self._work_dir)
 
+        with open('blabla.py', 'w') as f:
+            f.write('print("hello")')
+
     def tearDown(self):
         os.chdir('..')
         rmtree(self._work_dir)
 
+    @unittest.skipIf(oar, 'oar is present...')
     def test_submit_check(self):
         with self.assertRaises(OSError):
-            self.cluster.submit_script('blabla', submit=False)
+            self.cluster.submit_script('blabla.py', submit=False)
 
     def test_submit_nocheck(self):
         with self.assertRaises(ValueError):
