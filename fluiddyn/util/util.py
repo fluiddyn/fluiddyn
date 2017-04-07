@@ -6,7 +6,7 @@ Toolkit (:mod:`fluiddyn.util.util`)
 
 from __future__ import division, print_function
 
-from builtins import object
+from builtins import object, str
 import os
 import sys
 import glob
@@ -113,6 +113,12 @@ def create_object_from_file(str_path, *args, **kwargs):
     if isinstance(class_name, np.ndarray):
         class_name = class_name[0]
         module_name = module_name[0]
+
+    if not isinstance(class_name, str):
+        class_name = class_name.decode()
+
+    if not isinstance(module_name, str):
+        module_name = module_name.decode()
 
     # # temporary... for compatibility
     # if class_name.startswith('<class '):

@@ -1,7 +1,7 @@
-"""MultiFile class
+"""MultiFile
+============
 
 http://stackoverflow.com/a/16551730
-
 
 
 """
@@ -13,9 +13,12 @@ http://stackoverflow.com/a/16551730
 class MultiFile(object):
     """MultiFile
 
+    Notes
+    -----
+
     Use for example like this::
 
-      sys.stdout = MultiFile([sys.stdout, open('myfile.txt', 'w')])
+        sys.stdout = MultiFile([sys.stdout, open('myfile.txt', 'w')])
 
     """
     def __init__(self, files):
