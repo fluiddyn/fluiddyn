@@ -1,4 +1,9 @@
 
+0.1.3
+-----
+
+- Improve paramcontainer (print doc, GUI with Qt)
+
 0.1.2
 -----
 
