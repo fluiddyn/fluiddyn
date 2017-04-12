@@ -94,8 +94,8 @@ class Kebnekaise(ClusterSlurm):
 
         self.commands_setting_env = [
             'source /etc/profile',
-            'module load GCC/5.4.0-2.26  OpenMPI/1.10.3',
-            'module load HDF5/1.8.17'
+            'module load GCC/5.4.0-2.26 OpenMPI/1.10.3',
+            'module load HDF5/1.8.17',
             'module load Python/2.7.12',
             'module load PIL/1.1.7-Python-2.7.12',
             'source $LOCAL_PYTHON/bin/activate']
