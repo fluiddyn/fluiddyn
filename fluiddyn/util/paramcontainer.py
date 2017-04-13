@@ -43,6 +43,8 @@ def _as_str(value):
 def _as_value(value):
     if value.startswith('array('):
         return eval(value)
+    if '\t' in value:
+        return value
     try:
         return literal_eval(value)
     except (SyntaxError, ValueError):

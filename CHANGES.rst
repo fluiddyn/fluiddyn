@@ -1,4 +1,9 @@
 
+0.1.4
+-----
+
+- Bug fix (Python 3 literal_eval)
+
 0.1.3
 -----
 
