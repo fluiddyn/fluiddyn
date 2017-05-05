@@ -20,10 +20,8 @@ def fileno(file_or_fd):
 def stdout_redirected(doit=True, to=os.devnull, stdout=None):
     """Redirect stdout to os.devnull"""
     if not doit:
-        try:
-            yield
-        finally:
-            return
+        yield
+        return
 
     if stdout is None:
         stdout = sys.stdout
