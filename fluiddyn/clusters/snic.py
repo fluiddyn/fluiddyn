@@ -66,7 +66,8 @@ class Triolith(ClusterSlurm):
 
 class Abisko(ClusterSlurm):
     name_cluster = 'abisko'
-    nb_cores_per_node = 48
+    nb_cores_per_node = 24
+    cmd_run_interactive = 'mpirun'
     max_walltime = '7-00:00:00'
 
     def __init__(self):
@@ -75,8 +76,10 @@ class Abisko(ClusterSlurm):
 
         self.commands_setting_env = [
             'source /etc/profile',
-            'module load openmpi/gcc/1.8.8',
-            'module load fftw/gcc/3.3.4 hdf5/gcc-ompi/1.8.11',
+            'module load GCC/6.3.0-2.27 OpenMPI/2.0.2',
+            'module load HDF5/1.10.0-patch1',
+            'module load FFTW/3.3.6',
+            'module load Python/2.7.12',
             'source $LOCAL_PYTHON/bin/activate']
 
         self.commands_unsetting_env = []
