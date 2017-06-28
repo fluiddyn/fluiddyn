@@ -79,7 +79,6 @@ class Abisko(ClusterSlurm):
             'module load GCC/6.3.0-2.27 OpenMPI/2.0.2',
             'module load HDF5/1.10.0-patch1',
             'module load FFTW/3.3.6',
-            'module load Python/2.7.12',
             'source $LOCAL_PYTHON/bin/activate']
 
         self.commands_unsetting_env = []
