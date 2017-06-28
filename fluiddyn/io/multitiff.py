@@ -21,8 +21,6 @@ from math import ceil, log10
 try:
     import PIL
     from PIL import Image
-    if PIL.__version__ < '3.4.0':
-        print('imsave for multiframe TIFF not supported.')
 except ImportError:
     pass
 
@@ -53,13 +51,6 @@ def _save_new_file(im, base_path, outputext, erase=False):
 def imsave(path, arrays, as_int=False):
     """Save a multi-frame image sequence.
 
-    As of now, a hackish method is used to create an intermediate GIF object.
-    PIL/Pillow has no interface to create multiframe TIFF objects, but allows
-    saving as multiframe TIFF files.
-
-    .. cf. [1] https://github.com/python-pillow/Pillow/issues/733
-           [2] https://github.com/python-pillow/Pillow/issues/2401
-
     Parameters
     ----------
     path : str
@@ -70,15 +61,26 @@ def imsave(path, arrays, as_int=False):
         Convert to integer or not.
 
     """
+    if PIL.__version__ < '3.4.0':
+        raise ImportError('imsave for multiframe TIFF not supported.')
+
     im_list = [_image_from_array(a, as_int) for a in arrays]
-    gif = im_list.pop(0)
 
-    with io.BytesIO() as output:
-        gif.save(output, format='GIF', save_all=True, append_images=im_list)
-        gif.close()
+    if PIL.__version__ < '4.2.0':
+        from warnings import warn
+        warn('imsave for multiframe TIFF uses an intermediate GIF workaround.',
+            DeprecationWarning)
+        gif = im_list.pop(0)
+        
+        with io.BytesIO() as output:
+            gif.save(output, format='GIF', save_all=True, append_images=im_list)
+            gif.close()
 
-        with Image.open(output) as im:
-            im.save(path, format='TIFF', save_all=True)
+            with Image.open(output) as im:
+                im.save(path, format='TIFF', save_all=True)
+    else:
+        im_list[0].save(path, compression='tiff_deflate', save_all=True,
+            append_images=im_list[1:])
 
 
 def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
