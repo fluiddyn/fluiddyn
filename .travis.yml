@@ -19,6 +19,9 @@ before_install:
     - pip install -U numpy matplotlib scipy psutil
     - pip install -U future pyfftw mpi4py h5py ipython pillow
 
+install:
+    - make develop
+
 script:
     - make tests
     - make tests_mpi
