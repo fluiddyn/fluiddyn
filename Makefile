@@ -16,7 +16,6 @@ tests_mpi:
 
 tests_coverage:
 	mkdir -p .coverage
-	coverage erase
 	coverage run -p -m unittest discover
 	mpirun -np 2 coverage run -p -m unittest discover fluiddyn.util.test -p test_mpi.py
 
