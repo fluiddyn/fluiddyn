@@ -1,0 +1,24 @@
+language: python
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+cache: pip
+
+addons:
+    apt:
+        packages:
+            - libfftw3-dev
+            - libhdf5-openmpi-dev
+            - openmpi-bin
+            - libopenblas-dev
+
+before_install:
+    - pip install -U pip setuptools wheel six
+    - pip install -U numpy matplotlib scipy psutil
+    - pip install -U future pyfftw mpi4py h5py ipython pillow
+
+script:
+    - make tests
+    - make tests_mpi
