@@ -1,8 +1,16 @@
+sudo: false
 language: python
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
+
+matrix:
+  include:
+    - python: 3.6
+      env: TOXENV=py,codecov-travis
+    - python: 3.5
+      env: TOXENV=py,codecov-travis
+    - python: 3.4
+      env: TOXENV=py,codecov-travis
+    - python: 2.7
+      env: TOXENV=py,codecov-travis
 
 cache: pip
 
@@ -14,14 +22,22 @@ addons:
             - openmpi-bin
             - libopenblas-dev
 
-before_install:
+install:
     - pip install -U pip setuptools wheel six
     - pip install -U numpy matplotlib scipy psutil
     - pip install -U future pyfftw mpi4py h5py ipython pillow
-
-install:
+    - pip install -U tox coverage
     - make develop
 
 script:
-    - make tests
-    - make tests_mpi
+    - tox
+
+notifications:
+  email: false
+  irc:
+    channels:
+      - "chat.freenode.net#fluiddyn"
+    on_success: change
+    on_failure: always
+    use_notice: true
+    skip_join: true
