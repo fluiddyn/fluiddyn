@@ -29,8 +29,11 @@ install:
     - pip install -U tox coverage
     - make develop
 
-script:
+before_script:
+    - mkdir -p $HOME/.config/matplotlib
     - echo 'backend      : agg' > $HOME/.config/matplotlib/matplotlibrc
+
+script:
     - tox
 
 notifications:
