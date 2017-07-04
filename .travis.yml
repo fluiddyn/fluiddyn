@@ -30,6 +30,7 @@ install:
     - make develop
 
 script:
+    - echo 'backend      : agg' > $HOME/.config/matplotlib/matplotlibrc
     - tox
 
 notifications:
