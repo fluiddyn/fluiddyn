@@ -30,18 +30,13 @@ install:
     - make develop
 
 before_script:
-    - mkdir -p $HOME/.config/matplotlib
-    - echo 'backend      : agg' > $HOME/.config/matplotlib/matplotlibrc
+    - |
+      mkdir -p $HOME/.config/matplotlib
+      echo 'backend      : agg' > $HOME/.config/matplotlib/matplotlibrc
 
 script:
     - tox
 
 notifications:
   email: false
-  irc:
-    channels:
-      - "chat.freenode.net#fluiddyn"
-    on_success: change
-    on_failure: always
-    use_notice: true
-    skip_join: true
+  irc: "chat.freenode.net#fluiddyn"
