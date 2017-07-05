@@ -12,7 +12,18 @@ matrix:
     - python: 2.7
       env: TOXENV=py,codecov-travis
 
-cache: pip
+
+before_cache:
+  - |
+      coverage erase
+      rm -f $HOME/.cache/pip/log/debug.log
+
+
+cache:
+    directories:
+        - $HOME/.cache/pip
+        - $TRAVIS_BUILD_DIR/.tox
+
 
 addons:
     apt:
@@ -23,8 +34,8 @@ addons:
             - libopenblas-dev
 
 install:
-    - pip install -U pip setuptools wheel six
-    - pip install -U tox
+    - pip install -U pip setuptools wheel six colorlog
+    - pip install -U tox coverage
 
 before_script:
     - |
