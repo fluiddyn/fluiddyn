@@ -27,9 +27,10 @@ from ast import literal_eval
 import six
 import re
 
-from fluiddyn.io.hdf5 import H5File
 import h5py
+import numpy as np
 
+from fluiddyn.io.hdf5 import H5File
 from fluiddyn.util.xmltotext import produce_text_element
 
 
@@ -463,12 +464,17 @@ class ParamContainer(object):
             except AttributeError:
                 pass
 
+            if isinstance(v, np.ndarray) and v.dtype.kind in ('S', 'U'):
+                attrs[k] = list(v.astype(np.unicode))
+
             if isinstance(v, list):
                 for i, v2 in enumerate(v):
                     try:
                         v[i] = v2.decode('utf8')
                     except AttributeError:
                         pass
+
+                attrs[k] = v
 
         tag = hdf5_object.name.split('/')[-1]
 
