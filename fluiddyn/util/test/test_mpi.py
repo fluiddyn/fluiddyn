@@ -46,7 +46,9 @@ class TestMPI(unittest.TestCase):
         msg_write = 'test by rank ='
         with open('test_print.txt', 'w') as output:
             with stdout_redirected(to=output):
-                    printby0(msg_write, rank, end='')
+                printby0(msg_write, rank, end='')
+                output.flush()
+                os.fsync(output.fileno())
 
         self.barrier()
         with open('test_print.txt') as output:
