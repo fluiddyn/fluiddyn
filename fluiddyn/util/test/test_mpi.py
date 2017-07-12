@@ -7,6 +7,7 @@ Test mpi module
 import unittest
 import os
 from shutil import rmtree
+import io
 
 import numpy as np
 
@@ -41,20 +42,18 @@ class TestMPI(unittest.TestCase):
             rmtree(cls._work_dir)
 
     def test_print(self):
-        """Test fluiddyn.util.mpi.printby0 to write to a file."""
+        """Test fluiddyn.util.mpi.printby0 to write to a buffer."""
 
         msg_write = 'test by rank ='
-        with open('test_print.txt', 'w') as output:
+        with io.StringIO() as output:
             with stdout_redirected(to=output):
                 printby0(msg_write, rank, end='')
-                output.flush()
-                os.fsync(output.fileno())
 
-        self.barrier()
-        with open('test_print.txt') as output:
-            msg_read = output.read()
-            msg_write += ' 0'
-            self.assertEqual(msg_read, msg_write)
+            self.barrier()
+            msg_read = output.getvalue()
+
+        msg_expected = msg_write + ' 0' if rank == 0 else ''
+        self.assertEqual(msg_read, msg_expected)
 
     @unittest.skipIf(nb_proc == 1, 'Meant for testing if mpi4py works.')
     def test_scatter_gather(self):
