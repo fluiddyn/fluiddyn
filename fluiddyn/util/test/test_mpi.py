@@ -12,7 +12,7 @@ import io
 import numpy as np
 
 from ..mpi import _mpi_type, nb_proc, rank, printby0
-from ...io.redirect_stdout import stdout_redirected
+from ...io.redirect_stdout import stdout_redirected, StringIO
 
 
 class TestMPI(unittest.TestCase):
@@ -45,12 +45,14 @@ class TestMPI(unittest.TestCase):
         """Test fluiddyn.util.mpi.printby0 to write to a buffer."""
 
         msg_write = 'test by rank ='
-        with io.StringIO() as output:
-            with stdout_redirected(to=output):
-                printby0(msg_write, rank, end='')
+        output = StringIO()
+        with stdout_redirected(to=output):
+            printby0(msg_write, rank, end='')
 
-            self.barrier()
-            msg_read = output.getvalue()
+        output.flush()
+        self.barrier()
+        msg_read = output.getvalue()
+        output.close()
 
         msg_expected = msg_write + ' 0' if rank == 0 else ''
         self.assertEqual(msg_read, msg_expected)

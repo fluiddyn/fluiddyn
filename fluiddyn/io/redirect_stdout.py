@@ -7,7 +7,10 @@
 import os
 import sys
 from contextlib import contextmanager
-import io
+if sys.version_info >= (3, 0):
+    from io import StringIO
+else:
+    from StringIO import StringIO
 
 
 def fileno(file_or_fd):
@@ -27,7 +30,7 @@ def stdout_redirected(doit=True, to=os.devnull, stdout=None):
 
         Toggle redirection.
 
-    to : io.StringIO instance or file object or str
+    to : StringIO instance or file object or str
 
         Buffer or file or file path to redirect to.
 
@@ -49,7 +52,7 @@ def stdout_redirected(doit=True, to=os.devnull, stdout=None):
     # stream
     with os.fdopen(os.dup(stdout_fd), 'wb') as copied:
         stdout.flush()  # flush library buffers that dup2 knows nothing about
-        if isinstance(to, io.StringIO):
+        if isinstance(to, StringIO):
             sys.stdout = to
             try:
                 yield to
