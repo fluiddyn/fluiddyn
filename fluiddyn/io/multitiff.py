@@ -233,7 +233,7 @@ def reorganize_double_frame_3Dscannedpiv_data(
 
 
 def reorganize_single_frame_2Dpiv_data(
-        files, outputdir='.', outputext='tif', erase=False):
+        files, outputdir='.', outputext='tif', base_output_im = 'im', erase=False):
     """
     Reorganize data from multi tiff (single frame 2D).
 
@@ -285,7 +285,7 @@ def reorganize_single_frame_2Dpiv_data(
                 else:
                     base_path = (
                         outputdir +
-                        ('/im{' + format_index + '}').format(index_im))
+                        ('/'+ base_output_im+'{' + format_index + '}').format(index_im))
                     if _save_new_file(im, base_path, outputext, erase):
                         print('\r file {}; in {:.2f} s'.format(
                             index_im, time.time() - t_start), end='')
