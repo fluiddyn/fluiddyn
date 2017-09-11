@@ -13,6 +13,9 @@ specialized for different tasks, in particular
 - `fluidimage <http://fluidimage.readthedocs.io>`_ for processing of images of
   fluid,
 
+- `fluidfft <http://fluidfft.readthedocs.org>`_ for 2D and 3D Fast Fourier
+  Transforms,
+
 - `fluidsim <http://fluidsim.readthedocs.org>`_ for numerical simulations.
 
 This documentation presents the project FluidDyn and the package of
