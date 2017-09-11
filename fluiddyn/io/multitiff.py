@@ -4,7 +4,7 @@ Multitiff
 
 .. autofunction:: reorganize_single_frame_3Dscannedpiv_data
 .. autofunction:: reorganize_piv3dscanning_doubleframe
-.. autofunction:: reorganize_single_frame_2Dpiv_data
+.. autofunction:: reorganize_piv2d_singleframe
 .. autofunction:: reorganize_piv2d_doubleframe
 
 """
