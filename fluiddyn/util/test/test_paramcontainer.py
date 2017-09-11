@@ -16,7 +16,7 @@ class TestContainer(unittest.TestCase):
         cls.params = ParamContainer(tag='params')
         params = cls.params
         params._set_attrib('a0', 1)
-        params._set_attribs({'a1': 1, 'a2': 'a'})
+        params._set_attribs({'a1': 1, 'a2': 'a', 'a_str_list': ['a', 'b']})
 
         params._set_child('child0', {'a0': 2, 'a1': None})
         params.child0.a0 = []
@@ -78,8 +78,13 @@ class TestContainer(unittest.TestCase):
 
         params2 = ParamContainer(path_file=name_file_h5)
         os.remove(name_file_h5)
-
-        self.assertEqual(self.params, params2)
+        
+        try:
+            self.assertEqual(self.params, params2)
+        except AssertionError:
+            print('params=\n', self.params)
+            print('params2=\n', params2)
+            raise
 
     def test_raise(self):
         """Test raise errors."""

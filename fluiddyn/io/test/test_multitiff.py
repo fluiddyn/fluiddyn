@@ -14,9 +14,9 @@ from PIL import Image
 from ..multitiff import (
     imsave,
     reorganize_single_frame_3Dscannedpiv_data,
-    reorganize_double_frame_3Dscannedpiv_data,
-    reorganize_single_frame_2Dpiv_data,
-    reorganize_double_frame_2Dpiv_data)
+    reorganize_piv3dscanning_doubleframe,
+    reorganize_piv2d_singleframe,
+    reorganize_piv2d_doubleframe)
 
 from ..redirect_stdout import stdout_redirected
 
@@ -62,19 +62,19 @@ class TestMultiTIFF(unittest.TestCase):
             reorganize_single_frame_3Dscannedpiv_data(
                 'test*.tif', 2, outputdir='.', outputext='png', erase=True)
 
-    def test_double_frame_3Dscannedpiv(self):
+    def test_piv3dscanning_doubleframe(self):
         with stdout_redirected():
-            reorganize_double_frame_3Dscannedpiv_data(
+            reorganize_piv3dscanning_doubleframe(
                 'test*.tif', 2, outputdir='.', outputext='png', erase=False)
 
-    def test_single_frame_2Dpiv(self):
+    def test_piv2d_singleframe(self):
         with stdout_redirected():
-            reorganize_single_frame_2Dpiv_data(
+            reorganize_piv2d_singleframe(
                 'test*.tif', outputdir='.', outputext='png', erase=False)
 
-    def test_double_frame_2Dpiv(self):
+    def test_piv2d_doubleframe(self):
         with stdout_redirected():
-            reorganize_double_frame_2Dpiv_data(
+            reorganize_piv2d_doubleframe(
                 'test*.tif', outputdir='.', outputext='png', erase=False)
 
 
