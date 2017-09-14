@@ -1,0 +1,13 @@
+#! /usr/bin/env python
+"""
+Convert .im7 files in a directory
+=================================
+
+"""
+
+from fluiddyn.io.davis import parse_args, convertim7
+
+args = parse_args()
+convertim7(args)
+
+

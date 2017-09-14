@@ -70,5 +70,6 @@ setup(name='fluiddyn',
           'Programming Language :: C'],
       packages=find_packages(exclude=['doc']),
       install_requires=install_requires,
+      scripts=['bin/fluidconvertim7'],
       extras_require=dict(
           doc=['Sphinx>=1.1', 'numpydoc']))

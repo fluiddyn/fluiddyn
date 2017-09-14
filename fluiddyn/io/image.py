@@ -1,3 +1,12 @@
+"""
+Read and save image files
+=========================
+
+
+"""
+
+
+
 from __future__ import print_function
 import os
 import numpy as np
@@ -6,8 +15,9 @@ try:
     from PIL import Image
 except ImportError:
     pass
+
 try:
-    from cv2 import imread as _imread, IMREAD_ANYDEPTH
+    from cv2 import imread as _imread_opencv, IMREAD_ANYDEPTH
     use_opencv = True
 except ImportError:
     use_opencv = False
@@ -15,6 +25,11 @@ except ImportError:
         from scipy.ndimage import imread as _imread
     except ImportError:
         from scipy.misc import imread as _imread
+
+try:
+    from skimage.io import imread as _imread_ski
+except ImportError:
+    pass
 
 from .hdf5 import H5File
 
@@ -24,8 +39,14 @@ __all__ = ['imread', 'imsave', 'imread_h5', 'imsave_h5']
 
 def imread(path, *args, **kwargs):
     """Wrapper for OpenCV/SciPy imread functions."""
+    if path.lower().endswith(('.tiff', '.tif')):
+        try:
+            return _imread_ski(path, *args, **kwargs)
+        except NameError:
+            pass
+
     if use_opencv:
-        return _imread(path, IMREAD_ANYDEPTH)
+        return _imread_opencv(path, IMREAD_ANYDEPTH)
     else:
         return _imread(path, *args, **kwargs)
 
