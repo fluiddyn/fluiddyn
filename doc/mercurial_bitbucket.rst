@@ -34,9 +34,13 @@ Install Mercurial and create a file ``~/.hgrc`` with something like::
   [extensions]
   color =
   hgext.extdiff =
+  hggit =
 
   [extdiff]
   cmd.meld =
+
+The line starting with hggit is optional and enables the extension `hg-git
+<http://hg-git.github.io/>`_. This extension can be used with github.
 
 Get help
 --------
@@ -100,9 +104,9 @@ Each time you did some consistent changes::
 
 I would advice to follow this command with a ``hg st`` to verify that
 you did what you wanted to do. If you are unhappy with this commit,
-you can cancel it with (be careful)::
+you can amend it with another commit with::
 
-  hg rollback
+  hg commit --amend
 
 To push the state of your working repository to your Bitbucket repository::
 
@@ -119,3 +123,13 @@ Create a repository from nothing
 Create a new repository in the given directory by doing::
 
   hg init
+
+
+Working with hggit and github
+-----------------------------
+
+For fluiddyn developers, we can add in the file ``.hg/hgrc`` something like::
+
+  [paths]
+  default = https://paugier@bitbucket.org/fluiddyn/fluidimage
+  github = git+ssh://git@github.com/fluiddyn/fluidimage
