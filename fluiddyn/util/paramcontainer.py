@@ -16,7 +16,7 @@ from __future__ import division, print_function
 from builtins import str
 from builtins import object
 import os
-from copy import copy
+from copy import copy, deepcopy
 
 try:
     from lxml import etree
@@ -307,6 +307,27 @@ class ParamContainer(object):
 
     def __eq__(self, other):
         return self._make_dict() == other._make_dict()
+
+    def __sub__(self, other):
+        """Subtract and return an ParamContainer to understand differences."""
+        if self == other:
+            return None
+
+        this = deepcopy(self)
+
+        for k in self._key_attribs:
+            if self.__dict__[k] == other.__dict__[k]:
+                this.__dict__.pop(k)
+                this._key_attribs.remove(k)
+
+        for k in self._tag_children:
+            this.__dict__[k] = self.__dict__[k] - other.__dict__[k]
+            if this.__dict__[k] is None:
+                this.__dict__.pop(k)
+                this._tag_children.remove(k)
+
+        return this
+
 
     def _make_element_xml(self, parentxml=None):
         if parentxml is None:
