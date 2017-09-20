@@ -97,6 +97,10 @@ def imsave(path, array, format=None, as_int=False):
             format = 'PNG'
 
     if format == 'TIFF':
+        if any([path.endswith(ext) for ext in ('.png', '.PNG')]) and\
+           np.issubdtype(array.dtype, np.floating):
+            print('warning: can not save float image as png. Using tif format.')
+
         if not any([path.endswith(ext) for ext in ('.tif', '.tiff')]):
             path += '.tiff'
     elif format == 'PNG':
