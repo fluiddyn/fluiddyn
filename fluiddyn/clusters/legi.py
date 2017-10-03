@@ -2,8 +2,6 @@
 LEGI clusters (:mod:`fluiddyn.clusters.legi`)
 =============================================
 
-.. currentmodule:: fluiddyn.clusters.legi
-
 Provides:
 
 .. autoclass:: Calcul
