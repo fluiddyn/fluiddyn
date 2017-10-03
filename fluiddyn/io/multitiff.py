@@ -44,6 +44,16 @@ def _should_we_stop():
 
 
 def _save_new_file(im, base_path, outputext, erase=False):
+    """Convert and save file if destination path does not exist.
+
+    FIXME: The `im.convert` function calls result in ResourceWarning
+    in Python 3.x. Almost certainly a Pillow bug. Can be suppressed by
+    adding the following lines.
+
+    >>> import warnings
+    >>> warnings.simplefilter('ignore', ResourceWarning)
+
+    """
     path_save = base_path + '.' + outputext
     if not erase and os.path.exists(path_save):
         return False
@@ -54,6 +64,7 @@ def _save_new_file(im, base_path, outputext, erase=False):
     else:
         with im.convert(mode='I') as new_im:
             new_im.save(path_save)
+
     return True
 
 

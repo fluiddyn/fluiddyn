@@ -112,6 +112,7 @@ def imsave(path, array, format=None, as_int=False):
             path += '.png'
 
     im.save(path, format)
+    im.close()
 
 
 def imread_h5(path):

@@ -14,6 +14,7 @@ from fluiddyn.util.serieofarrays import SeriesOfArrays
 def create_image(path):
     im = Image.fromarray(np.ones((8, 8), dtype=np.int32))
     im.save(path)
+    im.close()
 
 
 class TestSeriesOfArrays(unittest.TestCase):

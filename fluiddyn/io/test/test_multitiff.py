@@ -40,7 +40,7 @@ class TestMultiTIFF(unittest.TestCase):
 
         for ifile in range(cls.nb_files):
             arrays = [im(2 ** 8 - 1, np.int8) for i in range(cls.n_frames)]
-            imsave('test{}.tif'.format(ifile), arrays, as_int=True)
+            imsave('test_multitiff{}.tif'.format(ifile), arrays, as_int=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -48,10 +48,9 @@ class TestMultiTIFF(unittest.TestCase):
         rmtree(cls._work_dir)
 
     def test_imsave(self):
-        im = Image.open('test0.tif')
-        im.load()
-        n_frames = im.n_frames
-        im.close()
+        with Image.open('test_multitiff0.tif') as im:
+            n_frames = im.n_frames
+
         if n_frames != self.n_frames:
             raise ValueError(
                 'Multiframe TIFF imsave unsuccessful. No. of frames={}'.format(

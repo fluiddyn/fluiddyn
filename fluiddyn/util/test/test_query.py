@@ -13,7 +13,7 @@ import unittest
 import subprocess
 
 from .. import query
-# from ...io.redirect_stdout import stdout_redirected
+from ...io.redirect_stdout import stdout_redirected
 
 
 def do_nothing(*args, **kwargs):
@@ -46,11 +46,15 @@ class TestQuery(unittest.TestCase):
     def test_query(self):
         with mock_input('1.2'):
             self.assertEqual(1.2, query.query_number(''))
+
         with mock_input('test'):
-            query.query('?', 't')
+            with stdout_redirected():
+                query.query('?', 't')
+
         with mock_input('yes'):
             with mock_call():
-                query.run_asking_agreement('ls')
+                with stdout_redirected():
+                    query.run_asking_agreement('ls')
 
 
 if __name__ == '__main__':
