@@ -5,12 +5,18 @@
 from __future__ import print_function
 from importlib import import_module as _import
 import os
-import sys
 import shlex
 import inspect
 from collections import OrderedDict
 import platform
 import argparse
+try:
+    from platform import linux_distribution
+    # Pending deprecation (Python 3.7)
+except ImportError:
+    print('Install distro package to use this module.')
+    from distro import linux_distribution
+
 try:
     import subprocess32 as subprocess
 except ImportError:
@@ -22,11 +28,16 @@ from fluiddyn.util.paramcontainer import ParamContainer
 _COL_WIDTH = 32
 
 
-def safe_check_output(cmd):
+def safe_check_output(cmd, first_row_only=True):
     """Error-tolerant version of subprocess check output"""
     cmd = '/bin/sh -c "{}; exit 0"'.format(cmd)
-    return subprocess.check_output(
-        shlex.split(cmd), stderr=sys.stdout).decode('utf-8')
+    output = subprocess.check_output(
+        shlex.split(cmd), stderr=subprocess.STDOUT).decode('utf-8')
+
+    if first_row_only and output != '':
+        return output.splitlines()[0]
+    else:
+        return output
 
 
 def _get_hg_repo(path_dir):
@@ -38,10 +49,6 @@ def _get_hg_repo(path_dir):
     os.chdir(path_dir)
     output = safe_check_output('hg paths')
     os.chdir(pwd)
-    try:
-        output = output.splitlines()[0]
-    except:
-        pass
 
     if output == '':
         return 'not an hg repo'
@@ -122,7 +129,7 @@ def get_info_software():
     info_sw = dict(zip(
         ['system', 'hostname', 'kernel'], uname))
     try:
-        info_sw['distro'] = ' '.join(platform.linux_distribution())
+        info_sw['distro'] = ' '.join(linux_distribution())
     except:
         pass
 
@@ -130,8 +137,8 @@ def get_info_software():
     if cc is None:
         cc = 'gcc'
 
-    info_sw['CC'] = safe_check_output(cc + ' --version').splitlines()[0]
-    info_sw['MPI'] = safe_check_output('mpirun --version').splitlines()[0]
+    info_sw['CC'] = safe_check_output(cc + ' --version')
+    info_sw['MPI'] = safe_check_output('mpirun --version')
     return info_sw
 
 
