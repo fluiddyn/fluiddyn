@@ -176,14 +176,11 @@ def _print_item(item):
     print(item.ljust(_COL_WIDTH), end='')
 
 
-def _print_heading(heading, case='title'):
+def _print_heading(heading):
     if isinstance(heading, str):
         heading = [heading]
 
-    if case == 'title':
-        heading = [h.replace('_', ' ').title() for h in heading]
-    elif case == 'upper':
-        heading = [h.replace('_', ' ').upper() for h in heading]
+    heading = [h.replace('_', ' ').title() for h in heading]
 
     underline = ['=' * len(h) for h in heading]
 
@@ -199,7 +196,7 @@ def _print_heading(heading, case='title'):
 
 def _print_dict(d, title=None):
     if title is not None:
-        _print_heading(title)
+        _print_heading('\n' + title)
 
     for k, v in d.items():
         print(' - {}: {}'.format(k.ljust(_COL_WIDTH), v))
@@ -235,9 +232,11 @@ def print_sys_info():
         print_pkg(about_pkg)
 
     info_sw = get_info_software()
-    _print_dict(info_sw, 'software')
+    _print_dict(info_sw, 'Software')
     info_hw = get_info_hardware()
-    _print_dict(info_hw, 'hardware')
+    _print_dict(info_hw, 'Hardware')
+    info_py = get_info_python()
+    _print_dict(info_py, 'Python')
 
 
 def save_sys_info(path_dir='.', filename='sys_info.xml'):
