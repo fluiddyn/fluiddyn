@@ -11,7 +11,8 @@ from shutil import rmtree, copy
 
 from .. rdvision import read_seq, read_xml, read_sqb, SetOfFiles
 
-input_dir = os.path.join(os.path.dirname(__file__), 'rdvision_files')
+input_dir = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), 'rdvision_files'))
 input_files = glob(os.path.join(input_dir, '*'))
 
 

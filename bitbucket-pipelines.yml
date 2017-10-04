@@ -12,4 +12,4 @@ pipelines:
           - pip install -U tox
           - pip --version
           - tox --version
-          - tox
+          - tox -e py27,py36,codecov

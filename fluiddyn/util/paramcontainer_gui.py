@@ -5,7 +5,7 @@ import os
 from copy import deepcopy
 import subprocess
 
-from matplotlib.backends.qt_compat import QtGui, QtCore
+from matplotlib.backends.qt_compat import QtWidgets, QtCore
 
 from fluiddyn.util import time_as_str
 
@@ -16,12 +16,12 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtWidgets.QApplication.translate(context, text, disambig)
 
 
 class QtParamContainer(object):
@@ -43,46 +43,46 @@ class QtParamContainer(object):
         key_attribs = params._get_key_attribs()
         tag_children = params._tag_children
 
-        self.page_main = QtGui.QWidget()
+        self.page_main = QtWidgets.QWidget()
         self.page_main.setObjectName(_fromUtf8(
             'page_main_' + self.full_tag))
 
-        self.verticalLayout = QtGui.QVBoxLayout(self.page_main)
-        self.verticalLayout.setMargin(0)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.page_main)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName(_fromUtf8(
             'verticalLayout_' + self.full_tag))
 
         if self.params._contains_doc():
-            self.pushButton_doc = QtGui.QPushButton(self.page_main)
+            self.pushButton_doc = QtWidgets.QPushButton(self.page_main)
             self.pushButton_doc.setText('Display doc ' + full_tag_dot)
             self.verticalLayout.addWidget(self.pushButton_doc)
             self.pushButton_doc.released.connect(self.params._print_docs)
 
         if len(key_attribs) > 0:
-            self.page_attribs = QtGui.QWidget()
+            self.page_attribs = QtWidgets.QWidget()
             self.page_attribs.setObjectName(_fromUtf8(
                 'page_attribs_' + self.full_tag))
 
-            self.formLayout_attribs = QtGui.QFormLayout(self.page_attribs)
-            self.formLayout_attribs.setMargin(0)
+            self.formLayout_attribs = QtWidgets.QFormLayout(self.page_attribs)
+            self.formLayout_attribs.setContentsMargins(0, 0, 0, 0)
             self.formLayout_attribs.setObjectName(_fromUtf8(
                 'formLayout_' + self.full_tag))
 
             i = -1
             for key in key_attribs:
                 i += 1
-                label = self.labels[key] = QtGui.QLabel(self.page_attribs)
+                label = self.labels[key] = QtWidgets.QLabel(self.page_attribs)
                 label.setObjectName(_fromUtf8(
                     'label_' + self.full_tag + '_' + key))
                 self.formLayout_attribs.setWidget(
-                    i, QtGui.QFormLayout.LabelRole, label)
+                    i, QtWidgets.QFormLayout.LabelRole, label)
 
-                line = self.lines_edit[key] = QtGui.QLineEdit(
+                line = self.lines_edit[key] = QtWidgets.QLineEdit(
                     self.page_attribs)
                 line.setObjectName(_fromUtf8(
                     'line_' + self.full_tag + '_' + key))
                 self.formLayout_attribs.setWidget(
-                    i, QtGui.QFormLayout.FieldRole, line)
+                    i, QtWidgets.QFormLayout.FieldRole, line)
 
                 label.setText(_translate('MainWindow', key, None))
 
@@ -93,20 +93,20 @@ class QtParamContainer(object):
                     i += 1
 
                     def choose_name():
-                        fileName = QtGui.QFileDialog.getOpenFileName(
+                        fileName = QtWidgets.QFileDialog.getOpenFileName(
                             self.page_attribs, 'OpenFile')
                         self.lines_edit['path'].setText("'" + fileName + "'")
 
-                    self.buttons[key] = QtGui.QPushButton(self.page_attribs)
+                    self.buttons[key] = QtWidgets.QPushButton(self.page_attribs)
                     self.formLayout_attribs.setWidget(
-                        i, QtGui.QFormLayout.FieldRole, self.buttons[key])
+                        i, QtWidgets.QFormLayout.FieldRole, self.buttons[key])
                     self.buttons[key].setText('Navigate to choose the path')
                     self.buttons[key].released.connect(choose_name)
 
             self.verticalLayout.addWidget(self.page_attribs)
 
         if len(tag_children) > 0:
-            self.toolBox = QtGui.QToolBox(self.page_main)
+            self.toolBox = QtWidgets.QToolBox(self.page_main)
 
             for tag in tag_children:
                 qtparam = self.qt_params_children[tag] = self.__class__(
@@ -118,17 +118,17 @@ class QtParamContainer(object):
             self.verticalLayout.addWidget(self.toolBox)
 
         if top:
-            self.pushButton_xml = QtGui.QPushButton(self.page_main)
+            self.pushButton_xml = QtWidgets.QPushButton(self.page_main)
             self.pushButton_xml.setText('Display as xml')
             self.verticalLayout.addWidget(self.pushButton_xml)
             self.pushButton_xml.released.connect(self.print_as_xml)
 
-            self.pushButton_default = QtGui.QPushButton(self.page_main)
+            self.pushButton_default = QtWidgets.QPushButton(self.page_main)
             self.pushButton_default.setText('Reset to default parameters')
             self.verticalLayout.addWidget(self.pushButton_default)
             self.pushButton_default.released.connect(self.reset_default_values)
 
-            self.pushButton_launch = QtGui.QPushButton(self.page_main)
+            self.pushButton_launch = QtWidgets.QPushButton(self.page_main)
             self.pushButton_launch.setText('Launch computation')
             self.verticalLayout.addWidget(self.pushButton_launch)
             self.pushButton_launch.released.connect(self.launch)

@@ -3,6 +3,7 @@ from __future__ import print_function
 import os
 import psutil
 import sys
+import traceback
 
 
 def _detect_mpi_type():
@@ -67,11 +68,9 @@ else:
     rank = comm.Get_rank()
 
     if nb_proc > 1:
-
-        old_excepthook = sys.excepthook
-
         def my_excepthook(ex_cls, ex, tb):
-            old_excepthook(ex_cls, ex, tb)
+            print(''.join(traceback.format_exception(ex_cls, ex, tb)))
+            sys.__excepthook__(ex_cls, ex, tb)
             MPI.COMM_WORLD.Abort()
 
         sys.excepthook = my_excepthook

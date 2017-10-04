@@ -1,8 +1,11 @@
 
-0.1.4
+
+0.1.5
 -----
 
-- Bug fix (Python 3 literal_eval)
+- Travis
+- Bug fix (Python 3)
+- PyQt5
 
 0.1.3
 -----

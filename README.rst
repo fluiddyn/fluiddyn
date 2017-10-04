@@ -2,7 +2,7 @@
 FluidDyn
 ========
 
-|release| |docs| |coverage|
+|release| |docs| |coverage| |travis|
 
 .. |release| image:: https://img.shields.io/pypi/v/fluiddyn.svg
    :target: https://pypi.python.org/pypi/fluiddyn/
@@ -15,6 +15,9 @@ FluidDyn
 .. |coverage| image:: https://codecov.io/bb/fluiddyn/fluiddyn/branch/default/graph/badge.svg
    :target: https://codecov.io/bb/fluiddyn/fluiddyn/branch/default/
    :alt: Code coverage
+
+.. |travis| image:: https://travis-ci.org/fluiddyn/fluiddyn.svg?branch=master
+    :target: https://travis-ci.org/fluiddyn/fluiddyn
 
 FluidDyn is a framework for research and teaching in fluid dynamics. The Python
 package fluiddyn contains basic utilities (file io, figures, clusters, mpi,
@@ -51,6 +54,31 @@ You can get the source code from `Bitbucket
 The development mode is often useful. From the root directory, run::
 
   python setup.py develop
+
+
+Requirements
+------------
+*Minimum*
+
+ - Python 2.7, >=3.4
+ - numpy
+ - matplotlib
+ - psutil
+ - future
+ - subprocess32 (for Python 2.7 only)
+
+*Full functionality*
+
+ - h5py
+ - mpi4py
+ - scipy
+ - pyfftw (requires FFTW library)
+ - pillow
+
+*Optional*
+
+ - OpenCV with Python bindings
+ - scikit-image
 
 Tests
 -----

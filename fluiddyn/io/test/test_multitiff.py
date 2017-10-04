@@ -14,9 +14,9 @@ from PIL import Image
 from ..multitiff import (
     imsave,
     reorganize_single_frame_3Dscannedpiv_data,
-    reorganize_double_frame_3Dscannedpiv_data,
-    reorganize_single_frame_2Dpiv_data,
-    reorganize_double_frame_2Dpiv_data)
+    reorganize_piv3dscanning_doubleframe,
+    reorganize_piv2d_singleframe,
+    reorganize_piv2d_doubleframe)
 
 from ..redirect_stdout import stdout_redirected
 
@@ -40,7 +40,7 @@ class TestMultiTIFF(unittest.TestCase):
 
         for ifile in range(cls.nb_files):
             arrays = [im(2 ** 8 - 1, np.int8) for i in range(cls.n_frames)]
-            imsave('test{}.tif'.format(ifile), arrays, as_int=True)
+            imsave('test_multitiff{}.tif'.format(ifile), arrays, as_int=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -48,10 +48,9 @@ class TestMultiTIFF(unittest.TestCase):
         rmtree(cls._work_dir)
 
     def test_imsave(self):
-        im = Image.open('test0.tif')
-        im.load()
-        n_frames = im.n_frames
-        im.close()
+        with Image.open('test_multitiff0.tif') as im:
+            n_frames = im.n_frames
+
         if n_frames != self.n_frames:
             raise ValueError(
                 'Multiframe TIFF imsave unsuccessful. No. of frames={}'.format(
@@ -62,19 +61,19 @@ class TestMultiTIFF(unittest.TestCase):
             reorganize_single_frame_3Dscannedpiv_data(
                 'test*.tif', 2, outputdir='.', outputext='png', erase=True)
 
-    def test_double_frame_3Dscannedpiv(self):
+    def test_piv3dscanning_doubleframe(self):
         with stdout_redirected():
-            reorganize_double_frame_3Dscannedpiv_data(
+            reorganize_piv3dscanning_doubleframe(
                 'test*.tif', 2, outputdir='.', outputext='png', erase=False)
 
-    def test_single_frame_2Dpiv(self):
+    def test_piv2d_singleframe(self):
         with stdout_redirected():
-            reorganize_single_frame_2Dpiv_data(
+            reorganize_piv2d_singleframe(
                 'test*.tif', outputdir='.', outputext='png', erase=False)
 
-    def test_double_frame_2Dpiv(self):
+    def test_piv2d_doubleframe(self):
         with stdout_redirected():
-            reorganize_double_frame_2Dpiv_data(
+            reorganize_piv2d_doubleframe(
                 'test*.tif', outputdir='.', outputext='png', erase=False)
 
 
