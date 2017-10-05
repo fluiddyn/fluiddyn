@@ -22,6 +22,8 @@ try:
 except ImportError:
     import subprocess
 
+import psutil
+
 from fluiddyn.util.paramcontainer import ParamContainer
 
 
@@ -142,37 +144,71 @@ def get_info_software():
     return info_sw
 
 
+def filter_modify_dict(d, filter_keys, mod_keys):
+    """Create a new dictionary by filtering and modifying the keys."""
+    filter_d = dict((k, v) for k, v in d.items() if k in filter_keys)
+    for old_key, new_key in zip(filter_keys, mod_keys):
+        if old_key != new_key:
+            try:
+                filter_d[new_key] = filter_d.pop(old_key)
+            except KeyError:
+                pass
+
+    return filter_d
+
+
+def update_dict(d1, d2):
+    """Update dictionary with missing keys and related values."""
+    d1.update(dict((k, v) for k, v in d2.items() if k not in d1))
+    return d1
+
+
 def get_info_hardware():
     """Create a dictionary for CPU information."""
-    try:
-        from cpuinfo import cpuinfo
-
-        info_hw = cpuinfo.get_cpu_info()
-        info_hw = dict((k, v) for k, v in info_hw.items() if k in [
-            'arch', 'brand', 'count', 'hz_actual', 'hz_advertised',
-            'l2_cache_size'])
-
-    except ImportError:
-        import psutil
-
+    def _cpu_freq():
+        """psutil can return `None` sometimes, esp. in Travis."""
         hz = psutil.cpu_freq()
-        info_hw = {
-            'arch': platform.machine(),
-            'brand': platform.processor(),
-            'count': psutil.cpu_count(),
-            'hz_actual': '{:.2f} Ghz'.format(hz.current / 1000),
-            'hz_advertised': '{:.2f} Ghz'.format(hz.max / 1000),
-        }
+        if hz is None:
+            return 0., 0., 0.
+        else:
+            return hz.current, hz.min, hz.max
+
+    try:
+        from numpy.distutils.cpuinfo import cpu
+        # Keys are specific to Linux distributions only
+        info_hw = filter_modify_dict(
+            cpu.info[0],
+            ['uname_m', 'cpu cores', 'bogomips', 'cache size',
+             'model name', 'siblings', 'address sizes'],
+            ['arch', 'nb_cores', 'bogomips', 'cache_size',
+             'cpu_name', 'nb_procs', 'address_sizes']
+        )
+        info_hw['cpu_MHz_actual'] = []
+        for d in cpu.info:
+            info_hw['cpu_MHz_actual'].append(d['cpu MHz'])
+    except KeyError as e:
+        print('KeyError with', e)
+        info_hw = dict()
+
+    hz_current, hz_min, hz_max = _cpu_freq()
+    info_hw_alt = {
+        'arch': platform.machine(),
+        'cpu_name': platform.processor(),
+        'nb_procs': psutil.cpu_count(),
+        'cpu_MHz_current': '{:.3f}'.format(hz_current),
+        'cpu_MHz_min': '{:.3f}'.format(hz_min),
+        'cpu_MHz_max': '{:.3f}'.format(hz_max)
+    }
+    info_hw = update_dict(info_hw, info_hw_alt)
     return info_hw
 
 
-def reset_col_width():
+def reset_col_width(nb_cols):
     """Detect total width of the current terminal."""
     global _COL_WIDTH
-    nb_cols = 5
     try:
         tot_width = int(subprocess.check_output(['tput', 'cols']))
-        _COL_WIDTH = tot_width // 5
+        _COL_WIDTH = tot_width // nb_cols
     except:
         pass
 
@@ -211,15 +247,16 @@ def _print_dict(d, title=None):
 
 def print_sys_info():
     """Print package information as a formatted table."""
-    reset_col_width()
 
     pkgs = get_info_fluiddyn()
     pkgs_keys = list(pkgs)
 
     heading = ['Package']
     heading.extend(pkgs[pkgs_keys[0]])
+    reset_col_width(len(heading))
 
     _print_heading(heading)
+
     def print_pkg(about_pkg):
         for v in about_pkg.values():
             v = str(v)
