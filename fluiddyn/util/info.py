@@ -10,6 +10,7 @@ import inspect
 from collections import OrderedDict
 import platform
 import argparse
+
 try:
     from platform import linux_distribution
     # Pending deprecation (Python 3.7)
@@ -23,6 +24,8 @@ except ImportError:
     import subprocess
 
 import psutil
+import numpy as np
+import numpy.distutils.system_info as np_sys_info
 
 from fluiddyn.util.paramcontainer import ParamContainer
 
@@ -144,6 +147,20 @@ def get_info_software():
     return info_sw
 
 
+def get_info_numpy(only_print=False, verbose=False):
+    """Print or create a dictionary for numpy and linalg library information."""
+    if only_print:
+        if verbose:
+            np_sys_info.show_all()
+        else:
+            np.show_config()
+    else:
+        libs = ['lapack', 'lapack_opt', 'blas', 'blas_opt', 'fftw_opt',
+                'atlas', 'openblas', 'mkl']
+
+        return dict((k, np_sys_info.get_info(k)) for k in libs)
+
+
 def filter_modify_dict(d, filter_keys, mod_keys):
     """Create a new dictionary by filtering and modifying the keys."""
     filter_d = dict((k, v) for k, v in d.items() if k in filter_keys)
@@ -175,6 +192,7 @@ def get_info_hardware():
 
     try:
         from numpy.distutils.cpuinfo import cpu
+
         # Keys are specific to Linux distributions only
         info_hw = filter_modify_dict(
             cpu.info[0],
@@ -245,7 +263,7 @@ def _print_dict(d, title=None):
         print(' - {}: {}'.format(k.ljust(_COL_WIDTH), v))
 
 
-def print_sys_info():
+def print_sys_info(verbose=False):
     """Print package information as a formatted table."""
 
     pkgs = get_info_fluiddyn()
@@ -281,6 +299,8 @@ def print_sys_info():
     _print_dict(info_hw, 'Hardware')
     info_py = get_info_python()
     _print_dict(info_py, 'Python')
+    _print_heading('\nNumPy')
+    get_info_numpy(True, verbose)
 
 
 def save_sys_info(path_dir='.', filename='sys_info.xml'):
@@ -290,6 +310,7 @@ def save_sys_info(path_dir='.', filename='sys_info.xml'):
     info_sw = get_info_software()
     info_hw = get_info_hardware()
     info_py = get_info_python()
+    info_np = get_info_numpy()
     pkgs = get_info_fluiddyn()
     pkgs_third_party = get_info_third_party()
 
@@ -301,6 +322,9 @@ def save_sys_info(path_dir='.', filename='sys_info.xml'):
 
     for pkg in pkgs_third_party:
         sys_info.python._set_child(pkg, pkgs_third_party[pkg])
+
+    for lib in info_np:
+        sys_info.python.numpy._set_child(lib, info_np[lib])
 
     path = os.path.join(path_dir, filename)
     sys_info._save_as_xml(path, find_new_name=True)
@@ -316,6 +340,9 @@ def main():
         action='store_true')
     parser.add_argument(
         '-o', '--output-dir', help='save to directory', default=None)
+    parser.add_argument(
+        '-v', '--verbose', help='verbose print output',
+        action='store_true')
 
     args = parser.parse_args()
     if args.save:
@@ -323,7 +350,7 @@ def main():
     elif args.output_dir is not None:
         save_sys_info(args.output_dir)
     else:
-        print_sys_info()
+        print_sys_info(args.verbose)
 
 
 if __name__ == '__main__':
