@@ -29,7 +29,7 @@ else:
     devstatus = 'Development Status :: 5 - Production/Stable'
 
 
-install_requires = ['numpy', 'matplotlib', 'psutil', 'future']
+install_requires = ['numpy', 'matplotlib', 'psutil >= 5.2.1', 'future']
 # Even though we also use scipy, we don't require its installation
 # because it can be heavy to install.
 

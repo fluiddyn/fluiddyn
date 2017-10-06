@@ -212,9 +212,16 @@ def get_info_hardware():
     """Create a dictionary for CPU information."""
     def _cpu_freq():
         """psutil can return `None` sometimes, esp. in Travis."""
-        hz = psutil.cpu_freq()
+        func = 'psutil.cpu_freq: '
+        try:
+            hz = psutil.cpu_freq()
+        except IOError:
+            return (func + 'IOError') * 3  # See psutil issue #1071
+        except AttributeError:
+            return (func + 'AttributeError') * 3  # See psutil issue #1006
+
         if hz is None:
-            return 0., 0., 0.
+            return (func + 'None') * 3  # See psutil issue #981
         else:
             return hz.current, hz.min, hz.max
 
