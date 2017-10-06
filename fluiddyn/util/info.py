@@ -10,6 +10,7 @@ import inspect
 from collections import OrderedDict
 import platform
 import argparse
+import warnings
 
 try:
     from platform import linux_distribution
@@ -28,6 +29,7 @@ import numpy as np
 import numpy.distutils.system_info as np_sys_info
 
 from fluiddyn.util.paramcontainer import ParamContainer
+from fluiddyn.io.redirect_stdout import stdout_redirected
 
 
 _COL_WIDTH = 32
@@ -147,18 +149,32 @@ def get_info_software():
     return info_sw
 
 
-def get_info_numpy(only_print=False, verbose=False):
+def get_info_numpy(only_print=False, verbosity=None):
     """Print or create a dictionary for numpy and linalg library information."""
-    if only_print:
-        if verbose:
-            np_sys_info.show_all()
-        else:
-            np.show_config()
-    else:
-        libs = ['lapack', 'lapack_opt', 'blas', 'blas_opt', 'fftw_opt',
-                'atlas', 'openblas', 'mkl']
+    libs = ['lapack_opt', 'blas_opt', 'fftw', 'mkl']
 
-        return dict((k, np_sys_info.get_info(k)) for k in libs)
+    def rm_configtest():
+        if os.path.exists('_configtest.o.d'):
+            os.remove('_configtest.o.d')
+
+    def np_sys_info_dict():
+        with stdout_redirected():
+            d = dict((k, np_sys_info.get_info(k)) for k in libs)
+
+        rm_configtest()
+        return d
+
+    if only_print:
+        if verbosity == 1:
+            for k, v in np_sys_info_dict().items():
+                _print_dict(v, k, '-', 'upper')
+        elif verbosity == 2:
+            np.show_config()
+        else:
+            np_sys_info.show_all(argv=[])
+            rm_configtest()
+    else:
+        return np_sys_info_dict()
 
 
 def filter_modify_dict(d, filter_keys, mod_keys):
@@ -237,13 +253,16 @@ def _print_item(item):
     print(item.ljust(_COL_WIDTH), end='')
 
 
-def _print_heading(heading):
+def _print_heading(heading, underline_with='=', case='title'):
     if isinstance(heading, str):
         heading = [heading]
 
-    heading = [h.replace('_', ' ').title() for h in heading]
+    if case == 'title':
+        heading = [h.replace('_', ' ').title() for h in heading]
+    elif case == 'upper':
+        heading = [h.replace('_', ' ').upper() for h in heading]
 
-    underline = ['=' * len(h) for h in heading]
+    underline = [underline_with * len(h) for h in heading]
 
     for item in heading:
         _print_item(item)
@@ -255,15 +274,15 @@ def _print_heading(heading):
     print()
 
 
-def _print_dict(d, title=None):
+def _print_dict(d, title=None, underline_with='=', case='title'):
     if title is not None:
-        _print_heading('\n' + title)
+        _print_heading('\n' + title, underline_with, case)
 
     for k, v in d.items():
         print(' - {}: {}'.format(k.ljust(_COL_WIDTH), v))
 
 
-def print_sys_info(verbose=False):
+def print_sys_info(verbosity=None):
     """Print package information as a formatted table."""
 
     pkgs = get_info_fluiddyn()
@@ -299,8 +318,9 @@ def print_sys_info(verbose=False):
     _print_dict(info_hw, 'Hardware')
     info_py = get_info_python()
     _print_dict(info_py, 'Python')
-    _print_heading('\nNumPy')
-    get_info_numpy(True, verbose)
+    if verbosity is not None:
+        _print_heading('\nNumPy')
+        get_info_numpy(True, verbosity)
 
 
 def save_sys_info(path_dir='.', filename='sys_info.xml'):
@@ -336,21 +356,30 @@ def main():
         description='print and save system information')
     parser.set_defaults(func=print_sys_info)
     parser.add_argument(
-        '-s', '--save', help='saves system information to an xml file',
+        '-s', '--save', help='saves system information to an xml file '
+        '(sys_info.xml)',
         action='store_true')
     parser.add_argument(
         '-o', '--output-dir', help='save to directory', default=None)
     parser.add_argument(
-        '-v', '--verbose', help='verbose print output',
-        action='store_true')
+        '-v', '--verbosity', help='increase output verbosity (max: -vvv)',
+        action='count')
+    parser.add_argument(
+        '-W', '--warnings', help='show warnings', action='store_true')
 
     args = parser.parse_args()
+    if not args.warnings:
+        warnings.filterwarnings('ignore', category=UserWarning)
+
     if args.save:
         save_sys_info()
     elif args.output_dir is not None:
         save_sys_info(args.output_dir)
     else:
-        print_sys_info(args.verbose)
+        print_sys_info(args.verbosity)
+
+    if not args.warnings:
+        warnings.resetwarnings()
 
 
 if __name__ == '__main__':
