@@ -1,5 +1,17 @@
-"""Console script to print and save system information. (:mod:`fluiddevops.info`)
-=================================================================================
+"""Console script to print and save system information. (:mod:`fluiddyn.util.info`)
+===================================================================================
+Displays all important information related to software and hardware. It also
+includes detailed information such as currently installed FluidDyn packages, 
+other third-party packages, C compiler, MPI and NumPy configuration.
+
+Examples
+--------
+>>> fluidinfo  # print package, Python, software and hardware info
+>>> fluidinfo -v  # also print basic Numpy info
+>>> fluidinfo -vv  # also print detailed Numpy info
+>>> fluidinfo -s  # save all information into sys_info.xml
+>>> fluidinfo -o /tmp  # save all information into /tmp/sys_info.xml
+
 
 """
 from __future__ import print_function
@@ -351,9 +363,11 @@ def save_sys_info(path_dir='.', filename='sys_info.xml'):
 
 
 def main():
+    desc = '\n'.join(__doc__.splitlines()[2:])
     parser = argparse.ArgumentParser(
         prog='fluidinfo',
-        description='print and save system information')
+        description=desc,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.set_defaults(func=print_sys_info)
     parser.add_argument(
         '-s', '--save', help='saves system information to an xml file '
@@ -380,6 +394,10 @@ def main():
 
     if not args.warnings:
         warnings.resetwarnings()
+
+
+__all__ = ['print_sys_info', 'save_sys_info']
+__all__.extend([f for f in globals() if f.startswith('get_info')])
 
 
 if __name__ == '__main__':
