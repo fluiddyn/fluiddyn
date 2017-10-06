@@ -16,9 +16,14 @@ Provides:
    :members:
 
 """
+from __future__ import print_function
 
 from .slurm import ClusterSlurm
 from os import getenv
+import six
+
+
+_venv = '$LOCAL_PYTHON' if six.PY2 else '$LOCAL_PYTHON3'
 
 
 class Beskow(ClusterSlurm):
@@ -30,14 +35,18 @@ class Beskow(ClusterSlurm):
     def __init__(self):
         super(Beskow, self).__init__()
         self.check_name_cluster('SNIC_RESOURCE')
+        if six.PY2:
+            modpy = 'anaconda/py27/2.3'
+        else:
+            modpy = 'anaconda/py36/4.3'
 
         self.commands_setting_env = [
             'source /etc/profile',
             'module swap PrgEnv-cray PrgEnv-gnu',
-            'module load fftw anaconda/py27/2.3',
+            'module load fftw ' + modpy,
             'export CRAY_ROOTFS=DSL',
-            'source $LOCAL_ANACONDA/bin/activate $LOCAL_ANACONDA',
-            'export ANACONDA_HOME=$LOCAL_ANACONDA',
+            'source {}/bin/activate {}'.format(_venv, _venv),
+            'export ANACONDA_HOME=' + _venv,
             'source activate_python']
 
         self.commands_unsetting_env = [
@@ -53,12 +62,16 @@ class Triolith(ClusterSlurm):
     def __init__(self):
         super(Triolith, self).__init__()
         self.check_name_cluster('SNIC_RESOURCE')
-
+        if six.PY2:
+            modpy = 'python/2.7.12'
+        else:
+            modpy = 'python3/3.6.1'
+        
         self.commands_setting_env = [
-            'module add python/2.7.12',
+            'module add ' + modpy ,
             'module add gcc/4.9.0 openmpi/1.6.2-build1',
             'module add hdf5/1.8.11-i1214-parallel',
-            'source $LOCAL_PYTHON/bin/activate']
+            'source {}/bin/activate'.format(_venv)]
 
         self.commands_unsetting_env = [
             'deactivate']
@@ -80,7 +93,7 @@ class Abisko(ClusterSlurm):
             'module load HDF5/1.10.0-patch1',
             'module load FFTW/3.3.6',
             'module load Python/2.7.12',
-            'source $LOCAL_PYTHON/bin/activate']
+            'source {}/bin/activate'.format(_venv)]
 
         self.commands_unsetting_env = []
 
@@ -94,14 +107,22 @@ class Kebnekaise(ClusterSlurm):
     def __init__(self):
         super(Kebnekaise, self).__init__()
         self.check_name_cluster('SNIC_RESOURCE')
-
         self.commands_setting_env = [
-            'source /etc/profile',
-            'module load GCC/5.4.0-2.26 OpenMPI/1.10.3',
-            'module load HDF5/1.8.17',
-            'module load Python/2.7.12',
-            'module load PIL/1.1.7-Python-2.7.12',
-            'source $LOCAL_PYTHON/bin/activate']
+            'source /etc/profile']
+
+        if six.PY2:
+            self.commands_setting_env.extend([
+                'module load GCC/5.4.0-2.26 OpenMPI/1.10.3',
+                'module load HDF5/1.8.17',
+                'module load Python/2.7.12',
+                'module load PIL/1.1.7-Python-2.7.12',
+                'source {}/bin/activate'.format(_venv)])
+        else:
+            self.commands_setting_env.extend([
+                'module load GCC/6.3.0-2.27  OpenMPI/2.0.2',
+                'module load HDF5/1.10.0-patch1',
+                'module load Python/3.6.1',
+                'source {}/bin/activate'.format(_venv)])
 
         self.commands_unsetting_env = []
 
@@ -115,3 +136,8 @@ elif _host == 'abisko':
     ClusterSNIC = Abisko
 elif _host == 'kebnekaise':
     ClusterSNIC = Kebnekaise
+
+
+if __name__ == '__main__':
+    cluster = ClusterSNIC()
+    print('\n'.join(cluster.commands_setting_env))
