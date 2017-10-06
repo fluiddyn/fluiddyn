@@ -29,7 +29,7 @@ else:
     devstatus = 'Development Status :: 5 - Production/Stable'
 
 
-install_requires = ['numpy', 'matplotlib', 'psutil', 'future']
+install_requires = ['numpy', 'matplotlib', 'psutil >= 5.2.1', 'future']
 # Even though we also use scipy, we don't require its installation
 # because it can be heavy to install.
 
@@ -70,5 +70,10 @@ setup(name='fluiddyn',
           'Programming Language :: C'],
       packages=find_packages(exclude=['doc']),
       install_requires=install_requires,
+      scripts=['bin/fluidconvertim7'],
+      entry_points={
+          'console_scripts':
+          ['fluidinfo = fluiddyn.util.info:main',
+           ]},
       extras_require=dict(
           doc=['Sphinx>=1.1', 'numpydoc']))

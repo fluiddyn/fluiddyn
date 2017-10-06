@@ -1,7 +1,5 @@
 """Ciment clusters (:mod:`fluiddyn.clusters.ciment`)
-=================================================
-
-.. currentmodule:: fluiddyn.clusters.ciment
+====================================================
 
 Provides:
 
@@ -12,6 +10,7 @@ Provides:
 High Performance Computing (HPC) centre.
 
 """
+from sys import version_info as version
 
 from fluiddyn.clusters.oar import ClusterOAR
 
@@ -30,5 +29,7 @@ class Froggy(ClusterOAR):
             'source /applis/site/env.bash',
             'export MODULEPATH='
             '/home/PROJECTS/pr-stratturb/modulefiles:$MODULEPATH',
-            'module load python/2.7.9',
-            'source /home/$USER/opt/mypy/bin/activate']
+            'module load python/{}.{}.{}'.format(
+                version.major, version.minor, version.micro),
+            'source /home/$USER/opt/mypy{}.{}/bin/activate'.format(
+                version.major, version.minor)]

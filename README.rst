@@ -55,6 +55,31 @@ The development mode is often useful. From the root directory, run::
 
   python setup.py develop
 
+
+Requirements
+------------
+*Minimum*
+
+ - Python 2.7, >=3.4
+ - numpy
+ - matplotlib
+ - psutil
+ - future
+ - subprocess32 (for Python 2.7 only)
+
+*Full functionality*
+
+ - h5py
+ - mpi4py
+ - scipy
+ - pyfftw (requires FFTW library)
+ - pillow
+
+*Optional*
+
+ - OpenCV with Python bindings
+ - scikit-image
+
 Tests
 -----
 

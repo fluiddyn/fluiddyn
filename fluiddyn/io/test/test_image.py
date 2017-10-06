@@ -22,24 +22,25 @@ def err_msg(_format, _type, path):
 class TestImage(unittest.TestCase):
     """Test fluiddyn.io.image module."""
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         def im(maxval, dtype, shape=(10, 10)):
             """Generate a test image."""
             return (maxval * np.random.random(shape)).astype(dtype)
 
-        self.paths = {
+        cls.paths = {
             None: 'test_image_none.png',
             'PNG': 'test_image.png',
             #  TIFF image saving with Pillow gives error
             # 'TIFF': 'test_image.tif',
         }
 
-        self.paths_h5 = {
+        cls.paths_h5 = {
             'gray8': 'test_gray.h5',
             'color8': 'test_color.h5'
         }
 
-        self.images = {
+        cls.images = {
             'gray8': im(2 ** 8 - 1, np.uint8),
             'gray16': im(2 ** 16 - 1, np.int32),
             'gray8f': im(2 ** 8 - 1, np.float16),
@@ -47,8 +48,9 @@ class TestImage(unittest.TestCase):
             'color8': im(2 ** 8 - 1, np.uint8, (10, 10, 3)),
         }
 
-    def tearDown(self):
-        for path in chain(self.paths.values(), self.paths_h5.values()):
+    @classmethod
+    def tearDownClass(cls):
+        for path in chain(cls.paths.values(), cls.paths_h5.values()):
             if os.path.exists(path):
                 os.remove(path)
 

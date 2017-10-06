@@ -2,8 +2,6 @@
 OAR clusters (:mod:`fluiddyn.clusters.oar`)
 ===========================================
 
-.. currentmodule:: fluiddyn.clusters.oar
-
 Provides:
 
 .. autoclass:: ClusterOAR
@@ -66,7 +64,8 @@ class ClusterOAR(object):
         if not path.startswith('python '):
             command = 'python ' + path
 
-        self.submit_command(command, name_run=name_run,
+        self.submit_command(
+            command, name_run=name_run,
             nb_nodes=nb_nodes, nb_cores_per_node=nb_cores_per_node,
             walltime=walltime, project=project,
             nb_mpi_processes=nb_mpi_processes, omp_num_threads=omp_num_threads,
@@ -74,14 +73,14 @@ class ClusterOAR(object):
             network_address=network_address, ask=ask, submit=submit)
 
     def submit_command(self, command, name_run='fluiddyn',
-            nb_nodes=1, nb_cores_per_node=1,
-            walltime='24:00:00', project=None,
-            nb_mpi_processes=None, omp_num_threads=None,
-            idempotent=False, delay_signal_walltime=300,
-            network_address=None, ask=True, submit=True):
+                       nb_nodes=1, nb_cores_per_node=1,
+                       walltime='24:00:00', project=None,
+                       nb_mpi_processes=None, omp_num_threads=None,
+                       idempotent=False, delay_signal_walltime=300,
+                       network_address=None, ask=True, submit=True):
 
         self.check_oar()
-        
+
         if nb_cores_per_node is None and nb_mpi_processes is not None:
             nb_cores_per_node = nb_mpi_processes
 
@@ -148,8 +147,8 @@ class ClusterOAR(object):
         elif network_address is not None:
             txt += "{network_address='" + network_address + "'}"
 
-        txt += "/nodes=1/core={},walltime={}\n\n".format(
-            nb_cores_per_node, walltime)
+        txt += "/nodes={}/core={},walltime={}\n\n".format(
+            nb_nodes, nb_cores_per_node, walltime)
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
 
@@ -159,10 +158,17 @@ class ClusterOAR(object):
             txt += 'export OMP_NUM_THREADS={}\n\n'.format(
                 omp_num_threads)
 
+        if nb_mpi_processes is not None and nb_nodes > 1:
+            txt += ('# Shell with environment variables forwarded\n'
+                    'export OMPI_MCA_plm_rsh_agent=oar-envsh\n\n')
+
         txt += 'exec '
 
         if nb_mpi_processes is not None:
             txt += 'mpirun -np {} '.format(nb_mpi_processes)
+
+            if nb_nodes > 1:
+                txt += '-machinefile ${OAR_NODEFILE} '
 
         txt += command + '\n'
 
