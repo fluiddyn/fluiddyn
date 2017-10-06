@@ -145,16 +145,14 @@ def get_info_third_party():
 def get_info_software():
     """Create a dictionary for compiler and OS information."""
     uname = platform.uname()
-    info_sw = dict(zip(
+    info_sw = OrderedDict(zip(
         ['system', 'hostname', 'kernel'], uname))
     try:
         info_sw['distro'] = ' '.join(linux_distribution())
     except:
         pass
 
-    cc = os.getenv('CC')
-    if cc is None:
-        cc = 'gcc'
+    cc = os.getenv('CC', 'gcc')
 
     info_sw['CC'] = safe_check_output(cc + ' --version')
     info_sw['MPI'] = safe_check_output('mpirun --version')
@@ -171,7 +169,7 @@ def get_info_numpy(only_print=False, verbosity=None):
 
     def np_sys_info_dict():
         with stdout_redirected():
-            d = dict((k, np_sys_info.get_info(k)) for k in libs)
+            d = OrderedDict((k, np_sys_info.get_info(k)) for k in libs)
 
         rm_configtest()
         return d
@@ -191,7 +189,7 @@ def get_info_numpy(only_print=False, verbosity=None):
 
 def filter_modify_dict(d, filter_keys, mod_keys):
     """Create a new dictionary by filtering and modifying the keys."""
-    filter_d = dict((k, v) for k, v in d.items() if k in filter_keys)
+    filter_d = OrderedDict((k, v) for k, v in d.items() if k in filter_keys)
     for old_key, new_key in zip(filter_keys, mod_keys):
         if old_key != new_key:
             try:
@@ -204,7 +202,7 @@ def filter_modify_dict(d, filter_keys, mod_keys):
 
 def update_dict(d1, d2):
     """Update dictionary with missing keys and related values."""
-    d1.update(dict((k, v) for k, v in d2.items() if k not in d1))
+    d1.update(((k, v) for k, v in d2.items() if k not in d1))
     return d1
 
 
@@ -223,7 +221,7 @@ def get_info_hardware():
         if hz is None:
             return (func + 'None') * 3  # See psutil issue #981
         else:
-            return hz.current, hz.min, hz.max
+            return ('{:.3f}'.format(h) for h in hz)
 
     try:
         from numpy.distutils.cpuinfo import cpu
@@ -238,20 +236,20 @@ def get_info_hardware():
         )
         info_hw['cpu_MHz_actual'] = []
         for d in cpu.info:
-            info_hw['cpu_MHz_actual'].append(d['cpu MHz'])
+            info_hw['cpu_MHz_actual'].append(float(d['cpu MHz']))
     except KeyError as e:
         print('KeyError with', e)
-        info_hw = dict()
+        info_hw = OrderedDict()
 
     hz_current, hz_min, hz_max = _cpu_freq()
-    info_hw_alt = {
-        'arch': platform.machine(),
-        'cpu_name': platform.processor(),
-        'nb_procs': psutil.cpu_count(),
-        'cpu_MHz_current': '{:.3f}'.format(hz_current),
-        'cpu_MHz_min': '{:.3f}'.format(hz_min),
-        'cpu_MHz_max': '{:.3f}'.format(hz_max)
-    }
+    info_hw_alt = OrderedDict((
+        ('arch', platform.machine()),
+        ('cpu_name', platform.processor()),
+        ('nb_procs', psutil.cpu_count()),
+        ('cpu_MHz_current', hz_current),
+        ('cpu_MHz_min', hz_min),
+        ('cpu_MHz_max', hz_max)
+    ))
     info_hw = update_dict(info_hw, info_hw_alt)
     return info_hw
 
