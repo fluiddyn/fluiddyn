@@ -214,12 +214,12 @@ def get_info_hardware():
         try:
             hz = psutil.cpu_freq()
         except IOError:
-            return (func + 'IOError') * 3  # See psutil issue #1071
+            return (func + 'IOError',) * 3  # See psutil issue #1071
         except AttributeError:
-            return (func + 'AttributeError') * 3  # See psutil issue #1006
+            return (func + 'AttributeError',) * 3  # See psutil issue #1006
 
         if hz is None:
-            return (func + 'None') * 3  # See psutil issue #981
+            return (func + 'None',) * 3  # See psutil issue #981
         else:
             return ('{:.3f}'.format(h) for h in hz)
 
@@ -229,10 +229,10 @@ def get_info_hardware():
         # Keys are specific to Linux distributions only
         info_hw = filter_modify_dict(
             cpu.info[0],
-            ['uname_m', 'cpu cores', 'bogomips', 'cache size',
-             'model name', 'siblings', 'address sizes'],
-            ['arch', 'nb_cores', 'bogomips', 'cache_size',
-             'cpu_name', 'nb_procs', 'address_sizes']
+            ['uname_m', 'address sizes', 'bogomips', 'cache size', 'model name',
+             'cpu cores', 'siblings'],
+            ['arch', 'address_sizes', 'bogomips', 'cache_size', 'cpu_name',
+             'nb_cores', 'nb_siblings']
         )
         info_hw['cpu_MHz_actual'] = []
         for d in cpu.info:
@@ -399,10 +399,6 @@ def main():
 
     if not args.warnings:
         warnings.resetwarnings()
-
-
-__all__ = ['print_sys_info', 'save_sys_info']
-__all__.extend([f for f in globals() if f.startswith('get_info')])
 
 
 if __name__ == '__main__':

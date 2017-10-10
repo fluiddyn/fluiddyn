@@ -24,6 +24,10 @@ from ..util.query import run_asking_agreement, call_bash
 from ..util.timer import time_gteq
 
 
+def is_python_script(path):
+    return os.path.splitext(path)[1] == '.py'
+
+
 class ClusterSlurm(object):
     name_cluster = ''
     nb_cores_per_node = 32
@@ -62,49 +66,77 @@ class ClusterSlurm(object):
             raise ValueError('Cluster name mismatch detected; expected ' +
                              self.name_cluster)
 
-    def submit_script(self, path, path_resume=None, name_run='fluiddyn',
-                      path_launching_script=None, retain_script=True,
-                      nb_nodes=1, nb_cores_per_node=None, nb_mpi_processes=None,
-                      walltime='23:59:58', nb_runs=1,
-                      jobid=None, project=None, requeue=False,
-                      nb_switches=None, max_waittime=None,
-                      ask=True, bash=True, email=None, interactive=False):
-        """
+    def submit_script(self, path, *args, **kwargs):
+        """Submit a script. See `submit_command` for all possible arguments"""
+        path = os.path.expandvars(path)
+        script = path.split()[0]
+        if not os.path.exists(script):
+            raise ValueError('Script does not exist! path:\n' + script)
+
+        if is_python_script(script) and not path.startswith('python '):
+            path = 'python ' + path
+
+        self.submit_command(path, *args, **kwargs)
+
+    def submit_command(
+            self, command, name_run='fluiddyn',
+            nb_nodes=1, nb_cores_per_node=None,
+            walltime='23:59:58', project=None,
+            nb_mpi_processes=None, omp_num_threads=1,
+            nb_runs=1, path_launching_script=None, path_resume=None,
+            retain_script=True, jobid=None, requeue=False,
+            nb_switches=None, max_waittime=None,
+            ask=True, bash=True, email=None, interactive=False,
+            **kwargs):
+        """Submit a command.
+
         Parameters
         ----------
-        path : string
-            Path of the simulation script. Usually located at:
-            $FLS/scripts/launch
-        path_launching_script: string
-            Path of the slurm jobscript
+        command : string
+            Command which executes the run
+        name_run : string
+            Name of the run to be displayed in SLURM queue
         nb_nodes : integer
             Sets number of MPI processes = nb_nodes * nb_cores_per_node
         nb_cores_per_node : integer
             Defaults to a maximum is fixed for a cluster, as set by self.nb_cores_per_node.
             Set as 1 for a serial job. Set as 0 to spread jobs across nodes
             (starts job faster, maybe slower).
-        nb_mpi_processes : integer
-            Number of MPI processes, set automatically
         walltime : string
             Minimum walltime for the job
-        output : string
-            Name of file to store standard output
-        jobid : integer
-            Run under already allocated job
         project : string
             Sets the allocation to run the job under
+        nb_mpi_processes : integer
+            Number of MPI processes. Defaults to a `nb_cores_per_node * nb_nodes`.
+        omp_num_threads : integer
+            Number of OpenMP threads
+        nb_runs : integer
+            Number of times to submit jobs (launch once using `command` and
+            resume thereafter with `path_resume` script / command).
+        path_launching_script: string
+            Path of the SLURM jobscript
+        path_resume : string
+            Path of the script to resume a job, which takes one
+            argument - the `path_run` parsed from the output.
+        retain_script : boolean
+            Retail or delete script after launching job
+        jobid : integer
+            Run under already allocated job
         requeue : boolean
             If set True, permit the job to be requeued.
         nb_switches : integer
             Max / Optimum switches
         max_waittime : string
             Max time to wait for optimum
+        ask : boolean
+            Ask for user input to submit the jobscript or not
+        bash : boolean
+            Submit jobscript via `call_bash` function
+        email : string
+            In case of failure notify to the specified email address
+        interactive : boolean
+            Use `cmd_run_interactive` instead of `cmd_run` inside the jobscript
         """
-
-        path = os.path.expandvars(path)
-        script = path.split()[0]
-        if not os.path.exists(script):
-            raise ValueError('Script does not exist! path:\n' + script)
 
         if nb_cores_per_node is None:
             nb_cores_per_node = self.nb_cores_per_node
@@ -127,7 +159,7 @@ class ClusterSlurm(object):
                 i += 1
             path_launching_script += '_' + str(i)
 
-        resume = bool('resumer' in path_launching_script)
+        is_resume_script = bool('resumer' in path_launching_script)
 
         if time_gteq(walltime, self.max_walltime):
             raise ValueError(
@@ -145,7 +177,7 @@ class ClusterSlurm(object):
         if requeue:
             launching_command += ' --requeue'
 
-        if resume:
+        if is_resume_script:
             dependencies = input('Enter jobid dependencies :').split()
             launching_command += ' --dependency=afternotok:' + ':'.join(dependencies)
         else:
@@ -155,10 +187,9 @@ class ClusterSlurm(object):
             launching_command += ' --switches=' + str(nb_switches) + \
                                  '{@' + max_waittime + '}'
 
-        txt = self._create_txt_launching_script(
-            path_launching_script, path, name_run, project, nb_nodes,
-            nb_cores_per_node, walltime, nb_mpi_processes, dependencies,
-            email, interactive, resume)
+        create_txt_kwargs = locals()
+        del create_txt_kwargs['self']
+        txt = self._create_txt_launching_script(**create_txt_kwargs)
 
         with open(path_launching_script, 'w') as f:
             f.write(txt)
@@ -167,7 +198,7 @@ class ClusterSlurm(object):
                  stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
         launching_command += ' ./' + path_launching_script
 
-        print('A launcher for the script {} has been created.'.format(path))
+        print('A launcher for the command {} has been created.'.format(command))
         if ask:
             run_asking_agreement(launching_command)
         else:
@@ -188,17 +219,11 @@ class ClusterSlurm(object):
             requeue = False
             path = path_resume
             path_launching_script = 'resumer_' + str_time + '_' + str(n) + '.sh'
-            self.submit_script(
-                path, None, name_run, path_launching_script, retain_script,
-                nb_nodes, nb_cores_per_node, nb_mpi_processes,
-                walltime, nb_runs, jobid, project,
-                requeue, nb_switches, max_waittime,
-                ask, bash, email, interactive)
+            submit_script_kwargs = locals()
+            del submit_script_kwargs['self']
+            self.submit_script(**submit_script_kwargs)
 
-    def _create_txt_launching_script(
-            self, path_launching_script, path, name_run, project, nb_nodes,
-            nb_cores_per_node, walltime, nb_mpi_processes, dependencies,
-            email, interactive, resume_script):
+    def _create_txt_launching_script(self, **kwargs):
         """
         Example
         -------
@@ -228,6 +253,19 @@ class ClusterSlurm(object):
             # Run the executable named myexe
             srun -n 128 ./myexe
         """
+        path_launching_script = kwargs['path_launching_script']
+        command = kwargs['command']
+        name_run = kwargs['name_run']
+        project = kwargs['project']
+        nb_nodes = kwargs['nb_nodes']
+        nb_cores_per_node = kwargs['nb_cores_per_node']
+        walltime = kwargs['walltime']
+        nb_mpi_processes = kwargs['nb_mpi_processes']
+        omp_num_threads = kwargs['omp_num_threads']
+        dependencies = kwargs['dependencies']
+        email = kwargs['email']
+        interactive = kwargs['interactive']
+        is_resume_script = kwargs['is_resume_script']
 
         logfile = 'SLURM.{}'.format(name_run)
         logfile_stdout = logfile + '.${SLURM_JOBID}.stdout'
@@ -256,11 +294,15 @@ class ClusterSlurm(object):
         txt += 'echo "hostname: "$HOSTNAME\n\n'
         txt += (
             r'printf "\n`date` JOBID $SLURM_JOBID {} {}\n{}"' +
-            ' >> SLURM_JOB.log\n\n').format(path_launching_script, logfile_stdout, path)
+            ' >> SLURM_JOB.log\n\n').format(path_launching_script, logfile_stdout, command)
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
-        if resume_script:
+        if omp_num_threads is not None:
+            txt += 'export OMP_NUM_THREADS={}\n\n'.format(
+                omp_num_threads)
+
+        if is_resume_script:
             jobid = dependencies[0]
             main_logfile = 'SLURM.{}.{}.stdout'.format(name_run, jobid)
             txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' " + "{}\n".format(main_logfile)
@@ -273,10 +315,10 @@ class ClusterSlurm(object):
         if nb_mpi_processes > 1:
             txt += '{} -n {} '.format(cmd, nb_mpi_processes)
 
-        if resume_script:
-            txt += 'python {} $PATH_RUN'.format(path)
+        if is_resume_script:
+            txt += '{} $PATH_RUN'.format(command)
         else:
-            txt += 'python {}'.format(path)
+            txt += command
 
         if interactive:
             txt += ' > {} 2>&1'.format(logfile_stdout)

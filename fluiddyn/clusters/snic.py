@@ -18,9 +18,9 @@ Provides:
 """
 from __future__ import print_function
 
-from .slurm import ClusterSlurm
 from os import getenv
 import six
+from .slurm import ClusterSlurm
 
 
 _venv = '$LOCAL_PYTHON' if six.PY2 else '$LOCAL_PYTHON3'
@@ -62,16 +62,27 @@ class Triolith(ClusterSlurm):
     def __init__(self):
         super(Triolith, self).__init__()
         self.check_name_cluster('SNIC_RESOURCE')
+        self.commands_setting_env = ['source /etc/profile']
+
         if six.PY2:
-            modpy = 'python/2.7.12'
+            self.commands_setting_env.extend([
+                'module add python/2.7.12',
+                'module add gcc/4.9.0 openmpi/1.6.2-build1',
+                'module add hdf5/1.8.11-i1214-parallel',
+                'source {}/bin/activate'.format(_venv)
+            ])
         else:
-            modpy = 'python3/3.6.1'
-        
-        self.commands_setting_env = [
-            'module add ' + modpy ,
-            'module add gcc/4.9.0 openmpi/1.6.2-build1',
-            'module add hdf5/1.8.11-i1214-parallel',
-            'source {}/bin/activate'.format(_venv)]
+            self.commands_setting_env.extend([
+                'module add python3/3.6.1',
+                'module add gcc/6.2.0',
+                'module add openmpi/1.6.5-g44',
+                'module add hdf5/1.8.11-i1214-parallel',
+                ## Intel compiler options
+                # 'module add buildenv-intel/2016-3',
+                # 'module add intel/16.0.2',
+                # 'module add hdf5/1.8.17-i1602-impi-5.1.3',
+                'source {}/bin/activate'.format(_venv)
+            ])
 
         self.commands_unsetting_env = [
             'deactivate']
@@ -107,8 +118,7 @@ class Kebnekaise(ClusterSlurm):
     def __init__(self):
         super(Kebnekaise, self).__init__()
         self.check_name_cluster('SNIC_RESOURCE')
-        self.commands_setting_env = [
-            'source /etc/profile']
+        self.commands_setting_env = ['source /etc/profile']
 
         if six.PY2:
             self.commands_setting_env.extend([
