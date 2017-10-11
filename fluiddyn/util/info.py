@@ -137,7 +137,7 @@ def get_info_third_party():
     """Create a dictionary of dictionaries for all third party packages."""
     pkgs = OrderedDict.fromkeys(
         ['numpy', 'cython', 'mpi4py', 'pythran', 'pyfftw', 'matplotlib',
-         'scipy', 'skimage']
+         'scipy', 'skimage', 'h5py']
     )
     return _get_info(pkgs)
 
@@ -185,6 +185,34 @@ def get_info_numpy(only_print=False, verbosity=None):
             rm_configtest()
     else:
         return np_sys_info_dict()
+
+
+def get_info_h5py():
+    """Create a dictionary detailing h5py installation."""
+    try:
+        import h5py
+    except ImportError:
+        return {}
+
+    config = h5py.get_config()
+    hdf5_version = h5py.version.hdf5_version_tuple
+    try:
+        vds = hdf5_version > config.vds_min_hdf5_version
+    except AttributeError:
+        vds = False
+
+    try:
+        swmr = hdf5_version > config.swmr_min_hdf5_version
+    except AttributeError:
+        swmr = False
+
+    info = OrderedDict((
+        ('HDF5_version', h5py.version.hdf5_version),
+        ('MPI_enabled', config.mpi),
+        ('virtual_dataset_available', vds),
+        ('single_writer_multiple_reader_available', swmr)
+    ))
+    return info
 
 
 def filter_modify_dict(d, filter_keys, mod_keys):
@@ -336,8 +364,12 @@ def print_sys_info(verbosity=None):
     info_py = get_info_python()
     _print_dict(info_py, 'Python')
     if verbosity is not None:
-        _print_heading('\nNumPy')
+        _print_heading('\nNumPy', case=None)
         get_info_numpy(True, verbosity)
+        info_h5py = get_info_h5py()
+        _print_dict(info_h5py, 'h5py', case=None)
+
+    print()
 
 
 def save_sys_info(path_dir='.', filename='sys_info.xml'):
@@ -348,6 +380,7 @@ def save_sys_info(path_dir='.', filename='sys_info.xml'):
     info_hw = get_info_hardware()
     info_py = get_info_python()
     info_np = get_info_numpy()
+    info_h5py = get_info_h5py()
     pkgs = get_info_fluiddyn()
     pkgs_third_party = get_info_third_party()
 
@@ -363,6 +396,7 @@ def save_sys_info(path_dir='.', filename='sys_info.xml'):
     for lib in info_np:
         sys_info.python.numpy._set_child(lib, info_np[lib])
 
+    sys_info.python.h5py._set_child('config', info_h5py)
     path = os.path.join(path_dir, filename)
     sys_info._save_as_xml(path, find_new_name=True)
 

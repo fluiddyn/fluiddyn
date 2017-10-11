@@ -129,7 +129,10 @@ class Kebnekaise(ClusterSlurm):
                 'source {}/bin/activate'.format(_venv)])
         else:
             self.commands_setting_env.extend([
-                'module load GCC/6.3.0-2.27  OpenMPI/2.0.2',
+                'module load foss/2017a',
+                # also loads GCC/6.3.0-2.27  OpenMPI/2.0.2
+                # OpenBLAS/0.2.19-LAPACK-3.7.0 FFTW/3.3.6
+                'module rm FFTW/3.3.6',
                 'module load HDF5/1.10.0-patch1',
                 'module load Python/3.6.1',
                 'source {}/bin/activate'.format(_venv)])

@@ -221,6 +221,7 @@ class ClusterSlurm(object):
             path_launching_script = 'resumer_' + str_time + '_' + str(n) + '.sh'
             submit_script_kwargs = locals()
             del submit_script_kwargs['self']
+            del submit_script_kwargs['command']
             self.submit_script(**submit_script_kwargs)
 
     def _create_txt_launching_script(self, **kwargs):

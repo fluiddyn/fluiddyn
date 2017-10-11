@@ -65,7 +65,7 @@ class SlurmTestCase(unittest.TestCase):
 
         with stdout_redirected():
             self.cluster.submit_script(
-                self._script, self._script_resume, 'test',
+                self._script, path_resume=self._script_resume, name_run='test',
                 path_launching_script=launcher, retain_script=False,
                 nb_nodes=2, nb_cores_per_node=nb_cores_per_node,
                 nb_mpi_processes=None, walltime='2-23:59:59', nb_runs=2,
