@@ -146,7 +146,8 @@ class ClusterSlurm(object):
 
         if resume:
             dependencies = input('Enter jobid dependencies :').split()
-            launching_command += ' --dependency=afternotok:' + ':'.join(dependencies)
+            dependencies = ':'.join(dependencies)
+            launching_command += ' --dependency=afterany:' + dependencies
         else:
             dependencies = None
 
@@ -260,7 +261,7 @@ class ClusterSlurm(object):
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
         if resume_script:
-            jobid = dependencies[0]
+            jobid = dependencies.split(':')[0]
             main_logfile = 'SLURM.{}.{}.stdout'.format(name_run, jobid)
             txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' " + "{})\n".format(main_logfile)
 
