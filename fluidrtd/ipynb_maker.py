@@ -14,25 +14,54 @@ def call_bash(commands):
     subprocess.call(['/bin/bash', '-c', commands])
 
 
-def ipynb_to_rst(path='ipynb'):
-    files_ipynb = glob(path + '/*.ipynb')
+def ipynb_to_rst(path='ipynb', executed=None):
+    """Convert notebooks to rst files
 
-    for filepath in files_ipynb:
-        filename = os.path.split(filepath)[1]
+    If the user does not specify that the notebooks have already been executed,
+    they are executed with jupyter-nbconvert before the conversion to rst
+    files.
+
+    """
+
+    paths_ipynb = glob(path + '/*.ipynb')
+    paths_ipynb = [path for path in paths_ipynb
+                   if not path.endswith('.nbconvert.ipynb')]
+
+    paths_ipynb_executed = []
+
+    for filepath in paths_ipynb:
+
+        if executed is not None:
+            nfile = os.path.split(filepath)[-1]
+            if nfile in executed:
+                paths_ipynb_executed.append(filepath)
+                continue
 
         basename = os.path.splitext(filepath)[0]
+        ipynb_executed = basename + '.nbconvert.ipynb'
+        paths_ipynb_executed.append(ipynb_executed)
 
-        rstname = basename + '.rst'
+        if not os.path.exists(ipynb_executed) or \
+           modification_date(filepath) > modification_date(ipynb_executed):
+            call_bash(
+                'jupyter-nbconvert --ExecutePreprocessor.timeout=200 '
+                '--to notebook --execute ' + filepath)
 
-        if not os.path.exists(rstname):
+    for filepath in paths_ipynb_executed:
+        basename = os.path.splitext(os.path.splitext(filepath)[0])[0]
+        rstpath = basename + '.rst'
+        rstname = os.path.split(rstpath)[-1]
+
+        if not os.path.exists(rstpath):
             has_to_be_compiled = True
         else:
             d_ipynb = modification_date(filepath)
-            d_rst = modification_date(rstname)
+            d_rst = modification_date(rstpath)
             if d_ipynb > d_rst:
                 has_to_be_compiled = True
             else:
                 has_to_be_compiled = False
 
         if has_to_be_compiled:
-            call_bash('cd ipynb && jupyter nbconvert --to rst ' + filename)
+            call_bash('jupyter-nbconvert --to rst ' + filepath +
+                      ' --output ' + rstname)
