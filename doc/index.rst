@@ -33,12 +33,18 @@ User Guide
    overview
    install
 
+.. toctree::
+   :maxdepth: 1
+
+   tutorials
+
 
 Modules Reference
 -----------------
 
-In order to discover FluidDyn, the best is to see how it is
-structured. Here is a list of the first-level packages.
+In order to discover FluidDyn, the best is to see how it is structured. Here is
+a list of the first-level packages.  If you are looking for a particular
+feature, you can also use the "Quick search" tool in this page.
 
 .. autosummary::
    :toctree: generated/
@@ -47,6 +53,13 @@ structured. Here is a list of the first-level packages.
    fluiddyn.util
    fluiddyn.clusters
    fluiddyn.output
+
+Fluiddyn also provides a small package for documentation:
+
+.. autosummary::
+   :toctree: generated/
+
+   fluiddoc
 
 More
 ----

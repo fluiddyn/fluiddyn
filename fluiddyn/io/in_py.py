@@ -1,5 +1,5 @@
-"""io using python file to contain data (:mod:`fluiddyn.io.in_py`)
-==================================================================
+"""IO for python files containing data (:mod:`fluiddyn.io.in_py`)
+=================================================================
 
 .. autofunction:: save_in_py
 

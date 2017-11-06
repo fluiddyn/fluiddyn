@@ -21,7 +21,7 @@ IPYTHON_NOTEBOOKS_DIR = $(IPYTHON_NOTEBOOKS:.ipynb=_files)
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext
 
-html: $(IPYTHON_NOTEBOOKS_RST)
+html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished.\nfile://"$(shell pwd)"/_build/html/index.html"
@@ -165,5 +165,5 @@ doctest:
 zip: html
 	cd _build/html &&  zip -r html.zip * && mv html.zip ../../.
 
-%.rst: %.ipynb
-	cd $(IPYNB_DIR) && ipython nbconvert --to rst $(notdir $<)
+nbstripout:
+	fluidnbstripout ipynb

@@ -1,6 +1,6 @@
 """
-Multitiff
-=========
+IO for multitiff files (:mod:`fluiddyn.io.multitiff`)
+=====================================================
 
 .. autofunction:: reorganize_single_frame_3Dscannedpiv_data
 .. autofunction:: reorganize_piv3dscanning_doubleframe

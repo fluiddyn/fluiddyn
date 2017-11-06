@@ -1,3 +1,9 @@
+"""Handle ipython notebooks (:mod:`fluiddoc.ipynb_maker`)
+=========================================================
+
+.. autofunction:: ipynb_to_rst
+
+"""
 
 import os
 from glob import glob
@@ -22,7 +28,7 @@ def ipynb_to_rst(path='ipynb', executed=None):
     files.
 
     """
-
+    
     paths_ipynb = glob(path + '/*.ipynb')
     paths_ipynb = [path for path in paths_ipynb
                    if not path.endswith('.nbconvert.ipynb')]
