@@ -82,7 +82,7 @@ class SerieOfArrays(object):
                 raise ValueError(
                     'The provided (empty) string does not point on any '
                     'existing path.')
-            
+
             l = glob(path)
             if len(l) == 0:
                 raise ValueError(

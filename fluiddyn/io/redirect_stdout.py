@@ -1,5 +1,5 @@
-"""Redirect stdoutput
-=====================
+"""Redirect stdoutput (:mod:`fluiddyn.io.redirect_stdout`)
+==========================================================
 
 
 """

@@ -14,15 +14,13 @@
 import sys
 import os
 
-# to be able to build the doc without h5py with Read the docs
-on_rtd = os.environ.get('READTHEDOCS')
-if on_rtd:
-    # this package comes from fluiddyn
-    from fluidrtd import mock_modules
-    mock_modules(['h5py', 'subprocess32'])
-
-
 import fluiddyn as fld
+
+# this package also comes from fluiddyn
+from fluiddoc.ipynb_maker import ipynb_to_rst
+
+ipynb_to_rst()
+ipynb_to_rst('ipynb/executed', executed=['query.ipynb'])
 
 
 # If extensions (or modules to document with autodoc) are in another directory,

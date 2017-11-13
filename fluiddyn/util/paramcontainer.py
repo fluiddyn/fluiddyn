@@ -27,10 +27,15 @@ from ast import literal_eval
 import six
 import re
 
-import h5py
 import numpy as np
+try:
+    import h5py
+    from fluiddyn.io.hdf5 import H5File
+except ImportError:
+    from warnings import warn
+    warn('Cannot import h5py. Loading from and writing to HDF5 files will not'
+         'work', ImportWarning)
 
-from fluiddyn.io.hdf5 import H5File
 from fluiddyn.util.xmltotext import produce_text_element
 
 
@@ -145,7 +150,7 @@ class ParamContainer(object):
         elif elemxml is not None:
             self._load_from_elemxml(elemxml)
         elif hdf5_object is not None:
-            self._load_from_hdf5_objet(hdf5_object)
+            self._load_from_hdf5_object(hdf5_object)
         elif tag is not None:
             self._set_internal_attr('_tag', tag)
         else:
@@ -473,9 +478,9 @@ class ParamContainer(object):
 
     def _load_from_hdf5_file(self, path_file):
         with H5File(path_file, 'r') as f:
-            self._load_from_hdf5_objet(f)
+            self._load_from_hdf5_object(f)
 
-    def _load_from_hdf5_objet(self, hdf5_object):
+    def _load_from_hdf5_object(self, hdf5_object):
 
         attrs = dict(hdf5_object.attrs)
 

@@ -11,10 +11,11 @@ doc/_build/*
 doc/**generated/*
 doc/**.zip
 doc/ipynb/*_files/*.png
-doc/ipynb/*.rst
+doc/ipynb/**/tuto*.rst
 
 *.ipynb_checkpoints*
 *Untitled*.ipynb
+*.nbconvert.ipynb
 
 fluiddyn/lab/boards/PowerDAQ/libpowerdaq.a
 fluiddyn/lab/boards/PowerDAQ/powerdaq.c

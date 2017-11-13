@@ -1,7 +1,7 @@
 """Console script to print and save system information. (:mod:`fluiddyn.util.info`)
 ===================================================================================
 Displays all important information related to software and hardware. It also
-includes detailed information such as currently installed FluidDyn packages, 
+includes detailed information such as currently installed FluidDyn packages,
 other third-party packages, C compiler, MPI and NumPy configuration.
 
 Examples
@@ -40,8 +40,10 @@ import psutil
 import numpy as np
 import numpy.distutils.system_info as np_sys_info
 
-from fluiddyn.util.paramcontainer import ParamContainer
-from fluiddyn.io.redirect_stdout import stdout_redirected
+with warnings.catch_warnings():
+    warnings.filterwarnings('ignore', category=ImportWarning)
+    from fluiddyn.io.redirect_stdout import stdout_redirected
+    from fluiddyn.util.paramcontainer import ParamContainer
 
 
 _COL_WIDTH = 32
@@ -149,7 +151,7 @@ def get_info_software():
         ['system', 'hostname', 'kernel'], uname))
     try:
         info_sw['distro'] = ' '.join(linux_distribution())
-    except:
+    except Exception:
         pass
 
     cc = os.getenv('CC', 'gcc')
@@ -288,7 +290,7 @@ def reset_col_width(nb_cols):
     try:
         tot_width = int(subprocess.check_output(['tput', 'cols']))
         _COL_WIDTH = tot_width // nb_cols
-    except:
+    except Exception:
         pass
 
 

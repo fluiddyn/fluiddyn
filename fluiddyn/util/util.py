@@ -14,15 +14,11 @@ import inspect
 import shutil
 import datetime
 import logging
-
-import psutil
 from importlib import import_module
-
 import contextlib
 
-
+import psutil
 import numpy as np
-import h5py
 
 from . import mpi
 # import fluiddyn as fld
@@ -89,6 +85,7 @@ def get_pathfile_from_strpath(str_path, ext='h5'):
 
 def create_object_from_file(str_path, *args, **kwargs):
     """Create an object from a file."""
+    import h5py
 
     path = get_pathfile_from_strpath(str_path, ext='h5')
 
