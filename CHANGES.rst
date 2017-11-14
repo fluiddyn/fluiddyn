@@ -1,4 +1,9 @@
 
+0.1.6
+-----
+
+- Can now execute the notebooks during the doc building
+  (fluiddoc/ipynb_maker.py)
 
 0.1.5
 -----

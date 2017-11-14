@@ -20,6 +20,11 @@ provides utilities for input/output to different file formats:
    in_py
    redirect_stdout
 
+To define environment variables, use something like (on \*unix systems, in the
+terminal or in your .bashrc)::
+
+  export FLUIDSIM_PATH="/fsnet/project/meige/2015/15DELDUCA/DataSim"
+
 """
 
 from builtins import str

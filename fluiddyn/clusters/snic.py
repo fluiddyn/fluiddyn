@@ -36,21 +36,28 @@ class Beskow(ClusterSlurm):
         super(Beskow, self).__init__()
         self.check_name_cluster('SNIC_RESOURCE')
         if six.PY2:
-            modpy = 'anaconda/py27/2.3'
+            self.commands_setting_env = [
+                'source /etc/profile',
+                'module swap PrgEnv-cray PrgEnv-gnu',
+                'module load fftw anaconda/py27/2.3'
+                'export CRAY_ROOTFS=DSL',
+                'source {}/bin/activate {}'.format(_venv, _venv),
+                'export ANACONDA_HOME=' + _venv,
+                'source activate_python']
+
+            self.commands_unsetting_env = [
+                'source deactivate_python']
         else:
-            modpy = 'anaconda/py36/4.3'
+            self.commands_setting_env = [
+                'source /etc/profile',
+                'module load gcc',
+                'module swap PrgEnv-cray PrgEnv-intel',
+                'module swap intel intel/18.0.0.128',
+                'module load fftw',
+                'source {}/bin/activate {}'.format(_venv, _venv)]
 
-        self.commands_setting_env = [
-            'source /etc/profile',
-            'module swap PrgEnv-cray PrgEnv-gnu',
-            'module load fftw ' + modpy,
-            'export CRAY_ROOTFS=DSL',
-            'source {}/bin/activate {}'.format(_venv, _venv),
-            'export ANACONDA_HOME=' + _venv,
-            'source activate_python']
-
-        self.commands_unsetting_env = [
-            'source deactivate_python']
+            self.commands_unsetting_env = [
+                'source deactivate']
 
 
 class Triolith(ClusterSlurm):

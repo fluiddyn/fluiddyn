@@ -18,6 +18,7 @@ def _detect_mpi_type():
         'OMPI_MCA_ns_nds_vpid': 'OpenMPI 1.2 and derivatives',
         'PMI_ID': 'SLURM PMI',
         'SLURM_PROCID': 'SLURM',
+        'SLURM_JOBID': 'SLURM',
         'LAMRANK': 'LAM',
         'MPI_RANKID': 'HP MPI for Linux',
         'MP_CHILD': 'IBM PE',

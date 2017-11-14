@@ -1,9 +1,9 @@
 
-help:
-	@echo "targets: develop, clean_so and tests"
-
 develop:
 	python setup.py develop
+
+help:
+	@echo "targets: develop, clean_so and tests"
 
 clean_so:
 	find fluiddyn -name "*.so" -delete
