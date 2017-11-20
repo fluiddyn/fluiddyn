@@ -247,6 +247,9 @@ def get_info_hardware():
             return (func + 'IOError',) * 3  # See psutil issue #1071
         except AttributeError:
             return (func + 'AttributeError',) * 3  # See psutil issue #1006
+        except NotImplementedError:
+            return (func + 'NotImplementedError',) * 3 # on occigen (cluster cines)
+
 
         if hz is None:
             return (func + 'None',) * 3  # See psutil issue #981

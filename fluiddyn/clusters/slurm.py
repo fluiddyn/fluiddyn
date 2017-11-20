@@ -19,7 +19,7 @@ import os
 import datetime
 import stat
 
-from . import subprocess
+from . import subprocess, Cluster
 from ..util.query import run_asking_agreement, call_bash
 from ..util.timer import time_gteq
 
@@ -28,7 +28,17 @@ def is_python_script(path):
     return os.path.splitext(path)[1] == '.py'
 
 
-class ClusterSlurm(object):
+class ClusterSlurm(Cluster):
+    _doc_commands = (
+"""
+Useful commands
+---------------
+
+sbatch
+squeue -u $USER
+scancel
+scontrol hold
+scontrol release""")
     name_cluster = ''
     nb_cores_per_node = 32
     default_project = None
@@ -40,12 +50,6 @@ class ClusterSlurm(object):
     def __init__(self):
         self.check_slurm()
         self.commands_setting_env = []
-        self.useful_commands = (
-            'sbatch',
-            'squeue -u $USER',
-            'scancel',
-            'scontrol hold',
-            'scontrol release')
         self.commands_unsetting_env = []
 
     def check_slurm(self):
@@ -284,6 +288,9 @@ class ClusterSlurm(object):
             txt += "#SBATCH --ntasks-per-node={}\n".format(nb_cores_per_node)
 
         txt += "#SBATCH --ntasks={}\n\n".format(nb_mpi_processes)
+
+        if hasattr(self, 'constraint'):
+            txt += '#SBATCH --constraint=' + self.constraint + '\n'
 
         if email is not None:
             txt += '#SBATCH --mail-type=FAIL\n'

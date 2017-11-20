@@ -18,14 +18,23 @@ import datetime
 import stat
 from sys import version_info as version
 
-from . import subprocess
+from . import subprocess, Cluster
 from ..util.query import run_asking_agreement, call_bash
 
 
-class ClusterOAR(object):
+class ClusterOAR(Cluster):
     name_cluster = ''
     nb_cores_per_node = 12
     has_to_add_name_cluster = False
+
+    _doc_commands = (
+"""
+Useful commands
+---------------
+oarsub -S script.sh
+oarstat -u
+oardel $JOB_ID
+oarsub -C $JOB_ID""")
 
     def __init__(self):
         self.commands_setting_env = [
@@ -34,12 +43,6 @@ class ClusterOAR(object):
                 version.major, version.minor, version.micro),
             'source /home/users/$USER/opt/mypy{}.{}/bin/activate'.format(
                 version.major, version.minor)]
-
-        self.useful_commands = (
-            'oarsub -S script.sh',
-            'oarstat -u',
-            'oardel $JOB_ID'
-            'oarsub -C $JOB_ID')
 
     def check_oar(self):
         """check if this script is run on a frontal with oar installed"""

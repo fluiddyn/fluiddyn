@@ -15,6 +15,7 @@ from fluiddyn.clusters.slurm import ClusterSlurm
 class Occigen(ClusterSlurm):
     name_cluster = 'occigen'
     nb_cores_per_node = 24
+    constraint = 'HSW24'
     max_walltime = '23:59:59'
     cmd_run = 'srun --mpi=pmi2 -K1 --resv-ports'
 
@@ -23,17 +24,23 @@ class Occigen(ClusterSlurm):
         self.check_name_cluster()
 
         self.commands_setting_env = [
-            'OPT=/scratch/cnt0022/egi2153/SHARED/opt',
+            # 'OPT=/scratch/cnt0022/egi2153/SHARED/opt',
+            'OPT=$HOME/opt',
             'module purge',
-            'module load libffi python/2.7.11 qt mkl',
+            'module load gcc/6.2.0',
+            'module load intel/17.2',
+            'module load openmpi/intel/2.0.2',
+            'module load qt',
+            'module load hdf5-seq',
+            'module load python/3.6.3',
             'unset PYTHONPATH',
-            'module load gcc/4.9.2',
-            'module load intel',
-            'module load bullxmpi/1.2.8.4',
-            'source $HOME/opt/mypy/bin/activate',
-            'export FFTW3_LIB_DIR=$OPT/fftw-3.3.5/lib/',
-            'export FFTW3_INC_DIR=$OPT/fftw-3.3.5/include/',
-            'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$FFTW3_LIB_DIR:$OPT/pfft/1.0.6/lib:$OPT/p3dfft/2.7.5/lib',
+            'source $HOME/mypy/bin/activate',
+            ('export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:'
+             '$OPT/pfft/lib:$OPT/p3dfft/2.7.5/lib'),
             'export LANG=C',
-            'export LC_LANG=C',
-            'export OMP_NUM_THREADS=1']
+            'export LC_LANG=C']
+
+
+class Occigen28(Occigen):
+    nb_cores_per_node = 28
+    constraint = 'BDW28'

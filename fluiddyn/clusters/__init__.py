@@ -27,3 +27,11 @@ else:
         import subprocess32 as subprocess
     except ImportError:
         import subprocess
+
+class Cluster(object):
+    _doc_commands = ''
+
+    @classmethod
+    def print_doc_commands(cls):
+        print(cls._doc_commands)
+
