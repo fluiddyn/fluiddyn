@@ -88,6 +88,7 @@ class Triolith(ClusterSlurm):
                 # 'module add buildenv-intel/2016-3',
                 # 'module add intel/16.0.2',
                 # 'module add hdf5/1.8.17-i1602-impi-5.1.3',
+                'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$NSC_COMP_LIB_PATH',
                 'source {}/bin/activate'.format(_venv)
             ])
 
