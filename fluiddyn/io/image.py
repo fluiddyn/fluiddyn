@@ -31,14 +31,30 @@ try:
 except ImportError:
     pass
 
+try:
+    import pims
+except ImportError:
+    pass
+
 from .hdf5 import H5File
 
 
-__all__ = ['imread', 'imsave', 'imread_h5', 'imsave_h5']
+__all__ = ['imread', 'imsave', 'imread_h5', 'imsave_h5', 'extensions_movies']
+
+
+extensions_movies = ['cine', 'im7']
 
 
 def imread(path, *args, **kwargs):
     """Wrapper for OpenCV/SciPy imread functions."""
+    if path.endswith(']'):
+        path, internal_index = path.split('[')
+        internal_index = int(internal_index[:-1])
+        for ext in extensions_movies:
+            if path.endswith('.' + ext):
+                with pims.open(path) as images:
+                    return images.get_frame(internal_index)
+
     if path.lower().endswith(('.tiff', '.tif')):
         try:
             return _imread_ski(path, *args, **kwargs)
