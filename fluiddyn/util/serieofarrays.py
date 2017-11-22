@@ -43,13 +43,23 @@ from builtins import chr
 from builtins import str
 from builtins import range
 from builtins import object
+
 import os
 from glob import glob
 from copy import copy, deepcopy
-
 import itertools
 
-from fluiddyn.io.image import imread
+try:
+    import pims
+except ImportError:
+    pass
+
+from fluiddyn.io.image import imread, extensions_movies
+
+
+def get_nb_arrays_in_file(fname):
+    with pims.open(fname) as images:
+        return images.len()
 
 
 class SerieOfArrays(object):
@@ -138,8 +148,9 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         super(SerieOfArraysFromFiles, self).__init__(path)
 
         self.base_name = ''.join(
-            itertools.takewhile(lambda c: not c.isdigit(),
-                                self.filename_given))
+            itertools.takewhile(
+                lambda c: not c.isdigit(),
+                self.filename_given[:-(1+len(self.extension_file))]))
 
         if not self.base_name[-1].isalpha():
             self.base_name = self.base_name[:-1]
@@ -152,7 +163,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             remains = remains[:-(1+len(self.extension_file))]
 
         # separator between base and index
-        if not remains[0].isdigit():
+        if len(remains) > 0 and not remains[0].isdigit():
             self._separator_base_index = remains[0]
             remains = remains[1:]
         else:
@@ -179,7 +190,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                     self._index_separators.append('')
         self._index_separators.append('')
 
-        self.nb_indices = len(self._index_types)
+        self.nb_indices_name_file = len(self._index_types)
 
         str_glob_indices = ''
         for separator in self._index_separators:
@@ -188,7 +199,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         str_glob = (self.base_name + self._separator_base_index +
                     str_glob_indices)
         if self.extension_file != '':
-            str_glob = str_glob + '.' + self.extension_file
+            str_glob += '.' + self.extension_file
         str_glob = os.path.join(self.path_dir, str_glob)
         paths = glob(str_glob)
         if not paths:
@@ -198,9 +209,28 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         file_names = [os.path.basename(p) for p in paths]
         file_names.sort()
 
+        # for files containing more than one image
+        if self.extension_file in extensions_movies:
+            self._from_movies = True
+            self.nb_indices = self.nb_indices_name_file + 1
+            if len(file_names) == 0:
+                names = []
+            else:
+                self.nb_arrays_in_one_file = get_nb_arrays_in_file(
+                    file_names[0])
+                str_internal_index = [
+                    '[{}]'.format(i)
+                    for i in range(self.nb_arrays_in_one_file)]
+                names = []
+                for fname in file_names:
+                    names.extend(fname + s for s in str_internal_index)
+        else:
+            self._from_movies = False
+            names = file_names
+            self.nb_indices = self.nb_indices_name_file
+
         indices_all_files = [
-            self.compute_indices_from_filename(file_name)
-            for file_name in file_names]
+            self.compute_indices_from_name(name) for name in names]
 
         indices_indices = list(zip(*indices_all_files))
         self._index_slices_all_files = []
@@ -219,6 +249,9 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
     def get_name_files(self):
         return tuple(n for n in self.iter_name_files())
+
+    def get_name_arrays(self):
+        return tuple(n for n in self.iter_name_arrays())
 
     def get_array_from_name(self, name):
         return imread(os.path.join(self.path_dir, name))
@@ -241,9 +274,31 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return [os.path.join(self.path_dir, name)
                 for name in self.get_name_files()]
 
+    def get_path_arrays(self):
+        return [os.path.join(self.path_dir, name)
+                for name in self.get_name_arrays()]
+
     def check_all_files_exist(self):
         name_files = self.get_name_files()
         return all([self.isfile(name) for name in name_files])
+
+    def check_all_arrays_exist(self):
+        if not self._from_movies:
+            return self.check_all_files_exist()
+
+        if not self.check_all_files_exist():
+            return False
+
+        for indices in self.iter_indices():
+            internal_index = indices[-1]
+            if internal_index >= self.nb_arrays_in_one_file:
+                return False
+
+        if not all(self.nb_arrays_in_one_file == get_nb_arrays_in_file(path)
+                   for path in self.get_path_files()):
+            return False
+
+        return True
 
     def iter_indices(self):
         islices = list(self._index_slices)
@@ -255,10 +310,21 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             yield l
 
     def iter_name_files(self):
+        names = []
+        for name in self.iter_name_arrays():
+            if name.endswith(']'):
+                name = name.split('[')[0]
+                if name not in names:
+                    names.append(name)
+                    yield name
+            else:
+                yield name
+
+    def iter_name_arrays(self):
         for l in self.iter_indices():
             yield self.compute_name_from_indices(*l)
 
-    __iter__ = iter_name_files
+    __iter__ = iter_name_arrays
 
     def iter_path_files(self):
         for name in self.iter_name_files():
@@ -266,7 +332,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 self.path_dir, name)
 
     def iter_arrays(self):
-        for name in self.iter_name_files():
+        for name in self.iter_name_arrays():
             yield self.get_array_from_name(name)
 
     def _compute_strindices_from_indices(self, *indices):
@@ -278,8 +344,11 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         indices: iterable of int.
 
         """
+        if self._from_movies:
+            indices = indices[:-1]
+
         nb_indices = len(indices)
-        if nb_indices != self.nb_indices:
+        if nb_indices != self.nb_indices_name_file:
             raise ValueError('nb_indices != self.nb_indices')
 
         str_indices = ''
@@ -305,32 +374,42 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
         indices: iterable of int.
         """
-        name_file = (self.base_name + self._separator_base_index +
-                     self._compute_strindices_from_indices(*indices))
+        name = (self.base_name + self._separator_base_index +
+                self._compute_strindices_from_indices(*indices))
         if self.extension_file != '':
-            name_file = name_file + '.' + self.extension_file
+            name += '.' + self.extension_file
 
-        return name_file
+        if self._from_movies:
+            name += '[{}]'.format(indices[-1])
 
-    def compute_indices_from_filename(self, file_name):
+        return name
+
+    def compute_indices_from_name(self, name):
         """Compute a list of indices from a file name.
 
         Parameters
         ----------
 
-        file_name: str
+        name: str
+           Name of the array.
         """
-        str_indices = str(file_name[len(self.base_name):])
+        str_indices = str(name[len(self.base_name):])
 
         if self._separator_base_index != '':
             str_indices = str_indices[1:]
+
+        if str_indices.endswith(']'):
+            str_indices, internal_index = str_indices.split('[')
+            internal_index = int(internal_index[:-1])
+        else:
+            internal_index = None
 
         if self.extension_file != '':
             str_indices = str_indices[:-(len(self.extension_file)+1)]
 
         remains = str_indices
         indices = []
-        for i_ind in range(self.nb_indices):
+        for i_ind in range(self.nb_indices_name_file):
             if self._index_types[i_ind] == 'digit':
                 test_type = str.isdigit
             elif self._index_types[i_ind] == 'alpha':
@@ -349,6 +428,9 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 index = ord(index) - ord('a')
 
             indices.append(index)
+
+        if internal_index is not None:
+            indices.append(internal_index)
 
         assert len(remains) == 0
         return indices
@@ -430,7 +512,7 @@ class SeriesOfArrays(object):
                 iserie += ind_step
                 serie.set_index_slices(
                     *self.indslices_from_indserie(iserie))
-                cond = serie.check_all_files_exist()
+                cond = serie.check_all_arrays_exist()
             iserie -= 1
         else:
             if len(range(ind_start, ind_stop, ind_step)) == 0:
@@ -440,7 +522,7 @@ class SeriesOfArrays(object):
             for iserie in range(ind_start, ind_stop, ind_step):
                 serie.set_index_slices(
                     *self.indslices_from_indserie(iserie))
-                if not serie.check_all_files_exist():
+                if not serie.check_all_arrays_exist():
                     break
         ind_stop = iserie + 1
 
@@ -496,6 +578,17 @@ class SeriesOfArrays(object):
             for name in names:
                 if name not in names_all:
                     names_all.append(name)
+        return names_all
+
+    def get_name_all_arrays(self):
+        names_all = []
+        for serie in self:
+            names = serie.get_name_arrays()
+            for name in names:
+                if name not in names_all:
+                    names_all.append(name)
+
+        print(names_all)
         return names_all
 
 
