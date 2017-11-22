@@ -216,8 +216,10 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             if len(file_names) == 0:
                 names = []
             else:
-                self.nb_arrays_in_one_file = get_nb_arrays_in_file(
-                    file_names[0])
+                self._nb_arrays_file = {}
+                self._nb_arrays_file[paths[0]] = self.nb_arrays_in_one_file = \
+                                                 get_nb_arrays_in_file(paths[0])
+
                 str_internal_index = [
                     '[{}]'.format(i)
                     for i in range(self.nb_arrays_in_one_file)]
@@ -294,8 +296,12 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             if internal_index >= self.nb_arrays_in_one_file:
                 return False
 
-        if not all(self.nb_arrays_in_one_file == get_nb_arrays_in_file(path)
-                   for path in self.get_path_files()):
+        for path in self.get_path_files():
+            if path not in self._nb_arrays_file:
+                self._nb_arrays_file[path] = get_nb_arrays_in_file(path)
+
+        if not all(self.nb_arrays_in_one_file == nb
+                   for nb in self._nb_arrays_file.values()):
             return False
 
         return True
@@ -587,8 +593,6 @@ class SeriesOfArrays(object):
             for name in names:
                 if name not in names_all:
                     names_all.append(name)
-
-        print(names_all)
         return names_all
 
 
