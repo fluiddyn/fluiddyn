@@ -21,6 +21,7 @@ from __future__ import division, print_function
 from builtins import range
 from builtins import object
 import time
+from datetime import timedelta
 
 
 def parse_timestamp(timestr):
@@ -32,6 +33,18 @@ def parse_timestamp(timestr):
         time_struct = time.strptime(timestr, "%H:%M:%S")
 
     return time_struct
+
+
+def timestamp_to_seconds(timestr):
+    """Converts a timestamp to total seconds."""
+    ts = parse_timestamp(timestr)
+    # Handle both formats:
+    days = ts.tm_yday if '-' in timestr else (ts.tm_yday - 1)
+    td = timedelta(
+        hours=ts.tm_hour, minutes=ts.tm_min, seconds=ts.tm_sec,
+        days=days)
+
+    return int(td.total_seconds())
 
 
 def time_gteq(timestr1, timestr2):
@@ -51,7 +64,7 @@ class Timer(object):
     time_between_ticks : float
        Period between the ticks.
 
-"""
+    """
     def __init__(self, time_between_ticks):
         self.time_between_ticks = time_between_ticks
         self.tstart = time.time()
@@ -62,9 +75,9 @@ class Timer(object):
         tnow = time.time()
         tsleep = (self.time_between_ticks -
                   (tnow - self.tstart) % self.time_between_ticks)
-        this_period = int((tnow - self.tstart)/self.time_between_ticks)
+        this_period = int((tnow - self.tstart) / self.time_between_ticks)
         if this_period == self.last_period:
-            self.last_period = this_period+1
+            self.last_period = this_period + 1
             tsleep += self.time_between_ticks
         else:
             self.last_period = this_period
@@ -117,4 +130,4 @@ if __name__ == '__main__':
 
     tend = time.time()
 
-    print(tend-tstart)
+    print(tend - tstart)

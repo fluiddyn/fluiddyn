@@ -7,10 +7,7 @@ import unittest
 import os
 from shutil import rmtree
 from .. import local
-from .test_slurm_snic import my_test_input, SlurmTestCase, stdout_redirected
-
-
-local.input = my_test_input
+from .test_slurm_snic import SlurmTestCase, stdout_redirected
 
 
 class LocalTestCase(SlurmTestCase):

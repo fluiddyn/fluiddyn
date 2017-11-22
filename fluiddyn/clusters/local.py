@@ -18,7 +18,7 @@ import stat
 from socket import gethostname
 from . import subprocess, Cluster
 from ..util.query import run_asking_agreement, call_bash
-from ..util.timer import time_gteq
+from ..util.timer import time_gteq, timestamp_to_seconds
 
 
 def is_python_script(path):
@@ -28,8 +28,12 @@ def is_python_script(path):
 
 class ClusterLocal(Cluster):
     """Works as a compatibility layer to execute submit scripts on local
-    workstations as clusters with no job schedulers. Uses nohup and mpirun
-    instead to launch jobs.
+    workstations as clusters with no job schedulers.
+
+    Instead uses POSIX commands:
+
+     - ``nohup`` and ``mpirun`` to launch jobs.
+     - ``timeout`` to set walltime..
 
     """
     _doc_commands = '\n'.join([
@@ -43,7 +47,7 @@ class ClusterLocal(Cluster):
     nb_cores_per_node = psutil.cpu_count()
     cmd_run = 'mpirun'
     cmd_launch = 'nohup'
-    max_walltime = '23:59:59'  # FIXME: Not implemented
+    max_walltime = '30-00:00:00'
 
     def __init__(self):
         self.commands_setting_env = []
@@ -176,6 +180,7 @@ class ClusterLocal(Cluster):
         command = kwargs['command']
         name_run = kwargs['name_run']
         nb_mpi_processes = kwargs['nb_mpi_processes']
+        walltime = kwargs['walltime']
         omp_num_threads = kwargs['omp_num_threads']
         interactive = kwargs['interactive']
 
@@ -198,9 +203,11 @@ class ClusterLocal(Cluster):
                 omp_num_threads)
 
         cmd = command
-
         if nb_mpi_processes > 1:
             cmd = '{} -n {} {}'.format(self.cmd_run, nb_mpi_processes, cmd)
+
+        walltime_seconds = timestamp_to_seconds(walltime)
+        cmd = 'timeout -s TERM {}s {}'.format(walltime_seconds, command)
 
         if interactive:
             txt += cmd
