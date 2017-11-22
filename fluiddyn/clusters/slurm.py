@@ -14,21 +14,14 @@ from __future__ import print_function
 from builtins import input
 from builtins import str
 from builtins import range
-from builtins import object
 import os
-import datetime
-import stat
 
-from . import subprocess, Cluster
-from ..util.query import run_asking_agreement, call_bash
-from ..util.timer import time_gteq
+from . import subprocess
+from .local import ClusterLocal
 
 
-def is_python_script(path):
-    return os.path.splitext(path)[1] == '.py'
-
-
-class ClusterSlurm(Cluster):
+class ClusterSlurm(ClusterLocal):
+    """Base class for clusters with SLURM job scheduler."""
     _doc_commands = (
 """
 Useful commands
@@ -66,32 +59,19 @@ scontrol release""")
                 'This script should be run on a cluster with slurm installed.')
 
     def check_name_cluster(self, env='HOSTNAME'):
+        """Check if self.name_cluster matches the environment variable."""
+
         if self.name_cluster not in os.getenv(env):
             raise ValueError('Cluster name mismatch detected; expected ' +
                              self.name_cluster)
 
-    def submit_script(self, path, *args, **kwargs):
-        """Submit a script. See `submit_command` for all possible arguments"""
-        path = os.path.expandvars(path)
-        script = path.split()[0]
-        if not os.path.exists(script):
-            raise ValueError('Script does not exist! path:\n' + script)
-
-        if is_python_script(script) and not path.startswith('python '):
-            path = 'python ' + path
-
-        self.submit_command(path, *args, **kwargs)
-
     def submit_command(
-            self, command, name_run='fluiddyn',
-            nb_nodes=1, nb_cores_per_node=None,
-            walltime='23:59:58', project=None,
-            nb_mpi_processes=None, omp_num_threads=1,
-            nb_runs=1, path_launching_script=None, path_resume=None,
-            retain_script=True, jobid=None, requeue=False,
-            nb_switches=None, max_waittime=None,
-            ask=True, bash=True, email=None, interactive=False,
-            **kwargs):
+            self, command, name_run='fluiddyn', nb_nodes=1,
+            nb_cores_per_node=None, walltime='23:59:58', project=None,
+            nb_mpi_processes=None, omp_num_threads=1, nb_runs=1,
+            path_launching_script=None, path_resume=None, retain_script=True,
+            jobid=None, requeue=False, nb_switches=None, max_waittime=None,
+            ask=True, bash=True, email=None, interactive=False, **kwargs):
         """Submit a command.
 
         Parameters
@@ -141,35 +121,13 @@ scontrol release""")
         interactive : boolean
             Use `cmd_run_interactive` instead of `cmd_run` inside the jobscript
         """
+        nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
+            nb_nodes, nb_cores_per_node, nb_mpi_processes)
 
-        if nb_cores_per_node is None:
-            nb_cores_per_node = self.nb_cores_per_node
-        elif nb_cores_per_node > self.nb_cores_per_node:
-            raise ValueError('Too many cores...')
-
-        if nb_mpi_processes is None:
-            if nb_cores_per_node == 0:
-                nb_mpi_processes = 1
-            else:
-                nb_mpi_processes = nb_cores_per_node * nb_nodes
-
-        str_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        if path_launching_script is None:
-            path_launching_script = 'launcher_' + str_time + '.sh'
-
-        if os.path.exists(path_launching_script):
-            i = 1
-            while os.path.exists(path_launching_script + '_' + str(i)):
-                i += 1
-            path_launching_script += '_' + str(i)
+        path_launching_script = self._make_path_launching_script()
+        self._check_walltime(walltime)
 
         is_resume_script = bool('resumer' in path_launching_script)
-
-        if time_gteq(walltime, self.max_walltime):
-            raise ValueError(
-                ('Walltime requested {} exceeds permitted maximum walltime '
-                 '{}').format(walltime, self.max_walltime))
-
         if project is None:
             project = self.default_project
 
@@ -194,25 +152,10 @@ scontrol release""")
         create_txt_kwargs = locals()
         del create_txt_kwargs['self']
         txt = self._create_txt_launching_script(**create_txt_kwargs)
+        self._write_txt_launching_script(txt, path_launching_script)
 
-        with open(path_launching_script, 'w') as f:
-            f.write(txt)
+        self._launch(launching_command, command, bash, ask)
 
-        os.chmod(path_launching_script,
-                 stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
-        launching_command += ' ./' + path_launching_script
-
-        print('A launcher for the command {} has been created.'.format(command))
-        if ask:
-            run_asking_agreement(launching_command)
-        else:
-            print('The script is submitted with the command:\n',
-                  launching_command)
-            if bash:
-                call_bash(launching_command)
-            else:
-                subprocess.call(launching_command.split())
-        
         if not retain_script:
             os.remove(path_launching_script)
 
@@ -222,7 +165,7 @@ scontrol release""")
             jobid = None
             requeue = False
             path = path_resume
-            path_launching_script = 'resumer_' + str_time + '_' + str(n) + '.sh'
+            path_launching_script = self._make_path_launching_script('resumer')
             submit_script_kwargs = locals()
             del submit_script_kwargs['self']
             del submit_script_kwargs['command']
