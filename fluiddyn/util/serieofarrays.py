@@ -311,6 +311,10 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         for i, islice in enumerate(islices):
             if len(islice) == 1:
                 islices[i] = [islice[0], islice[0]+1]
+            for ii, index in enumerate(islice):
+                if index is None:
+                    islices[i][ii] = self._index_slices_all_files[i][ii]
+
         lists = [list(range(*s)) for s in islices]
         for l in itertools.product(*lists):
             yield l
@@ -496,13 +500,30 @@ class SeriesOfArrays(object):
             raise ValueError(
                 'serie should be a str or a SerieOfArraysFromFiles.')
 
+        if indslices_from_indserie is None:
+            indslices_from_indserie = 'i:i+1'
+            for i in range(serie.nb_indices-1):
+                indslices_from_indserie += ',:'
+
         if isinstance(indslices_from_indserie, basestring):
-            l_range = indslices_from_indserie.split(',')
+            str_ranges = indslices_from_indserie.split(',')
 
             def indslices_from_indserie(i):
-                return [
-                    [eval(s, {'i': i}) for s in s_range.split(':')]
-                    for s_range in l_range]
+                indslices = []
+                for str_range in str_ranges:
+                    indslice = []
+                    indslices.append(indslice)
+                    for ii, s in enumerate(str_range.split(':')):
+                        if s == '':
+                            if ii == 0:
+                                indslice.append(0)
+                            elif ii == 1:
+                                indslice.append(None)
+                            elif ii > 2:
+                                raise ValueError
+                        else:
+                            indslice.append(eval(s, {'i': i}))
+                return indslices
 
         if indslices_from_indserie(0) == indslices_from_indserie(1):
             raise ValueError(
@@ -538,11 +559,22 @@ class SeriesOfArrays(object):
         self.ind_stop = ind_stop
         self.ind_step = ind_step
 
-        if self.nb_series == 0:
+        serie.set_index_slices(
+            *self.indslices_from_indserie(self.iserie))
+        _print_warning = False
+        if not serie.check_all_arrays_exist():
+            _print_warning = True
             print('warning: this SeriesOfArrays has been initialized with '
-                  'parameters such that no serie of images has been found:\n'
-                  'serie={},\nindslices_from_indserie={}, '.format(
-                      serie0, indslices_from_indserie0) +
+                  'parameters such that the first serie if not complete.')
+
+        if self.nb_series == 0:
+            _print_warning = True
+            print('warning: this SeriesOfArrays has been initialized with '
+                  'parameters such that no serie of images has been found.')
+
+        if _print_warning:
+            print('serie={},\nindslices_from_indserie={}, '.format(
+                serie0, indslices_from_indserie0) +
                   'ind_start={}, ind_stop={}, ind_step={}.'.format(
                       ind_start, ind_stop, ind_step))
 
