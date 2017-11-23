@@ -485,6 +485,10 @@ class ParamContainer(object):
         attrs = dict(hdf5_object.attrs)
 
         for k, v in list(attrs.items()):
+            if isinstance(v, np.integer):
+                attrs[k] = int(v)
+                continue
+            
             try:
                 attrs[k] = v.decode('utf8')
             except AttributeError:
@@ -537,6 +541,20 @@ class ParamContainer(object):
                 self.__dict__[tag] = self.__class__(
                     hdf5_object=hdf5_object[tag])
                 self._tag_children.append(tag)
+
+    def _modif_from_other_params(self, params):
+        """Modify the object with another similar container."""
+        for key in params._key_attribs:
+            try:
+                self[key] = params[key]
+            except AttributeError:
+                pass
+        for tag_child in  params._tag_children:
+            try:
+                self[tag_child]._modif_from_other_params(
+                    params[tag_child])
+            except AttributeError:
+                pass
 
 
 def tidy_container(cont):
