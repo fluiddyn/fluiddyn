@@ -191,11 +191,9 @@ class ClusterLocal(Cluster):
         txt = ('#!/bin/bash -l\n\n')
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
-        txt += (
-            r'printf "\n`date` PID $$ {} {}\n{}"' +
-            ' >> LOCAL_JOB.log\n\n').format(
-                path_launching_script, logfile_stdout, command)
-
+        txt += self._log_job(
+            nb_mpi_processes, path_launching_script, logfile_stdout, command,
+            'LOCAL_JOB.md')
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
         if omp_num_threads is not None:
@@ -207,7 +205,7 @@ class ClusterLocal(Cluster):
             cmd = '{} -n {} {}'.format(self.cmd_run, nb_mpi_processes, cmd)
 
         walltime_seconds = timestamp_to_seconds(walltime)
-        cmd = 'timeout -s TERM {}s {}'.format(walltime_seconds, command)
+        cmd = 'timeout -s TERM {}s {}'.format(walltime_seconds, cmd)
 
         if interactive:
             txt += cmd
@@ -217,6 +215,16 @@ class ClusterLocal(Cluster):
 
         txt += '\n' + '\n'.join(self.commands_unsetting_env)
         return txt
+
+    def _log_job(
+            self, nb_mpi_processes, path_launching_script,
+            logfile_stdout, command, logfile_job):
+        """Generate a shell command to log the job into a markdown file."""
+        return (
+            '\n' + r'printf "\n# np={} `date` PID $$ {} {}\n{}" >> {}' +
+            '\n').format(
+                nb_mpi_processes, path_launching_script, logfile_stdout,
+                command, logfile_job)
 
     def _write_txt_launching_script(self, txt, path_launching_script):
         """Write the text into an executable script which launches the command."""

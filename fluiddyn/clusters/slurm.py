@@ -243,9 +243,9 @@ scontrol release""")
         txt += '#SBATCH -o {}.%J.stdout\n\n'.format(logfile)
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
-        txt += (
-            r'printf "\n`date` JOBID $SLURM_JOBID {} {}\n{}"' +
-            ' >> SLURM_JOB.log\n\n').format(path_launching_script, logfile_stdout, command)
+        txt += self._log_job(
+            nb_mpi_processes, path_launching_script, logfile_stdout, command,
+            'SLURM_JOB.md')
 
         txt += '\n'.join(self.commands_setting_env) + '\n\n'
 
