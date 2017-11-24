@@ -153,7 +153,7 @@ scontrol release""")
         del create_txt_kwargs['self']
         txt = self._create_txt_launching_script(**create_txt_kwargs)
         self._write_txt_launching_script(txt, path_launching_script)
-
+        launching_command += ' ./' + path_launching_script
         self._launch(launching_command, command, bash, ask)
 
         if not retain_script:

@@ -15,6 +15,7 @@ import os
 import psutil
 import datetime
 import stat
+from shlex import split
 from socket import gethostname
 from . import subprocess, Cluster
 from ..util.query import run_asking_agreement, call_bash
@@ -172,7 +173,7 @@ class ClusterLocal(Cluster):
             if bash:
                 call_bash(launching_command)
             else:
-                subprocess.call(launching_command.split())
+                subprocess.call(split(launching_command))
 
     def _create_txt_launching_script(self, **kwargs):
         """Create the text for a script which launches the command."""
