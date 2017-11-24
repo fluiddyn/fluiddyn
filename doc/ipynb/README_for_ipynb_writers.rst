@@ -13,7 +13,7 @@ executed.
 .. code-block:: python
 
   ipynb_to_rst()
-  ipynb_to_rst('ipynb/executed', executed=['query.ipynb'])
+  ipynb_to_rst('ipynb/executed', executed=True)
 
 
 It is therefor important not to commit the executed versions of the notebooks.

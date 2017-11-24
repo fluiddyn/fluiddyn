@@ -28,7 +28,7 @@ def ipynb_to_rst(path='ipynb', executed=None):
     files.
 
     """
-    
+
     paths_ipynb = glob(path + '/*.ipynb')
     paths_ipynb = [path for path in paths_ipynb
                    if not path.endswith('.nbconvert.ipynb')]
@@ -37,11 +37,17 @@ def ipynb_to_rst(path='ipynb', executed=None):
 
     for filepath in paths_ipynb:
 
-        if executed is not None:
-            nfile = os.path.split(filepath)[-1]
-            if nfile in executed:
+        if executed:
+            try:
+                executed[0]
+            except TypeError:
                 paths_ipynb_executed.append(filepath)
                 continue
+            else:
+                nfile = os.path.split(filepath)[-1]
+                if nfile in executed:
+                    paths_ipynb_executed.append(filepath)
+                    continue
 
         basename = os.path.splitext(filepath)[0]
         ipynb_executed = basename + '.nbconvert.ipynb'
