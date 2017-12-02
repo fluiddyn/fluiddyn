@@ -63,5 +63,6 @@ class TestSeriesOfArrays(unittest.TestCase):
         serie.get_nb_files()
         serie.set_index_slices(0, 1)
 
+
 if __name__ == '__main__':
     unittest.main()

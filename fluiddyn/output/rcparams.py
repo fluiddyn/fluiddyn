@@ -2,7 +2,7 @@
 Default parameters for Matplotlib figures
 =========================================
 
-.. currentmodule:: fluiddyn.output.rcparams
+.. autofunction:: set_rcparams
 
 """
 
@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 
 def set_rcparams(fontsize=18, for_article=True, for_beamer=False,
                  fontsize_pad=9):
+    """Set the rcparams for articles or presentation"""
 
     params = {
         'axes.labelsize': fontsize,

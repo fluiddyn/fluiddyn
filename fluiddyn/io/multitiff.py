@@ -87,18 +87,19 @@ def imsave(path, arrays, as_int=False):
     if PIL.__version__ < '4.2.0':
         from warnings import warn
         warn('imsave for multiframe TIFF uses an intermediate GIF workaround.',
-            DeprecationWarning)
+             DeprecationWarning)
         gif = im_list.pop(0)
-        
+
         with io.BytesIO() as output:
-            gif.save(output, format='GIF', save_all=True, append_images=im_list)
+            gif.save(output, format='GIF', save_all=True,
+                     append_images=im_list)
             gif.close()
 
             with Image.open(output) as im:
                 im.save(path, format='TIFF', save_all=True)
     else:
         im_list[0].save(path, compression='tiff_deflate', save_all=True,
-            append_images=im_list[1:])
+                        append_images=im_list[1:])
 
 
 def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',

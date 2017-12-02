@@ -319,12 +319,12 @@ if __name__ == '__main__':
         'nu=0.0001266_N=2.0_Tend=400_2015-01-09_19-18-52'
     )
 
-    ff0 = NS3DFieldFile(path_file=path_dir +
-                        '/velo_rho_vort.t=0400.045')
+    # ff0 = NS3DFieldFile(path_file=path_dir +
+    #                     '/velo_rho_vort.t=0400.045')
 
-    ff1 = NS3DFieldFile(path_file=path_dir +
-                        '/velo_rho_vort.t=0400.045_64x64x32')
+    # ff1 = NS3DFieldFile(path_file=path_dir +
+    #                     '/velo_rho_vort.t=0400.045_64x64x32')
 
-#     ff2 = NS3DFieldFile(path_file=path_dir
-#                         + '/velo_rho_vort.t=0005.010_128x128x32')
+    # ff2 = NS3DFieldFile(path_file=path_dir +
+    #                     '/velo_rho_vort.t=0005.010_128x128x32')
 

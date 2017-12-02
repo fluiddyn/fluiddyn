@@ -66,7 +66,7 @@ class TestImage(unittest.TestCase):
                 as_int = bool(_type.endswith('f'))
                 try:
                     imsave(path, image, _format, as_int)
-                    image2 = imread(path, flatten=True)
+                    image2 = imread(path)
                 except Exception as e:
                     raise_from(Exception(err), e)
 

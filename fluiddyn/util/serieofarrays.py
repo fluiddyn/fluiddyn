@@ -48,6 +48,8 @@ import os
 from glob import glob
 from copy import copy, deepcopy
 import itertools
+from math import ceil, log10
+
 
 try:
     import pims
@@ -218,10 +220,12 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             else:
                 self._nb_arrays_file = {}
                 self._nb_arrays_file[paths[0]] = self.nb_arrays_in_one_file = \
-                                                 get_nb_arrays_in_file(paths[0])
+                    get_nb_arrays_in_file(paths[0])
 
+                self._format_index = '[{' + ':0{}d'.format(
+                    int(ceil(log10(self.nb_arrays_in_one_file)))) + '}]'
                 str_internal_index = [
-                    '[{}]'.format(i)
+                    self._format_index.format(i)
                     for i in range(self.nb_arrays_in_one_file)]
                 names = []
                 for fname in file_names:
@@ -390,7 +394,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             name += '.' + self.extension_file
 
         if self._from_movies:
-            name += '[{}]'.format(indices[-1])
+            name += self._format_index.format(indices[-1])
 
         return name
 
@@ -464,8 +468,11 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
         self._index_slices = index_slices
 
-    def get_nb_files(self):
+    def get_nb_arrays(self):
         return len([i for i in self.iter_indices()])
+
+    def get_nb_files(self):
+        return len(self.get_name_files())
 
 
 class SeriesOfArrays(object):
@@ -474,8 +481,8 @@ class SeriesOfArrays(object):
     This class can be used to produce series of arrays from a
     :class:`SerieOfArrays`.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
 
     serie: SerieOfArrays or str
 
@@ -576,7 +583,7 @@ class SeriesOfArrays(object):
             print('serie={},\nindslices_from_indserie={}, '.format(
                 serie0, indslices_from_indserie0) +
                   'ind_start={}, ind_stop={}, ind_step={}.'.format(
-                      ind_start, ind_stop, ind_step))
+                ind_start, ind_stop, ind_step))
 
     def __iter__(self):
 
