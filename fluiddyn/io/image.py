@@ -22,9 +22,9 @@ try:
 except ImportError:
     use_opencv = False
     try:
-        from scipy.ndimage import imread as _imread
+        from imageio import imread as _imread
     except ImportError:
-        from scipy.misc import imread as _imread
+        from matplotlib.pyplot import imread as _imread
 
 try:
     from skimage.io import imread as _imread_ski
