@@ -49,7 +49,17 @@ from glob import glob
 from copy import copy, deepcopy
 import itertools
 from math import ceil, log10
+import re
 
+try:
+    from glob import escape
+except ImportError:
+    # doesn't exist in python 2.7
+    def escape(s):
+        if s == '[':
+            return '[[]'
+        else:
+            return s
 
 try:
     import pims
@@ -95,13 +105,13 @@ class SerieOfArrays(object):
                     'The provided (empty) string does not point on any '
                     'existing path.')
 
-            l = glob(path)
-            if len(l) == 0:
+            filelist = glob(path)
+            if len(filelist) == 0:
                 raise ValueError(
                     'The provided string does not point on any existing path. '
                     'The string is:\n' + path)
 
-            self.path_dir, self.filename_given = os.path.split(l[0])
+            self.path_dir, self.filename_given = os.path.split(filelist[0])
 
         path = os.path.join(self.path_dir, self.filename_given)
         if not os.path.isfile(path):
@@ -109,7 +119,11 @@ class SerieOfArrays(object):
                              'but towards:\n' + path)
 
         if '.' in self.filename_given:
-            self.extension_file = '.'.join(self.filename_given.split('.')[1:])
+            # bad hack
+            if '[' in self.filename_given:
+                self.extension_file = self.filename_given.rsplit('.', 1)[-1]
+            else:
+               	 self.extension_file = '.'.join(self.filename_given.split('.')[1:])
         else:
             self.extension_file = ''
 
@@ -190,15 +204,17 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                     remains = remains[1:]
                 else:
                     self._index_separators.append('')
-        self._index_separators.append('')
+
+        if len(self._index_separators) < len(self._index_types):
+            self._index_separators.append('')
 
         self.nb_indices_name_file = len(self._index_types)
 
         str_glob_indices = ''
         for separator in self._index_separators:
-            str_glob_indices = str_glob_indices + '*' + separator
+            str_glob_indices += '*' + escape(separator)
 
-        str_glob = (self.base_name + self._separator_base_index +
+        str_glob = (self.base_name + escape(self._separator_base_index) +
                     str_glob_indices)
         if self.extension_file != '':
             str_glob += '.' + self.extension_file
