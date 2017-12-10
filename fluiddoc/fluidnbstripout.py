@@ -35,7 +35,7 @@ def main():
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    
+
     parser.add_argument(
         'which', nargs='?',
         help='str indicating which notebooks have to be striped out.',

@@ -5,7 +5,7 @@ By a "good Python environment", I mean a recent version of Python with
 recent versions of the main packages for sciences installed (SciPy,
 NumPy, Matplotlib, IPython, h5py, etc.) and a good editor with fly checks.
 
-Remark: FluidDyn works with Python 2.7. It would not be difficult to
+Remark: FluidDyn works with Python >3.4 and 2.7. It would not be difficult to
 support Python 2.6 but I think that for science, it is important and
 not difficult to use a recent version of Python and of the main
 libraries.
@@ -15,7 +15,7 @@ libraries.
   `Python - Anaconda <http://continuum.io/downloads>`_.
 
 - Another way is to build the packages (or even the Python interpreter)
-  for source as explained here: 
+  for source as explained here:
 
   .. toctree::
      :maxdepth: 0
@@ -44,9 +44,9 @@ For flycheck, I install http://aspell.net/win32/
 Recent Python version on not so recent Linux
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Some still widely used Linux work with Python 2.6 but you can always
-install a more up-to-date Python 2.7. If you can not install a package
-with python 2.7 and virtualenv, build Python from source.
+Some still widely used Linux work with Python 2.6 but you can always install a
+more up-to-date Python 3 or 2.7. If you can not install a package with python 3
+or 2.7 (and conda or virtualenv), build Python from source.
 
 
 Python 2 on Arch Linux

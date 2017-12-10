@@ -19,6 +19,7 @@ provides utilities for input/output to different file formats:
    multitiff
    in_py
    redirect_stdout
+   dump
 
 To define environment variables, use something like (on \*unix systems, in the
 terminal or in your .bashrc)::

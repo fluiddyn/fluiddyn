@@ -74,6 +74,7 @@ setup(name='fluiddyn',
       entry_points={
           'console_scripts':
           ['fluidinfo = fluiddyn.util.info:main',
-           'fluidnbstripout = fluiddoc.fluidnbstripout:main']},
+           'fluidnbstripout = fluiddoc.fluidnbstripout:main',
+           'fluiddump = fluiddyn.io.dump:main']},
       extras_require=dict(
           doc=['Sphinx>=1.1', 'numpydoc']))
