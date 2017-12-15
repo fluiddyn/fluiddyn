@@ -444,7 +444,7 @@ class ParamContainer(object):
                     tag = self._tag.encode('utf8')
                 except AttributeError:
                     tag = self._tag
-                f.attrs.create('_tag', tag)
+                f.attrs['_tag'] = tag
                 self._save_as_hdf5(hdf5_object=f)
         elif path_file is None:
             for key in self._key_attribs:
@@ -465,7 +465,7 @@ class ParamContainer(object):
                             pass
 
                 try:
-                    hdf5_object.attrs.create(key, value)
+                    hdf5_object.attrs[key] = value
                 except TypeError:
                     print(key, value, type(value))
                     raise
