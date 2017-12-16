@@ -1,5 +1,9 @@
-General advice on how to work with Python
-=========================================
+Advice on how to work with Python
+=================================
+
+FluidDyn should be used also by scientists that are not experienced in
+Python. We provide some advice on how to work with Python and how to
+get a good Python environment.
 
 Read!
 -----
@@ -20,6 +24,34 @@ Read!
   <http://foobarnbaz.com/2012/07/08/understanding-python-variables/>`_
   is important and can avoid some bugs.
 
+Python 2.7 and Python 3
+-----------------------
+
+Python 3.6 is cleaner and better on many aspects that the 2.7 version of the
+language. The CPython interpreter for Python 3.6 is also faster for most of the
+tasks that the version for Python 2.7. Now (2017), for scientific purposes, I
+see no reason why not to use python >= 3.5.  Conda is very convenient to use
+recent versions of Python.
+
+Writing Python 2-3 compatible code is not difficult (with some ``try`` and
+``from __future__`` statements and using for example the package `future
+<http://python-future.org/>`_) but yet it is time consuming and we cannot
+benefit from the nice new features of recent versions of Python. I tend to
+think that the time when the new versions of the fluiddyn packages drop
+compatibility with Python 2.7 is not far...
+
+Use an up-to-date Python environment!
+-------------------------------------
+
+Python is an old language but the strong dynamics in scientific Python is
+actually young.  The base pakages have greatly improved these last years so it
+is really better to use recent versions. Therefore it is not a good idea to use
+scientific python libraries packaged in not very recent Linux versions.
+
+.. toctree::
+   :maxdepth: 1
+
+   get_good_Python_env
 
 Use fly checks and a good editor!
 ---------------------------------
@@ -123,24 +155,3 @@ console without ``pylab`` imported.
 In contrast, in you script, do not use the devil line ``from matplotlib.pylab
 import *``. It is much better to learn how to use matplotlib with the import
 ``import matplotlib.pyplot as plt``.
-
-Python 2.7 and Python 3
------------------------
-
-Python 3.6 is cleaner and better on many aspects that the 2.7 version of the
-language. The CPython interpreter for Python 3.6 is also faster for most of the
-tasks that the version for Python 2.7. Now (2017), for scientific purposes, I
-see no reason why not to use python >= 3.5.  Conda is very convenient to use
-new versions of Python.
-
-Writing Python 2-3 compatible code is not difficult (with some ``try`` and
-``from __future__`` statements and using for example the package `future
-<http://python-future.org/>`_) but yet it is time consuming and we cannot
-benefit from the nice new features of recent versions of Python. I tend to
-think that the time when the new versions of the fluiddyn packages drop
-compatibility with Python 2.7 is not far...
-
-Conda, Anaconda, Miniconda
---------------------------
-
-Conda is a great tool for doing sciences with Python.

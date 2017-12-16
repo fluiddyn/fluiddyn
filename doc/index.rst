@@ -4,7 +4,7 @@
 FluidDyn documentation
 ======================
 
-The project FluidDyn aims at promoting the use of open-source Python software
+The FluidDyn project aims at promoting the use of open-source Python software
 in research in fluid dynamics.  The project provides some Python packages
 specialized for different tasks, in particular
 
@@ -18,24 +18,28 @@ specialized for different tasks, in particular
 
 - `fluidsim <http://fluidsim.readthedocs.org>`_ for numerical simulations.
 
-This documentation presents the project FluidDyn and the package of
+This documentation presents the FluidDyn project and the package of
 the same name, which is the base package on which the other packages
 depend on. For the specific documentations of these specialized
 packages, follow the links above.
 
-
-User Guide
-----------
-
-.. toctree::
-   :maxdepth: 2
-
-   overview
-   install
+The FluidDyn project
+--------------------
 
 .. toctree::
    :maxdepth: 1
 
+   intro-motivations
+   advice_on_Python
+
+User Guide of the fluiddyn package
+----------------------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   install
+   features
    tutorials
 
 

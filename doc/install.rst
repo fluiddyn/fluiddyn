@@ -1,19 +1,5 @@
-Installation and advice
-=======================
-
-Advice on Python
-----------------
-
-FluidDyn should be used also by scientists that are not experienced in
-Python. We provide some advice on how to work with Python and how to
-get a good Python environment:
-
-.. toctree::
-   :maxdepth: 1
-
-   advice_on_Python
-   get_good_Python_env
-
+Installation
+============
 
 Dependencies
 ------------
@@ -39,9 +25,7 @@ Basic installation
 
 FluidDyn can be installed from the Python Package Index by the command::
 
-  pip install fluiddyn --pre
-
-The ``--pre`` option of pip allows the installation of a pre-release version.
+  pip install fluiddyn
 
 You can also download the source-code and run::
 
@@ -50,11 +34,10 @@ You can also download the source-code and run::
 Install in development mode
 ---------------------------
 
-FluidDyn is still in beta version ("testing for users"). Moreover, it has been
-designed to be used by scientists-developers. Thus, you may have to modify the
-code or even write a new class in the package.  So I would advice to work "as a
-developer", i.e. to get the source code and to use revision control and the
-development mode of the Python installer.
+Fluiddyn has been designed to be used by scientists-developers. Thus, you may
+have to modify the code of the FluidDyn packages.  So I would advice to work
+"as a developer", i.e. to get the source code and to use revision control and
+the development mode of the Python installer.
 
 For FluidDyn, I use the revision control software Mercurial and the
 main repository is hosted `here

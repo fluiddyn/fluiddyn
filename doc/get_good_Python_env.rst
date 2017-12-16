@@ -11,17 +11,17 @@ not difficult to use a recent version of Python and of the main
 libraries.
 
 - A very simple way to get such environment is to use one of the major
-  science-oriented Python distributions, for example the good
-  `Python - Anaconda <http://continuum.io/downloads>`_.
+  science-oriented Python distributions, for example the good `Python -
+  Anaconda <http://continuum.io/downloads>`_ (for slightly more advanced users,
+  Miniconda is surely better).
 
-- Another way is to build the packages (or even the Python interpreter)
-  for source as explained here:
+- Another (harder) way is to build the packages (or even the Python
+  interpreter) from source as explained here:
 
   .. toctree::
      :maxdepth: 0
 
      build_Python
-
 
 Python on Windows
 ^^^^^^^^^^^^^^^^^
@@ -80,4 +80,3 @@ environment, activate the environment and use *pip*.
 
 You can test if the virtual environment has been correctly activated
 by running *which python* and *python -V*.
-

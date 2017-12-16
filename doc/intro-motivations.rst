@@ -1,11 +1,8 @@
-General overview
-================
+Introduction and motivations
+============================
 
 This document is a work in progress. If you have any questions, comments or
 suggestions, please send them to me (pierre.augier (AT) legi.cnrs.fr).
-
-The project FluidDyn
---------------------
 
 Design Goals
 ^^^^^^^^^^^^
@@ -168,19 +165,3 @@ Why experiments and numerics?
 Experiments and numerics share common tools and common methods. It is very
 fruitful to connect these two approaches and therefore, they have to work
 together.
-
-
-Main features of the base package fluiddyn
-------------------------------------------
-
-The base package fluiddyn provides utilities for
-
-- :ref:`input-output in different file formats <io>`
-
-- making :ref:`figures <output>`
-
-- launching jobs on :ref:`clusters <clusters>`
-
-- storing parameters.
-
-- handling series of files.
