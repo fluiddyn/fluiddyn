@@ -18,8 +18,11 @@ Use the question mark in ipython to view a function's docstring::
 
 """
 
-from fluiddyn.util.util import create_object_from_file
-from fluiddyn.util import constants
-from fluiddyn._version import __version__
+from .util.util import (
+    create_object_from_file, time_as_str, get_memory_usage, ipydebug)
+from .util import constants
+from ._version import __version__
 
-__all__ = ['create_object_from_file', 'constants', '__version__']
+__all__ = [
+    '__version__', 'constants',
+    'create_object_from_file', 'time_as_str', 'get_memory_usage', 'ipydebug']

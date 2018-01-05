@@ -6,12 +6,10 @@ Utilities
    :toctree:
 
    util
-   paramcontainer
    constants
-   query
+   paramcontainer
    timer
    daemons
-   signal
    logger
    userconfig
    terminal_colors
@@ -19,9 +17,11 @@ Utilities
 
 """
 
-from fluiddyn.util.util import (
+from .util import (
     Params, time_as_str, config_logging, create_object_from_file,
-    run_from_ipython)
+    is_run_from_ipython, get_memory_usage, print_memory_usage, import_class)
 
-__all__ = ['Params', 'time_as_str', 'config_logging',
-           'create_object_from_file', 'run_from_ipython']
+__all__ = [
+    'Params', 'time_as_str', 'config_logging', 'create_object_from_file',
+    'is_run_from_ipython', 'get_memory_usage', 'print_memory_usage',
+    'import_class']

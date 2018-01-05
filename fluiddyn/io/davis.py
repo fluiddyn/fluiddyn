@@ -24,7 +24,7 @@ except ImportError as error:
     _png_ok = False
 
 
-from fluiddyn.util.query import query_yes_no
+from .query import query_yes_no
 
 
 def _import_error_readim():

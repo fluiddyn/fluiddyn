@@ -47,7 +47,7 @@ setup(name='fluiddyn',
       author='Pierre Augier',
       author_email='pierre.augier@legi.cnrs.fr',
       url='https://bitbucket.org/fluiddyn/fluiddyn',
-      license='CeCILL',
+      license='CeCILL-B',
       classifiers=[
           # How mature is this project? Common values are
           # 3 - Alpha

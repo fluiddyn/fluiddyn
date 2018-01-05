@@ -24,6 +24,8 @@ Read!
   <http://foobarnbaz.com/2012/07/08/understanding-python-variables/>`_
   is important and can avoid some bugs.
 
+- http://www.scipy-lectures.org/
+
 Python 2.7 and Python 3
 -----------------------
 

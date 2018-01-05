@@ -70,6 +70,7 @@ Requirements
 *Full functionality*
 
  - h5py
+ - h5netcdf
  - mpi4py
  - scipy
  - pyfftw (requires FFTW library)

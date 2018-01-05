@@ -1,5 +1,5 @@
-"""MultiFile
-============
+"""MultiFile (:mod:`fluiddyn.io.tee`)
+=====================================
 
 http://stackoverflow.com/a/16551730
 

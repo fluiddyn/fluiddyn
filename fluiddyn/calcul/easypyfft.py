@@ -1,7 +1,5 @@
-"""Fast Fourier transforms (:mod:`fluiddyn.util.easypyfft`)
-==========================================================================
-
-.. currentmodule:: fluiddyn.util.easypyfft
+"""Fast Fourier transforms (:mod:`fluiddyn.calcul.easypyfft`)
+=============================================================
 
 Provides classes for performing fft in 1, 2, and 3 dimensions:
 

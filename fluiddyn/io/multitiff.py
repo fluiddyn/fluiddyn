@@ -25,7 +25,7 @@ try:
 except ImportError:
     pass
 
-from fluiddyn.util.query import query_yes_no
+from .query import query_yes_no
 from .image import _image_from_array
 
 

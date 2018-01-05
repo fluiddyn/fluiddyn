@@ -18,7 +18,11 @@ Scientific output toolkit
 # temporary to avoid the error where matplotlib is not installed
 try:
     from fluiddyn.output.figs import show
+    from fluiddyn.output.rcparams import set_rcparams
+    from fluiddyn.output.util import gradient_colors
     import fluiddyn
     fluiddyn.show = show
 except ImportError:
     pass
+
+__all__ = ['show', 'set_rcparams', 'gradient_colors']

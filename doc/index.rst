@@ -39,7 +39,7 @@ User Guide of the fluiddyn package
    :maxdepth: 1
 
    install
-   features
+   ipynb/overview
    tutorials
 
 
@@ -57,6 +57,7 @@ feature, you can also use the "Quick search" tool in this page.
    fluiddyn.util
    fluiddyn.clusters
    fluiddyn.output
+   fluiddyn.calcul
 
 Fluiddyn also provides a small package for documentation:
 

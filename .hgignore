@@ -12,6 +12,7 @@ doc/**generated/*
 doc/**.zip
 doc/ipynb/*_files/*.png
 doc/ipynb/**/tuto*.rst
+doc/ipynb/overview.rst
 
 *.ipynb_checkpoints*
 *Untitled*.ipynb

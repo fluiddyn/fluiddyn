@@ -18,8 +18,12 @@ provides utilities for input/output to different file formats:
    dantec
    multitiff
    in_py
+   image
    redirect_stdout
    dump
+   tee
+   query
+
 
 To define environment variables, use something like (on \*unix systems, in the
 terminal or in your .bashrc)::

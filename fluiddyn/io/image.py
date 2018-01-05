@@ -24,6 +24,8 @@ except ImportError:
     try:
         from imageio import imread as _imread
     except ImportError:
+        # we use imread from matplotlib but there could be a problem with one
+        # unittest.  If it is really a problem, install imageio.
         from matplotlib.pyplot import imread as _imread
 
 try:
@@ -89,6 +91,7 @@ def _image_from_array(array, as_int):
             raise NotImplementedError('Unexpected dtype %s' % dtype)
 
     # im = toimage(arr=array, mode=mode, channel_axis=2)
+    # print('in _image_from_array', mode, array)
 
     im = Image.fromarray(array, mode)
     return im
@@ -103,6 +106,7 @@ def imsave(path, array, format=None, as_int=False):
     .. WARNING: setting `as_int=True` might lead to loss of precision.
 
     """
+
     im = _image_from_array(array, as_int)
 
     if format is None:
@@ -112,7 +116,7 @@ def imsave(path, array, format=None, as_int=False):
         else:
             format = 'PNG'
 
-    if format == 'TIFF':
+    if format.lower() == 'tiff':
         if any([path.endswith(ext) for ext in ('.png', '.PNG')]) and\
            np.issubdtype(array.dtype, np.floating):
             print('warning: can not save float image as png. '
@@ -120,7 +124,7 @@ def imsave(path, array, format=None, as_int=False):
 
         if not any([path.endswith(ext) for ext in ('.tif', '.tiff')]):
             path += '.tiff'
-    elif format == 'PNG':
+    elif format.lower == 'png':
         if not any([path.endswith(ext) for ext in ('.png', '.PNG')]):
             if path.endswith('.tif'):
                 path = path[:-len('.tif')]

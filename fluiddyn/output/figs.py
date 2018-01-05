@@ -24,7 +24,7 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib
 
-from ..util import run_from_ipython
+from ..util import is_run_from_ipython
 from .rcparams import set_rcparams
 
 
@@ -115,7 +115,7 @@ def show(block=None):
     """Show slightly more cleaver than old version of plt.show."""
 
     if block is None:
-        if run_from_ipython():
+        if is_run_from_ipython():
             block = False
             plt.ion()
         else:

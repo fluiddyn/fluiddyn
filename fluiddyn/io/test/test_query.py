@@ -41,7 +41,7 @@ def mock_call():
 
 
 class TestQuery(unittest.TestCase):
-    """Test fluiddyn.util.query module."""
+    """Test fluiddyn.io.query module."""
 
     def test_query(self):
         with mock_input('1.2'):

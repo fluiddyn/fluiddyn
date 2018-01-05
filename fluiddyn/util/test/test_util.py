@@ -15,7 +15,6 @@ import h5py
 from .. import util
 from ..terminal_colors import print_fail, print_warning
 from ..userconfig import load_user_conf_files
-from ..tee import MultiFile
 
 from ...io.redirect_stdout import stdout_redirected
 
@@ -51,7 +50,7 @@ class TestUtil(unittest.TestCase):
 
         util.time_as_str(decimal=1)
 
-        util.run_from_ipython()
+        util.is_run_from_ipython()
         # pathnew = util.copy_me_in()
         # os.remove(pathnew)
         with stdout_redirected():
@@ -67,9 +66,6 @@ class TestUtil(unittest.TestCase):
         util.config_logging()
         load_user_conf_files()
 
-        mf = MultiFile([sys.stdout])
-        with stdout_redirected():
-            mf.write('')
 
     def test_create_object(self):
         o = MyObject()

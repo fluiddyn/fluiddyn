@@ -21,7 +21,6 @@ import psutil
 import numpy as np
 
 from . import mpi
-# import fluiddyn as fld
 
 
 def import_class(module_name, class_name):
@@ -38,6 +37,23 @@ def import_class(module_name, class_name):
         raise KeyError(
             'The given class_name "' + class_name + '" is wrong. '
             'module_name: ' + module_name)
+
+
+def ipydebug():
+    """Launch an Ipython shell"""
+
+    # it is not useful to import this if the function is not used
+    from IPython.terminal.embed import InteractiveShellEmbed
+
+    ipshell = InteractiveShellEmbed()
+
+    frame = inspect.currentframe().f_back
+    msg = 'Stopped at {0.f_code.co_filename} at line {0.f_lineno}'.format(
+        frame)
+
+    # Go back one level!  This is needed because the call to
+    # ipshell is inside this function.
+    ipshell(msg, stack_depth=2)
 
 
 def time_as_str(decimal=0):
@@ -137,6 +153,12 @@ def create_object_from_file(str_path, *args, **kwargs):
 
 
 def run_from_ipython():
+    raise DeprecationWarning(
+        'run_from_ipython() is deprecated. Use is_run_from_ipython instead.')
+    is_run_from_ipython()
+
+
+def is_run_from_ipython():
     """Check whether the code is run from Ipython."""
     try:
         __IPYTHON__

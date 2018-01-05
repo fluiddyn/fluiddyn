@@ -1,9 +1,10 @@
 from __future__ import print_function
 
 import os
-import psutil
 import sys
 import traceback
+
+import psutil
 
 
 def _detect_mpi_type():
@@ -42,8 +43,8 @@ def _detect_mpi_type():
         else:
             return MPIEXEC_TYPE[env]
     else:
-        p = psutil.Process(os.getppid())
-        process_name = p.name()
+        process = psutil.Process(os.getppid())
+        process_name = process.name()
         if process_name in ['mpirun', 'mpiexec']:
             print(warning_msg,
                   'Loading MPI anyways, since the program was launched using ',

@@ -14,7 +14,7 @@ from builtins import range
 import os
 import numpy as np
 
-from fluiddyn.util import query
+from . import query
 
 
 def num_from_str(s):

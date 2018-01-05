@@ -1,6 +1,6 @@
 """
-Utilities to query (:mod:`fluiddyn.util.query`)
-===============================================
+Utilities to query (:mod:`fluiddyn.io.query`)
+=============================================
 
 .. autofunction:: query_yes_no
 

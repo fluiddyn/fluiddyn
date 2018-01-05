@@ -18,7 +18,7 @@ import stat
 from shlex import split
 from socket import gethostname
 from . import subprocess, Cluster
-from ..util.query import run_asking_agreement, call_bash
+from ..io.query import run_asking_agreement, call_bash
 from ..util.timer import time_gteq, timestamp_to_seconds
 
 

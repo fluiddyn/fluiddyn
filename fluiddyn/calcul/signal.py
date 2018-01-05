@@ -1,6 +1,6 @@
 """
-Simple operations on signals (:mod:`fluiddyn.util.signal`)
-==========================================================
+Simple operations on signals (:mod:`fluiddyn.calcul.signal`)
+============================================================
 
 """
 
@@ -14,8 +14,7 @@ from scipy import ndimage
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 
-
-import fluiddyn as fld
+from fluiddyn.output import show
 
 
 def decimate(sig, q, nwindow=None, axis=-1):
@@ -84,7 +83,7 @@ class FunctionLinInterp(object):
         ax.set_ylabel(r'$y$')
         ax.plot(self.x, self.f, 'k-.')
 
-        fld.show()
+        show()
 
 
 def deriv(f, x=None, dx=None, method='diff'):

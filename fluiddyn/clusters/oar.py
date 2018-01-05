@@ -12,14 +12,14 @@ Provides:
 from __future__ import print_function
 
 from builtins import str
-from builtins import object
+
 import os
 import datetime
 import stat
 from sys import version_info as version
 
 from . import subprocess, Cluster
-from ..util.query import run_asking_agreement, call_bash
+from ..io.query import run_asking_agreement, call_bash
 
 
 class ClusterOAR(Cluster):

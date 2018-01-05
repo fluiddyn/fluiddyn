@@ -1,10 +1,10 @@
-"""Spherical harmonics transforms and operators
-===============================================
+"""
+Spherical harmonics transforms and operators (:mod:`fluiddyn.calcul.sphericalharmo`)
+====================================================================================
 
 .. autoclass:: EasySHT
    :members:
    :private-members:
-
 
 """
 
@@ -14,10 +14,39 @@ from __future__ import division, print_function
 
 import sys
 from time import time
+from warnings import warn
+
 
 import numpy as np
 
-import shtns
+try:
+    import shtns
+except ImportError:
+    warn('ImportError shtns')
+else:
+    sht_orthonormal = shtns.sht_orthonormal
+    sht_fourpi = shtns.sht_fourpi
+    sht_schmidt = shtns.sht_schmidt
+
+    # print('sht_norms', sht_orthonormal, sht_fourpi, sht_schmidt)
+
+    sht_gauss = shtns.sht_gauss
+    sht_auto = shtns.sht_auto
+    sht_reg_fast = shtns.sht_reg_fast
+    sht_reg_dct = shtns.sht_reg_dct
+    sht_quick_init = shtns.sht_quick_init
+    sht_reg_poles = shtns.sht_reg_poles
+    sht_gauss_fly = shtns.sht_gauss_fly
+
+    SHT_THETA_CONTIGUOUS = shtns.SHT_THETA_CONTIGUOUS
+
+    SHT_PHI_CONTIGUOUS = shtns.SHT_PHI_CONTIGUOUS
+
+    SHT_NO_CS_PHASE = shtns.SHT_NO_CS_PHASE
+    SHT_REAL_NORM = shtns.SHT_REAL_NORM
+    SHT_SCALAR_ONLY = shtns.SHT_SCALAR_ONLY
+    SHT_SOUTH_POLE_FIRST = shtns.SHT_SOUTH_POLE_FIRST
+
 
 """
 flags for normalization (norm = ...)
@@ -55,30 +84,6 @@ def _for_test(i):
 
 def bin_int(n, width):
     return ''.join(str((n >> i) & 1) for i in range(width-1, -1, -1))
-
-
-sht_orthonormal = shtns.sht_orthonormal
-sht_fourpi = shtns.sht_fourpi
-sht_schmidt = shtns.sht_schmidt
-
-# print('sht_norms', sht_orthonormal, sht_fourpi, sht_schmidt)
-
-sht_gauss = shtns.sht_gauss
-sht_auto = shtns.sht_auto
-sht_reg_fast = shtns.sht_reg_fast
-sht_reg_dct = shtns.sht_reg_dct
-sht_quick_init = shtns.sht_quick_init
-sht_reg_poles = shtns.sht_reg_poles
-sht_gauss_fly = shtns.sht_gauss_fly
-
-SHT_THETA_CONTIGUOUS = shtns.SHT_THETA_CONTIGUOUS
-
-SHT_PHI_CONTIGUOUS = shtns.SHT_PHI_CONTIGUOUS
-
-SHT_NO_CS_PHASE = shtns.SHT_NO_CS_PHASE
-SHT_REAL_NORM = shtns.SHT_REAL_NORM
-SHT_SCALAR_ONLY = shtns.SHT_SCALAR_ONLY
-SHT_SOUTH_POLE_FIRST = shtns.SHT_SOUTH_POLE_FIRST
 
 
 class EasySHT(object):
@@ -173,16 +178,27 @@ class EasySHT(object):
     """
     def __init__(self, lmax=15,
                  mmax=None, mres=1,
-                 norm=shtns.sht_fourpi,
+                 norm=None,
                  nlat=None, nlon=None,
-                 flags=(shtns.sht_quick_init | shtns.SHT_PHI_CONTIGUOUS |
-                        shtns.SHT_SOUTH_POLE_FIRST),
+                 flags=None,
                  polar_opt=1.0e-8,
                  nl_order=2,
                  radius=radius_earth):
 
+        # to get a clear ImportError
+        import shtns
+
+        if norm is None:
+            norm = sht_fourpi
+
+        if flags is None:
+            flags = (shtns.sht_quick_init | shtns.SHT_PHI_CONTIGUOUS |
+                     shtns.SHT_SOUTH_POLE_FIRST)
+
         # print(lmax,mmax,mres,nlat,nlon,flags,polar_opt,nl_order,radius)
-        # print('flags',flags,shtns.sht_quick_init,shtns.SHT_PHI_CONTIGUOUS,shtns.SHT_SOUTH_POLE_FIRST)
+        # print('flags', flags,
+        #       shtns.sht_quick_init, shtns.SHT_PHI_CONTIGUOUS,
+        #       shtns.SHT_SOUTH_POLE_FIRST)
 
         if lmax is None and nlat is None:
             raise ValueError('lmax or nlat should be given.')

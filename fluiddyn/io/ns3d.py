@@ -19,7 +19,7 @@ import sys
 
 import numpy as np
 
-from fluiddyn.io.binary import BinFile
+from .binary import BinFile
 
 
 def print_with_emptyend(s):
@@ -142,7 +142,7 @@ class NS3DFieldFile(NS3DFile):
         print('New file saved:\n' + new_path)
 
     def save_with_resol_changed(self, nx_new, ny_new, nz_new):
-        from ..util import easypyfft
+        from ..calcul import easypyfft
         print_with_emptyend('init. FFTW3DReal2Complex for input file...')
         op = easypyfft.FFTW3DReal2Complex(self.nx, self.ny, self.nz)
         print(' Done.')
