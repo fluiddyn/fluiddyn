@@ -1,6 +1,6 @@
-========
-FluidDyn
-========
+=====================================
+FluidDyn project and fluiddyn package
+=====================================
 
 |release| |docs| |coverage| |travis|
 
@@ -21,13 +21,14 @@ FluidDyn
 
 FluidDyn is a framework for research and teaching in fluid dynamics. The Python
 package fluiddyn contains basic utilities (file io, figures, clusters, mpi,
-etc.).  Most of the features of the FluidDyn project are actually implemented
-in `other packages <https://bitbucket.org/fluiddyn>`_ (in particular in
-`fluidlab <http://fluidlab.readthedocs.io>`_, `fluidimage
-<http://fluidimage.readthedocs.io>`_ and `fluidsim
-<http://fluidsim.readthedocs.io>`_).
+etc.). It is used as a library in `the other specialized packages of the
+FluidDyn project <https://bitbucket.org/fluiddyn>`_ (in particular in `fluidfft
+<http://fluidfft.readthedocs.io>`_, `fluidsim
+<http://fluidsim.readthedocs.io>`_, `fluidlab
+<http://fluidlab.readthedocs.io>`_ and `fluidimage
+<http://fluidimage.readthedocs.io>`_).
 
-*Key words and ambitions*: fluid dynamics research with Python (2.7 or >= 3.4);
+*Keywords and ambitions*: fluid dynamics research with Python (2.7 or >= 3.4),
 modular, object-oriented, collaborative, tested and documented, free and
 open-source software.
 
@@ -43,7 +44,8 @@ Installation
 ------------
 
 It is recommended to `install numpy <http://scipy.org/install.html>`_ before
-installing fluiddyn. The simplest way to install fluiddyn is by using pip::
+installing fluiddyn. Then, the simplest way to install fluiddyn is by using
+pip::
 
   pip install fluiddyn
 
@@ -58,6 +60,7 @@ The development mode is often useful. From the root directory, run::
 
 Requirements
 ------------
+
 *Minimum*
 
  - Python 2.7, >=3.4
@@ -71,10 +74,11 @@ Requirements
 
  - h5py
  - h5netcdf
+ - pillow
+ - imageio
  - mpi4py
  - scipy
  - pyfftw (requires FFTW library)
- - pillow
 
 *Optional*
 
@@ -95,10 +99,11 @@ Or, from the root directory or any of the "test" directories::
 History
 -------
 
-FluidDyn is the evolution of two other codes previously developed by `Pierre
-Augier <http://www.legi.grenoble-inp.fr/people/Pierre.Augier/>`_ (CNRS
-researcher at `LEGI <http://www.legi.grenoble-inp.fr>`_, Grenoble): Solveq2d (a
-numerical code to solve fluid equations in a periodic two-dimensional space
-with a pseudo-spectral method, developed at KTH, Stockholm) and FluidLab (a
-toolkit to do experiments, developed in the G. K. Batchelor Fluid Dynamics
-Laboratory at DAMTP, University of Cambridge).
+The FluidDyn project started in 2015 as the evolution of two packages
+previously developed by `Pierre Augier
+<http://www.legi.grenoble-inp.fr/people/Pierre.Augier/>`_ (CNRS researcher at
+`LEGI <http://www.legi.grenoble-inp.fr>`_, Grenoble): solveq2d (a numerical
+code to solve fluid equations in a periodic two-dimensional space with a
+pseudo-spectral method, developed at KTH, Stockholm) and fluidlab (a toolkit to
+do experiments, developed in the G. K. Batchelor Fluid Dynamics Laboratory at
+DAMTP, University of Cambridge).
