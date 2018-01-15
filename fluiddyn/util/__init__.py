@@ -14,6 +14,7 @@ Utilities
    userconfig
    terminal_colors
    serieofarrays
+   matlab2py
 
 """
 
