@@ -58,11 +58,11 @@ def time_gteq(timestr1, timestr2):
 class Timer(object):
     """Timer ticking with a particular period.
 
-    Attributes
+    Parameters
     ----------
 
     time_between_ticks : float
-       Period between the ticks.
+       Period between the ticks (in s).
 
     """
     def __init__(self, time_between_ticks):
@@ -95,21 +95,27 @@ class Timer(object):
 class TimerIrregular(Timer):
     """Timer ticking for a numpy array of time.
 
-    This time array can be irregular.
+    Parameters
+    ----------
+
+    times_ticks: (sorted) sequence
+      A sequence of times (in second), which can be irregular.
+
     """
-    def __init__(self, timing):
-        self.timing = [ti - min(timing) for ti in timing[1:]]
+    def __init__(self, times_ticks):
+        t0 = times_ticks[0]
+        self.times_ticks = [ti - t0 for ti in times_ticks[1:]]
         self.tstart = time.time()
 
     def wait_tick(self):
         """Block till the next tick."""
         tnow = time.time() - self.tstart
-        if self.timing:
-            while self.timing and self.timing[0] - tnow < 0:
-                self.timing = self.timing[1:]
-        if self.timing:
-            tsleep = self.timing[0] - tnow
-            self.timing = self.timing[1:]
+        if self.times_ticks:
+            while self.times_ticks and self.times_ticks[0] - tnow < 0:
+                self.times_ticks = self.times_ticks[1:]
+        if self.times_ticks:
+            tsleep = self.times_ticks[0] - tnow
+            self.times_ticks = self.times_ticks[1:]
             time.sleep(tsleep)
         return time.time() - self.tstart
 

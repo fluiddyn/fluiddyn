@@ -1,6 +1,6 @@
 """
-Serie of arrays (:mod:`fluidlab.postproc.serieofarrays`)
-========================================================
+Serie of arrays (:mod:`fluidsim.util.serieofarrays`)
+====================================================
 
 Provides classes to iterate over files.
 
@@ -49,7 +49,7 @@ from glob import glob
 from copy import copy, deepcopy
 import itertools
 from math import ceil, log10
-import re
+# import re
 
 try:
     from glob import escape
@@ -123,7 +123,8 @@ class SerieOfArrays(object):
             if '[' in self.filename_given:
                 self.extension_file = self.filename_given.rsplit('.', 1)[-1]
             else:
-               	 self.extension_file = '.'.join(self.filename_given.split('.')[1:])
+                self.extension_file = '.'.join(
+                    self.filename_given.split('.')[1:])
         else:
             self.extension_file = ''
 

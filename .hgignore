@@ -13,6 +13,7 @@ doc/**.zip
 doc/ipynb/*_files/*.png
 doc/ipynb/**/tuto*.rst
 doc/ipynb/overview.rst
+doc/ipynb/tmp_*
 
 *.ipynb_checkpoints*
 *Untitled*.ipynb

@@ -1,5 +1,5 @@
 """Treat Matlab code to help the translation to Python code
-============================================================
+===========================================================
 
 This subpackage provides 2 modules to help a developer to translate a Matlab
 code into a Python code. It is not a proper Matlab to Python translator. The

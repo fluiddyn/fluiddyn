@@ -7,13 +7,14 @@ Utilities
 
    util
    constants
+   mpi
    paramcontainer
+   serieofarrays
    timer
    daemons
    logger
    userconfig
    terminal_colors
-   serieofarrays
    matlab2py
 
 """

@@ -36,7 +36,6 @@ def ipynb_to_rst(path='ipynb', executed=None):
     paths_ipynb_executed = []
 
     for filepath in paths_ipynb:
-
         if executed:
             try:
                 executed[0]

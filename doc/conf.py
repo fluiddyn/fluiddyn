@@ -20,7 +20,7 @@ import fluiddyn as fld
 from fluiddoc.ipynb_maker import ipynb_to_rst
 
 ipynb_to_rst()
-ipynb_to_rst('ipynb/executed', executed=['query.ipynb'])
+ipynb_to_rst('ipynb/executed', executed=True)
 
 
 # If extensions (or modules to document with autodoc) are in another directory,

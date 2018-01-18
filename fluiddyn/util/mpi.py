@@ -1,3 +1,16 @@
+"""Minimal mpi (:mod:`fluiddyn.util.mpi`)
+======================================
+
+Minimal mpi module for sequential and simple mpi programs. It uses mpi4py if
+installed but it can be imported in any cases, without ImportError.
+
+Always defines the two variables ``nb_proc`` and ``rank`` and the function
+``printby0``.
+
+If the program as been launch using mpi, also defines the variable ``comm``
+with is the ``MPI.COMM_WORLD`` communicator.
+
+"""
 from __future__ import print_function
 
 import os

@@ -1,6 +1,14 @@
 """Matlab -> wrong Python translator
 ====================================
 
+Many more simple transformations can be implemented, for example:
+
++----------------+---------------------+
+|   ``disp(``    |    ``print(``       |
++----------------+---------------------+
+| ``zeros(...)`` | ``np.zeros((...))`` |
++----------------+---------------------+
+
 """
 
 from __future__ import print_function

@@ -1,7 +1,7 @@
 Tutorials
 =========
 
-These notebooks will show how some features of fluiddyn can be used...
+These notebooks should show how some features of fluiddyn can be used.
 
 .. toctree::
    :maxdepth: 2
