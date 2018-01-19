@@ -5,6 +5,19 @@ FluidDyn should be used also by scientists that are not experienced in
 Python. We provide some advice on how to work with Python and how to
 get a good Python environment.
 
+Use an up-to-date Python environment!
+-------------------------------------
+
+Python is an old language but the strong dynamics in scientific Python is
+actually young.  The base pakages have greatly improved these last years so it
+is really better to use recent versions. Therefore it is not a good idea to use
+scientific python libraries packaged in not very recent Linux versions.
+
+.. toctree::
+   :maxdepth: 1
+
+   get_good_Python_env
+
 Read!
 -----
 
@@ -41,19 +54,6 @@ Writing Python 2-3 compatible code is not difficult (with some ``try`` and
 benefit from the nice new features of recent versions of Python. I tend to
 think that the time when the new versions of the fluiddyn packages drop
 compatibility with Python 2.7 is not far...
-
-Use an up-to-date Python environment!
--------------------------------------
-
-Python is an old language but the strong dynamics in scientific Python is
-actually young.  The base pakages have greatly improved these last years so it
-is really better to use recent versions. Therefore it is not a good idea to use
-scientific python libraries packaged in not very recent Linux versions.
-
-.. toctree::
-   :maxdepth: 1
-
-   get_good_Python_env
 
 Use fly checks and a good editor!
 ---------------------------------

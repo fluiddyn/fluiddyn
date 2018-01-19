@@ -17,7 +17,12 @@ import os
 import fluiddyn as fld
 
 # this package also comes from fluiddyn
+from fluiddoc import mock_modules
 from fluiddoc.ipynb_maker import ipynb_to_rst
+
+mock_modules(('nbstripout',))
+
+import fluiddoc.fluidnbstripout
 
 ipynb_to_rst()
 ipynb_to_rst('ipynb/executed', executed=True)

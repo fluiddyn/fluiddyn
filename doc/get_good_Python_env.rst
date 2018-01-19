@@ -13,7 +13,16 @@ libraries.
 - A very simple way to get such environment is to use one of the major
   science-oriented Python distributions, for example the good `Python -
   Anaconda <http://continuum.io/downloads>`_ (for slightly more advanced users,
-  Miniconda is surely better).
+  `Miniconda <https://conda.io/miniconda.html>`_ is surely better).
+
+  To get started with Miniconda::
+
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh
+    # load the environment (maybe start a new terminal)
+    # remark: it can be good to use the channel conda-forge
+    # a typical conda install command:
+    conda install scipy matplotlib pandas h5py ipython jupyterlab imageio
 
 - Another (harder) way is to build the packages (or even the Python
   interpreter) from source as explained here:
