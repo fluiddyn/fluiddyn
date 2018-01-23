@@ -36,7 +36,7 @@ class Occigen(ClusterSlurm):
             'unset PYTHONPATH',
             'source $HOME/mypy/bin/activate',
             ('export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:'
-             '$OPT/pfft/lib:$OPT/p3dfft/2.7.5/lib'),
+             '$OPT/pfft/lib:$OPT/p3dfft/2.7.5/lib:$OPT/fftw/3.3.7/lib'),
             'export LANG=C',
             'export LC_LANG=C']
 
