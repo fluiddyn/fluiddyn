@@ -5,8 +5,11 @@ develop:
 help:
 	@echo "targets: develop, clean_so and tests"
 
-clean_so:
-	find fluiddyn -name "*.so" -delete
+clean_pyc:
+	find fluiddyn -name "*.pyc" -delete
+	find fluiddyn -name "__pycache__" -type d | xargs rm -rf
+
+clean: clean_pyc
 
 tests:
 	python -m unittest discover
