@@ -2,7 +2,7 @@
 FluidDyn project and fluiddyn package
 =====================================
 
-|release| |docs| |coverage| |travis|
+|release| |docs| |coverage| |travis| |appveyor|
 
 .. |release| image:: https://img.shields.io/pypi/v/fluiddyn.svg
    :target: https://pypi.python.org/pypi/fluiddyn/
@@ -17,7 +17,12 @@ FluidDyn project and fluiddyn package
    :alt: Code coverage
 
 .. |travis| image:: https://travis-ci.org/fluiddyn/fluiddyn.svg?branch=master
-    :target: https://travis-ci.org/fluiddyn/fluiddyn
+   :target: https://travis-ci.org/fluiddyn/fluiddyn
+   :alt: Travis CI status
+
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/8tipjogdw679ucsh?svg=true
+   :target: https://ci.appveyor.com/project/fluiddyn/fluiddyn
+   :alt: AppVeyor status
 
 FluidDyn is a framework for research and teaching in fluid dynamics. The Python
 package fluiddyn contains basic utilities (file io, figures, clusters, mpi,
