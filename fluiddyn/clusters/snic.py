@@ -50,10 +50,10 @@ class Beskow(ClusterSlurm):
         else:
             self.commands_setting_env = [
                 'source /etc/profile',
-                'module load gcc',
+                'module load gcc/6.1.0',
                 'module swap PrgEnv-cray PrgEnv-intel',
                 'module swap intel intel/18.0.0.128',
-                'module load fftw',
+                # 'module load fftw',
                 'source {}/bin/activate {}'.format(_venv, _venv)]
 
             self.commands_unsetting_env = [
