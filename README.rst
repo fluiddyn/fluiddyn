@@ -66,29 +66,11 @@ The development mode is often useful. From the root directory, run::
 Requirements
 ------------
 
-*Minimum*
+**Minimum** : Python (2.7, >=3.4), numpy, matplotlib, psutil, future, subprocess32 (for Python 2.7 only)
 
- - Python 2.7, >=3.4
- - numpy
- - matplotlib
- - psutil
- - future
- - subprocess32 (for Python 2.7 only)
+**Full functionality**: h5py, h5netcdf, pillow, imageio, mpi4py, scipy, pyfftw (requires FFTW library)
 
-*Full functionality*
-
- - h5py
- - h5netcdf
- - pillow
- - imageio
- - mpi4py
- - scipy
- - pyfftw (requires FFTW library)
-
-*Optional*
-
- - OpenCV with Python bindings
- - scikit-image
+**Optional**: OpenCV with Python bindings, scikit-image
 
 Tests
 -----
