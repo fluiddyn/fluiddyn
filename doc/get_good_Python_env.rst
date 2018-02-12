@@ -5,37 +5,56 @@ By a "good Python environment", I mean a recent version of Python with
 recent versions of the main packages for sciences installed (SciPy,
 NumPy, Matplotlib, IPython, h5py, etc.) and a good editor with fly checks.
 
-Remark: FluidDyn works with Python >3.4 and 2.7. It would not be difficult to
-support Python 2.6 but I think that for science, it is important and
-not difficult to use a recent version of Python and of the main
-libraries.
+.. warning:: 
 
-- A very simple way to get such environment is to use one of the major
-  science-oriented Python distributions, for example the good `Python -
-  Anaconda <http://continuum.io/downloads>`_ (for slightly more advanced users,
-  `Miniconda <https://conda.io/miniconda.html>`_ is surely better).
+   **Announcement: Moving to require Python 3**. As `many other
+   scientific projects <http://www.python3statement.org/>`_, we are planning to
+   soon require Python 3 for all new feature releases. For science, try to use
+   a recent version of Python (>= 3.5 in 2018).
 
-  To get started with Miniconda::
+The easy way: Python distributions (for example Anaconda)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    bash Miniconda3-latest-Linux-x86_64.sh
-    # load the environment (maybe start a new terminal)
-    # remark: it can be good to use the channel conda-forge
-    # a typical conda install command:
-    conda install scipy matplotlib pandas h5py ipython jupyterlab imageio
+A very simple way to get such environment is to use one of the major
+science-oriented Python distributions, for example the good `Python - Anaconda
+<http://anaconda.io/downloads>`_ (for slightly more advanced users, `Miniconda
+<https://conda.io/miniconda.html>`_ is surely better).
 
-- Another (harder) way is to build the packages (or even the Python
-  interpreter) from source as explained here:
+To get started with Miniconda::
 
-  .. toctree::
-     :maxdepth: 0
+  wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  bash Miniconda3-latest-Linux-x86_64.sh
+  
+It can be good to use the channel conda-forge. This can be done using a file
+`~/.condarc` with::
 
-     build_Python
+  channels:
+    - conda-forge
+    - defaults
+
+Then load the conda environment (maybe start a new terminal) and you can run
+typical conda and pip install commands, for example::
+
+  conda install scipy matplotlib pandas h5py ipython jupyterlab imageio cython psutil
+  conda install spyder
+  pip install mpi4py pythran colorlog    
+
+The intermediate way and the hard way: from source
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Another (harder) way is to build the packages from source (using the system
+Python interpreter) or (even harder) to build everything from source (the
+Python interpreter and then the packages) as explained here:
+
+.. toctree::
+   :maxdepth: 0
+
+   build_Python
 
 Python on Windows
 ^^^^^^^^^^^^^^^^^
 
-On windows, I use Python - Anaconda http://continuum.io/downloads
+On windows, I use `Python - Anaconda <http://anaconda.io/downloads>`_.
 
 For FluidDyn, you really need a good terminal. The standard console of
 Windows (cmd) is just surprisingly bad. DO NOT use it since you could
@@ -50,42 +69,9 @@ example, you could use
 For flycheck, I install http://aspell.net/win32/
 
 
-Recent Python version on not so recent Linux
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Recent Python versions on old GNU/Linux
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Some still widely used Linux work with Python 2.6 but you can always install a
-more up-to-date Python 3 or 2.7. If you can not install a package with python 3
-or 2.7 (and conda or virtualenv), build Python from source.
-
-
-Python 2 on Arch Linux
-^^^^^^^^^^^^^^^^^^^^^^
-
-Arch Linux uses Python 3 for the applications and the command python
-is associated with the Python 3 interpreter.
-
-If you have Python 2 installed, you could use a virtual environment like this::
-
-  PYTHON2=`which python2`
-  MYPY=$HOME/opt/mypy2
-  mkdir $MYPY
-  virtualenv --python=$PYTHON2 --system-site-packages $MYPY
-
-Then put a non-executable script ``load_python2.sh`` in the directory
-~/bin with something like this::
-
-  export VIRTUAL_ENV_DISABLE_PROMPT=0
-  MYPY=$HOME/opt/mypy2
-  source $MYPY/bin/activate
-
-This script should be use by *source ~/bin/load_python2.sh* so you can
-have a line with *alias load_python2='source ~/bin/load_python2.sh'*
-in the file *~/.bash_aliases*. Then, each time you want to use Python
-2 in a terminal, just run the command *load_python2* and the command
-*python* will be associated with Python 2 as in most Linux
-distributions. Moreover, the command *ipython* and *sphinx-build*
-should also use this Python version. To install packages for this
-environment, activate the environment and use *pip*.
-
-You can test if the virtual environment has been correctly activated
-by running *which python* and *python -V*.
+Some old Linux work with Python 2.6 but you can always install a more
+up-to-date Python version. If you can not install a package with python 3 (and
+conda or virtualenv), build Python from source.

@@ -21,14 +21,15 @@ this page, I focus on what is needed to use and develop FluidDyn.
 Set-up Mercurial
 ----------------
 
-Install Mercurial and create a file ``~/.hgrc`` with something like::
+Install Mercurial and the extensions you want. I usually do::
+
+  pip2 install mercurial hg-git -U
+
+Create a file ``~/.hgrc`` with something like::
 
   [ui]
   username=myusername  <email@adress.org>
   editor=emacs -nw
-
-  [web]
-  cacerts = /etc/ssl/certs/ca-certificates.crt
 
   [extensions]
   color =
@@ -39,8 +40,8 @@ Install Mercurial and create a file ``~/.hgrc`` with something like::
   cmd.meld =
 
 The line starting with hggit is optional and enables the extension `hg-git
-<http://hg-git.github.io/>`_. This extension is useful in particular to work
-with Github and Gitlab.
+<http://hg-git.github.io/>`_. This extension is useful to work on projects
+using Git, for example hosted on Github and Gitlab.
 
 Get help
 --------
@@ -137,6 +138,10 @@ Working with hggit and github
 To clone a git repository::
 
   hg clone git+ssh://git@github.com/serge-sans-paille/pythran.git
+
+or just::
+
+  hg clone https://github.com/serge-sans-paille/pythran.git
 
 Git branches are represented as Mercurial bookmarks so such commands can be
 usefull::
