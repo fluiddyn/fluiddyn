@@ -50,8 +50,12 @@ class SlurmTestCase(unittest.TestCase):
 
     def tearDown(self):
         os.chdir('..')
-        rmtree(self._work_dir)
-
+        try:
+            rmtree(self._work_dir)
+        except OSError:
+            # in case something strange happen...
+            pass
+            
     def test_submit_defaults(self):
         """Test submit_script method with its default options."""
         with stdout_redirected():

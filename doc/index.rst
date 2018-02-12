@@ -8,15 +8,15 @@ The FluidDyn project aims at promoting the use of open-source Python software
 in research in fluid dynamics.  The project provides some Python packages
 specialized for different tasks, in particular
 
-- `fluidlab <http://fluidlab.readthedocs.org>`_ for laboratory experiments,
-
-- `fluidimage <http://fluidimage.readthedocs.io>`_ for processing of images of
-  fluid,
-
 - `fluidfft <http://fluidfft.readthedocs.org>`_ for 2D and 3D Fast Fourier
   Transforms,
 
-- `fluidsim <http://fluidsim.readthedocs.org>`_ for numerical simulations.
+- `fluidsim <http://fluidsim.readthedocs.org>`_ for numerical simulations,
+
+- `fluidlab <http://fluidlab.readthedocs.org>`_ for laboratory experiments,
+
+- `fluidimage <http://fluidimage.readthedocs.io>`_ for processing of images of
+  fluid.
 
 This documentation presents the FluidDyn project and the package of
 the same name, which is the base package on which the other packages
