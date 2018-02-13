@@ -167,6 +167,18 @@ def is_run_from_ipython():
         return False
 
 
+def is_run_from_jupyter():
+    try:
+        shell = get_ipython().__class__.__name__
+    except NameError or AttributeError:
+        return False
+    else:
+        if shell == 'ZMQInteractiveShell':
+            return True
+        else:
+            return False
+
+
 class Params(object):
     """Minimalist object to store some parameters."""
     def __repr__(self):
