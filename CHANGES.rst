@@ -1,4 +1,10 @@
 
+0.2.1
+-----
+
+- Better Spherical Harmonic operators
+- New util function is_run_from_jupyter
+
 0.2.0
 -----
 
