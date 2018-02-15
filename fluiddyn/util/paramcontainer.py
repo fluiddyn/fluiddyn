@@ -428,7 +428,7 @@ class ParamContainer(object):
         return path_file
 
     def _save_as_hdf5(self, path_file=None, hdf5_object=None,
-                      hdf5_parent=None):
+                      hdf5_parent=None, invalid_netcdf=False):
         """Save in a hdf5 file."""
 
         if hdf5_parent is not None:
@@ -463,6 +463,9 @@ class ParamContainer(object):
                             value[i] = v.encode('utf8')
                         except AttributeError:
                             pass
+
+                if not invalid_netcdf and isinstance(value, bool):
+                    value = int(value)
 
                 try:
                     hdf5_object.attrs[key] = value
