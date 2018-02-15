@@ -268,7 +268,10 @@ class EasySHT(object):
         self.m_idx = self.sh.m
         self.nlm = self.sh.nlm
 
-        self.delta = 360./(self.nlon*self.mres)
+        self.deltax = 360./(self.nlon*self.mres)
+        # wrong but useful for fluidsim
+        self.deltay = self.deltax
+
         # create arrays 2D lats et lons
         self.LONS, self.LATS = np.meshgrid(self.lons, self.lats)
         self.cosLATS = np.cos(self.LATS/180*np.pi)
@@ -290,18 +293,24 @@ class EasySHT(object):
         self.sht_as_arg = self.sh.spat_to_SH
         self.isht_as_arg = self.sh.SH_to_spat
 
+        self._zeros_sh = self.create_array_sh(0.)
+
+    def vec_from_rotsh(self, rot_sh):
+        return self.uv_from_hdivrotsh(self._zeros_sh, rot_sh)
+
+    def vec_from_divsh(self, div_sh):
+        return self.uv_from_hdivrotsh(div_sh, self._zeros_sh)
+
     def produce_str_describing_oper(self):
         """Produce a string describing the operator."""
         return 'lmax{}_nlat{}_nlon{}'.format(self.lmax, self.nlat, self.nlon)
 
     def produce_long_str_describing_oper(self):
         return '\n'.join((
-            '\\ninstance for spherical harmonic transforms'
+            'Spherical harmonic transforms '
             'nlat = {0} ; nlon = {1}'.format(self.nlat, self.nlon),
-            '1 point every {0:6.2g} km'.format(
-                2*np.pi*self.radius/self.nlon/1000),
-            '1 point every {0:6.2g} km (for earth atmosphere)'.format(
-                2*np.pi*self.radius/self.nlon/1000)))
+            '(1 point every {0:6.2g} km for the earth)\n'.format(
+                2*np.pi*radius_earth/self.nlon/1000)))
 
     def idx_lm(self, l, m):
         """ idx_lm(self, l,m)"""
@@ -413,13 +422,10 @@ class EasySHT(object):
               '{:3.6f} s'.format((t2-t1)/nb_sht))
 
     # functions for 2D vectorial spherical harmonic transforms
-    def uv_from_hdivrotsh(self, hdiv_lm, hrot_lm, uu=None, vv=None,
-                          has_to_print_time=False):
+    def uv_from_hdivrotsh(self, hdiv_lm, hrot_lm, uu=None, vv=None):
         """
         u, v from h, div, rot (u and v are overwritten)
         """
-        if has_to_print_time:
-            t1 = time()
         if uu is None:
             uu = self.create_array_spat()
             vv = self.create_array_spat()
@@ -429,22 +435,15 @@ class EasySHT(object):
         uD_lm[COND] = -hdiv_lm[COND] / self.l2_idx[COND] * self.radius
         uR_lm[COND] = -hrot_lm[COND] / self.l2_idx[COND] * self.radius
         self.sh.SHsphtor_to_spat(uD_lm, uR_lm, vv, uu)
-        #if self.order_lat == 'south_to_north':
+        # if self.order_lat == 'south_to_north':
         #    vv[:] = -vv+0       # because SHTns uses colatitude basis
-        if has_to_print_time:
-            t2 = time()
-            print('backward 2D vectorial sh transform done in '
-                  '{:4.3f} s'.format(t2-t1))
         return uu, vv
 
-    def hdivrotsh_from_uv(self, uu, vv, hdiv_lm=None, hrot_lm=None,
-                          has_to_print_time=False):
+    def hdivrotsh_from_uv(self, uu, vv, hdiv_lm=None, hrot_lm=None):
         """Compute hdivrotsh from uuvv.
 
         (div_lm and rot_lm are overwritten)
         """
-        if has_to_print_time:
-            t1 = time()
         if hdiv_lm is None:
             hdiv_lm = self.create_array_sh()
             hrot_lm = self.create_array_sh()
@@ -459,48 +458,33 @@ class EasySHT(object):
         hdiv_lm[:] = -self.l2_idx * hdiv_lm[:] / self.radius
         # removed minus
         hrot_lm[:] = -self.l2_idx * hrot_lm[:] / self.radius
-        # print(self.radius)
-        if has_to_print_time:
-            t2 = time()
-            print('forward 2D vectorial SH transform done in '
-                  '{:4.3f} s'.format(t2-t1))
         return hdiv_lm, hrot_lm
-    
-    def uv_from_uDuRsh(self, uD_lm, uR_lm, uu=None, vv=None,
-                       has_to_print_time=False):
+
+    def uv_from_uDuRsh(self, uD_lm, uR_lm, uu=None, vv=None):
         """
         u, v from uD, uR (uu and vv are overwritten)
         """
-        if has_to_print_time:
-            t1 = time()
         if uu is None:
             uu = self.create_array_spat()
             vv = self.create_array_spat()
         self.sh.SHphtor_to_spat(uD_lm, uR_lm, vv, uu)
 
-        #if self.order_lat == 'south_to_north':
+        # if self.order_lat == 'south_to_north':
         #    vv[:] = -vv+0       # because SHTns uses colatitude basis
 
-        if has_to_print_time:
-            t2 = time()
-            print('backward 2D vectorial SH transform done in '
-                  '{:4.3f} s'.format(t2-t1))
         return uu, vv
 
-    def uDuRsh_from_uv(self, uu, vv, hdiv_lm=None, hrot_lm=None,
-                       has_to_print_time=False):
+    def uDuRsh_from_uv(self, uu, vv, hdiv_lm=None, hrot_lm=None):
         """Compute hdivrotsh from uuvv.
 
         (div_lm and rot_lm are overwritten)
         """
-        if has_to_print_time:
-            t1 = time()
         if hdiv_lm is None:
             hdiv_lm = self.create_array_sh()
             hrot_lm = self.create_array_sh()
 
-        #if self.order_lat == 'south_to_north':
-        #    vv = -vv
+        # if self.order_lat == 'south_to_north':
+        #     vv = -vv
         # print('order_lat', self.order_lat)
         self.sh.spat_to_SHsphtor(vv, uu, hdiv_lm, hrot_lm)
         # in fact there is uD_lm in hdiv_lm and
@@ -509,10 +493,6 @@ class EasySHT(object):
         hdiv_lm[:] = -hdiv_lm[:]
         hrot_lm[:] = -hrot_lm[:]
         # print(self.radius)
-        if has_to_print_time:
-            t2 = time()
-            print('forward 2D vectorial SH transform done in '
-                  '{:4.3f} s'.format(t2-t1))
         return hdiv_lm, hrot_lm
 
     def hdivrotsh_from_uDuRsh(self, uD_lm, uR_lm):
@@ -529,16 +509,13 @@ class EasySHT(object):
         # print(self.radius)
         return uD_lm, uR_lm
 
-    def gradf_from_fsh(self, f_lm, gradf_lon=None, gradf_lat=None,
-                       has_to_print_time=False):
+    def gradf_from_fsh(self, f_lm, gradf_lon=None, gradf_lat=None):
         """gradf from fsh.
 
         Compute the gradient of a function f from its spherical
         harmonic coeff f_lm (gradf_lon and gradf_lat are overwritten)
 
         """
-        if has_to_print_time:
-            t1 = time()
         if gradf_lon is None:
             gradf_lon = self.create_array_spat(0)
             gradf_lat = self.create_array_spat(0)  # becareful bug if not 0!!!
@@ -556,40 +533,23 @@ class EasySHT(object):
         gradf_lat[:] = +gradf_lat/self.radius  # *sign_inv_vv
         gradf_lon[:] = +gradf_lon/self.radius
         # print('radius', self.radius)
-
-        if has_to_print_time:
-            t2 = time()
-            print('backward 2D vectorial SH transform done in {:4.3f} s' +
-                  ''.format(t2-t1))
         return gradf_lon, gradf_lat
 
-    def spat3d_from_sh3d(self, f_lm_3d, f3d=None,
-                         has_to_print_time=False, dtype=np.float):
-        if has_to_print_time:
-            t1 = time()
+    def spat3d_from_sh3d(self, f_lm_3d, f3d=None, dtype=np.float):
         nvert = f_lm_3d.shape[0]
         if f3d is None:
             f3d = np.empty([nvert, self.nlat, self.nlon], dtype)
         for iz in range(nvert):
             f2D = self.spat_from_sh(f_lm_3d[iz])
             f3d[iz] = f2D
-        if has_to_print_time:
-            t2 = time()
-            print('3d SHT done in {0:3.2f} s ({1:2n}'.format(t2-t1, nvert))
         return f3d
 
-    def sh3d_from_spat3d(self, f3d, f_lm3d=None,
-                         has_to_print_time=False, dtype=np.complex):
-        if has_to_print_time:
-            t1 = time()
+    def sh3d_from_spat3d(self, f3d, f_lm3d=None, dtype=np.complex):
         nvert = f3d.shape[0]
         if f_lm3d is None:
             f_lm3d = np.empty([nvert, self.nlm], dtype)
         for iz in range(nvert):
             f_lm3d[iz] = self.sh_from_spat(f3d[iz])
-        if has_to_print_time:
-            t2 = time()
-            print('3d SHT done in {0:3.2f} s ({1:2n}'.format(t2-t1, nvert))
         return f_lm3d
 
     # print functions...
