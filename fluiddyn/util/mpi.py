@@ -77,6 +77,7 @@ except ImportError:
     nb_proc = 1
     rank = 0
     printby0 = print
+    print_sorted = print
 else:
     comm = MPI.COMM_WORLD
     nb_proc = comm.size
@@ -95,3 +96,12 @@ else:
     def printby0(*args, **kwargs):
         if rank == 0:
             standard_print(*args, **kwargs)
+
+    def print_sorted(*args, **kwargs):
+        kwargs['flush'] = True
+        comm.barrier()
+        for irank in range(nb_proc):
+            if rank == irank:
+                standard_print('rank {}:'.format(rank), flush=True)
+                standard_print(*args, **kwargs)
+            comm.barrier()
