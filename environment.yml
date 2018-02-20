@@ -13,5 +13,5 @@ dependencies:
   - matplotlib
   - pandas
   - imageio
-  - pip
+  - pip:
     - sphinx_rtd_theme
