@@ -456,13 +456,18 @@ class ParamContainer(object):
                 except AttributeError:
                     pass
 
-                if isinstance(value, list):
-                    value = copy(value)
-                    for i, v in enumerate(value):
+                if isinstance(value, (list, tuple)):
+                    value_tmp = []
+                    for v in value:
                         try:
-                            value[i] = v.encode('utf8')
+                            v_tmp = v.encode('utf8')
                         except AttributeError:
-                            pass
+                            v_tmp = v
+                        value_tmp.append(v_tmp)
+                    if isinstance(value, tuple):
+                        value = tuple(value_tmp)
+                    else:
+                        value = value_tmp
 
                 if not invalid_netcdf and isinstance(value, bool):
                     value = int(value)
@@ -499,15 +504,6 @@ class ParamContainer(object):
 
             if isinstance(v, np.ndarray) and v.dtype.kind in ('S', 'U'):
                 attrs[k] = list(v.astype(np.unicode))
-
-            if isinstance(v, list):
-                for i, v2 in enumerate(v):
-                    try:
-                        v[i] = v2.decode('utf8')
-                    except AttributeError:
-                        pass
-
-                attrs[k] = v
 
         tag = hdf5_object.name.split('/')[-1]
 
