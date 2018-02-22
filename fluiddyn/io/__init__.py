@@ -16,6 +16,9 @@ provides utilities for input/output to different file formats:
    hdf5
    digiflow
    dantec
+   davis
+   rdvision
+   ns3d
    multitiff
    in_py
    image

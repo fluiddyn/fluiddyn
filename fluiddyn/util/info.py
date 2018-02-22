@@ -407,6 +407,7 @@ def save_sys_info(path_dir='.', filename='sys_info.xml'):
 
 
 def main():
+    """Parse arguments and execute ``fluidinfo``."""
     desc = '\n'.join(__doc__.splitlines()[2:])
     parser = argparse.ArgumentParser(
         prog='fluidinfo',

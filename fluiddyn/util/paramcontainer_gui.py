@@ -1,4 +1,15 @@
+"""Qt based GUI for parameters (:mod:`fluiddyn.util.paramcontainer_gui`)
+========================================================================
 
+.. currentmodule:: fluiddyn.util.paramcontainer_gui
+
+Provides:
+
+.. autoclass:: QtParamContainer
+   :members:
+   :private-members:
+
+"""
 from __future__ import division, print_function
 
 import os
@@ -25,7 +36,10 @@ except AttributeError:
 
 
 class QtParamContainer(object):
+    """QWidget application framework for loading, editing, saving and launching
+    a job from a ParamContainer object.
 
+    """
     def __init__(self, params, top=False,
                  module_run_from_xml='fluidimage.run_from_xml'):
 

@@ -9,6 +9,7 @@ Utilities
    constants
    mpi
    paramcontainer
+   paramcontainer_gui
    serieofarrays
    timer
    daemons
@@ -16,6 +17,9 @@ Utilities
    userconfig
    terminal_colors
    matlab2py
+   info
+   mail
+   xmltotext
 
 """
 

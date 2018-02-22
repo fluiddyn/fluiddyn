@@ -12,8 +12,10 @@ Provides:
 
    oar
    slurm
+   local
    legi
    ciment
+   cines
    snic
 
 """
