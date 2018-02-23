@@ -27,6 +27,8 @@ from builtins import object
 import os
 import numpy as np
 from copy import copy
+from time import time
+
 try:
     import scipy.fftpack as fftp
 except ImportError:
@@ -37,8 +39,86 @@ if 'OMP_NUM_THREADS' in os.environ:
 else:
     nthreads = 1
 
+from ..util.mpi import printby0
+    
 
-class FFTP2D(object):
+class BaseFFT(object):
+    def run_tests(self):
+        arr = np.random.rand(*self.shapeX)
+        arr_fft = self.fft(arr)
+        arr = self.ifft(arr_fft)
+        arr_fft = self.fft(arr)
+
+        nrj = self.compute_energy_from_X(arr)
+        nrj_fft = self.compute_energy_from_K(arr_fft)
+
+        assert np.allclose(nrj, nrj_fft)
+        
+        arr2_fft = np.zeros(self.shapeK, dtype=np.complex128)
+        self.fft_as_arg(arr, arr2_fft)
+        nrj2_fft = self.compute_energy_from_K(arr2_fft)
+        assert np.allclose(nrj, nrj2_fft)
+
+        arr2 = np.empty(self.shapeX)
+        self.ifft_as_arg(arr_fft, arr2)
+        nrj2 = self.compute_energy_from_X(arr2)
+        assert np.allclose(nrj, nrj2)
+
+    def run_benchs(self, nb_time_execute=10):
+
+        arr = np.zeros(self.shapeX)
+        arr_fft = np.zeros(self.shapeK, dtype=np.complex128)
+
+        times = []
+        for i in range(nb_time_execute):
+            t_start = time()
+            self.fft_as_arg(arr, arr_fft)
+            times.append(time() - t_start)
+
+        time_fft = np.mean(times)
+
+        times = []
+        for i in range(nb_time_execute):
+            t_start = time()
+            self.ifft_as_arg(arr_fft, arr)
+            times.append(time() - t_start)
+
+        time_ifft = np.mean(times)
+
+        name = self.__class__.__name__
+        printby0('Internal bench (' + name + ')\n'
+                 'time fft ({}):  {:.6f} s\n'.format(name, time_fft) +
+                 'time ifft ({}): {:.6f} s'.format(name, time_ifft))
+
+        return time_fft, time_ifft
+
+    def get_short_name(self):
+        return self.__class__.__name__.lower()
+
+    def compute_energy_from_X(self, fieldX):
+        return np.mean(fieldX**2/2.)
+
+    def get_local_size_X(self):
+        return np.prod(self.shapeX)
+
+    def gather_Xspace(self, arr):
+        return arr
+
+    def scatter_Xspace(self, arr):
+        return arr
+
+    def get_shapeK_seq(self):
+        return self.shapeK
+
+    get_shapeK_loc = get_shapeK_seq
+
+    def get_shapeX_seq(self):
+        return self.shapeX
+
+    get_shapeX_loc = get_shapeX_seq
+
+
+class FFTP2D(BaseFFT):
     """ A class to use fftp """
     def __init__(self, nx, ny):
         if nx % 2 != 0 or ny % 2 != 0:
@@ -85,7 +165,7 @@ class FFTP2D(object):
         return np.mean(abs(ff)**2)/2
 
 
-class FFTW2DReal2Complex(object):
+class FFTW2DReal2Complex(BaseFFT):
     """ A class to use fftw """
     def __init__(self, nx, ny):
         try:
@@ -93,14 +173,14 @@ class FFTW2DReal2Complex(object):
         except ImportError as err:
             raise ImportError(
                 'ImportError {0}. Instead fftpack can be used (?)', err)
-        if nx % 2 != 0 or ny % 2 != 0:
-            raise ValueError('nx and ny should be even')
+
         shapeX = (ny, nx)
         shapeK = (ny, nx//2 + 1)
 
         self.shapeX = shapeX
         self.shapeK = shapeK
 
+        self.empty_aligned = pyfftw.empty_aligned
         self.arrayX = pyfftw.empty_aligned(shapeX, 'float64')
         self.arrayK = pyfftw.empty_aligned(shapeK, 'complex128')
 
@@ -117,31 +197,115 @@ class FFTW2DReal2Complex(object):
 
         self.coef_norm = nx*ny
 
-        self.get_shapeK_seq = self.get_shapeK_loc = lambda: shapeK
-        self.get_shapeX_seq = self.get_shapeX_loc = lambda: shapeX
+        self.fft2d = self.fft
+        self.ifft2d = self.ifft
+        
+    def fft(self, ff):
+        fieldK = self.empty_aligned(self.shapeK, 'complex128')
+        self.fftplan(input_array=ff, output_array=fieldK,
+                     normalise_idft=False)
+        return fieldK/self.coef_norm
 
-    def fft2d(self, ff):
-        self.arrayX[:] = ff
-        self.fftplan(normalise_idft=False)
-        return self.arrayK/self.coef_norm
+    def ifft(self, ff_fft):
+        ff = self.empty_aligned(self.shapeX, 'float64')
+        self.ifftplan(input_array=ff_fft, output_array=ff,
+                      normalise_idft=False)
+        return ff
 
-    def ifft2d(self, ff_fft):
-        self.arrayK[:] = ff_fft
-        self.ifftplan(normalise_idft=False)
-        return self.arrayX.copy()
+    def fft_as_arg(self, fieldX, fieldK):
+        self.fftplan(input_array=fieldX, output_array=fieldK,
+                     normalise_idft=False)
+        fieldK /= self.coef_norm
+
+    def ifft_as_arg(self, fieldK, fieldX):
+        self.ifftplan(input_array=fieldK, output_array=fieldX,
+                      normalise_idft=False)
+
+    def sum_wavenumbers(self, ff_fft):
+        if self.shapeX[1] % 2 == 0:
+            return (np.sum(ff_fft[:, 0]) +
+                    np.sum(ff_fft[:, -1]) +
+                    2*np.sum(ff_fft[:, 1:-1]))
+        else:
+            return (np.sum(ff_fft[:, 0]) +
+                    2*np.sum(ff_fft[:, 1:]))
 
     def compute_energy_from_Fourier(self, ff_fft):
-        return (np.sum(abs(ff_fft[:, 0])**2 + abs(ff_fft[:, -1])**2) +
-                2*np.sum(abs(ff_fft[:, 1:-1])**2))/2
+        result = self.sum_wavenumbers(abs(ff_fft)**2)/2
+        return result
 
+    compute_energy_from_K = compute_energy_from_Fourier
+    
     def compute_energy_from_spatial(self, ff):
         return np.mean(abs(ff)**2)/2
 
     def project_fft_on_realX(self, ff_fft):
         return self.fft2d(self.ifft2d(ff_fft))
 
+    def get_is_transposed(self):
+        return False
 
-class FFTW3DReal2Complex(object):
+    def get_seq_indices_first_K(self):
+        return 0, 0
+
+    def get_seq_indices_first_X(self):
+        return 0, 0
+
+    def get_x_adim_loc(self):
+        """Get the coordinates of the points stored locally.
+
+        Returns
+        -------
+
+        x0loc : np.ndarray
+
+        x1loc : np.ndarray
+
+        The indices correspond to the index of the dimension in real space.
+        """
+        nyseq, nxseq = self.get_shapeX_seq()
+
+        ix0_start, ix1_start = self.get_seq_indices_first_X()
+        nx0loc, nx1loc = self.get_shapeX_loc()
+
+        x0loc = np.array(range(ix0_start, ix0_start+nx0loc))
+        x1loc = np.array(range(ix1_start, ix1_start+nx1loc))
+
+        return x0loc, x1loc
+
+    def get_k_adim_loc(self):
+        """Get the non-dimensional wavenumbers stored locally.
+
+        Returns
+        -------
+
+        k0_adim_loc : np.ndarray
+
+        k1_adim_loc : np.ndarray
+
+        The indices correspond to the index of the dimension in spectral space.
+        """
+        
+        nyseq, nxseq = self.get_shapeX_seq()
+
+        kyseq = np.array(list(range(nyseq//2 + 1)) +
+                         list(range(-nyseq//2 + 1, 0)))
+        kxseq = np.array(range(nxseq//2 + 1))
+
+        if self.get_is_transposed():
+            k0seq, k1seq = kxseq, kyseq
+        else:
+            k0seq, k1seq = kyseq, kxseq
+
+        ik0_start, ik1_start = self.get_seq_indices_first_K()
+        nk0loc, nk1loc = self.get_shapeK_loc()
+
+        k0_adim_loc = k0seq[ik0_start:ik0_start+nk0loc]
+        k1_adim_loc = k1seq[ik1_start:ik1_start+nk1loc]
+
+        return k0_adim_loc, k1_adim_loc
+    
+class FFTW3DReal2Complex(FFTW2DReal2Complex):
     """ A class to use fftw """
     def __init__(self, nx, ny, nz):
         try:
@@ -149,14 +313,14 @@ class FFTW3DReal2Complex(object):
         except ImportError as err:
             raise ImportError(
                 "ImportError {0}. Instead fftpack can be used (?)", err)
-        if nx % 2 != 0 or ny % 2 != 0 or nz % 2 != 0:
-            raise ValueError('nx, ny and nz should be even')
+
         shapeX = (nz, ny, nx)
         shapeK = (nz, ny, nx//2 + 1)
 
         self.shapeX = shapeX
         self.shapeK = shapeK
 
+        self.empty_aligned = pyfftw.empty_aligned
         self.arrayX = pyfftw.empty_aligned(shapeX, 'float64')
         self.arrayK = pyfftw.empty_aligned(shapeK, 'complex128')
 
@@ -172,55 +336,37 @@ class FFTW3DReal2Complex(object):
                                     threads=nthreads)
 
         self.coef_norm = nx*ny*nz
-
-    def fft(self, ff):
-        self.arrayX[:] = ff
-        self.fftplan(normalise_idft=False)
-        return self.arrayK/self.coef_norm
-
-    def ifft(self, ff_fft):
-        self.arrayK[:] = ff_fft
-        self.ifftplan(normalise_idft=False)
-        return self.arrayX.copy()
-
+    
     def sum_wavenumbers(self, ff_fft):
-        return (np.sum(ff_fft[:, :, 0] + ff_fft[:, :, -1]) +
-                2*np.sum(ff_fft[:, :, 1:-1]))/2
-
-    def compute_energy_from_Fourier(self, ff_fft):
-        return self.sum_wavenumbers(abs(ff_fft)**2)
-
-    def get_shapeX_loc(self):
-        return self.shapeX
-
-    def get_shapeX_seq(self):
-        return self.shapeX
-
-    def get_shapeK_loc(self):
-        return self.shapeK
-
-    def get_shapeK_seq(self):
-        return self.shapeK
+        if self.shapeX[2] % 2 == 0:
+            return (np.sum(ff_fft[:, :, 0]) +
+                    np.sum(ff_fft[:, :, -1]) +
+                    2*np.sum(ff_fft[:, :, 1:-1]))
+        else:
+            return (np.sum(ff_fft[:, :, 0]) +
+                    2*np.sum(ff_fft[:, :, 1:]))
 
     def get_k_adim(self):
         nK0, nK1, nK2 = self.shapeK
         kz_adim_max = nK0//2
+        kz_adim_min = -((nK0-1)//2)
         ky_adim_max = nK1//2
-        return (np.r_[0:kz_adim_max+1, -kz_adim_max+1:0],
-                np.r_[0:ky_adim_max+1, -ky_adim_max+1:0],
+        ky_adim_min = -((nK1-1)//2)
+        return (np.r_[0:kz_adim_max+1, kz_adim_min:0],
+                np.r_[0:ky_adim_max+1, ky_adim_min:0],
                 np.arange(nK2))
 
-    def get_k_adim_loc(self):
-        return self.get_k_adim()
+    # def get_k_adim_loc(self):
+    #     return self.get_k_adim()
 
     def get_dimX_K(self):
         return 0, 1, 2
 
-    def get_seq_indices_first_K(self):
-        return 0, 0
+    # def get_seq_indices_first_K(self):
+    #     return 0, 0
 
-    def compute_energy_from_spatial(self, ff):
-        return np.mean(abs(ff)**2)/2
+    # def compute_energy_from_spatial(self, ff):
+    #     return np.mean(abs(ff)**2)/2
 
     def project_fft_on_realX(self, ff_fft):
         return self.fft2d(self.ifft2d(ff_fft))
@@ -258,9 +404,67 @@ class FFTW3DReal2Complex(object):
 
         ret[0] = arr2d
         return ret
+    def get_seq_indices_first_K(self):
+        """Get the "sequential" indices of the first number in Fourier space."""
+        return 0, 0, 0
 
+    def get_k_adim_loc(self):
+        """Get the non-dimensional wavenumbers stored locally.
 
-class FFTW1D(object):
+        Returns
+        -------
+
+        k0_adim_loc : np.ndarray
+
+        k1_adim_loc : np.ndarray
+
+        k2_adim_loc :  np.ndarray
+
+        The indices correspond to the index of the dimension in spectral space.
+
+        """
+
+        nK0, nK1, nK2 = self.get_shapeK_seq()
+        nK0_loc, nK1_loc, nK2_loc = self.get_shapeK_loc()
+
+        d0, d1, d2 = self.get_dimX_K()
+        i0_start, i1_start, i2_start = self.get_seq_indices_first_K()
+
+        k0_adim = compute_k_adim_seq_3d(nK0, d0)
+        k0_adim_loc = k0_adim[i0_start:i0_start+nK0_loc]
+
+        k1_adim = compute_k_adim_seq_3d(nK1, d1)
+        k1_adim_loc = k1_adim[i1_start:i1_start+nK1_loc]
+
+        k2_adim_loc = compute_k_adim_seq_3d(nK2, d2)
+
+        return k0_adim_loc, k1_adim_loc, k2_adim_loc
+
+    
+def compute_k_adim_seq_3d(nk, axis):
+    """Compute the adimensional wavenumber for an axis. 
+
+    Parameters
+    ----------
+
+    nk : int
+
+      Global size in Fourier space for the axis.
+
+    axis : int
+
+      Index of the axis in real space (0 for z, 1 for y and 2 for x).
+
+    """
+    if axis == 2:
+        return np.arange(nk)
+    else:
+        k_adim_max = nk//2
+        k_adim_min = -((nk-1)//2)
+        return np.r_[0:k_adim_max+1, k_adim_min:0]
+
+    
+class FFTW1D(BaseFFT):
     """ A class to use fftw 1D """
     def __init__(self, n):
         try:
@@ -299,7 +503,7 @@ class FFTW1D(object):
         return self.arrayX.copy()
 
 
-class FFTW1DReal2Complex(object):
+class FFTW1DReal2Complex(BaseFFT):
     """ A class to use fftw 1D """
     def __init__(self, arg, axis=-1):
         try:
