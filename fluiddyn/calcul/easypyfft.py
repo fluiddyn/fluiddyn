@@ -130,17 +130,17 @@ class FFTP2D(BaseFFT):
         self.shapeK = (ny, self.nkx)
         self.coef_norm = nx*ny
 
-        self.fft2d = self.fftp2d
-        self.ifft2d = self.ifftp2d
+        self.fft2d = self.fft
+        self.ifft2d = self.ifft
 
-    def fftp2d(self, ff):
+    def fft(self, ff):
         if not (isinstance(ff[0, 0], float)):
             print('Warning: not array of floats')
         big_ff_fft = fftp.fft2(ff)/self.coef_norm
         small_ff_fft = big_ff_fft[:, 0:self.nkx]
         return small_ff_fft
 
-    def ifftp2d(self, small_ff_fft, ARG_IS_COMPLEX=False):
+    def ifft(self, small_ff_fft, ARG_IS_COMPLEX=False):
         if not (isinstance(small_ff_fft[0, 0], complex)):
             print('Warning: not array of complexes')
         # print('small_ff_fft\n', small_ff_fft)
@@ -163,19 +163,20 @@ class FFTP2D(BaseFFT):
 
     def compute_energy_from_spatial(self, ff):
         return np.mean(abs(ff)**2)/2
+    
 
+class BasePyFFT(BaseFFT):
 
-class FFTW2DReal2Complex(BaseFFT):
-    """ A class to use fftw """
-    def __init__(self, nx, ny):
+    def __init__(self, shapeX):
         try:
             import pyfftw
         except ImportError as err:
             raise ImportError(
                 'ImportError {0}. Instead fftpack can be used (?)', err)
 
-        shapeX = (ny, nx)
-        shapeK = (ny, nx//2 + 1)
+        shapeK = list(shapeX)
+        shapeK[-1] = shapeK[-1]//2 + 1
+        shapeK = tuple(shapeK)
 
         self.shapeX = shapeX
         self.shapeK = shapeK
@@ -184,51 +185,55 @@ class FFTW2DReal2Complex(BaseFFT):
         self.arrayX = pyfftw.empty_aligned(shapeX, 'float64')
         self.arrayK = pyfftw.empty_aligned(shapeK, 'complex128')
 
+        axes = tuple(range(len(shapeX)))
+        
         self.fftplan = pyfftw.FFTW(input_array=self.arrayX,
                                    output_array=self.arrayK,
-                                   axes=(0, 1),
+                                   axes=axes,
                                    direction='FFTW_FORWARD',
                                    threads=nthreads)
         self.ifftplan = pyfftw.FFTW(input_array=self.arrayK,
                                     output_array=self.arrayX,
-                                    axes=(0, 1),
+                                    axes=axes,
                                     direction='FFTW_BACKWARD',
                                     threads=nthreads)
 
-        self.coef_norm = nx*ny
+        self.coef_norm = np.prod(shapeX)
+        self.inv_coef_norm = 1./self.coef_norm
 
-        self.fft2d = self.fft
-        self.ifft2d = self.ifft
-        
-    def fft(self, ff):
+    def fft(self, fieldX):
         fieldK = self.empty_aligned(self.shapeK, 'complex128')
-        self.fftplan(input_array=ff, output_array=fieldK,
+        self.fftplan(input_array=fieldX, output_array=fieldK,
                      normalise_idft=False)
         return fieldK/self.coef_norm
 
-    def ifft(self, ff_fft):
-        ff = self.empty_aligned(self.shapeX, 'float64')
-        self.ifftplan(input_array=ff_fft, output_array=ff,
+    def ifft(self, fieldK):
+        # This copy is needed because FFTW_DESTROY_INPUT is used.
+        # See pyfftw.readthedocs.io/en/latest/source/pyfftw/pyfftw.html
+        self.arrayK[:] = fieldK
+        field = self.empty_aligned(self.shapeX, 'float64')
+        self.ifftplan(input_array=self.arrayK, output_array=field,
                       normalise_idft=False)
-        return ff
+        return field
 
     def fft_as_arg(self, fieldX, fieldK):
         self.fftplan(input_array=fieldX, output_array=fieldK,
                      normalise_idft=False)
-        fieldK /= self.coef_norm
+        fieldK *= self.inv_coef_norm
 
     def ifft_as_arg(self, fieldK, fieldX):
-        self.ifftplan(input_array=fieldK, output_array=fieldX,
+        # This copy is needed because FFTW_DESTROY_INPUT is used.
+        # See pyfftw.readthedocs.io/en/latest/source/pyfftw/pyfftw.html
+        # fieldK = fieldK.copy()
+        # self.ifftplan(input_array=fieldK, output_array=fieldX,
+        # this seems faster (but it could depend on the size)
+        self.arrayK[:] = fieldK
+        self.ifftplan(input_array=self.arrayK, output_array=fieldX,
                       normalise_idft=False)
 
-    def sum_wavenumbers(self, ff_fft):
-        if self.shapeX[1] % 2 == 0:
-            return (np.sum(ff_fft[:, 0]) +
-                    np.sum(ff_fft[:, -1]) +
-                    2*np.sum(ff_fft[:, 1:-1]))
-        else:
-            return (np.sum(ff_fft[:, 0]) +
-                    2*np.sum(ff_fft[:, 1:]))
+    def ifft_as_arg_destroy(self, fieldK, fieldX):
+        self.ifftplan(input_array=fieldK, output_array=fieldX,
+                      normalise_idft=False)
 
     def compute_energy_from_Fourier(self, ff_fft):
         result = self.sum_wavenumbers(abs(ff_fft)**2)/2
@@ -240,10 +245,29 @@ class FFTW2DReal2Complex(BaseFFT):
         return np.mean(abs(ff)**2)/2
 
     def project_fft_on_realX(self, ff_fft):
-        return self.fft2d(self.ifft2d(ff_fft))
+        return self.fft(self.ifft(ff_fft))
 
     def get_is_transposed(self):
         return False
+    
+
+
+class FFTW2DReal2Complex(BasePyFFT):
+    """ A class to use fftw """
+    def __init__(self, nx, ny):
+        shapeX = (ny, nx)
+        super(FFTW2DReal2Complex, self).__init__(shapeX)
+        self.fft2d = self.fft
+        self.ifft2d = self.ifft
+
+    def sum_wavenumbers(self, ff_fft):
+        if self.shapeX[1] % 2 == 0:
+            return (np.sum(ff_fft[:, 0]) +
+                    np.sum(ff_fft[:, -1]) +
+                    2*np.sum(ff_fft[:, 1:-1]))
+        else:
+            return (np.sum(ff_fft[:, 0]) +
+                    2*np.sum(ff_fft[:, 1:]))
 
     def get_seq_indices_first_K(self):
         return 0, 0
@@ -305,37 +329,13 @@ class FFTW2DReal2Complex(BaseFFT):
 
         return k0_adim_loc, k1_adim_loc
     
-class FFTW3DReal2Complex(FFTW2DReal2Complex):
+class FFTW3DReal2Complex(BasePyFFT):
     """ A class to use fftw """
     def __init__(self, nx, ny, nz):
-        try:
-            import pyfftw
-        except ImportError as err:
-            raise ImportError(
-                "ImportError {0}. Instead fftpack can be used (?)", err)
-
         shapeX = (nz, ny, nx)
-        shapeK = (nz, ny, nx//2 + 1)
-
-        self.shapeX = shapeX
-        self.shapeK = shapeK
-
-        self.empty_aligned = pyfftw.empty_aligned
-        self.arrayX = pyfftw.empty_aligned(shapeX, 'float64')
-        self.arrayK = pyfftw.empty_aligned(shapeK, 'complex128')
-
-        self.fftplan = pyfftw.FFTW(input_array=self.arrayX,
-                                   output_array=self.arrayK,
-                                   axes=(0, 1, 2),
-                                   direction='FFTW_FORWARD',
-                                   threads=nthreads)
-        self.ifftplan = pyfftw.FFTW(input_array=self.arrayK,
-                                    output_array=self.arrayX,
-                                    axes=(0, 1, 2),
-                                    direction='FFTW_BACKWARD',
-                                    threads=nthreads)
-
-        self.coef_norm = nx*ny*nz
+        super(FFTW3DReal2Complex, self).__init__(shapeX)
+        self.fft3d = self.fft
+        self.ifft3d = self.ifft
     
     def sum_wavenumbers(self, ff_fft):
         if self.shapeX[2] % 2 == 0:
