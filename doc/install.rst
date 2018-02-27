@@ -61,6 +61,7 @@ Mercurial and Bitbucket, you can also read this short tutorial:
    :maxdepth: 1
 
    mercurial_bitbucket
+   workflow_dev
 
 If you really don't want to use Mercurial, you can also just manually
 download the package from `the Bitbucket page
