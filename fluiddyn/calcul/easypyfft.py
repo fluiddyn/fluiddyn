@@ -251,6 +251,21 @@ class BasePyFFT(BaseFFT):
         return False
     
 
+    def create_arrayX(self, value=None):
+        """Return a constant array in real space."""
+        shapeX = self.shapeX
+        field = self.empty_aligned(shapeX)
+        if value is not None:
+            field.fill(value)
+        return field
+
+    def create_arrayK(self, value=None):
+        """Return a constant array in real space."""
+        shapeK = self.shapeK
+        field = self.empty_aligned(shapeK, dtype=np.complex128)
+        if value is not None:
+            field.fill(value)
+        return field
 
 class FFTW2DReal2Complex(BasePyFFT):
     """ A class to use fftw """
