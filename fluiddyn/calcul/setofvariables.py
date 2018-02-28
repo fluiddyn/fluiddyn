@@ -1,5 +1,5 @@
-"""Variable container (:mod:`fluiddy.calcul.setofvariables`)
-============================================================
+"""Variable container (:mod:`fluiddyn.calcul.setofvariables`)
+=============================================================
 
 Provides:
 
