@@ -40,7 +40,7 @@ else:
     nthreads = 1
 
 from ..util.mpi import printby0
-    
+
 
 class BaseFFT(object):
     def run_tests(self):
@@ -53,7 +53,7 @@ class BaseFFT(object):
         nrj_fft = self.compute_energy_from_K(arr_fft)
 
         assert np.allclose(nrj, nrj_fft)
-        
+
         arr2_fft = np.zeros(self.shapeK, dtype=np.complex128)
         self.fft_as_arg(arr, arr2_fft)
         nrj2_fft = self.compute_energy_from_K(arr2_fft)
@@ -163,7 +163,7 @@ class FFTP2D(BaseFFT):
 
     def compute_energy_from_spatial(self, ff):
         return np.mean(abs(ff)**2)/2
-    
+
 
 class BasePyFFT(BaseFFT):
 
@@ -186,7 +186,7 @@ class BasePyFFT(BaseFFT):
         self.arrayK = pyfftw.empty_aligned(shapeK, 'complex128')
 
         axes = tuple(range(len(shapeX)))
-        
+
         self.fftplan = pyfftw.FFTW(input_array=self.arrayX,
                                    output_array=self.arrayK,
                                    axes=axes,

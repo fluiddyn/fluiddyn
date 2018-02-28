@@ -8,5 +8,6 @@ Numerical computation
    easypyfft
    sphericalharmo
    signal
+   setofvariables
 
 """
