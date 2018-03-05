@@ -249,7 +249,6 @@ class BasePyFFT(BaseFFT):
 
     def get_is_transposed(self):
         return False
-    
 
     def create_arrayX(self, value=None):
         """Return a constant array in real space."""
@@ -479,7 +478,7 @@ def compute_k_adim_seq_3d(nk, axis):
         return np.r_[0:k_adim_max+1, k_adim_min:0]
 
     
-class FFTW1D(BaseFFT):
+class FFTW1D(BasePyFFT):
     """ A class to use fftw 1D """
     def __init__(self, n):
         try:
@@ -506,6 +505,7 @@ class FFTW1D(BaseFFT):
                                     threads=nthreads)
 
         self.coef_norm = n
+        self.inv_coef_norm = 1./n
 
     def fft(self, ff):
         self.arrayX[:] = ff
@@ -518,7 +518,7 @@ class FFTW1D(BaseFFT):
         return self.arrayX.copy()
 
 
-class FFTW1DReal2Complex(BaseFFT):
+class FFTW1DReal2Complex(BasePyFFT):
     """ A class to use fftw 1D """
     def __init__(self, arg, axis=-1):
         try:
@@ -555,6 +555,7 @@ class FFTW1DReal2Complex(BaseFFT):
                                     threads=nthreads)
 
         self.coef_norm = n
+        self.inv_coef_norm = 1./n
 
     def fft(self, ff):
         self.arrayX[:] = ff
@@ -565,6 +566,15 @@ class FFTW1DReal2Complex(BaseFFT):
         self.arrayK[:] = ff_fft
         self.ifftplan(normalise_idft=False)
         return self.arrayX.copy()
+
+    def sum_wavenumbers(self, ff_fft):
+        if self.shapeX[0] % 2 == 0:
+            return (ff_fft[0] +
+                    ff_fft[-1] +
+                    2*np.sum(ff_fft[1:-1]))
+        else:
+            return (ff_fft[0] +
+                    2*np.sum(ff_fft[1:]))
 
     def compute_energy_from_Fourier(self, ff_fft):
         return (abs(ff_fft[0])**2 +
