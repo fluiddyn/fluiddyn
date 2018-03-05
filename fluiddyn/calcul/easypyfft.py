@@ -182,8 +182,8 @@ class BasePyFFT(BaseFFT):
         self.shapeK = shapeK
 
         self.empty_aligned = pyfftw.empty_aligned
-        self.arrayX = pyfftw.empty_aligned(shapeX, 'float64')
-        self.arrayK = pyfftw.empty_aligned(shapeK, 'complex128')
+        self.arrayX = pyfftw.empty_aligned(shapeX, np.float64)
+        self.arrayK = pyfftw.empty_aligned(shapeK, np.complex128)
 
         axes = tuple(range(len(shapeX)))
 
@@ -202,19 +202,19 @@ class BasePyFFT(BaseFFT):
         self.inv_coef_norm = 1./self.coef_norm
 
     def fft(self, fieldX):
-        fieldK = self.empty_aligned(self.shapeK, 'complex128')
+        fieldK = self.empty_aligned(self.shapeK, np.complex128)
         self.fftplan(input_array=fieldX, output_array=fieldK,
                      normalise_idft=False)
         return fieldK/self.coef_norm
 
     def ifft(self, fieldK):
+        fieldX = self.empty_aligned(self.shapeX, np.float64)
         # This copy is needed because FFTW_DESTROY_INPUT is used.
-        # See pyfftw.readthedocs.io/en/latest/source/pyfftw/pyfftw.html
+        # See pyfftw.readthedocs.io/en/latest/source/pyfftw/pyfftw.html        
         self.arrayK[:] = fieldK
-        field = self.empty_aligned(self.shapeX, 'float64')
-        self.ifftplan(input_array=self.arrayK, output_array=field,
+        self.ifftplan(input_array=self.arrayK, output_array=fieldX,
                       normalise_idft=False)
-        return field
+        return fieldX
 
     def fft_as_arg(self, fieldX, fieldK):
         self.fftplan(input_array=fieldX, output_array=fieldK,
