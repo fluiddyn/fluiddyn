@@ -5,7 +5,8 @@ Mercurial and Bitbucket short tutorial for FluidDyn
 control management tool. It's is a great tool and if you are doing research
 (coding and/or writing papers), you should use a version control software! It
 seems to me that Mercurial is a good solution for researchers (in particular it
-is in my opinion simpler and nicer to learn and use than Git).
+is in my opinion simpler and nicer to learn and use than `Git
+<https://www.mercurial-scm.org/wiki/GitConcepts>`_).
 
 Mercurial couples very well with the programs TortoiseHG and Meld (if you can,
 just install them, especially Meld) and with the site `Bitbucket
@@ -25,7 +26,12 @@ Install Mercurial and the extensions you want. I usually do::
 
   pip2 install mercurial hg-git -U
 
-Create a file ``~/.hgrc`` with something like::
+You need to create a file ``~/.hgrc``. For a good starting point, you can use
+the command::
+
+  hg config --edit
+
+A simple example of configation file::
 
   [ui]
   username=myusername  <email@adress.org>
@@ -33,6 +39,7 @@ Create a file ``~/.hgrc`` with something like::
 
   [extensions]
   color =
+  churn =
   hgext.extdiff =
   hggit =
 
@@ -100,7 +107,6 @@ This command is also very usefull::
 
   hg addre
 
-
 Each time you did some consistent changes::
 
   hg commit
@@ -122,6 +128,38 @@ To push the state of your working repository to your Bitbucket repository::
 The inverse command (pull all commits from the remote repository) is::
 
   hg pull
+
+Get the last version of a code
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+First pull all the changesets from the remote repository::
+
+  hg pull
+
+Then update the code to the tip::
+
+  hg update
+
+or just ``hg up``. You can also directly do::
+
+  hg pull -u
+
+Read the history
+^^^^^^^^^^^^^^^^
+
+You can get a list of the changesets with::
+
+  hg log --graph
+
+or just ``hg log -G``. With the ``--graph`` or ``-G`` option, the revisions are
+shown as an ASCII art.
+
+Update the code to a old revision
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use ``hg up 220`` to update to the revision 220. We can use a tag, bookmark or
+branch name instead of a number. To get a clean copy, add the option ``-C``
+(beware).
 
 
 Create a repository from nothing
@@ -204,3 +242,22 @@ Git) and we check that everything is ok::
 
   hg sum
   hg log --graph
+
+
+Delete a bookmark in a remote repository (close a remote Git branch)
+--------------------------------------------------------------------
+
+With Mercurial, `we can
+do <https://stackoverflow.com/questions/6825355/how-do-i-delete-a-remote-bookmark-in-mercurial>`_::
+
+  hg bookmark --delete <bookmark name>
+  hg push --bookmark <bookmark name>
+
+Unfortunately, it does not work for a remote Git repository (with hg-git).  We
+have to use a Git client, clone the repository with Git and do `something like
+<https://stackoverflow.com/a/10999165/1779806>`_::
+
+  # this deletes the branch locally
+  git branch --delete <branch name>
+  # this deletes the branch in the remote repository
+  git push origin --delete <branch name>

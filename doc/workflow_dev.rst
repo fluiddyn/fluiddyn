@@ -5,7 +5,7 @@ Since various specialized packages are hosted under decentralized repositories
 (repos) in the FluidDyn project, which can be frequently updated, it can become
 *overwhelming* to clone each of these one-by-one or to go into every directory
 and run ``hg pull -u`` as a routine. Instead you can use `fluiddevops
-<https://pypi.org/project/fluiddevops/`_ designed for this exact purpose. To
+<https://pypi.org/project/fluiddevops/>`_ designed for this exact purpose. To
 get started::
 
   pip install fluiddevops

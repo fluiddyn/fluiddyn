@@ -24,20 +24,22 @@ To get started with Miniconda::
 
   wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
   bash Miniconda3-latest-Linux-x86_64.sh
+
+Then load the conda environment (maybe start a new terminal). It can be good to
+add the channel conda-forge::
+
+  conda config --add channels conda-forge
   
-It can be good to use the channel conda-forge. This can be done using a file
-`~/.condarc` with::
-
-  channels:
-    - conda-forge
-    - defaults
-
-Then load the conda environment (maybe start a new terminal) and you can run
-typical conda and pip install commands, for example::
+You are then ready to run typical conda and pip install commands, for example::
 
   conda install scipy matplotlib pandas h5py ipython jupyterlab imageio cython psutil
   conda install spyder
-  pip install mpi4py pythran colorlog    
+  # if can be better to install mpi4py from source rather than with conda to
+  # use the native mpi library
+  pip install mpi4py
+  pip install pythran colorlog
+  # pip is also the good tool to install pure python packages, for example:
+  pip install h5netcdf yapf future
 
 The intermediate way and the hard way: from source
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
