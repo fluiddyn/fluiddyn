@@ -2,8 +2,8 @@ Advice on how to work with Python
 =================================
 
 FluidDyn should be used also by scientists that are not experienced in
-Python. We provide some advice on how to work with Python and how to
-get a good Python environment.
+Python. We provide some advice on how to work with Python and how to get a good
+Python environment.
 
 Use an up-to-date Python environment!
 -------------------------------------

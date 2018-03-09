@@ -18,10 +18,9 @@ specialized for different tasks, in particular
 - `fluidimage <http://fluidimage.readthedocs.io>`_ for processing of images of
   fluid.
 
-This documentation presents the FluidDyn project and the package of
-the same name, which is the base package on which the other packages
-depend on. For the specific documentations of these specialized
-packages, follow the links above.
+This documentation presents the FluidDyn project and the package of the same
+name, which is the base package on which the other packages depend on. For the
+specific documentations of these specialized packages, follow the links above.
 
 The FluidDyn project
 --------------------
@@ -31,6 +30,7 @@ The FluidDyn project
 
    intro-motivations
    advice_on_Python
+   advice_developers
 
 User Guide of the fluiddyn package
 ----------------------------------

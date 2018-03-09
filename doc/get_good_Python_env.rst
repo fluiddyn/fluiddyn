@@ -34,12 +34,20 @@ You are then ready to run typical conda and pip install commands, for example::
 
   conda install scipy matplotlib pandas h5py ipython jupyterlab imageio cython psutil
   conda install spyder
+
   # if can be better to install mpi4py from source rather than with conda to
   # use the native mpi library
   pip install mpi4py
+
+  # Same for pyfftw
+  pip install pyfftw
+
+  # and for Pythran...
   pip install pythran colorlog
+
   # pip is also the good tool to install pure python packages, for example:
-  pip install h5netcdf yapf future
+  pip install h5netcdf yapf future mako
+
 
 The intermediate way and the hard way: from source
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
