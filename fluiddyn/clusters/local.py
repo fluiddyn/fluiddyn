@@ -156,7 +156,9 @@ class ClusterLocal(Cluster):
 
     def _check_walltime(self, walltime):
         """Check if walltime exceeds maximum walltime."""
-        if time_gteq(walltime, self.max_walltime):
+        if walltime is None:
+            return
+        elif time_gteq(walltime, self.max_walltime):
             raise ValueError(
                 ('Walltime requested {} exceeds permitted maximum walltime '
                  '{}').format(walltime, self.max_walltime))
