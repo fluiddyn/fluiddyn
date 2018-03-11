@@ -34,6 +34,8 @@ You are then ready to run typical conda and pip install commands, for example::
 
   conda install scipy matplotlib pandas h5py ipython jupyterlab imageio cython psutil
   conda install spyder
+  # to use clang to compile C++ files produced by Pythran
+  conda install clangdev
 
   # if can be better to install mpi4py from source rather than with conda to
   # use the native mpi library

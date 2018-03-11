@@ -181,7 +181,8 @@ class ParamContainer(object):
         else:
             raise AttributeError(
                 attr + ' is not an attribute of ' + self._tag +
-                '.\nThe attributes are: ' + str(self._key_attribs))
+                '.\nThe attributes are: ' + str(self._key_attribs) +
+                '\nThe children are: ' + str(self._tag_children))
 
     def __setitem__(self, key, value):
         self.__setattr__(key, value)
