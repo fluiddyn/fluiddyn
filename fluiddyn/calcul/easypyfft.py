@@ -49,19 +49,19 @@ class BaseFFT(object):
         arr = self.ifft(arr_fft)
         arr_fft = self.fft(arr)
 
-        nrj = self.compute_energy_from_X(arr)
-        nrj_fft = self.compute_energy_from_K(arr_fft)
+        nrj = self.compute_energy_from_spatial(arr)
+        nrj_fft = self.compute_energy_from_Fourier(arr_fft)
 
         assert np.allclose(nrj, nrj_fft)
 
         arr2_fft = np.zeros(self.shapeK, dtype=np.complex128)
         self.fft_as_arg(arr, arr2_fft)
-        nrj2_fft = self.compute_energy_from_K(arr2_fft)
+        nrj2_fft = self.compute_energy_from_Fourier(arr2_fft)
         assert np.allclose(nrj, nrj2_fft)
 
         arr2 = np.empty(self.shapeX)
         self.ifft_as_arg(arr_fft, arr2)
-        nrj2 = self.compute_energy_from_X(arr2)
+        nrj2 = self.compute_energy_from_spatial(arr2)
         assert np.allclose(nrj, nrj2)
 
     def run_benchs(self, nb_time_execute=10):
@@ -157,6 +157,12 @@ class FFTP2D(BaseFFT):
                   np.max(np.imag(result_ifft)))
         return np.real(result_ifft)
 
+    def fft_as_arg(self, field, field_fft):
+        field_fft[:] = self.fft(field)
+
+    def ifft_as_arg(self, field_fft, field):
+        field[:] = self.ifft(field_fft)
+
     def compute_energy_from_Fourier(self, ff_fft):
         return (np.sum(abs(ff_fft[:, 0])**2 + abs(ff_fft[:, -1])**2) +
                 2*np.sum(abs(ff_fft[:, 1:-1])**2))/2
@@ -210,7 +216,7 @@ class BasePyFFT(BaseFFT):
     def ifft(self, fieldK):
         fieldX = self.empty_aligned(self.shapeX, np.float64)
         # This copy is needed because FFTW_DESTROY_INPUT is used.
-        # See pyfftw.readthedocs.io/en/latest/source/pyfftw/pyfftw.html        
+        # See pyfftw.readthedocs.io/en/latest/source/pyfftw/pyfftw.html
         self.arrayK[:] = fieldK
         self.ifftplan(input_array=self.arrayK, output_array=fieldX,
                       normalise_idft=False)
@@ -240,7 +246,7 @@ class BasePyFFT(BaseFFT):
         return result
 
     compute_energy_from_K = compute_energy_from_Fourier
-    
+
     def compute_energy_from_spatial(self, ff):
         return np.mean(abs(ff)**2)/2
 
@@ -323,7 +329,7 @@ class FFTW2DReal2Complex(BasePyFFT):
 
         The indices correspond to the index of the dimension in spectral space.
         """
-        
+
         nyseq, nxseq = self.get_shapeX_seq()
 
         kyseq = np.array(list(range(nyseq//2 + 1)) +
@@ -342,7 +348,7 @@ class FFTW2DReal2Complex(BasePyFFT):
         k1_adim_loc = k1seq[ik1_start:ik1_start+nk1loc]
 
         return k0_adim_loc, k1_adim_loc
-    
+
 class FFTW3DReal2Complex(BasePyFFT):
     """ A class to use fftw """
     def __init__(self, nx, ny, nz):
@@ -350,7 +356,7 @@ class FFTW3DReal2Complex(BasePyFFT):
         super(FFTW3DReal2Complex, self).__init__(shapeX)
         self.fft3d = self.fft
         self.ifft3d = self.ifft
-    
+
     def sum_wavenumbers(self, ff_fft):
         if self.shapeX[2] % 2 == 0:
             return (np.sum(ff_fft[:, :, 0]) +
@@ -397,7 +403,7 @@ class FFTW3DReal2Complex(BasePyFFT):
         if o2d.get_shapeX_loc() != o2d.get_shapeX_seq():
             raise ValueError('2d fft is with distributed memory...')
 
-        ind0seq_first, ind1seq_first = self.get_seq_indices_first_K()
+        ind0seq_first, ind1seq_first, _ = self.get_seq_indices_first_K()
 
         if (nX1loc, nX2loc) == o2d.get_shapeX_loc():
             arr3d_loc_2dslice = arr2d
@@ -418,6 +424,7 @@ class FFTW3DReal2Complex(BasePyFFT):
 
         ret[0] = arr2d
         return ret
+
     def get_seq_indices_first_K(self):
         """Get the "sequential" indices of the first number in Fourier space."""
         return 0, 0, 0
@@ -454,9 +461,9 @@ class FFTW3DReal2Complex(BasePyFFT):
 
         return k0_adim_loc, k1_adim_loc, k2_adim_loc
 
-    
+
 def compute_k_adim_seq_3d(nk, axis):
-    """Compute the adimensional wavenumber for an axis. 
+    """Compute the adimensional wavenumber for an axis.
 
     Parameters
     ----------
@@ -477,7 +484,7 @@ def compute_k_adim_seq_3d(nk, axis):
         k_adim_min = -((nk-1)//2)
         return np.r_[0:k_adim_max+1, k_adim_min:0]
 
-    
+
 class FFTW1D(BasePyFFT):
     """ A class to use fftw 1D """
     def __init__(self, n):

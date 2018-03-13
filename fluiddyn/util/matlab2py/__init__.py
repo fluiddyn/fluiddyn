@@ -71,11 +71,10 @@ def main():
             cleanmat.treat_matlab_directory(args.path)
         else:
             mat2wrongpy.treat_matlab_directory(args.path)
-
-    elif os.path.isdir(args.path):
+    else:
         if args.clean:
             code = cleanmat.modif_code(args.path)
         else:
-            code = mat2wrongpy.modif_code(args.path)
+            code = mat2wrongpy.create_py_code(args.path)
 
         print(code)

@@ -1,4 +1,10 @@
 
+0.2.2
+-----
+
+- Add setofvariables (previously in fluidsim).
+- Faster and better easypyfft.
+
 0.2.1
 -----
 

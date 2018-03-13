@@ -86,6 +86,7 @@ def modif_remove_3dots(code_lines):
 
     return lines_new
 
+
 def create_py_code(path_file):
 
     code = modif_code(path_file)
@@ -93,7 +94,8 @@ def create_py_code(path_file):
     code_lines = code.split('\n')
 
     modif_functions = [
-        modif_blocks, modif_comments, modif_remove_semicolon, modif_remove_3dots
+        modif_blocks, modif_comments, modif_remove_semicolon,
+        modif_remove_3dots
     ]
 
     for func in modif_functions:

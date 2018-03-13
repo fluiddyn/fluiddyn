@@ -68,6 +68,10 @@ class TestFFTW2DReal2Complex(unittest.TestCase):
         func_fft = np.zeros(op.shapeK, dtype=np.complex128)
         func_fft[0, 1] = 1
 
+        with stdout_redirected():
+            op.run_tests()
+            op.run_benchs(1)
+
         self.compute_and_check(func_fft, op)
 
     def compute_and_check(self, func_fft, op):
@@ -136,6 +140,9 @@ class TestFFTW3DReal2Complex(unittest.TestCase):
         arr2d_fft = o2d.fft2d(arr2d)
         op.build_invariant_arrayX_from_2d_indices12X(o2d, arr2d)
         op.build_invariant_arrayK_from_2d_indices12X(o2d, arr2d_fft)
+
+        op.create_arrayX(1)
+        op.create_arrayK(1)
 
     def compute_and_check(self, func_fft, op):
 
