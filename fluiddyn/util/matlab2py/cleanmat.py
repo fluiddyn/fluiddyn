@@ -32,7 +32,9 @@ def modif_identation(code_lines):
         ident_direction_for_next = 0
         ident_this_line = 0
 
-        first_name = line.split(maxsplit=1)[0]
+        # first_name = line.split(maxsplit=1)[0]
+        # for Python 2.7
+        first_name = line.split(None, 1)[0]
         if first_name in block_definers:
             ident_direction_for_next = 1
         elif first_name in ('end', 'end;'):
