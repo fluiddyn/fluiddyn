@@ -22,7 +22,6 @@ class TestSphericalHarmo(unittest.TestCase):
         with stdout_redirected():
             op = sphericalharmo.EasySHT(lmax=15)
 
-        print('test shtns')
         field_phys = op.create_array_spat('rand')
         field_spect = op.sht(field_phys)
         field_phys = op.isht(field_spect)

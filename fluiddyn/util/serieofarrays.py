@@ -139,7 +139,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         The path of the base directory or of a file example.
 
     index_slices : None or iterable of iterables
-        Series of slides (start, end, step).
+        Series of slides (start, stop, step).
 
     Attributes
     ----------
@@ -147,7 +147,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         The path of the base directory.
 
     index_slices : list of list
-        Lists of slides "[start, end, step]" (one for each index).
+        Lists of slides "[start, stop, step]" (one for each index).
         This list can be changed to loop over different sets of files.
 
     Notes
@@ -169,7 +169,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 lambda c: not c.isdigit(),
                 self.filename_given[:-(1+len(self.extension_file))]))
 
-        if not self.base_name[-1].isalpha():
+        if len(self.base_name) > 0 and not self.base_name[-1].isalpha():
             self.base_name = self.base_name[:-1]
 
         # remove base_name
@@ -268,44 +268,83 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             self.set_index_slices(*index_slices)
 
     def get_arrays(self):
+        """Get the arrays on the serie."""
         return tuple(a for a in self.iter_arrays())
 
     def get_name_files(self):
+        """Get the names of the files of the serie."""
         return tuple(n for n in self.iter_name_files())
 
     def get_name_arrays(self):
+        """Get the name of the arrays of the serie."""
         return tuple(n for n in self.iter_name_arrays())
 
     def get_array_from_name(self, name):
+        """Get the array from its name."""
         return imread(os.path.join(self.path_dir, name))
 
     def get_array_from_indices(self, *indices):
+        """Get an array from its indices.
+
+        Parameters
+        ----------
+
+        *indices : 
+
+          As many indices as used in the serie. For example with names of the
+          form 'im100a.png', 2 indices are needed.
+
+        """
         return self.get_array_from_name(
             self.compute_name_from_indices(*indices))
 
     def get_array_from_index(self, index):
+        """Get the ith array of the serie.
+
+        Parameters
+        ----------
+
+        index: int
+
+          Index of the array, for example 0 to get the first array.
+
+        """
         indices = [t for t in self.iter_indices()][index]
         return self.get_array_from_indices(*indices)
 
     def get_path_all_files(self):
+        """Get all paths found from path_dir and base_name."""
         str_glob = os.path.join(self.path_dir, self.base_name + '*')
         paths = glob(str_glob)
         paths.sort()
         return paths
 
     def get_path_files(self):
+        """Get all paths of the serie.
+
+        If the serie is formed from arrays in one file, only one path is given.
+
+        """
         return [os.path.join(self.path_dir, name)
                 for name in self.get_name_files()]
 
     def get_path_arrays(self):
+        """Get all paths of the arrays of the serie.
+
+        If the serie is formed from arrays in one file, ``len(path) ==
+        len(arrays)``.
+
+        """
         return [os.path.join(self.path_dir, name)
                 for name in self.get_name_arrays()]
 
     def check_all_files_exist(self):
+        """Check that all files exist."""
         name_files = self.get_name_files()
         return all([self.isfile(name) for name in name_files])
 
     def check_all_arrays_exist(self):
+        """Check that all arrays exists."""
         if not self._from_movies:
             return self.check_all_files_exist()
 
@@ -328,6 +367,11 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return True
 
     def iter_indices(self):
+        """Iterator on the indices.
+
+        ``len(indices) == self.nb_indices``
+
+        """
         islices = list(self._index_slices)
         for i, islice in enumerate(islices):
             if len(islice) == 1:
@@ -337,10 +381,11 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                     islices[i][ii] = self._index_slices_all_files[i][ii]
 
         lists = [list(range(*s)) for s in islices]
-        for l in itertools.product(*lists):
-            yield l
+        for indices in itertools.product(*lists):
+            yield indices
 
     def iter_name_files(self):
+        """Iterator on the file names."""
         names = []
         for name in self.iter_name_arrays():
             if name.endswith(']'):
@@ -352,17 +397,20 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 yield name
 
     def iter_name_arrays(self):
-        for l in self.iter_indices():
-            yield self.compute_name_from_indices(*l)
+        """Iterator on the array names."""
+        for indices in self.iter_indices():
+            yield self.compute_name_from_indices(*indices)
 
     __iter__ = iter_name_arrays
 
     def iter_path_files(self):
+        """Iterator on the file paths."""
         for name in self.iter_name_files():
             yield os.path.join(
                 self.path_dir, name)
 
     def iter_arrays(self):
+        """Iterator on the arrays of the serie."""
         for name in self.iter_name_arrays():
             yield self.get_array_from_name(name)
 
@@ -473,22 +521,43 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return os.path.exists(path)
 
     def get_index_slices_all_files(self):
+        """Get nb_indices "slices" (to get all the arrays in the directory).
+
+        The "slices" are tuples of size 1 (``(start,)``), 2 (``(start, stop)``)
+        or 3 (``(start, stop, step)``).
+
+        """
         return self._index_slices_all_files
 
     def get_index_slices(self):
+        """Get nb_indices "slices" to get all the arrays of the serie.
+
+        The "slices" are tuples of size 1 (``(start,)``), 2 (``(start, stop)``)
+        or 3 (``(start, stop, step)``).
+        """
         return self._index_slices
 
     def set_index_slices(self, *index_slices):
+        """Set the (nb_indices) "slices".
+
+        The "slices" are tuples of size 1 (``(start,)``), 2 (``(start, stop)``)
+        or 3 (``(start, stop, step)``).
+
+        """
         if len(index_slices) != self.nb_indices:
             raise ValueError(
-                'indices has to be similar to self._index_slices_all_files')
+                'len(index_slices) != self.nb_indices\n'
+                'filename_given = {}\n'.format(self.filename_given) +
+                'path_dir = {}'.format(self.path_dir))
 
         self._index_slices = index_slices
 
     def get_nb_arrays(self):
+        """Get the number of arrays in the serie."""
         return len([i for i in self.iter_indices()])
 
     def get_nb_files(self):
+        """Get the number of files of the serie."""
         return len(self.get_name_files())
 
 
@@ -603,7 +672,6 @@ class SeriesOfArrays(object):
                 ind_start, ind_stop, ind_step))
 
     def __iter__(self):
-
         if hasattr(self, 'index_series'):
             index_series = self.index_series
         else:
@@ -619,9 +687,18 @@ class SeriesOfArrays(object):
         return len([s for s in self])
 
     def set_index_series(self, index_series):
+        """Set the indices corresponding to the series.
+
+        Parameters
+        ----------
+
+        index_series : sequence of int
+
+        """
         self.index_series = index_series
 
     def get_next_serie(self):
+        """Get the next serie."""
         if self.iserie < self.ind_stop:
             self.serie.set_index_slices(
                 *self.indslices_from_indserie(self.iserie))
@@ -629,11 +706,13 @@ class SeriesOfArrays(object):
             return self.serie
 
     def get_serie_from_index(self, index):
+        """Get a serie from an index."""
         self.serie.set_index_slices(
             *self.indslices_from_indserie(index))
         return self.serie
 
     def get_name_all_files(self):
+        """Get all file names."""
         names_all = []
         for serie in self:
             names = serie.get_name_files()
@@ -643,6 +722,7 @@ class SeriesOfArrays(object):
         return names_all
 
     def get_name_all_arrays(self):
+        """Get all array names."""
         names_all = []
         for serie in self:
             names = serie.get_name_arrays()

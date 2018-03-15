@@ -33,7 +33,10 @@ add the channel conda-forge::
 You are then ready to run typical conda and pip install commands, for example::
 
   conda install scipy matplotlib pandas h5py ipython jupyterlab imageio cython psutil
+
+  # if you use Spyder (good idea if you do not use a good Python editor) 
   conda install spyder
+
   # to use clang to compile C++ files produced by Pythran
   conda install clangdev
 

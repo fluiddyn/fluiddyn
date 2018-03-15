@@ -12,10 +12,10 @@ clean_pyc:
 clean: clean_pyc
 
 tests:
-	python -m unittest discover
+	python -m unittest discover -v
 
 tests_mpi:
-	mpirun -np 2 python -m unittest fluiddyn.util.test.test_mpi
+	mpirun -np 2 python -m unittest fluiddyn.util.test.test_mpi -v
 
 tests_coverage:
 	mkdir -p .coverage
