@@ -44,7 +44,7 @@ else:
 from ..util.mpi import printby0
 
 
-def fftw_grid_size(nk, bases=[2, 3, 5, 7], debug=False):
+def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
     """Find the closest multiple of prime powers greater than or equal to nk
     using Mixed Integer Linear Programming (MILP). Useful while setting the
     grid-size to be compatible with FFTW.
@@ -66,20 +66,36 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7], debug=False):
 
     """
     if {2, 3, 5}.issuperset(bases):
+        if debug:
+            print('Using scipy.fftpack.next_fast_len')
         return fftp.next_fast_len(nk)
+
+    if not {2, 3, 5, 7, 11, 13}.issuperset(bases):
+        raise ValueError('FFTW only supports bases which are a subset of '
+                         '{2, 3, 5, 7, 11, 13}.')
 
     import pulp
 
     prob = pulp.LpProblem("FFTW Grid-size Problem")
 
+    bases = np.array(bases)
+    bases_order1 = bases[bases < 10]
+    bases_order2 = bases[bases >= 10]
+
     exp_max = np.ceil(np.log2(nk))
-    exps = pulp.LpVariable.dicts('exponent', bases, 0, exp_max, cat=pulp.LpInteger)
+    exps = pulp.LpVariable.dicts(
+        'exponent_o1', bases_order1, 0, exp_max, cat=pulp.LpInteger)
+    exps.update(pulp.LpVariable.dicts(
+        'exponent_o2', bases_order2, 0, 1, cat=pulp.LpInteger))
+
     log_nk_new = pulp.LpVariable("log_grid_size", 0)
     log_nk_new = pulp.lpDot(exps.values(), np.log(bases))
 
     prob += log_nk_new  # Target to be minimized
     # Subject to:
     prob += log_nk_new >= np.log(nk), "T1"
+    if {11, 13}.issubset(bases):
+        prob += exps[11] + exps[13] <= 1, "T2"
 
     if debug:
         print('bases =', bases)
@@ -93,6 +109,9 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7], debug=False):
         print("Status:", pulp.LpStatus[prob.status])
         for v in prob.variables():
             print(v.name, "=", v.varValue)
+
+    if pulp.LpStatus[prob.status] == 'Infeasible':
+        raise ValueError('Not enough bases: {}'.format(bases))
 
     exps_solution = [v.varValue for v in prob.variables()]
     nk_new = np.prod(np.power(bases, exps_solution))
