@@ -1,6 +1,8 @@
 """Fast Fourier transforms (:mod:`fluiddyn.calcul.easypyfft`)
 =============================================================
 
+.. autofunction:: fftw_grid_size
+
 Provides classes for performing fft in 1, 2, and 3 dimensions:
 
 .. autoclass:: FFTP2D
@@ -40,6 +42,58 @@ else:
     nthreads = 1
 
 from ..util.mpi import printby0
+
+
+def fftw_grid_size(nk, bases=[2, 3, 5, 7], debug=False):
+    """Find the closest multiple of prime powers greater than or equal to nk
+    using Mixed Integer Linear Programming (MILP). Useful while setting the
+    grid-size to be compatible with FFTW.
+
+    Parameters
+    ----------
+    nk : int
+        Lower bound for the spectral grid size.
+
+    bases : array-like, optional
+        List of bases, typically prime numbers.
+
+    debug : bool, optional
+        Print useful messages.
+
+    Returns
+    -------
+    int
+
+    """
+    import pulp
+
+    prob = pulp.LpProblem("FFTW Grid-size Problem")
+
+    exp_max = np.ceil(np.log2(nk))
+    exps = pulp.LpVariable.dicts('exponent', bases, 0, exp_max, cat=pulp.LpInteger)
+    log_nk_new = pulp.LpVariable("log_grid_size", 0)
+    log_nk_new = pulp.lpDot(exps.values(), np.log(bases))
+
+    prob += log_nk_new  # Target to be minimized
+    # Subject to:
+    prob += log_nk_new >= np.log(nk), "T1"
+
+    if debug:
+        print('bases =', bases)
+        print('exponents =', exps)
+        print('log_nk_new =', log_nk_new)
+        prob.writeLP("FFTWGridSizeOptimizationModel.lp")
+
+    prob.solve()
+
+    if debug:
+        print("Status:", pulp.LpStatus[prob.status])
+        for v in prob.variables():
+            print(v.name, "=", v.varValue)
+
+    exps_solution = [v.varValue for v in prob.variables()]
+    nk_new = np.prod(np.power(bases, exps_solution))
+    return int(nk_new)
 
 
 class BaseFFT(object):

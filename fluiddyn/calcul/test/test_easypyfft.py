@@ -1,10 +1,23 @@
 
 import unittest
-
+import os
 import numpy as np
 
 from ...io import stdout_redirected
 from .. import easypyfft
+
+
+class TestFFTWGrid(unittest.TestCase):
+    def tearDown(self):
+        lpfile = 'FFTWGridSizeOptimizationModel.lp'
+        if os.path.exists(lpfile):
+            os.remove(lpfile)
+
+    def test_fftw_grid_size(self):
+        with stdout_redirected():
+            n = easypyfft.fftw_grid_size(1020, debug=True)
+
+        self.assertEqual(n, 1024)
 
 
 class TestFFTW1D(unittest.TestCase):
