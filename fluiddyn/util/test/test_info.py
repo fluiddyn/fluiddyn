@@ -1,16 +1,28 @@
-"""
-Test info module
-================
+"""Test fluidinfo
+=================
 
 """
 import unittest
-from ..info import print_sys_info
+import os
+from ..info import _get_parser, main, print_sys_info
 from ...io.redirect_stdout import stdout_redirected
 import warnings
 
 
 class TestInfo(unittest.TestCase):
     """Test fluiddyn.util.info module."""
+
+    @classmethod
+    def tearDownClass(cls):
+        filename = 'sys_info.xml'
+        if os.path.exists(filename):
+            os.remove(filename)
+
+    def test_save_info(self):
+        """Equivalent to testing command `fluidinfo -s`."""
+        parser = _get_parser()
+        args = parser.parse_args(['-s'])
+        main(args)
 
     def test_print_info(self):
         """Equivalent to testing command `fluidinfo -v`."""

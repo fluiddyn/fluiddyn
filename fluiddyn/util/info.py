@@ -406,8 +406,7 @@ def save_sys_info(path_dir='.', filename='sys_info.xml'):
     sys_info._save_as_xml(path, find_new_name=True)
 
 
-def main():
-    """Parse arguments and execute ``fluidinfo``."""
+def _get_parser():
     desc = '\n'.join(__doc__.splitlines()[2:])
     parser = argparse.ArgumentParser(
         prog='fluidinfo',
@@ -425,8 +424,15 @@ def main():
         action='count')
     parser.add_argument(
         '-W', '--warnings', help='show warnings', action='store_true')
+    return parser
 
-    args = parser.parse_args()
+
+def main(args=None):
+    """Parse arguments and execute ``fluidinfo``."""
+    if args is None:
+        parser = _get_parser()
+        args = parser.parse_args()
+
     if not args.warnings:
         warnings.filterwarnings('ignore', category=UserWarning)
 
