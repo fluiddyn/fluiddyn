@@ -65,6 +65,9 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7], debug=False):
     int
 
     """
+    if {2, 3, 5}.issuperset(bases):
+        return fftp.next_fast_len(nk)
+
     import pulp
 
     prob = pulp.LpProblem("FFTW Grid-size Problem")
