@@ -501,6 +501,10 @@ class FFTW3DReal2Complex(BasePyFFT):
         ret[0] = arr2d
         return ret
 
+    def get_seq_indices_first_X(self):
+        """Get the "sequential" indices of the first number in Real space."""
+        return 0, 0, 0
+
     def get_seq_indices_first_K(self):
         """Get the "sequential" indices of the first number in Fourier space."""
         return 0, 0, 0
