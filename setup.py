@@ -76,6 +76,7 @@ setup(name='fluiddyn',
           ['fluidinfo = fluiddyn.util.info:main',
            'fluidnbstripout = fluiddoc.fluidnbstripout:main',
            'fluiddump = fluiddyn.io.dump:main',
-           'fluidmat2py = fluiddyn.util.matlab2py:main']},
+           'fluidmat2py = fluiddyn.util.matlab2py:main',
+           'fluidcluster-help = fluiddyn.clusters:print_help_scheduler']},
       extras_require=dict(
           doc=['Sphinx>=1.1', 'numpydoc']))
