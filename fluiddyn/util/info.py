@@ -307,8 +307,8 @@ def reset_col_width(nb_cols):
 
 # Table formatting functions
 
-def _print_item(item, color=None):
-    cprint(item.ljust(_COL_WIDTH), end='', color=color)
+def _print_item(item, color=None, bold=False):
+    cprint(item.ljust(_COL_WIDTH), end='', color=color, bold=bold)
 
 
 def _print_heading(heading, underline_with='=', case='title'):
@@ -323,11 +323,11 @@ def _print_heading(heading, underline_with='=', case='title'):
     underline = [underline_with * len(h) for h in heading]
 
     for item in heading:
-        _print_item(item, color='OKGREEN')
+        _print_item(item, color='RED', bold=True)
 
     print()
     for item in underline:
-        _print_item(item, color='OKGREEN')
+        _print_item(item, color='RED')
 
     print()
 
@@ -341,7 +341,7 @@ def _print_dict(d, heading=None, underline_with='=', case='title',
     WIDTH = _COL_WIDTH - indent_level * 2
 
     if subheading is not None:
-        cprint('{}{}:'.format(indent, subheading), color='OKBLUE')
+        cprint('{}{}:'.format(indent, subheading), color='BLUE')
 
     for k, v in d.items():
         if isinstance(v, dict):
