@@ -13,6 +13,9 @@ Examples
 >>> fluidinfo -o /tmp  # save all information into /tmp/sys_info.xml
 
 
+.. todo::
+    Use a YAML package to print.
+
 """
 from __future__ import print_function
 from importlib import import_module as _import
@@ -39,12 +42,13 @@ except ImportError:
 import psutil
 import numpy as np
 import numpy.distutils.system_info as np_sys_info
+import numpy.__config__ as np_build_info
 
 with warnings.catch_warnings():
     warnings.filterwarnings('ignore', category=ImportWarning)
-    from fluiddyn.io.redirect_stdout import stdout_redirected
-    from fluiddyn.util.paramcontainer import ParamContainer
-
+    from ..io.redirect_stdout import stdout_redirected
+    from .paramcontainer import ParamContainer
+    from .terminal_colors import cprint
 
 _COL_WIDTH = 32
 
@@ -163,30 +167,34 @@ def get_info_software():
 
 def get_info_numpy(only_print=False, verbosity=None):
     """Print or create a dictionary for numpy and linalg library information."""
-    libs = ['lapack_opt', 'blas_opt', 'fftw', 'mkl']
+    libs = ['lapack_opt', 'blas_opt']
+    libs_sys = ['fftw']
 
     def rm_configtest():
         if os.path.exists('_configtest.o.d'):
             os.remove('_configtest.o.d')
 
-    def np_sys_info_dict():
+    def np_get_info():
         with stdout_redirected():
-            d = OrderedDict((k, np_sys_info.get_info(k)) for k in libs)
+            np_sys_info_dict = OrderedDict((k, np_sys_info.get_info(k)) for k in libs + libs_sys)
+            np_build_info_dict = OrderedDict((k, np_build_info.get_info(k)) for k in libs)
 
         rm_configtest()
-        return d
+        return np_sys_info_dict, np_build_info_dict
 
     if only_print:
         if verbosity == 1:
-            for k, v in np_sys_info_dict().items():
-                _print_dict(v, k, '-', 'upper')
+            np_sys_info_dict, np_build_info_dict = np_get_info()
+
+            _print_dict(np_sys_info_dict, subheading='system')
+            _print_dict(np_build_info_dict, subheading='\nbuild')
         elif verbosity == 2:
-            np.show_config()
-        else:
             np_sys_info.show_all(argv=[])
+            np.show_config()
             rm_configtest()
     else:
-        return np_sys_info_dict()
+        np_sys_info_dict, np_build_info_dict = np_get_info()
+        return np_sys_info_dict, np_build_info_dict
 
 
 def get_info_h5py():
@@ -299,8 +307,8 @@ def reset_col_width(nb_cols):
 
 # Table formatting functions
 
-def _print_item(item):
-    print(item.ljust(_COL_WIDTH), end='')
+def _print_item(item, color=None):
+    cprint(item.ljust(_COL_WIDTH), end='', color=color)
 
 
 def _print_heading(heading, underline_with='=', case='title'):
@@ -315,21 +323,31 @@ def _print_heading(heading, underline_with='=', case='title'):
     underline = [underline_with * len(h) for h in heading]
 
     for item in heading:
-        _print_item(item)
+        _print_item(item, color='OKGREEN')
 
     print()
     for item in underline:
-        _print_item(item)
+        _print_item(item, color='OKGREEN')
 
     print()
 
 
-def _print_dict(d, title=None, underline_with='=', case='title'):
-    if title is not None:
-        _print_heading('\n' + title, underline_with, case)
+def _print_dict(d, heading=None, underline_with='=', case='title',
+                subheading=None, indent_level=0):
+    if heading is not None:
+        _print_heading('\n' + heading, underline_with, case)
+
+    indent = ' ' * indent_level * 2
+    WIDTH = _COL_WIDTH - indent_level * 2
+
+    if subheading is not None:
+        cprint('{}{}:'.format(indent, subheading), color='OKBLUE')
 
     for k, v in d.items():
-        print(' - {}: {}'.format(k.ljust(_COL_WIDTH), v))
+        if isinstance(v, dict):
+            _print_dict(v, subheading=k, indent_level=indent_level+1)
+        else:
+            print('{}  - {}: {}'.format(indent, k.ljust(WIDTH), v))
 
 
 def print_sys_info(verbosity=None):
@@ -398,8 +416,12 @@ def save_sys_info(path_dir='.', filename='sys_info.xml'):
     for pkg in pkgs_third_party:
         sys_info.python._set_child(pkg, pkgs_third_party[pkg])
 
-    for lib in info_np:
-        sys_info.python.numpy._set_child(lib, info_np[lib])
+    sys_info.python.numpy._set_child('system')
+    sys_info.python.numpy._set_child('build')
+    for k, v in info_np[0].items():
+        sys_info.python.numpy.system._set_child(k, v)
+    for k, v in info_np[1].items():
+        sys_info.python.numpy.build._set_child(k, v)
 
     sys_info.python.h5py._set_child('config', info_h5py)
     path = os.path.join(path_dir, filename)
