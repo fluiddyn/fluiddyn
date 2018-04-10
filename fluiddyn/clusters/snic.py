@@ -9,10 +9,19 @@ Provides:
 .. autoclass:: Beskow
    :members:
 
+.. autoclass:: Beskow32
+   :members:
+
+.. autoclass:: Beskow36
+   :members:
+
 .. autoclass:: Triolith
    :members:
 
 .. autoclass:: Abisko
+   :members:
+
+.. autoclass:: Kebnekaise
    :members:
 
 """
@@ -50,14 +59,24 @@ class Beskow(ClusterSlurm):
         else:
             self.commands_setting_env = [
                 'source /etc/profile',
-                'module load gcc/6.1.0',
+                'module load gcc/4.9.1',
                 'module swap PrgEnv-cray PrgEnv-intel',
                 'module swap intel intel/18.0.0.128',
-                # 'module load fftw',
-                'source {}/bin/activate {}'.format(_venv, _venv)]
+                'module load cray-fftw/3.3.6.2',
+                'export CRAY_ROOTFS=DSL',
+                'conda activate {}'.format(_venv)]
 
             self.commands_unsetting_env = [
-                'source deactivate']
+                'conda deactivate']
+
+
+class Beskow32(Beskow):
+    constraint = 'Haswell'
+
+
+class Beskow36(Beskow):
+    nb_cores_per_node = 36
+    constraint = 'Broadwell'
 
 
 class Triolith(ClusterSlurm):

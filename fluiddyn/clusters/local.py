@@ -19,7 +19,7 @@ from shlex import split
 from socket import gethostname
 from . import subprocess, Cluster
 from ..io.query import run_asking_agreement, call_bash
-from ..util.timer import time_gteq, timestamp_to_seconds
+from ..util.timer import TimeStr, timestamp_to_seconds
 
 
 def is_python_script(path):
@@ -158,7 +158,7 @@ class ClusterLocal(Cluster):
         """Check if walltime exceeds maximum walltime."""
         if walltime is None:
             return
-        elif time_gteq(walltime, self.max_walltime):
+        elif TimeStr(walltime) > self.max_walltime:
             raise ValueError(
                 ('Walltime requested {} exceeds permitted maximum walltime '
                  '{}').format(walltime, self.max_walltime))
