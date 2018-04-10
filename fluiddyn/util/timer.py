@@ -22,15 +22,26 @@ from builtins import range
 from builtins import object
 import time
 from datetime import timedelta
+import operator
 
 
 def parse_timestamp(timestr):
     """Converts a timestamp to a time.struct_time object."""
+    time_formats = [
+        "%d-%H:%M:%S", "%H:%M:%S", "%M:%S", "%S"
+    ]
 
-    try:
-        time_struct = time.strptime(timestr, "%d-%H:%M:%S")
-    except ValueError:
-        time_struct = time.strptime(timestr, "%H:%M:%S")
+    for tf in time_formats:
+        try:
+            time_struct = time.strptime(timestr, tf)
+        except ValueError:
+            continue
+        else:
+            break
+    else:
+        raise ValueError('Timestamp should be in one of the following '
+                         'formats: {}'.format(time_formats))
+
 
     return time_struct
 
@@ -49,10 +60,42 @@ def timestamp_to_seconds(timestr):
 
 def time_gteq(timestr1, timestr2):
     """Compares two timestamps strings."""
+    return TimeStr(timestr1) >= TimeStr(timestr2)
 
-    time1 = parse_timestamp(timestr1)
-    time2 = parse_timestamp(timestr2)
-    return (time1 >= time2)
+
+class TimeStr(str):
+    """String types with special comparison operators to compare equivalent
+    time.struct.
+
+    """ 
+    def __init__(self, value):
+        self._struct = parse_timestamp(value)
+        super(TimeStr, self).__init__()
+
+    def _operate(self, operator_func, other):
+        if isinstance(other, TimeStr):
+            return operator_func(self._struct, other._struct)
+        elif isinstance(other, str):
+            return operator_func(
+                self._struct, parse_timestamp(other))
+
+    def __le__(self, other):
+        return self._operate(operator.le, other)
+
+    def __lt__(self, other):
+        return self._operate(operator.lt, other)
+
+    def __eq__(self, other):
+        return self._operate(operator.eq, other)
+
+    def __ne__(self, other):
+        return self._operate(operator.ne, other)
+
+    def __ge__(self, other):
+        return self._operate(operator.ge, other)
+
+    def __gt__(self, other):
+        return self._operate(operator.gt, other)
 
 
 class Timer(object):
