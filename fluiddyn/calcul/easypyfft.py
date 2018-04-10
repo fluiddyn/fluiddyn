@@ -65,10 +65,19 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
     int
 
     """
-    if {2, 3, 5}.issuperset(bases):
+    if {2, 3, 5} == set(bases):
         if debug:
             print('Using scipy.fftpack.next_fast_len')
         return fftp.next_fast_len(nk)
+    elif {2, 3, 5, 7, 11, 13} == set(bases):
+        try:
+            import pyfftw
+            return pyfftw.next_fast_len(nk)
+        except (ImportError, AttributeError):
+            pass
+        else:
+            if debug:
+                print('Using pyfftw.next_fast_len')
 
     if not {2, 3, 5, 7, 11, 13}.issuperset(bases):
         raise ValueError('FFTW only supports bases which are a subset of '
@@ -101,7 +110,7 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
         print('bases =', bases)
         print('exponents =', exps)
         print('log_nk_new =', log_nk_new)
-        prob.writeLP("FFTWGridSizeOptimizationModel.lp")
+        # prob.writeLP("FFTWGridSizeOptimizationModel.lp")
 
     prob.solve()
 
