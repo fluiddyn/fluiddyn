@@ -186,12 +186,6 @@ class BaseFFT(object):
     def get_local_size_X(self):
         return np.prod(self.shapeX)
 
-    def gather_Xspace(self, arr):
-        return arr
-
-    def scatter_Xspace(self, arr):
-        return arr
-
     def get_shapeK_seq(self):
         return self.shapeK
 

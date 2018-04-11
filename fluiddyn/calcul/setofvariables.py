@@ -74,7 +74,7 @@ class SetOfVariables(np.ndarray):
         obj = np.asarray(arr, dtype=dtype, **kargs).view(cls)
 
         obj.info = info
-        obj.keys = keys
+        obj.keys = tuple(keys)
         obj.nvar = len(keys)
 
         return obj
@@ -92,7 +92,11 @@ class SetOfVariables(np.ndarray):
         if isinstance(arg, int):
             index = arg
         else:
-            index = self.keys.index(arg)
+            try:
+                index = self.keys.index(arg)
+            except ValueError:
+                raise ValueError(
+                    "'" + arg + "' is not in tuple " + repr(self.keys))
         # warning: copy... costly!
         self[index] = value
 
@@ -101,7 +105,11 @@ class SetOfVariables(np.ndarray):
         if isinstance(arg, int):
             index = arg
         else:
-            index = self.keys.index(arg)
+            try:
+                index = self.keys.index(arg)
+            except ValueError:
+                raise ValueError(
+                    "'" + arg + "' is not in tuple " + repr(self.keys))
         return np.asarray(self[index])
 
     def initialize(self, value=0):

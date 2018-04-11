@@ -6,6 +6,12 @@ import numpy as np
 from ...io import stdout_redirected
 from .. import easypyfft
 
+try:
+    import pulp
+    pulp_import_error = False
+except ImportError:
+    pulp_import_error = True
+
 
 class TestFFTWGrid(unittest.TestCase):
     def tearDown(self):
@@ -13,6 +19,9 @@ class TestFFTWGrid(unittest.TestCase):
         if os.path.exists(lpfile):
             os.remove(lpfile)
 
+    @unittest.skipIf(pulp_import_error,
+                     'fftw_grid_size depends on the package pulp, '
+                     'which is not installed.')
     def test_fftw_grid_size(self):
         with stdout_redirected():
             n = easypyfft.fftw_grid_size(1020, debug=True)
