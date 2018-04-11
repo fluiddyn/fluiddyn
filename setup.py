@@ -75,6 +75,7 @@ setup(name='fluiddyn',
           'console_scripts':
           ['fluidinfo = fluiddyn.util.info:main',
            'fluidnbstripout = fluiddoc.fluidnbstripout:main',
+           'fluiddocset = fluiddoc.fluiddocset:main',
            'fluiddump = fluiddyn.io.dump:main',
            'fluidmat2py = fluiddyn.util.matlab2py:main',
            'fluidcluster-help = fluiddyn.clusters:print_help_scheduler']},

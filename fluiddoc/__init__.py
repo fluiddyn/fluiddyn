@@ -15,6 +15,7 @@ by Readthedocs (by the way, thank you to the readthedocs people!).
 
    ipynb_maker
    fluidnbstripout
+   fluiddocset
 
 """
 
