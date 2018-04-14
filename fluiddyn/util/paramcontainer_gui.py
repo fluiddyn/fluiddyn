@@ -1,8 +1,6 @@
 """Qt based GUI for parameters (:mod:`fluiddyn.util.paramcontainer_gui`)
 ========================================================================
 
-.. currentmodule:: fluiddyn.util.paramcontainer_gui
-
 Provides:
 
 .. autoclass:: QtParamContainer

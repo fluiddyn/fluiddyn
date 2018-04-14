@@ -23,6 +23,12 @@ import numpy as np
 from . import mpi
 
 
+def modification_date(path):
+    """Modification date of a file or directory"""
+    t = os.path.getmtime(path)
+    return datetime.datetime.fromtimestamp(t)
+
+
 def import_class(module_name, class_name):
     """Import a class from its name."""
     try:

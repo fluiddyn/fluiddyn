@@ -28,11 +28,14 @@ import argparse
 import warnings
 
 try:
-    from platform import linux_distribution
-    # Pending deprecation (Python 3.7)
-except ImportError:
-    print('Install distro package to use this module.')
     from distro import linux_distribution
+except ImportError:
+    try:
+        from platform import linux_distribution
+        # Pending deprecation (Python 3.7)
+    except ImportError:
+        ImportError('Install distro package to use this module.')
+
 
 try:
     import subprocess32 as subprocess

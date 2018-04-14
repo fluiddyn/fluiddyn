@@ -51,6 +51,7 @@ class TestUtil(unittest.TestCase):
         util.time_as_str(decimal=1)
 
         util.is_run_from_ipython()
+        util.is_run_from_jupyter()
         # pathnew = util.copy_me_in()
         # os.remove(pathnew)
         with stdout_redirected():
@@ -66,6 +67,8 @@ class TestUtil(unittest.TestCase):
         util.config_logging()
         load_user_conf_files()
 
+        util.modification_date(os.path.dirname(__file__))
+        util.copy_me_in()
 
     def test_create_object(self):
         o = MyObject()
