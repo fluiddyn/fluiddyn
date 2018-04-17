@@ -8,20 +8,23 @@ from .. import easypyfft
 
 try:
     import pulp
+
     pulp_import_error = False
 except ImportError:
     pulp_import_error = True
 
 
 class TestFFTWGrid(unittest.TestCase):
+
     def tearDown(self):
-        lpfile = 'FFTWGridSizeOptimizationModel.lp'
+        lpfile = "FFTWGridSizeOptimizationModel.lp"
         if os.path.exists(lpfile):
             os.remove(lpfile)
 
-    @unittest.skipIf(pulp_import_error,
-                     'fftw_grid_size depends on the package pulp, '
-                     'which is not installed.')
+    @unittest.skipIf(
+        pulp_import_error,
+        "fftw_grid_size depends on the package pulp, " "which is not installed.",
+    )
     def test_fftw_grid_size(self):
         with stdout_redirected():
             n = easypyfft.fftw_grid_size(1020, debug=True)
@@ -30,6 +33,7 @@ class TestFFTWGrid(unittest.TestCase):
 
 
 class TestFFTW1D(unittest.TestCase):
+
     def test_fft(self):
         op = easypyfft.FFTW1D(4)
         func_fft = np.zeros(op.shapeK, dtype=np.complex128)
@@ -70,8 +74,9 @@ class TestFFTW1DReal2Complex(unittest.TestCase):
         nx = 64
         op = easypyfft.FFTW1DReal2Complex(nx)
 
-        func_fft = (np.random.random(op.shapeK)
-                    + 1.j*np.random.random(op.shapeK))
+        func_fft = (
+            np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
+        )
         func = op.ifft(func_fft)
         func_fft = op.fft(func)
 
@@ -119,8 +124,9 @@ class TestFFTW2DReal2Complex(unittest.TestCase):
         ny = 32
         op = self.cls(nx, ny)
 
-        func_fft = (np.random.random(op.shapeK)
-                    + 1.j*np.random.random(op.shapeK))
+        func_fft = (
+            np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
+        )
 
         with stdout_redirected():
             func = op.ifft2d(func_fft)
@@ -190,14 +196,14 @@ class TestFFTW3DReal2Complex(unittest.TestCase):
         nz = 8
         op = easypyfft.FFTW3DReal2Complex(nx, ny, nz)
 
-        func_fft = (np.random.random(op.shapeK)
-                    + 1.j*np.random.random(op.shapeK))
+        func_fft = (
+            np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
+        )
         func = op.ifft(func_fft)
         func_fft_back = op.fft(func)
 
         self.compute_and_check(func_fft_back, op)
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

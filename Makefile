@@ -11,6 +11,9 @@ clean_pyc:
 
 clean: clean_pyc
 
+black:
+	black -l 82 fluiddyn fluiddoc
+
 tests:
 	python -m unittest discover -v
 

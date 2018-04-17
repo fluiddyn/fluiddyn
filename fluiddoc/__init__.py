@@ -29,10 +29,11 @@ except ImportError:
     from mock import Mock
 
 
-on_rtd = os.environ.get('READTHEDOCS')
+on_rtd = os.environ.get("READTHEDOCS")
 
 
 class _MyMock(Mock):
+
     @classmethod
     def __getattr__(cls, name):
         return Mock()
@@ -55,4 +56,5 @@ def mock_modules(modules):
 
     sys.modules.update((mod_name, _MyMock()) for mod_name in modules)
 
-__all__ = ['on_rtd', 'mock_modules']
+
+__all__ = ["on_rtd", "mock_modules"]

@@ -27,21 +27,22 @@ import operator
 
 def parse_timestamp(timestr):
     """Converts a timestamp to a time.struct_time object."""
-    time_formats = [
-        "%d-%H:%M:%S", "%H:%M:%S", "%M:%S", "%S"
-    ]
+    time_formats = ["%d-%H:%M:%S", "%H:%M:%S", "%M:%S", "%S"]
 
     for tf in time_formats:
         try:
             time_struct = time.strptime(timestr, tf)
         except ValueError:
             continue
+
         else:
             break
-    else:
-        raise ValueError('Timestamp should be in one of the following '
-                         'formats: {}'.format(time_formats))
 
+    else:
+        raise ValueError(
+            "Timestamp should be in one of the following "
+            "formats: {}".format(time_formats)
+        )
 
     return time_struct
 
@@ -50,10 +51,10 @@ def timestamp_to_seconds(timestr):
     """Converts a timestamp to total seconds."""
     ts = parse_timestamp(timestr)
     # Handle both formats:
-    days = ts.tm_yday if '-' in timestr else (ts.tm_yday - 1)
+    days = ts.tm_yday if "-" in timestr else (ts.tm_yday - 1)
     td = timedelta(
-        hours=ts.tm_hour, minutes=ts.tm_min, seconds=ts.tm_sec,
-        days=days)
+        hours=ts.tm_hour, minutes=ts.tm_min, seconds=ts.tm_sec, days=days
+    )
 
     return int(td.total_seconds())
 
@@ -67,7 +68,8 @@ class TimeStr(str):
     """String types with special comparison operators to compare equivalent
     time.struct.
 
-    """ 
+    """
+
     def __init__(self, value):
         self._struct = parse_timestamp(value)
         super(TimeStr, self).__init__()
@@ -75,9 +77,9 @@ class TimeStr(str):
     def _operate(self, operator_func, other):
         if isinstance(other, TimeStr):
             return operator_func(self._struct, other._struct)
+
         elif isinstance(other, str):
-            return operator_func(
-                self._struct, parse_timestamp(other))
+            return operator_func(self._struct, parse_timestamp(other))
 
     def __le__(self, other):
         return self._operate(operator.le, other)
@@ -108,6 +110,7 @@ class Timer(object):
        Period between the ticks (in s).
 
     """
+
     def __init__(self, time_between_ticks):
         self.time_between_ticks = time_between_ticks
         self.tstart = time.time()
@@ -116,8 +119,11 @@ class Timer(object):
     def wait_tick(self):
         """Block till the next tick."""
         tnow = time.time()
-        tsleep = (self.time_between_ticks -
-                  (tnow - self.tstart) % self.time_between_ticks)
+        tsleep = (
+            self.time_between_ticks
+            - (tnow - self.tstart)
+            % self.time_between_ticks
+        )
         this_period = int((tnow - self.tstart) / self.time_between_ticks)
         if this_period == self.last_period:
             self.last_period = this_period + 1
@@ -145,6 +151,7 @@ class TimerIrregular(Timer):
       A sequence of times (in second), which can be irregular.
 
     """
+
     def __init__(self, times_ticks):
         t0 = times_ticks[0]
         self.times_ticks = [ti - t0 for ti in times_ticks[1:]]
@@ -163,7 +170,7 @@ class TimerIrregular(Timer):
         return time.time() - self.tstart
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     tstart = time.time()
 
@@ -175,7 +182,7 @@ if __name__ == '__main__':
 
         # print('before timer.wait_tick()', time.time()-timer.tstart)
         timer.wait_tick()
-        # print('after  timer.wait_tick()', time.time()-timer.tstart)
+    # print('after  timer.wait_tick()', time.time()-timer.tstart)
 
     tend = time.time()
 

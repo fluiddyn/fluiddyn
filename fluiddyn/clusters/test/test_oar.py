@@ -1,8 +1,8 @@
-'''
+"""
 Test oar clusters
 =================
 
-'''
+"""
 import unittest
 import os
 from shutil import rmtree
@@ -14,11 +14,10 @@ from ..oar import ClusterOAR
 from ..legi import Calcul, Calcul3, Calcul9, Calcul7, Calcul8
 from ..ciment import Froggy
 
-path_test = 'tmp_test'
+path_test = "tmp_test"
 
 try:
-    subprocess.check_call(['oarsub', '--version'],
-                          stdout=subprocess.PIPE)
+    subprocess.check_call(["oarsub", "--version"], stdout=subprocess.PIPE)
     oar = True
 except OSError:
     oar = False
@@ -26,6 +25,7 @@ except OSError:
 
 class ClusterNoCheck(ClusterOAR):
     """A modified class which skips checking if oar is installed or not."""
+
     def check_oar(self):
         pass
 
@@ -62,34 +62,34 @@ class TestCaseOAR(unittest.TestCase):
         self.cluster = self.Cluster()
         self.clusternocheck = self.ClusterNoCheck()
 
-        self._work_dir = 'tmp_test_oar'
+        self._work_dir = "tmp_test_oar"
         if not os.path.exists(self._work_dir):
             os.mkdir(self._work_dir)
         os.chdir(self._work_dir)
 
-        with open('blabla.py', 'w') as f:
+        with open("blabla.py", "w") as f:
             f.write('print("hello")')
 
     def tearDown(self):
-        os.chdir('..')
+        os.chdir("..")
         rmtree(self._work_dir)
 
-    @unittest.skipIf(oar, 'oar is present...')
+    @unittest.skipIf(oar, "oar is present...")
     def test_submit_check(self):
         with self.assertRaises(OSError):
-            self.cluster.submit_script('blabla.py', submit=False)
+            self.cluster.submit_script("blabla.py", submit=False)
 
     def test_submit_nocheck(self):
         with self.assertRaises(ValueError):
             self.clusternocheck.submit_script(
-                'script_that_does_not_exist.py', submit=False)
+                "script_that_does_not_exist.py", submit=False
+            )
 
-        with open('tmp_for_test.py', 'w') as f:
+        with open("tmp_for_test.py", "w") as f:
             f.write('print("hello")')
 
         with stdout_redirected():
-            self.clusternocheck.submit_script(
-                'tmp_for_test.py', submit=False)
+            self.clusternocheck.submit_script("tmp_for_test.py", submit=False)
 
 
 class TestCaseCalcul(TestCaseOAR):
@@ -122,5 +122,5 @@ class TestCaseFroggy(TestCaseOAR):
     ClusterNoCheck = FroggyNoCheck
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

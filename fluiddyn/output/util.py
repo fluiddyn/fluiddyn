@@ -3,8 +3,9 @@ from __future__ import division
 
 from builtins import range
 from past.utils import old_div
-def gradient_colors(nb_colors, color_start=None,
-                    color_end=None):
+
+
+def gradient_colors(nb_colors, color_start=None, color_end=None):
     """Produce a color gradient."""
     if color_start is None:
         color_start = [1, 0, 0]
@@ -15,12 +16,16 @@ def gradient_colors(nb_colors, color_start=None,
     # If only one color, return black
     if nb_colors == 1:
         return gradient
+
     # Calcuate a color at each evenly spaced value
     # of t = i / n from i in 0 to 1
     for t in range(1, nb_colors):
         gradient.append(
-            [color_start[j]
-             + (old_div(float(t),(nb_colors-1)))*(color_end[j]-color_start[j])
-             for j in range(3)
-             ])
+            [
+                color_start[j]
+                + (old_div(float(t), (nb_colors - 1)))
+                * (color_end[j] - color_start[j])
+                for j in range(3)
+            ]
+        )
     return gradient

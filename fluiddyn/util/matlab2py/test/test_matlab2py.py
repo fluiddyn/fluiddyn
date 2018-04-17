@@ -18,10 +18,11 @@ class TestsBench(unittest.TestCase):
             if mpi.rank > 0:
                 return
 
-            path = os.path.join(here, 'courant.m')
-            args = ['fluidmat2py ', path]
+            path = os.path.join(here, "courant.m")
+            args = ["fluidmat2py ", path]
             sys.argv = args
             main()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -14,6 +14,7 @@ from fluiddyn.util import Params
 
 
 class BaseDaemon(object):
+
     def __init__(self, target=None, args=None, kwargs=None):
         self.daemon = True
 
@@ -49,6 +50,7 @@ class BaseDaemon(object):
 
 
 class DaemonThread(BaseDaemon, Thread):
+
     def __init__(self, target=None, args=None, kwargs=None):
         Thread.__init__(self)
         super(DaemonThread, self).__init__(target, args, kwargs)
@@ -58,21 +60,14 @@ class DaemonThread(BaseDaemon, Thread):
 
 
 class DaemonProcess(BaseDaemon, Process):
+
     def __init__(self, target=None, args=None, kwargs=None):
         Process.__init__(self)
         super(DaemonProcess, self).__init__(target, args, kwargs)
-        self.keepgoing = Value('i', 1)
-        # Then, acces to the value through self.keepgoing.value
+        self.keepgoing = Value("i", 1)
 
 
-
-
-
-
-
-
-
-
+# Then, acces to the value through self.keepgoing.value
 
 
 # if __name__ == '__main__':

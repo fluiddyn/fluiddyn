@@ -21,6 +21,7 @@ class MultiFile(object):
         sys.stdout = MultiFile([sys.stdout, open('myfile.txt', 'w')])
 
     """
+
     def __init__(self, files):
         self._files = files
 
@@ -28,8 +29,10 @@ class MultiFile(object):
         return self._wrap(attr, *args)
 
     def _wrap(self, attr, *args):
+
         def g(*a, **kw):
             for f in self._files:
                 res = getattr(f, attr, *args)(*a, **kw)
             return res
+
         return g

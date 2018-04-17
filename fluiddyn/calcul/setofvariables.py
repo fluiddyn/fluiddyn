@@ -43,17 +43,30 @@ class SetOfVariables(np.ndarray):
 
     """
 
-    def __new__(cls, input_array=None, keys=None, shape_variable=None,
-                like=None, value=None, info=None, dtype=None, **kargs):
+    def __new__(
+        cls,
+        input_array=None,
+        keys=None,
+        shape_variable=None,
+        like=None,
+        value=None,
+        info=None,
+        dtype=None,
+        **kargs
+    ):
         if input_array is not None:
             arr = input_array
 
             if keys is None:
                 raise ValueError(
-                    'If input_array is provided, keys has to be provided.')
+                    "If input_array is provided, keys has to be provided."
+                )
+
             if len(keys) != arr.shape[0]:
                 raise ValueError(
-                    'len(keys) has to be equal to input_array.shape[0]')
+                    "len(keys) has to be equal to input_array.shape[0]"
+                )
+
         else:
             if like is not None:
                 info = like.info
@@ -62,8 +75,10 @@ class SetOfVariables(np.ndarray):
                 dtype = like.dtype
             elif keys is None or shape_variable is None:
                 raise ValueError(
-                    'If like is not provided, keys and '
-                    'shape_variable should be provided')
+                    "If like is not provided, keys and "
+                    "shape_variable should be provided"
+                )
+
             else:
                 shape = (len(keys),) + tuple(shape_variable)
 
@@ -82,10 +97,11 @@ class SetOfVariables(np.ndarray):
     def __array_finalize__(self, obj):
         if obj is None:
             return
+
         if obj.shape == self.shape:
-            self.info = getattr(obj, 'info', None)
-            self.keys = getattr(obj, 'keys', None)
-            self.nvar = getattr(obj, 'nvar', None)
+            self.info = getattr(obj, "info", None)
+            self.keys = getattr(obj, "keys", None)
+            self.nvar = getattr(obj, "nvar", None)
 
     def set_var(self, arg, value):
         """Set a variable."""
@@ -96,7 +112,9 @@ class SetOfVariables(np.ndarray):
                 index = self.keys.index(arg)
             except ValueError:
                 raise ValueError(
-                    "'" + arg + "' is not in tuple " + repr(self.keys))
+                    "'" + arg + "' is not in tuple " + repr(self.keys)
+                )
+
         # warning: copy... costly!
         self[index] = value
 
@@ -109,7 +127,9 @@ class SetOfVariables(np.ndarray):
                 index = self.keys.index(arg)
             except ValueError:
                 raise ValueError(
-                    "'" + arg + "' is not in tuple " + repr(self.keys))
+                    "'" + arg + "' is not in tuple " + repr(self.keys)
+                )
+
         return np.asarray(self[index])
 
     def initialize(self, value=0):
@@ -117,7 +137,7 @@ class SetOfVariables(np.ndarray):
         self[:] = value
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # shape_var = (2, 2)
     # keys = ['a', 'b']
@@ -138,7 +158,9 @@ if __name__ == '__main__':
     # print(type(2*c))
     # print(type(c.get_var('a')))
 
-    sov = SetOfVariables(keys=['rot_fft'],
-                         shape_variable=(33, 18),
-                         dtype=np.complex128,
-                         info='state_spect')
+    sov = SetOfVariables(
+        keys=["rot_fft"],
+        shape_variable=(33, 18),
+        dtype=np.complex128,
+        info="state_spect",
+    )

@@ -25,27 +25,27 @@ from fluiddyn.clusters.oar import ClusterOAR
 
 
 class Calcul3(ClusterOAR):
-    name_cluster = 'calcul3'
+    name_cluster = "calcul3"
     has_to_add_name_cluster = True
     nb_cores_per_node = 12
-    frontends = ['calcul8sv109', 'legilnx44']
+    frontends = ["calcul8sv109", "legilnx44"]
 
 
 class Calcul9(ClusterOAR):
-    name_cluster = 'calcul9'
+    name_cluster = "calcul9"
     has_to_add_name_cluster = True
     nb_cores_per_node = 8
-    frontends = ['calcul8sv109', 'legilnx44']
+    frontends = ["calcul8sv109", "legilnx44"]
 
 
 class Calcul(ClusterOAR):
-    name_cluster = 'calcul7-8'
+    name_cluster = "calcul7-8"
     has_to_add_name_cluster = False
     nb_cores_per_node = 20
-    frontends = ['nrj1sv223', 'nrj1sv224']
+    frontends = ["nrj1sv223", "nrj1sv224"]
     job_count = 0
 
-    def stall(self, name_run='fluiddyn', stall_after=1, t_sleep=30):
+    def stall(self, name_run="fluiddyn", stall_after=1, t_sleep=30):
         """Stall job submission to wait for similar jobs to complete.
 
         Parameters
@@ -61,20 +61,28 @@ class Calcul(ClusterOAR):
         """
         tstart = time.time()
         self.job_count += 1
-        while (name_run in check_output(['oarstat', '-u']) and
-               self.job_count % stall_after == 0):
+        while (
+            name_run in check_output(["oarstat", "-u"])
+            and self.job_count % stall_after == 0
+        ):
             tnow = time.time()
-            print('\rWaiting for', name_run, 'to finish...',
-                  tnow - tstart, 'seconds', end=' ')
+            print(
+                "\rWaiting for",
+                name_run,
+                "to finish...",
+                tnow - tstart,
+                "seconds",
+                end=" ",
+            )
             time.sleep(t_sleep)
 
 
 class Calcul7(Calcul):
-    name_cluster = 'calcul7'
+    name_cluster = "calcul7"
     has_to_add_name_cluster = True
     nb_cores_per_node = 16
 
 
 class Calcul8(Calcul):
-    name_cluster = 'calcul8'
+    name_cluster = "calcul8"
     has_to_add_name_cluster = True

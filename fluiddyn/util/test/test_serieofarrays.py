@@ -21,13 +21,12 @@ class TestSeriesOfArrays(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        work_dir = cls.work_dir = 'test_fluiddyn_util_serieofarrays'
+        work_dir = cls.work_dir = "test_fluiddyn_util_serieofarrays"
         if not os.path.exists(work_dir):
             os.makedirs(work_dir)
         for i in range(7):
             for j in range(2):
-                create_image(os.path.join(
-                    work_dir, 'file{}_{}.png'.format(i, j)))
+                create_image(os.path.join(work_dir, "file{}_{}.png".format(i, j)))
 
     @classmethod
     def tearDownClass(cls):
@@ -35,12 +34,12 @@ class TestSeriesOfArrays(unittest.TestCase):
 
     def test0(self):
         series = SeriesOfArrays(
-            self.work_dir, 'i:i+3:2, 1',
-            ind_start=0, ind_stop=None, ind_step=2)
+            self.work_dir, "i:i+3:2, 1", ind_start=0, ind_stop=None, ind_step=2
+        )
 
         series = SeriesOfArrays(
-            self.work_dir, 'i:i+3:2, 1',
-            ind_start=0, ind_stop=8, ind_step=2)
+            self.work_dir, "i:i+3:2, 1", ind_start=0, ind_stop=8, ind_step=2
+        )
 
         self.assertEqual(len(series), 4)
         self.assertEqual(series.ind_stop, 7)
@@ -64,5 +63,5 @@ class TestSeriesOfArrays(unittest.TestCase):
         serie.set_index_slices(0, 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

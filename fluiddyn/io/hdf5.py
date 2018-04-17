@@ -62,13 +62,12 @@ class H5File(h5py.File):
 
         if k not in list(self.keys()):
             for k, v in list(dicttosave1.items()):
-                self.create_dataset(k, data=v,
-                                    maxshape=(None,) + v.shape[1:])
+                self.create_dataset(k, data=v, maxshape=(None,) + v.shape[1:])
         else:
             nb_saved_times = self[k].shape[0]
             for k, v in list(dicttosave1.items()):
                 dset_p = self[k]
-                dset_p.resize((nb_saved_times+1,) + v.shape[1:])
+                dset_p.resize((nb_saved_times + 1,) + v.shape[1:])
                 dset_p[nb_saved_times] = v
 
     def load(self, times_slice=None):
@@ -82,21 +81,21 @@ class H5File(h5py.File):
 
         if times_slice is not None:
             try:
-                times = dict_return['times']
+                times = dict_return["times"]
             except KeyError:
-                raise ValueError('No array times in the file.')
+                raise ValueError("No array times in the file.")
 
             tstart = times_slice[0]
 
             if tstart is None:
                 tstart = times[0]
-            itstart = abs(times-tstart).argmin()
+            itstart = abs(times - tstart).argmin()
 
             if len(times_slice) > 1 and times_slice[1] is not None:
                 tend = times_slice[1]
             else:
                 tend = times[-1]
-            itend = abs(times-tend).argmin()
+            itend = abs(times - tend).argmin()
 
             if len(times_slice) > 2 and times_slice[2] is not None:
                 tstep = times_slice[2]
@@ -104,7 +103,7 @@ class H5File(h5py.File):
                 tstep = 0.
 
             its = [itstart]
-            for it in range(itstart+1, itend):
+            for it in range(itstart + 1, itend):
                 if times[it] >= times[its[-1]] + tstep:
                     its.append(it)
             its = list(its)
@@ -157,11 +156,11 @@ def save_variables_h5(path, variables, names=None):
         for name in names:
             variables[name] = variables_all[name]
 
-    with h5py.File(path, 'w') as f:
+    with h5py.File(path, "w") as f:
         for key, value in variables.items():
             f.create_dataset(key, data=value)
 
-    
+
 def load_variables_h5(path):
     """Load files created with the function `save_variables_h5`.
 
@@ -176,7 +175,7 @@ def load_variables_h5(path):
 
     variables = {}
 
-    with h5py.File(path, 'r') as f:
+    with h5py.File(path, "r") as f:
         for key, dataset in f.items():
             variables[key] = dataset.value
 

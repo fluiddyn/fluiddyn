@@ -36,8 +36,8 @@ try:
 except ImportError:
     pass
 
-if 'OMP_NUM_THREADS' in os.environ:
-    nthreads = int(os.environ['OMP_NUM_THREADS'])
+if "OMP_NUM_THREADS" in os.environ:
+    nthreads = int(os.environ["OMP_NUM_THREADS"])
 else:
     nthreads = 1
 
@@ -67,21 +67,25 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
     """
     if {2, 3, 5} == set(bases):
         if debug:
-            print('Using scipy.fftpack.next_fast_len')
+            print("Using scipy.fftpack.next_fast_len")
         return fftp.next_fast_len(nk)
+
     elif {2, 3, 5, 7, 11, 13} == set(bases):
         try:
             import pyfftw
             return pyfftw.next_fast_len(nk)
+
         except (ImportError, AttributeError):
             pass
         else:
             if debug:
-                print('Using pyfftw.next_fast_len')
+                print("Using pyfftw.next_fast_len")
 
     if not {2, 3, 5, 7, 11, 13}.issuperset(bases):
-        raise ValueError('FFTW only supports bases which are a subset of '
-                         '{2, 3, 5, 7, 11, 13}.')
+        raise ValueError(
+            "FFTW only supports bases which are a subset of "
+            "{2, 3, 5, 7, 11, 13}."
+        )
 
     import pulp
 
@@ -93,9 +97,13 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
 
     exp_max = np.ceil(np.log2(nk))
     exps = pulp.LpVariable.dicts(
-        'exponent_o1', bases_order1, 0, exp_max, cat=pulp.LpInteger)
-    exps.update(pulp.LpVariable.dicts(
-        'exponent_o2', bases_order2, 0, 1, cat=pulp.LpInteger))
+        "exponent_o1", bases_order1, 0, exp_max, cat=pulp.LpInteger
+    )
+    exps.update(
+        pulp.LpVariable.dicts(
+            "exponent_o2", bases_order2, 0, 1, cat=pulp.LpInteger
+        )
+    )
 
     log_nk_new = pulp.LpVariable("log_grid_size", 0)
     log_nk_new = pulp.lpDot(exps.values(), np.log(bases))
@@ -107,10 +115,10 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
         prob += exps[11] + exps[13] <= 1, "T2"
 
     if debug:
-        print('bases =', bases)
-        print('exponents =', exps)
-        print('log_nk_new =', log_nk_new)
-        # prob.writeLP("FFTWGridSizeOptimizationModel.lp")
+        print("bases =", bases)
+        print("exponents =", exps)
+        print("log_nk_new =", log_nk_new)
+    # prob.writeLP("FFTWGridSizeOptimizationModel.lp")
 
     prob.solve()
 
@@ -119,8 +127,8 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
         for v in prob.variables():
             print(v.name, "=", v.varValue)
 
-    if pulp.LpStatus[prob.status] == 'Infeasible':
-        raise ValueError('Not enough bases: {}'.format(bases))
+    if pulp.LpStatus[prob.status] == "Infeasible":
+        raise ValueError("Not enough bases: {}".format(bases))
 
     exps_solution = [v.varValue for v in prob.variables()]
     nk_new = np.prod(np.power(bases, exps_solution))
@@ -128,6 +136,7 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
 
 
 class BaseFFT(object):
+
     def run_tests(self):
         arr = np.random.rand(*self.shapeX)
         arr_fft = self.fft(arr)
@@ -171,9 +180,11 @@ class BaseFFT(object):
         time_ifft = np.mean(times)
 
         name = self.__class__.__name__
-        printby0('Internal bench (' + name + ')\n'
-                 'time fft ({}):  {:.6f} s\n'.format(name, time_fft) +
-                 'time ifft ({}): {:.6f} s'.format(name, time_ifft))
+        printby0(
+            "Internal bench (" + name + ")\n"
+            "time fft ({}):  {:.6f} s\n".format(name, time_fft)
+            + "time ifft ({}): {:.6f} s".format(name, time_ifft)
+        )
 
         return time_fft, time_ifft
 
@@ -181,7 +192,7 @@ class BaseFFT(object):
         return self.__class__.__name__.lower()
 
     def compute_energy_from_X(self, fieldX):
-        return np.mean(fieldX**2/2.)
+        return np.mean(fieldX ** 2 / 2.)
 
     def get_local_size_X(self):
         return np.prod(self.shapeX)
@@ -199,41 +210,46 @@ class BaseFFT(object):
 
 class FFTP2D(BaseFFT):
     """ A class to use fftp """
+
     def __init__(self, nx, ny):
         if nx % 2 != 0 or ny % 2 != 0:
-            raise ValueError('nx and ny should be even')
+            raise ValueError("nx and ny should be even")
+
         self.nx = nx
         self.ny = ny
         self.shapeX = (ny, nx)
-        self.nkx = int(float(nx)/2+1)
+        self.nkx = int(float(nx) / 2 + 1)
         self.shapeK = (ny, self.nkx)
-        self.coef_norm = nx*ny
+        self.coef_norm = nx * ny
 
         self.fft2d = self.fft
         self.ifft2d = self.ifft
 
     def fft(self, ff):
         if not (isinstance(ff[0, 0], float)):
-            print('Warning: not array of floats')
-        big_ff_fft = fftp.fft2(ff)/self.coef_norm
+            print("Warning: not array of floats")
+        big_ff_fft = fftp.fft2(ff) / self.coef_norm
         small_ff_fft = big_ff_fft[:, 0:self.nkx]
         return small_ff_fft
 
     def ifft(self, small_ff_fft, ARG_IS_COMPLEX=False):
         if not (isinstance(small_ff_fft[0, 0], complex)):
-            print('Warning: not array of complexes')
+            print("Warning: not array of complexes")
         # print('small_ff_fft\n', small_ff_fft)
         big_ff_fft = np.empty(self.shapeX, dtype=np.complex128)
         big_ff_fft[:, 0:self.nkx] = small_ff_fft
         for iky in range(self.ny):
-            big_ff_fft[iky, self.nkx:] = \
-                small_ff_fft[-iky, self.nkx-2:0:-1].conj()
+            big_ff_fft[iky, self.nkx:] = small_ff_fft[
+                -iky, self.nkx - 2:0:-1
+            ].conj()
 
         # print('big_ff_fft final\n', big_ff_fft)
-        result_ifft = fftp.ifft2(big_ff_fft*self.coef_norm)
-        if np.max(np.imag(result_ifft)) > 10**(-8):
-            print('ifft2: imaginary part of ifft not equal to zero,',
-                  np.max(np.imag(result_ifft)))
+        result_ifft = fftp.ifft2(big_ff_fft * self.coef_norm)
+        if np.max(np.imag(result_ifft)) > 10 ** (-8):
+            print(
+                "ifft2: imaginary part of ifft not equal to zero,",
+                np.max(np.imag(result_ifft)),
+            )
         return np.real(result_ifft)
 
     def fft_as_arg(self, field, field_fft):
@@ -243,11 +259,14 @@ class FFTP2D(BaseFFT):
         field[:] = self.ifft(field_fft)
 
     def compute_energy_from_Fourier(self, ff_fft):
-        return (np.sum(abs(ff_fft[:, 0])**2 + abs(ff_fft[:, -1])**2) +
-                2*np.sum(abs(ff_fft[:, 1:-1])**2))/2
+        return (
+            np.sum(abs(ff_fft[:, 0]) ** 2 + abs(ff_fft[:, -1]) ** 2)
+            + 2
+            * np.sum(abs(ff_fft[:, 1:-1]) ** 2)
+        ) / 2
 
     def compute_energy_from_spatial(self, ff):
-        return np.mean(abs(ff)**2)/2
+        return np.mean(abs(ff) ** 2) / 2
 
 
 class BasePyFFT(BaseFFT):
@@ -257,10 +276,11 @@ class BasePyFFT(BaseFFT):
             import pyfftw
         except ImportError as err:
             raise ImportError(
-                'ImportError {0}. Instead fftpack can be used (?)', err)
+                "ImportError {0}. Instead fftpack can be used (?)", err
+            )
 
         shapeK = list(shapeX)
-        shapeK[-1] = shapeK[-1]//2 + 1
+        shapeK[-1] = shapeK[-1] // 2 + 1
         shapeK = tuple(shapeK)
 
         self.shapeX = shapeX
@@ -272,38 +292,45 @@ class BasePyFFT(BaseFFT):
 
         axes = tuple(range(len(shapeX)))
 
-        self.fftplan = pyfftw.FFTW(input_array=self.arrayX,
-                                   output_array=self.arrayK,
-                                   axes=axes,
-                                   direction='FFTW_FORWARD',
-                                   threads=nthreads)
-        self.ifftplan = pyfftw.FFTW(input_array=self.arrayK,
-                                    output_array=self.arrayX,
-                                    axes=axes,
-                                    direction='FFTW_BACKWARD',
-                                    threads=nthreads)
+        self.fftplan = pyfftw.FFTW(
+            input_array=self.arrayX,
+            output_array=self.arrayK,
+            axes=axes,
+            direction="FFTW_FORWARD",
+            threads=nthreads,
+        )
+        self.ifftplan = pyfftw.FFTW(
+            input_array=self.arrayK,
+            output_array=self.arrayX,
+            axes=axes,
+            direction="FFTW_BACKWARD",
+            threads=nthreads,
+        )
 
         self.coef_norm = np.prod(shapeX)
-        self.inv_coef_norm = 1./self.coef_norm
+        self.inv_coef_norm = 1. / self.coef_norm
 
     def fft(self, fieldX):
         fieldK = self.empty_aligned(self.shapeK, np.complex128)
-        self.fftplan(input_array=fieldX, output_array=fieldK,
-                     normalise_idft=False)
-        return fieldK/self.coef_norm
+        self.fftplan(
+            input_array=fieldX, output_array=fieldK, normalise_idft=False
+        )
+        return fieldK / self.coef_norm
 
     def ifft(self, fieldK):
         fieldX = self.empty_aligned(self.shapeX, np.float64)
         # This copy is needed because FFTW_DESTROY_INPUT is used.
         # See pyfftw.readthedocs.io/en/latest/source/pyfftw/pyfftw.html
         self.arrayK[:] = fieldK
-        self.ifftplan(input_array=self.arrayK, output_array=fieldX,
-                      normalise_idft=False)
+        self.ifftplan(
+            input_array=self.arrayK, output_array=fieldX, normalise_idft=False
+        )
         return fieldX
 
     def fft_as_arg(self, fieldX, fieldK):
-        self.fftplan(input_array=fieldX, output_array=fieldK,
-                     normalise_idft=False)
+        self.fftplan(
+            input_array=fieldX, output_array=fieldK, normalise_idft=False
+        )
         fieldK *= self.inv_coef_norm
 
     def ifft_as_arg(self, fieldK, fieldX):
@@ -313,21 +340,23 @@ class BasePyFFT(BaseFFT):
         # self.ifftplan(input_array=fieldK, output_array=fieldX,
         # this seems faster (but it could depend on the size)
         self.arrayK[:] = fieldK
-        self.ifftplan(input_array=self.arrayK, output_array=fieldX,
-                      normalise_idft=False)
+        self.ifftplan(
+            input_array=self.arrayK, output_array=fieldX, normalise_idft=False
+        )
 
     def ifft_as_arg_destroy(self, fieldK, fieldX):
-        self.ifftplan(input_array=fieldK, output_array=fieldX,
-                      normalise_idft=False)
+        self.ifftplan(
+            input_array=fieldK, output_array=fieldX, normalise_idft=False
+        )
 
     def compute_energy_from_Fourier(self, ff_fft):
-        result = self.sum_wavenumbers(abs(ff_fft)**2)/2
+        result = self.sum_wavenumbers(abs(ff_fft) ** 2) / 2
         return result
 
     compute_energy_from_K = compute_energy_from_Fourier
 
     def compute_energy_from_spatial(self, ff):
-        return np.mean(abs(ff)**2)/2
+        return np.mean(abs(ff) ** 2) / 2
 
     def project_fft_on_realX(self, ff_fft):
         return self.fft(self.ifft(ff_fft))
@@ -351,8 +380,10 @@ class BasePyFFT(BaseFFT):
             field.fill(value)
         return field
 
+
 class FFTW2DReal2Complex(BasePyFFT):
     """ A class to use fftw """
+
     def __init__(self, nx, ny):
         shapeX = (ny, nx)
         super(FFTW2DReal2Complex, self).__init__(shapeX)
@@ -361,12 +392,15 @@ class FFTW2DReal2Complex(BasePyFFT):
 
     def sum_wavenumbers(self, ff_fft):
         if self.shapeX[1] % 2 == 0:
-            return (np.sum(ff_fft[:, 0]) +
-                    np.sum(ff_fft[:, -1]) +
-                    2*np.sum(ff_fft[:, 1:-1]))
+            return (
+                np.sum(ff_fft[:, 0])
+                + np.sum(ff_fft[:, -1])
+                + 2
+                * np.sum(ff_fft[:, 1:-1])
+            )
+
         else:
-            return (np.sum(ff_fft[:, 0]) +
-                    2*np.sum(ff_fft[:, 1:]))
+            return (np.sum(ff_fft[:, 0]) + 2 * np.sum(ff_fft[:, 1:]))
 
     def get_seq_indices_first_K(self):
         return 0, 0
@@ -391,8 +425,8 @@ class FFTW2DReal2Complex(BasePyFFT):
         ix0_start, ix1_start = self.get_seq_indices_first_X()
         nx0loc, nx1loc = self.get_shapeX_loc()
 
-        x0loc = np.array(range(ix0_start, ix0_start+nx0loc))
-        x1loc = np.array(range(ix1_start, ix1_start+nx1loc))
+        x0loc = np.array(range(ix0_start, ix0_start + nx0loc))
+        x1loc = np.array(range(ix1_start, ix1_start + nx1loc))
 
         return x0loc, x1loc
 
@@ -411,9 +445,10 @@ class FFTW2DReal2Complex(BasePyFFT):
 
         nyseq, nxseq = self.get_shapeX_seq()
 
-        kyseq = np.array(list(range(nyseq//2 + 1)) +
-                         list(range(-nyseq//2 + 1, 0)))
-        kxseq = np.array(range(nxseq//2 + 1))
+        kyseq = np.array(
+            list(range(nyseq // 2 + 1)) + list(range(-nyseq // 2 + 1, 0))
+        )
+        kxseq = np.array(range(nxseq // 2 + 1))
 
         if self.get_is_transposed():
             k0seq, k1seq = kxseq, kyseq
@@ -423,13 +458,15 @@ class FFTW2DReal2Complex(BasePyFFT):
         ik0_start, ik1_start = self.get_seq_indices_first_K()
         nk0loc, nk1loc = self.get_shapeK_loc()
 
-        k0_adim_loc = k0seq[ik0_start:ik0_start+nk0loc]
-        k1_adim_loc = k1seq[ik1_start:ik1_start+nk1loc]
+        k0_adim_loc = k0seq[ik0_start:ik0_start + nk0loc]
+        k1_adim_loc = k1seq[ik1_start:ik1_start + nk1loc]
 
         return k0_adim_loc, k1_adim_loc
 
+
 class FFTW3DReal2Complex(BasePyFFT):
     """ A class to use fftw """
+
     def __init__(self, nx, ny, nz):
         shapeX = (nz, ny, nx)
         super(FFTW3DReal2Complex, self).__init__(shapeX)
@@ -438,22 +475,27 @@ class FFTW3DReal2Complex(BasePyFFT):
 
     def sum_wavenumbers(self, ff_fft):
         if self.shapeX[2] % 2 == 0:
-            return (np.sum(ff_fft[:, :, 0]) +
-                    np.sum(ff_fft[:, :, -1]) +
-                    2*np.sum(ff_fft[:, :, 1:-1]))
+            return (
+                np.sum(ff_fft[:, :, 0])
+                + np.sum(ff_fft[:, :, -1])
+                + 2
+                * np.sum(ff_fft[:, :, 1:-1])
+            )
+
         else:
-            return (np.sum(ff_fft[:, :, 0]) +
-                    2*np.sum(ff_fft[:, :, 1:]))
+            return (np.sum(ff_fft[:, :, 0]) + 2 * np.sum(ff_fft[:, :, 1:]))
 
     def get_k_adim(self):
         nK0, nK1, nK2 = self.shapeK
-        kz_adim_max = nK0//2
-        kz_adim_min = -((nK0-1)//2)
-        ky_adim_max = nK1//2
-        ky_adim_min = -((nK1-1)//2)
-        return (np.r_[0:kz_adim_max+1, kz_adim_min:0],
-                np.r_[0:ky_adim_max+1, ky_adim_min:0],
-                np.arange(nK2))
+        kz_adim_max = nK0 // 2
+        kz_adim_min = -((nK0 - 1) // 2)
+        ky_adim_max = nK1 // 2
+        ky_adim_min = -((nK1 - 1) // 2)
+        return (
+            np.r_[0:kz_adim_max + 1, kz_adim_min:0],
+            np.r_[0:ky_adim_max + 1, ky_adim_min:0],
+            np.arange(nK2),
+        )
 
     # def get_k_adim_loc(self):
     #     return self.get_k_adim()
@@ -476,11 +518,11 @@ class FFTW3DReal2Complex(BasePyFFT):
         nX0loc, nX1loc, nX2loc = self.get_shapeX_loc()
 
         if (nX1, nX2) != o2d.get_shapeX_seq():
-            raise ValueError('Not the same physical shape...')
+            raise ValueError("Not the same physical shape...")
 
         # check that the 2d fft is not with distributed memory...
         if o2d.get_shapeX_loc() != o2d.get_shapeX_seq():
-            raise ValueError('2d fft is with distributed memory...')
+            raise ValueError("2d fft is with distributed memory...")
 
         ind0seq_first, ind1seq_first, _ = self.get_seq_indices_first_K()
 
@@ -498,8 +540,7 @@ class FFTW3DReal2Complex(BasePyFFT):
     def build_invariant_arrayK_from_2d_indices12X(self, o2d, arr2d):
 
         nK0, nK1, nK2 = self.get_shapeK_seq()
-        ret = np.zeros((nK0,) + tuple(o2d.get_shapeK_seq()),
-                       dtype=np.complex128)
+        ret = np.zeros((nK0,) + tuple(o2d.get_shapeK_seq()), dtype=np.complex128)
 
         ret[0] = arr2d
         return ret
@@ -535,10 +576,10 @@ class FFTW3DReal2Complex(BasePyFFT):
         i0_start, i1_start, i2_start = self.get_seq_indices_first_K()
 
         k0_adim = compute_k_adim_seq_3d(nK0, d0)
-        k0_adim_loc = k0_adim[i0_start:i0_start+nK0_loc]
+        k0_adim_loc = k0_adim[i0_start:i0_start + nK0_loc]
 
         k1_adim = compute_k_adim_seq_3d(nK1, d1)
-        k1_adim_loc = k1_adim[i1_start:i1_start+nK1_loc]
+        k1_adim_loc = k1_adim[i1_start:i1_start + nK1_loc]
 
         k2_adim_loc = compute_k_adim_seq_3d(nK2, d2)
 
@@ -562,14 +603,16 @@ def compute_k_adim_seq_3d(nk, axis):
     """
     if axis == 2:
         return np.arange(nk)
+
     else:
-        k_adim_max = nk//2
-        k_adim_min = -((nk-1)//2)
-        return np.r_[0:k_adim_max+1, k_adim_min:0]
+        k_adim_max = nk // 2
+        k_adim_min = -((nk - 1) // 2)
+        return np.r_[0:k_adim_max + 1, k_adim_min:0]
 
 
 class FFTW1D(BasePyFFT):
     """ A class to use fftw 1D """
+
     def __init__(self, n):
         try:
             import pyfftw
@@ -577,30 +620,36 @@ class FFTW1D(BasePyFFT):
             raise ImportError("ImportError. Instead fftpack?", err)
 
         if n % 2 != 0:
-            raise ValueError('n should be even')
+            raise ValueError("n should be even")
+
         shapeX = (n,)
         shapeK = (n,)
         self.shapeX = shapeX
         self.shapeK = shapeK
-        self.arrayX = pyfftw.empty_aligned(shapeX, 'complex128')
-        self.arrayK = pyfftw.empty_aligned(shapeK, 'complex128')
-        self.fftplan = pyfftw.FFTW(input_array=self.arrayX,
-                                   output_array=self.arrayK,
-                                   axes=(-1,),
-                                   direction='FFTW_FORWARD', threads=nthreads)
-        self.ifftplan = pyfftw.FFTW(input_array=self.arrayK,
-                                    output_array=self.arrayX,
-                                    axes=(-1,),
-                                    direction='FFTW_BACKWARD',
-                                    threads=nthreads)
+        self.arrayX = pyfftw.empty_aligned(shapeX, "complex128")
+        self.arrayK = pyfftw.empty_aligned(shapeK, "complex128")
+        self.fftplan = pyfftw.FFTW(
+            input_array=self.arrayX,
+            output_array=self.arrayK,
+            axes=(-1,),
+            direction="FFTW_FORWARD",
+            threads=nthreads,
+        )
+        self.ifftplan = pyfftw.FFTW(
+            input_array=self.arrayK,
+            output_array=self.arrayX,
+            axes=(-1,),
+            direction="FFTW_BACKWARD",
+            threads=nthreads,
+        )
 
         self.coef_norm = n
-        self.inv_coef_norm = 1./n
+        self.inv_coef_norm = 1. / n
 
     def fft(self, ff):
         self.arrayX[:] = ff
         self.fftplan()
-        return self.arrayK/self.coef_norm
+        return self.arrayK / self.coef_norm
 
     def ifft(self, ff_fft):
         self.arrayK[:] = ff_fft
@@ -610,6 +659,7 @@ class FFTW1D(BasePyFFT):
 
 class FFTW1DReal2Complex(BasePyFFT):
     """ A class to use fftw 1D """
+
     def __init__(self, arg, axis=-1):
         try:
             import pyfftw
@@ -619,38 +669,43 @@ class FFTW1DReal2Complex(BasePyFFT):
         if isinstance(arg, int):
             n = arg
             shapeX = (n,)
-            shapeK = (n//2+1,)
+            shapeK = (n // 2 + 1,)
         else:
             n = arg[axis]
             shapeX = arg
             shapeK = list(copy(arg))
-            shapeK[axis] = n//2+1
+            shapeK[axis] = n // 2 + 1
             shapeK = tuple(shapeK)
 
         if n % 2 != 0:
-            raise ValueError('n should be even')
+            raise ValueError("n should be even")
 
         self.shapeX = shapeX
         self.shapeK = shapeK
-        self.arrayX = pyfftw.empty_aligned(shapeX, 'float64')
-        self.arrayK = pyfftw.empty_aligned(shapeK, 'complex128')
-        self.fftplan = pyfftw.FFTW(input_array=self.arrayX,
-                                   output_array=self.arrayK,
-                                   axes=(axis,),
-                                   direction='FFTW_FORWARD', threads=nthreads)
-        self.ifftplan = pyfftw.FFTW(input_array=self.arrayK,
-                                    output_array=self.arrayX,
-                                    axes=(axis,),
-                                    direction='FFTW_BACKWARD',
-                                    threads=nthreads)
+        self.arrayX = pyfftw.empty_aligned(shapeX, "float64")
+        self.arrayK = pyfftw.empty_aligned(shapeK, "complex128")
+        self.fftplan = pyfftw.FFTW(
+            input_array=self.arrayX,
+            output_array=self.arrayK,
+            axes=(axis,),
+            direction="FFTW_FORWARD",
+            threads=nthreads,
+        )
+        self.ifftplan = pyfftw.FFTW(
+            input_array=self.arrayK,
+            output_array=self.arrayX,
+            axes=(axis,),
+            direction="FFTW_BACKWARD",
+            threads=nthreads,
+        )
 
         self.coef_norm = n
-        self.inv_coef_norm = 1./n
+        self.inv_coef_norm = 1. / n
 
     def fft(self, ff):
         self.arrayX[:] = ff
         self.fftplan(normalise_idft=False)
-        return self.arrayK/self.coef_norm
+        return self.arrayK / self.coef_norm
 
     def ifft(self, ff_fft):
         self.arrayK[:] = ff_fft
@@ -659,17 +714,20 @@ class FFTW1DReal2Complex(BasePyFFT):
 
     def sum_wavenumbers(self, ff_fft):
         if self.shapeX[0] % 2 == 0:
-            return (ff_fft[0] +
-                    ff_fft[-1] +
-                    2*np.sum(ff_fft[1:-1]))
+            return (ff_fft[0] + ff_fft[-1] + 2 * np.sum(ff_fft[1:-1]))
+
         else:
-            return (ff_fft[0] +
-                    2*np.sum(ff_fft[1:]))
+            return (ff_fft[0] + 2 * np.sum(ff_fft[1:]))
 
     def compute_energy_from_Fourier(self, ff_fft):
-        return (abs(ff_fft[0])**2 +
-                2*np.sum(abs(ff_fft[1:-1])**2) +
-                abs(ff_fft[-1])**2)/2
+        return (
+            abs(ff_fft[0])
+            ** 2
+            + 2
+            * np.sum(abs(ff_fft[1:-1]) ** 2)
+            + abs(ff_fft[-1])
+            ** 2
+        ) / 2
 
     def compute_energy_from_spatial(self, ff):
-        return np.mean(abs(ff)**2)/2
+        return np.mean(abs(ff) ** 2) / 2

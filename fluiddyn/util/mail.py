@@ -27,8 +27,14 @@ from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 
 
-def send_email(subject, txt, address_recipients, address_sender=None,
-               server='localhost', files=None):
+def send_email(
+    subject,
+    txt,
+    address_recipients,
+    address_sender=None,
+    server="localhost",
+    files=None,
+):
     """Send an email.
 
     Inspired by an example in
@@ -77,10 +83,10 @@ def send_email(subject, txt, address_recipients, address_sender=None,
         address_sender = address_recipients[0]
 
     msg = MIMEMultipart()
-    msg['Subject'] = subject
-    msg['From'] = address_sender
-    msg['To'] = ', '.join(address_recipients)
-    msg['Date'] = formatdate(localtime=True)
+    msg["Subject"] = subject
+    msg["From"] = address_sender
+    msg["To"] = ", ".join(address_recipients)
+    msg["Date"] = formatdate(localtime=True)
 
     # main part: the text
     part = MIMEText(txt)
@@ -99,15 +105,15 @@ def send_email(subject, txt, address_recipients, address_sender=None,
             # No guess could be made, or the file is encoded
             # (compressed), so
             # use a generic bag-of-bits type.
-            ctype = 'application/octet-stream'
-        maintype, subtype = ctype.split('/', 1)
-        with open(path, 'rb') as fp:
-            if maintype == 'text':
+            ctype = "application/octet-stream"
+        maintype, subtype = ctype.split("/", 1)
+        with open(path, "rb") as fp:
+            if maintype == "text":
                 # Note: we should handle calculating the charset
                 part = MIMEText(fp.read(), _subtype=subtype)
-            elif maintype == 'image':
+            elif maintype == "image":
                 part = MIMEImage(fp.read(), _subtype=subtype)
-            elif maintype == 'audio':
+            elif maintype == "audio":
                 part = MIMEAudio(fp.read(), _subtype=subtype)
             else:
                 part = MIMEBase(maintype, subtype)
@@ -115,19 +121,21 @@ def send_email(subject, txt, address_recipients, address_sender=None,
                 # Encode the payload using Base64
                 encoders.encode_base64(part)
         # set the filename parameter
-        part.add_header('Content-Disposition', 'attachment',
-                        filename=os.path.split(path)[1])
+        part.add_header(
+            "Content-Disposition", "attachment", filename=os.path.split(path)[1]
+        )
 
         msg.attach(part)
     try:
         server = smtplib.SMTP(host=server)
     except socket.gaierror as e:
-        print('socket.gaierror: you may have to setup a local SMTP server.')
+        print("socket.gaierror: you may have to setup a local SMTP server.")
         raise e
+
     server.sendmail(address_sender, address_recipients, msg.as_string())
     server.quit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    send_email('email test', 'blablabla\n'*3, 'pierre.augier@legi.cnrs.fr')
+    send_email("email test", "blablabla\n" * 3, "pierre.augier@legi.cnrs.fr")

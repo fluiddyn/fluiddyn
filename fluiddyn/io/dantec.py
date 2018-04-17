@@ -51,6 +51,7 @@ class LoadedElement(object):
     files.
 
     """
+
     def __init__(self, unloaded_element):
         self.tag = unloaded_element.tag
         attrib = unloaded_element.attrib
@@ -62,8 +63,8 @@ class LoadedElement(object):
         except (SyntaxError, ValueError):
             pass
         for child in unloaded_element:
-            key = child.tag.replace('.', '_')
-            keyl = 'list_'+key
+            key = child.tag.replace(".", "_")
+            keyl = "list_" + key
             # we hope there no tag in the file corresponding to keyl...
             # for Dantec files, it does not seem to be the case
             if key not in self.__dict__ and keyl not in self.__dict__:
@@ -76,67 +77,66 @@ class LoadedElement(object):
                 self.__dict__[keyl].append(LoadedElement(child))
 
     def __repr__(self):
-        if hasattr(self, 'attrib'):
+        if hasattr(self, "attrib"):
             return repr(self.attrib)
-        elif hasattr(self, 'value'):
+
+        elif hasattr(self, "value"):
             return repr(self.value)
+
         else:
             return repr(self.__class__)
 
+
 class LoadedXML(LoadedElement):
     """Initialize the loop on the file elements..."""
+
     def __init__(self, name_file):
         tree = etree.parse(name_file)
         root = tree.getroot()
         super(LoadedXML, self).__init__(root)
 
 
-
 class DantecImageEnsemble(object):
     _offset_header = 0xC22
+
     def __init__(self, path_base):
         self.path_base = path_base
         self.xlm = LoadedXML(
-            os.path.join(self.path_base, 'AcquiredImageEnsemble.xml'))
-        self.name_files = glob(
-            os.path.join(self.path_base, 'data/image*.image'))
-        self.shape = np.array(
-            self.xlm.Ensemble_CoordinateSummary.imageSize.value)
+            os.path.join(self.path_base, "AcquiredImageEnsemble.xml")
+        )
+        self.name_files = glob(os.path.join(self.path_base, "data/image*.image"))
+        self.shape = np.array(self.xlm.Ensemble_CoordinateSummary.imageSize.value)
 
     def load_image(self, ind=-1):
         name_file = self.name_files[ind]
         with BinFile(name_file) as f:
             f.seek(0)
             f.seek(self._offset_header)
-            data = f.readt(self.shape.prod(), 'B')
+            data = f.readt(self.shape.prod(), "B")
             return np.array(data, dtype=np.uint8).reshape(self.shape)
 
 
-
 class DantecVectorEnsemble(object):
+
     def __init__(self):
-        self.xlm = LoadedXML('AnalysisEnsemble_PIV.xml')
+        self.xlm = LoadedXML("AnalysisEnsemble_PIV.xml")
 
 
+if __name__ == "__main__":
 
-
-if __name__ == '__main__':
-
-    path_base = r'/home/pa371/Data_reasons_pa371/Temp/Dantec_files/Run 11-00-21.3te2sz41/SpeedSence 1040.3te2sz4k'
+    path_base = r"/home/pa371/Data_reasons_pa371/Temp/Dantec_files/Run 11-00-21.3te2sz41/SpeedSence 1040.3te2sz4k"
 
     imensemble = DantecImageEnsemble(path_base)
     im = imensemble.load_image()
 
 
-    # vectensemble = DantecVectorEnsemble('')
+# vectensemble = DantecVectorEnsemble('')
 
-    # shape = np.array(imensemble.shape)
-    # name_file = r'image#0.image'
-    # f = BinFile(name_file)
-    # offset = 0xC22
-    # f.seek(offset)
-    # im = np.array(f.readt(shape.prod(), 'B'), dtype=np.uint8).reshape(shape)
-    # print(f.readt(1, 'B'))
-    # print(f.readt(10, 'B'))
-
-
+# shape = np.array(imensemble.shape)
+# name_file = r'image#0.image'
+# f = BinFile(name_file)
+# offset = 0xC22
+# f.seek(offset)
+# im = np.array(f.readt(shape.prod(), 'B'), dtype=np.uint8).reshape(shape)
+# print(f.readt(1, 'B'))
+# print(f.readt(10, 'B'))

@@ -12,7 +12,7 @@ import subprocess
 
 
 def call_bash(commands):
-    subprocess.call(['/bin/bash', '-c', commands])
+    subprocess.call(["/bin/bash", "-c", commands])
 
 
 def query_yes_no(question, default="yes"):
@@ -35,8 +35,7 @@ def query_yes_no(question, default="yes"):
     answer : bool
        The returned answer.
     """
-    valid = {"yes": True, "y": True,
-             "no": False, "n": False}
+    valid = {"yes": True, "y": True, "no": False, "n": False}
     if default is None:
         prompt = " [y/n] "
     elif default == "yes":
@@ -50,13 +49,16 @@ def query_yes_no(question, default="yes"):
         sys.stdout.write(question + prompt)
         sys.stdout.flush()
         choice = builtins.input().lower()
-        if default is not None and choice == '':
+        if default is not None and choice == "":
             return valid[default]
+
         elif choice in valid:
             return valid[choice]
+
         else:
-            sys.stdout.write("Please respond with 'yes' or 'no' "
-                             "(or 'y' or 'n').\n")
+            sys.stdout.write(
+                "Please respond with 'yes' or 'no' " "(or 'y' or 'n').\n"
+            )
             sys.stdout.flush()
 
 
@@ -66,8 +68,9 @@ def query(question, default=None):
 
     answer = builtins.input()
 
-    if default is not None and answer == '':
+    if default is not None and answer == "":
         return default
+
     else:
         return answer
 
@@ -76,21 +79,23 @@ def num_from_str(s):
     """Return a num computed from a string."""
     try:
         return int(s)
+
     except ValueError:
         try:
             return float(s)
+
         except ValueError:
-            raise ValueError(
-                'Can not convert the string into a numeric value.')
+            raise ValueError("Can not convert the string into a numeric value.")
 
 
 def query_number(question):
     """Query a number."""
     while True:
-        sys.stdout.write(question + ' ')
+        sys.stdout.write(question + " ")
         answer = builtins.input()
         try:
             return num_from_str(answer)
+
         except ValueError:
             pass
 
@@ -98,8 +103,6 @@ def query_number(question):
 def run_asking_agreement(command):
     """Use query_yes_no to ask if a command should be run."""
 
-    question = (
-        'Should the command "\n' +
-        command + '\n" be run ?')
-    if query_yes_no(question, default='no'):
+    question = ('Should the command "\n' + command + '\n" be run ?')
+    if query_yes_no(question, default="no"):
         call_bash(command)

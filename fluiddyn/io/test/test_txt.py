@@ -21,25 +21,26 @@ zklflzefk
 3  4.  9
 """
 
-t_example = ([1, 2, 3], [3.,  5.,  4.], [1, 9])
+t_example = ([1, 2, 3], [3., 5., 4.], [1, 9])
 
 
 class TestTxt(unittest.TestCase):
     """Test fluiddyn.io.txt module."""
+
     def setUp(self):
-        self._work_dir = 'test_fluiddyn_io_txt'
+        self._work_dir = "test_fluiddyn_io_txt"
         if not os.path.exists(self._work_dir):
             os.mkdir(self._work_dir)
 
         os.chdir(self._work_dir)
 
-        self.path_in = 'path_in'
+        self.path_in = "path_in"
 
-        with open(self.path_in, 'w') as f:
+        with open(self.path_in, "w") as f:
             f.write(txt_example)
 
     def tearDown(self):
-        os.chdir('..')
+        os.chdir("..")
         rmtree(self._work_dir)
 
     def test_txt(self):
@@ -52,7 +53,8 @@ class TestTxt(unittest.TestCase):
 
         t = ([1, 2, 3],) * 3
 
-        save_quantities_in_txt_file('path_out', t)
+        save_quantities_in_txt_file("path_out", t)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

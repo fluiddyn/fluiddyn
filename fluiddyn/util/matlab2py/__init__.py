@@ -19,19 +19,20 @@ import argparse
 
 
 def get_index_closing_parenthesis(line, ind_start):
-    if line[ind_start] != '(':
+    if line[ind_start] != "(":
         raise ValueError("line[ind_start] != '('")
 
     in_parent = 1
     ind = ind_start
     while in_parent > 0:
         ind += 1
-        if line[ind] == ')':
+        if line[ind] == ")":
             in_parent -= 1
-        elif line[ind] == '(':
+        elif line[ind] == "(":
             in_parent += 1
 
     return ind
+
 
 # this can not be put at the top of the file and has to be put after the
 # definition of get_index_closing_parenthesis
@@ -48,23 +49,25 @@ Utility to produce a strange code which is no longer Matlab and not yet Python.
 def main():
 
     parser = argparse.ArgumentParser(
-        prog='fluidmat2py',
+        prog="fluidmat2py",
         description=description,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
 
     parser.add_argument(
-        'path', help='str indicating which file or directory has to be used.',
-        type=str)
+        "path",
+        help="str indicating which file or directory has to be used.",
+        type=str,
+    )
 
     parser.add_argument(
-        '-c', '--clean',
-        help='Only clean the Matlab code.',
-        action='store_true')
+        "-c", "--clean", help="Only clean the Matlab code.", action="store_true"
+    )
 
     args = parser.parse_args()
 
     if not os.path.exists(args.path):
-        raise ValueError('Path args.path does not exits.')
+        raise ValueError("Path args.path does not exits.")
 
     if os.path.isdir(args.path):
         if args.clean:

@@ -21,8 +21,9 @@ try:
     from fluiddyn.output.rcparams import set_rcparams
     from fluiddyn.output.util import gradient_colors
     import fluiddyn
+
     fluiddyn.show = show
 except ImportError:
     pass
 
-__all__ = ['show', 'set_rcparams', 'gradient_colors']
+__all__ = ["show", "set_rcparams", "gradient_colors"]

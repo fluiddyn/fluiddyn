@@ -7,24 +7,24 @@ Defines string variables useful to print in color in a terminal.
 
 from __future__ import print_function
 
-HEADER = '\033[95m'
-OKBLUE = '\033[94m'
-OKGREEN = '\033[92m'
-WARNING = '\033[93m'
-FAIL = '\033[91m'
+HEADER = "\033[95m"
+OKBLUE = "\033[94m"
+OKGREEN = "\033[92m"
+WARNING = "\033[93m"
+FAIL = "\033[91m"
 
-BLACK = '\033[30m'
-RED = '\033[31m'
-GREEN = '\033[32m'
-YELLOW = '\033[33m'
-BLUE = '\033[34m'
-MAGENTA = '\033[35m'
-CYAN = '\033[36m'
-WHITE = '\033[37m'
+BLACK = "\033[30m"
+RED = "\033[31m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+BLUE = "\033[34m"
+MAGENTA = "\033[35m"
+CYAN = "\033[36m"
+WHITE = "\033[37m"
 
-ENDC = '\033[0m'
-BOLD = '\033[1m'
-UNDERLINE = '\033[4m'
+ENDC = "\033[0m"
+BOLD = "\033[1m"
+UNDERLINE = "\033[4m"
 
 _color_dict = vars()
 
@@ -52,9 +52,9 @@ def print_warning(*args, **kwargs):
 def _colorize(*args, **kwargs):
     """Wrap the args with a specified terminal font color."""
     try:
-        color = kwargs.pop('color')
+        color = kwargs.pop("color")
         try:
-            bold = kwargs.pop('bold')
+            bold = kwargs.pop("bold")
         except KeyError:
             bold = False
 
@@ -64,7 +64,7 @@ def _colorize(*args, **kwargs):
             args = list(args)
             if bold:
                 color += BOLD
-            args[0] = '{}{}'.format(color, args[0])
+            args[0] = "{}{}".format(color, args[0])
             args[-1] += ENDC
 
     finally:
@@ -84,7 +84,7 @@ def cstring(*args, **kwargs):
 
     """
     args, kwargs = _colorize(*args, **kwargs)
-    cstr = ' '.join(args)
+    cstr = " ".join(args)
     return cstr
 
 

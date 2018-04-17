@@ -19,5 +19,6 @@ class TestDaemonds(unittest.TestCase):
         dp.run()
         dp.stop()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

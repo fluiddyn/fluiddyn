@@ -7,6 +7,7 @@
 import os
 import sys
 from contextlib import contextmanager
+
 if sys.version_info >= (3, 0):
     from io import StringIO
 else:
@@ -14,9 +15,10 @@ else:
 
 
 def fileno(file_or_fd):
-    fd = getattr(file_or_fd, 'fileno', lambda: file_or_fd)()
+    fd = getattr(file_or_fd, "fileno", lambda: file_or_fd)()
     if not isinstance(fd, int):
         raise ValueError("Expected a file (`.fileno()`) or a file descriptor")
+
     return fd
 
 
@@ -50,12 +52,13 @@ def stdout_redirected(doit=True, to=os.devnull, stdout=None):
     # copy stdout_fd before it is overwritten
     # NOTE: `copied` is inheritable on Windows when duplicating a standard
     # stream
-    with os.fdopen(os.dup(stdout_fd), 'wb') as copied:
+    with os.fdopen(os.dup(stdout_fd), "wb") as copied:
         stdout.flush()  # flush library buffers that dup2 knows nothing about
         if isinstance(to, StringIO):
             sys.stdout = to
             try:
                 yield to
+
             finally:
                 to.flush()
                 sys.stdout = stdout
@@ -63,11 +66,12 @@ def stdout_redirected(doit=True, to=os.devnull, stdout=None):
             try:
                 os.dup2(fileno(to), stdout_fd)  # $ exec >&to
             except ValueError:  # filename
-                with open(to, 'wb') as to_file:
+                with open(to, "wb") as to_file:
                     os.dup2(to_file.fileno(), stdout_fd)  # $ exec > to
 
             try:
                 yield stdout  # allow code to be run with the redirected stdout
+
             finally:
                 # restore stdout to its previous value
                 # NOTE: dup2 makes stdout_fd inheritable unconditionally

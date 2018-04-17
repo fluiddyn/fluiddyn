@@ -21,7 +21,8 @@ from .local import ClusterLocal
 
 class ClusterPBS(ClusterLocal):
     """Base class for clusters with PBS job scheduler."""
-    _doc_commands = ("""
+    _doc_commands = (
+        """
 Useful commands
 ---------------
 
@@ -29,41 +30,58 @@ qsub
 qstat -u $USER
 qdel
 qhold
-qrls""")
-    name_cluster = ''
+qrls"""
+    )
+    name_cluster = ""
     nb_cores_per_node = 32
     default_project = None
-    cmd_run = 'mpirun'
-    cmd_launch = 'qsub'
-    max_walltime = '23:59:59'
+    cmd_run = "mpirun"
+    cmd_launch = "qsub"
+    max_walltime = "23:59:59"
 
     def __init__(self):
         self.check_pbs()
-        self.commands_setting_env = ['cd $PBS_O_WORKDIR']
+        self.commands_setting_env = ["cd $PBS_O_WORKDIR"]
         self.commands_unsetting_env = []
 
     def check_pbs(self):
         """Check if this script is run on a frontal with pbs installed."""
         try:
-            subprocess.check_call(['qsub', '--version'],
-                                  stdout=subprocess.PIPE)
+            subprocess.check_call(["qsub", "--version"], stdout=subprocess.PIPE)
         except OSError:
             raise ValueError(
-                'This script should be run on a cluster with PBS installed.')
+                "This script should be run on a cluster with PBS installed."
+            )
 
-    def check_name_cluster(self, env='HOSTNAME'):
+    def check_name_cluster(self, env="HOSTNAME"):
         """Check if self.name_cluster matches the environment variable."""
 
         if self.name_cluster not in os.getenv(env):
-            raise ValueError('Cluster name mismatch detected; expected ' +
-                             self.name_cluster)
+            raise ValueError(
+                "Cluster name mismatch detected; expected " + self.name_cluster
+            )
 
     def submit_command(
-            self, command, name_run='fluiddyn', nb_nodes=1,
-            nb_cores_per_node=None, walltime=None, project=None,
-            queue=None, nb_mpi_processes=None, omp_num_threads=1, nb_runs=1,
-            path_launching_script=None, path_resume=None, retain_script=True,
-            ask=True, bash=True, email=None, interactive=False, **kwargs):
+        self,
+        command,
+        name_run="fluiddyn",
+        nb_nodes=1,
+        nb_cores_per_node=None,
+        walltime=None,
+        project=None,
+        queue=None,
+        nb_mpi_processes=None,
+        omp_num_threads=1,
+        nb_runs=1,
+        path_launching_script=None,
+        path_resume=None,
+        retain_script=True,
+        ask=True,
+        bash=True,
+        email=None,
+        interactive=False,
+        **kwargs
+    ):
         """Submit a command.
 
         Parameters
@@ -108,29 +126,30 @@ qrls""")
             Use `cmd_run_interactive` instead of `cmd_run` inside the jobscript
         """
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
-            nb_nodes, nb_cores_per_node, nb_mpi_processes)
+            nb_nodes, nb_cores_per_node, nb_mpi_processes
+        )
 
         path_launching_script = self._make_path_launching_script()
 
         self._check_walltime(walltime)
 
-        is_resume_script = bool('resumer' in path_launching_script)
+        is_resume_script = bool("resumer" in path_launching_script)
         if project is None:
             project = self.default_project
 
         launching_command = self.cmd_launch
 
         if is_resume_script:
-            dependencies = input('Enter jobid dependencies :').split()
-            launching_command += ' -W depend=afternotok:' + ':'.join(dependencies)
+            dependencies = input("Enter jobid dependencies :").split()
+            launching_command += " -W depend=afternotok:" + ":".join(dependencies)
         else:
             dependencies = None
 
         create_txt_kwargs = locals()
-        del create_txt_kwargs['self']
+        del create_txt_kwargs["self"]
         txt = self._create_txt_launching_script(**create_txt_kwargs)
         self._write_txt_launching_script(txt, path_launching_script)
-        launching_command += ' ./' + path_launching_script
+        launching_command += " ./" + path_launching_script
         self._launch(launching_command, command, bash, ask)
 
         if not retain_script:
@@ -140,10 +159,10 @@ qrls""")
         for n in range(0, nb_times_resume):
             nb_runs = 1
             path = path_resume
-            path_launching_script = self._make_path_launching_script('resumer')
+            path_launching_script = self._make_path_launching_script("resumer")
             submit_script_kwargs = locals()
-            del submit_script_kwargs['self']
-            del submit_script_kwargs['command']
+            del submit_script_kwargs["self"]
+            del submit_script_kwargs["command"]
             self.submit_script(**submit_script_kwargs)
 
     def _create_txt_launching_script(self, **kwargs):
@@ -175,70 +194,74 @@ qrls""")
             # Run the executable named myexe
             mpirun -n 128 ./myexe
         """
-        path_launching_script = kwargs['path_launching_script']
-        command = kwargs['command']
-        name_run = kwargs['name_run']
-        project = kwargs['project']
-        queue = kwargs['queue']
-        nb_nodes = kwargs['nb_nodes']
-        nb_cores_per_node = kwargs['nb_cores_per_node']
-        walltime = kwargs['walltime']
-        nb_mpi_processes = kwargs['nb_mpi_processes']
-        omp_num_threads = kwargs['omp_num_threads']
-        dependencies = kwargs['dependencies']
-        email = kwargs['email']
-        is_resume_script = kwargs['is_resume_script']
+        path_launching_script = kwargs["path_launching_script"]
+        command = kwargs["command"]
+        name_run = kwargs["name_run"]
+        project = kwargs["project"]
+        queue = kwargs["queue"]
+        nb_nodes = kwargs["nb_nodes"]
+        nb_cores_per_node = kwargs["nb_cores_per_node"]
+        walltime = kwargs["walltime"]
+        nb_mpi_processes = kwargs["nb_mpi_processes"]
+        omp_num_threads = kwargs["omp_num_threads"]
+        dependencies = kwargs["dependencies"]
+        email = kwargs["email"]
+        is_resume_script = kwargs["is_resume_script"]
 
-        logfile = 'PBS.{}'.format(name_run)
-        logfile_stdout = logfile + '.${PBS_JOBID}.stdout'
+        logfile = "PBS.{}".format(name_run)
+        logfile_stdout = logfile + ".${PBS_JOBID}.stdout"
 
-        txt = ('#!/bin/bash -l\n\n')
+        txt = ("#!/bin/bash -l\n\n")
 
-        txt += '#PBS -N {}\n\n'.format(name_run)
+        txt += "#PBS -N {}\n\n".format(name_run)
         if project is not None:
-            txt += '#PBS -A {}\n\n'.format(project)
+            txt += "#PBS -A {}\n\n".format(project)
 
         if queue is not None:
-            txt += '#PBS -q {}\n\n'.format(queue)
+            txt += "#PBS -q {}\n\n".format(queue)
 
         if walltime is not None:
             txt += "#PBS -l walltime={}\n".format(walltime)
 
-        txt += "#PBS -l nodes={}:ppn={}\n".format(
-            nb_nodes, nb_cores_per_node)
+        txt += "#PBS -l nodes={}:ppn={}\n".format(nb_nodes, nb_cores_per_node)
 
         if email is not None:
-            txt += '#PBS -m a\n'
-            txt += '#PBS -M {}\n'.format(email)
+            txt += "#PBS -m a\n"
+            txt += "#PBS -M {}\n".format(email)
 
-        txt += '#PBS -e {}.%J.stderr\n'.format(logfile)
-        txt += '#PBS -o {}.%J.stdout\n\n'.format(logfile)
+        txt += "#PBS -e {}.%J.stderr\n".format(logfile)
+        txt += "#PBS -o {}.%J.stdout\n\n".format(logfile)
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
         txt += self._log_job(
-            nb_mpi_processes, path_launching_script, logfile_stdout, command,
-            'PBS_JOB.md')
+            nb_mpi_processes,
+            path_launching_script,
+            logfile_stdout,
+            command,
+            "PBS_JOB.md",
+        )
 
-        txt += '\n'.join(self.commands_setting_env) + '\n\n'
+        txt += "\n".join(self.commands_setting_env) + "\n\n"
 
         if omp_num_threads is not None:
-            txt += 'export OMP_NUM_THREADS={}\n\n'.format(
-                omp_num_threads)
+            txt += "export OMP_NUM_THREADS={}\n\n".format(omp_num_threads)
 
         if is_resume_script:
             jobid = dependencies[0]
-            main_logfile = 'PBS.{}.{}.stdout'.format(name_run, jobid)
-            txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' " + "{}\n".format(main_logfile)
+            main_logfile = "PBS.{}.{}.stdout".format(name_run, jobid)
+            txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' " + "{}\n".format(
+                main_logfile
+            )
 
         cmd = self.cmd_run
 
         if nb_mpi_processes > 1:
-            txt += '{} -n {} '.format(cmd, nb_mpi_processes)
+            txt += "{} -n {} ".format(cmd, nb_mpi_processes)
 
         if is_resume_script:
-            txt += '{} $PATH_RUN'.format(command)
+            txt += "{} $PATH_RUN".format(command)
         else:
             txt += command
 
-        txt += '\n' + '\n'.join(self.commands_unsetting_env)
+        txt += "\n" + "\n".join(self.commands_unsetting_env)
         return txt

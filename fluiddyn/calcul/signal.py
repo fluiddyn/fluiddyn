@@ -24,7 +24,7 @@ def decimate(sig, q, nwindow=None, axis=-1):
 
     shape_decimated = list(sig.shape)
     len_axis = shape_decimated[axis]
-    shape_decimated[axis] = int(len_axis/q)
+    shape_decimated[axis] = int(len_axis / q)
 
     sigdec = np.empty(shape_decimated, dtype=sig.dtype)
 
@@ -33,9 +33,9 @@ def decimate(sig, q, nwindow=None, axis=-1):
 
         sl = list(inds)
 
-        ind_axis = q*inds[axis]
-        indmin_axis = max(ind_axis-nwindow, 0)
-        indmax_axis = min(ind_axis+nwindow, len_axis-1)
+        ind_axis = q * inds[axis]
+        indmin_axis = max(ind_axis - nwindow, 0)
+        indmax_axis = min(ind_axis + nwindow, len_axis - 1)
 
         sl[axis] = slice(indmin_axis, indmax_axis)
 
@@ -51,17 +51,20 @@ def decimate(sig, q, nwindow=None, axis=-1):
 
 class FunctionLinInterp(object):
     """Function defined by a linear interpolation."""
+
     def __init__(self, x, f):
-        if (not isinstance(x, (list, tuple, np.ndarray)) or
-                not isinstance(f, (list, tuple, np.ndarray))):
-            raise ValueError('x and f should be sequence.')
+        if (
+            not isinstance(x, (list, tuple, np.ndarray))
+            or not isinstance(f, (list, tuple, np.ndarray))
+        ):
+            raise ValueError("x and f should be sequence.")
 
         self.x = np.array(x, np.float64)
         self.f = np.array(f, np.float64)
 
         # test for same length
         if len(x) != len(f):
-            raise ValueError('len(x) != len(f)')
+            raise ValueError("len(x) != len(f)")
 
         # test for x increasing
         if any([x2 - x1 < 0 for x1, x2 in zip(self.x, self.x[1:])]):
@@ -79,30 +82,33 @@ class FunctionLinInterp(object):
         size_axe = [0.13, 0.16, 0.84, 0.76]
         ax = fig.add_axes(size_axe)
 
-        ax.set_xlabel(r'$x$')
-        ax.set_ylabel(r'$y$')
-        ax.plot(self.x, self.f, 'k-.')
+        ax.set_xlabel(r"$x$")
+        ax.set_ylabel(r"$y$")
+        ax.plot(self.x, self.f, "k-.")
 
         show()
 
 
-def deriv(f, x=None, dx=None, method='diff'):
+def deriv(f, x=None, dx=None, method="diff"):
     """Derive a 1D signal."""
     if dx is None:
         dx = np.diff(x)
 
-    if method == 'diff':
-        x = (x[:-1]+x[1:])/2
+    if method == "diff":
+        x = (x[:-1] + x[1:]) / 2
         return x, np.diff(f) / dx
-    elif method == 'convolve':
+
+    elif method == "convolve":
         return np.convolve(f, [1, -1]) / dx
-    elif method == 'gaussian_filter':
-        return ndimage.gaussian_filter1d(f, sigma=1, order=1, mode='wrap')/dx
+
+    elif method == "gaussian_filter":
+        return ndimage.gaussian_filter1d(f, sigma=1, order=1, mode="wrap") / dx
+
     else:
-        raise ValueError('unknown method...')
+        raise ValueError("unknown method...")
 
 
-def smooth(x, window_len=11, window='hanning'):
+def smooth(x, window_len=11, window="hanning"):
     """smooth the data using a window with requested size.
 
     This method is based on the convolution of a scaled window with
@@ -157,40 +163,41 @@ def smooth(x, window_len=11, window='hanning'):
         return x
 
     if window_len % 2 == 0:
-        raise ValueError('window_len should be odd.')
+        raise ValueError("window_len should be odd.")
 
-    if window not in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
+    if window not in ["flat", "hanning", "hamming", "bartlett", "blackman"]:
         raise ValueError(
             "Window is on of 'flat', 'hanning', "
-            "'hamming', 'bartlett', 'blackman'")
+            "'hamming', 'bartlett', 'blackman'"
+        )
 
-    s = np.r_[x[window_len-1:0:-1], x, x[-1:-window_len:-1]]
-    if window == 'flat':  # moving average
-        w = np.ones(window_len, 'd')
+    s = np.r_[x[window_len - 1:0:-1], x, x[-1:-window_len:-1]]
+    if window == "flat":  # moving average
+        w = np.ones(window_len, "d")
     else:
-        w = eval('np.'+window+'(window_len)')
+        w = eval("np." + window + "(window_len)")
 
-    y = np.convolve(w/w.sum(), s, mode='valid')
-    return y[(window_len//2-1):-(window_len//2+1)]
+    y = np.convolve(w / w.sum(), s, mode="valid")
+    return y[(window_len // 2 - 1):-(window_len // 2 + 1)]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # Data:
-    x = np.linspace(0, 2*np.pi, 100)
-    f = np.sin(x) + .02*(np.random.rand(100)-.5)
+    x = np.linspace(0, 2 * np.pi, 100)
+    f = np.sin(x) + .02 * (np.random.rand(100) - .5)
 
     # First derivatives:
     dx = x[1] - x[0]  # use np.diff(x) if x is not uniform
     df = np.diff(f) / dx
     cf = np.convolve(f, [1, -1]) / dx
-    gf = ndimage.gaussian_filter1d(f, sigma=1, order=1, mode='wrap') / dx
+    gf = ndimage.gaussian_filter1d(f, sigma=1, order=1, mode="wrap") / dx
 
     # Second derivatives:
-    dxdx = dx**2
+    dxdx = dx ** 2
     ddf = np.diff(f, 2) / dxdx
     ccf = np.convolve(f, [1, -2, 1]) / dxdx
-    ggf = ndimage.gaussian_filter1d(f, sigma=1, order=2, mode='wrap') / dxdx
+    ggf = ndimage.gaussian_filter1d(f, sigma=1, order=2, mode="wrap") / dxdx
 
     sig = np.zeros([4, 4, 4])
 

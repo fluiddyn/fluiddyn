@@ -9,18 +9,20 @@ import os
 from glob import glob
 from shutil import rmtree, copy
 
-from .. rdvision import read_seq, read_xml, read_sqb, SetOfFiles
+from ..rdvision import read_seq, read_xml, read_sqb, SetOfFiles
 
-input_dir = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), 'rdvision_files'))
-input_files = glob(os.path.join(input_dir, '*'))
+input_dir = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "rdvision_files")
+)
+input_files = glob(os.path.join(input_dir, "*"))
 
 
 class TestDantex(unittest.TestCase):
     """Test fluiddyn.io.rdvision module."""
+
     @classmethod
     def setUpClass(cls):
-        work_dir = cls._work_dir = 'test_fluiddyn_io_rdvision'
+        work_dir = cls._work_dir = "test_fluiddyn_io_rdvision"
         if not os.path.exists(work_dir):
             os.mkdir(work_dir)
 
@@ -33,7 +35,7 @@ class TestDantex(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        os.chdir('..')
+        os.chdir("..")
         rmtree(cls._work_dir)
 
     def test(self):
@@ -41,5 +43,6 @@ class TestDantex(unittest.TestCase):
         read_sqb(self.base_name)
         SetOfFiles(self.base_name)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

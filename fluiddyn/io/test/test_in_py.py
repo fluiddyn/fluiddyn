@@ -14,7 +14,7 @@ class TestInPy(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._work_dir = 'test_fluiddyn_io_in_py'
+        cls._work_dir = "test_fluiddyn_io_in_py"
         if not os.path.exists(cls._work_dir):
             os.mkdir(cls._work_dir)
 
@@ -22,7 +22,7 @@ class TestInPy(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        os.chdir('..')
+        os.chdir("..")
         rmtree(cls._work_dir)
 
     def test(self):
@@ -30,19 +30,21 @@ class TestInPy(unittest.TestCase):
         b = np.ones(2)
         c = np.ones([2, 2])
         d = 2
-        save_in_py('file_globals.py', locals(), ('a', 'b', 'c'))
+        save_in_py("file_globals.py", locals(), ("a", "b", "c"))
         import file_globals as fg
+
         self.assertEqual(a, fg.a)
         self.assertTrue(np.allclose(b, fg.b))
         self.assertTrue(np.allclose(c, fg.c))
 
-        d = {'a': a, 'b': b, 'c': d}
-        save_in_py('file_dict.py', d)
+        d = {"a": a, "b": b, "c": d}
+        save_in_py("file_dict.py", d)
 
-        fd = run_path('file_dict.py')
-        self.assertEqual(d['a'], fd['a'])
-        self.assertTrue(np.allclose(d['b'], fd['b']))
-        self.assertTrue(np.allclose(d['c'], fd['c']))
+        fd = run_path("file_dict.py")
+        self.assertEqual(d["a"], fd["a"])
+        self.assertTrue(np.allclose(d["b"], fd["b"]))
+        self.assertTrue(np.allclose(d["c"], fd["c"]))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

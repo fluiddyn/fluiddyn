@@ -27,7 +27,7 @@ import numpy as np
 try:
     import shtns
 except ImportError:
-    warn('ImportError shtns')
+    warn("ImportError shtns")
 else:
     sht_orthonormal = shtns.sht_orthonormal
     sht_fourpi = shtns.sht_fourpi
@@ -66,7 +66,7 @@ flags = (shtns.sht_quick_init | shtns.SHT_PHI_CONTIGUOUS |
          shtns.SHT_SOUTH_POLE_FIRST)
 """
 
-radius_earth = 6367470.    # earth radius (m)
+radius_earth = 6367470.  # earth radius (m)
 
 
 def compute_lmax(nlat, nl_order=2):
@@ -79,16 +79,16 @@ def compute_nlatnlon(lmax, nl_order=2):
     nlat = int((lmax + 1) * (nl_order + 1) / 2)
     if nlat % 2 == 1:
         nlat += 1
-    return nlat, 2*nlat
+    return nlat, 2 * nlat
 
 
 def _for_test(i):
     if i % 2 == 1:
-        assert(i == compute_lmax(compute_nlatnlon(i)[0]))
+        assert i == compute_lmax(compute_nlatnlon(i)[0])
 
 
 def bin_int(n, width):
-    return ''.join(str((n >> i) & 1) for i in range(width-1, -1, -1))
+    return "".join(str((n >> i) & 1) for i in range(width - 1, -1, -1))
 
 
 class EasySHT(object):
@@ -181,14 +181,20 @@ class EasySHT(object):
     where t is the colatitude and phi is the longitude.
 
     """
-    def __init__(self, lmax=15,
-                 mmax=None, mres=1,
-                 norm=None,
-                 nlat=None, nlon=None,
-                 flags=None,
-                 polar_opt=1.0e-8,
-                 nl_order=2,
-                 radius=radius_earth):
+
+    def __init__(
+        self,
+        lmax=15,
+        mmax=None,
+        mres=1,
+        norm=None,
+        nlat=None,
+        nlon=None,
+        flags=None,
+        polar_opt=1.0e-8,
+        nl_order=2,
+        radius=radius_earth,
+    ):
 
         # to get a clear ImportError
         import shtns
@@ -197,8 +203,11 @@ class EasySHT(object):
             norm = sht_fourpi
 
         if flags is None:
-            flags = (shtns.sht_quick_init | shtns.SHT_PHI_CONTIGUOUS |
-                     shtns.SHT_SOUTH_POLE_FIRST)
+            flags = (
+                shtns.sht_quick_init
+                | shtns.SHT_PHI_CONTIGUOUS
+                | shtns.SHT_SOUTH_POLE_FIRST
+            )
 
         # print(lmax,mmax,mres,nlat,nlon,flags,polar_opt,nl_order,radius)
         # print('flags', flags,
@@ -206,7 +215,8 @@ class EasySHT(object):
         #       shtns.SHT_SOUTH_POLE_FIRST)
 
         if lmax is None and nlat is None:
-            raise ValueError('lmax or nlat should be given.')
+            raise ValueError("lmax or nlat should be given.")
+
         elif lmax is None:
             lmax = compute_lmax(nlat)
 
@@ -221,20 +231,23 @@ class EasySHT(object):
             self.mmax = self.lmax
             self.mres = 1
         else:
-            self.mmax = int(float(lmax)/mres)
+            self.mmax = int(float(lmax) / mres)
             self.mres = mres
 
-        print('lmax={}, mmax={}, mres={}, norm={}'.format(
-            self.lmax, self.mmax, self.mres, norm))
+        print(
+            "lmax={}, mmax={}, mres={}, norm={}".format(
+                self.lmax, self.mmax, self.mres, norm
+            )
+        )
 
         self.sh = shtns.sht(self.lmax, self.mmax, self.mres, norm=norm)
 
         bin_flags = bin_int(flags, 14)
         # print(bin_flags, bin_flags[-14])
-        if bin_flags[-14] == '1':
-            self.order_lat = 'south_to_north'
+        if bin_flags[-14] == "1":
+            self.order_lat = "south_to_north"
         else:
-            self.order_lat = 'north_to_south'
+            self.order_lat = "north_to_south"
 
         # in shtns, 0 means None
         if nlat is None:
@@ -243,13 +256,17 @@ class EasySHT(object):
             nlon = 0
 
         self.nlat, self.nlon = self.sh.set_grid(
-            nlat=nlat, nphi=nlon,
-            flags=flags, polar_opt=polar_opt, nl_order=nl_order)
+            nlat=nlat,
+            nphi=nlon,
+            flags=flags,
+            polar_opt=polar_opt,
+            nl_order=nl_order,
+        )
         # print('flags', flags)
 
         self.sin_lats = self.sh.cos_theta
-        self.lons = np.arange(self.nlon) * 360./(self.nlon*self.mres)
-        self.lats = np.arcsin(self.sin_lats)/np.pi*180.
+        self.lons = np.arange(self.nlon) * 360. / (self.nlon * self.mres)
+        self.lats = np.arcsin(self.sin_lats) / np.pi * 180.
 
         # for fluidsim plotting
         self.x_seq = self.lons
@@ -257,9 +274,9 @@ class EasySHT(object):
 
         self.l_idx = self.sh.l
         # print('l_idx=', self.l_idx)
-        self.l2_idx = self.l_idx*(self.l_idx+1)
-        self.K2 = self.l2_idx / self.radius**2
-        self.K4 = self.K2**2
+        self.l2_idx = self.l_idx * (self.l_idx + 1)
+        self.K2 = self.l2_idx / self.radius ** 2
+        self.K4 = self.K2 ** 2
 
         self.K2_not0 = self.K2[:]
         self.K2_not0[0] = 1e-15
@@ -268,26 +285,26 @@ class EasySHT(object):
         self.m_idx = self.sh.m
         self.nlm = self.sh.nlm
 
-        self.deltax = 360./(self.nlon*self.mres)
+        self.deltax = 360. / (self.nlon * self.mres)
         # wrong but useful for fluidsim
         self.deltay = self.deltax
 
         # create arrays 2D lats et lons
         self.LONS, self.LATS = np.meshgrid(self.lons, self.lats)
-        self.cosLATS = np.cos(self.LATS/180*np.pi)
+        self.cosLATS = np.cos(self.LATS / 180 * np.pi)
 
-        self.lrange = np.arange(self.lmax+1)
-        self.l2_l = self.lrange*(self.lrange+1)
-        self.kh_l = np.sqrt(self.l2_l)/self.radius
+        self.lrange = np.arange(self.lmax + 1)
+        self.l2_l = self.lrange * (self.lrange + 1)
+        self.kh_l = np.sqrt(self.l2_l) / self.radius
 
         self._complex64_save_netCFD = np.dtype(
-            [('real', np.float32), ('imag', np.float32)])
+            [("real", np.float32), ("imag", np.float32)]
+        )
 
         # print(lmax,mmax,mres,nlat,nlon,flags,polar_opt,nl_order,radius)
 
         # no MPI decomposition
-        self.shapeX = self.shapeX_loc = self.shapeX_seq = (
-            self.nlat, self.nlon)
+        self.shapeX = self.shapeX_loc = self.shapeX_seq = (self.nlat, self.nlon)
         self.shapeK = self.shapeK_loc = self.shapeK_seq = (self.nlm,)
 
         self.sht_as_arg = self.sh.spat_to_SH
@@ -303,21 +320,26 @@ class EasySHT(object):
 
     def produce_str_describing_oper(self):
         """Produce a string describing the operator."""
-        return 'lmax{}_nlat{}_nlon{}'.format(self.lmax, self.nlat, self.nlon)
+        return "lmax{}_nlat{}_nlon{}".format(self.lmax, self.nlat, self.nlon)
 
     def produce_long_str_describing_oper(self):
-        return '\n'.join((
-            'Spherical harmonic transforms '
-            'nlat = {0} ; nlon = {1}'.format(self.nlat, self.nlon),
-            '(1 point every {0:6.2g} km for the earth)\n'.format(
-                2*np.pi*radius_earth/self.nlon/1000)))
+        return "\n".join(
+            (
+                "Spherical harmonic transforms "
+                "nlat = {0} ; nlon = {1}".format(self.nlat, self.nlon),
+                "(1 point every {0:6.2g} km for the earth)\n".format(
+                    2 * np.pi * radius_earth / self.nlon / 1000
+                ),
+            )
+        )
 
     def idx_lm(self, l, m):
         """ idx_lm(self, l,m)"""
         if l >= 0 and 0 <= m <= l:
             return self.sh.idx(int(l), int(m))
+
         else:
-            raise ValueError('not (l>=0 and m>=0 and m<=l)')
+            raise ValueError("not (l>=0 and m>=0 and m<=l)")
 
     # functions for initialisation of field
 
@@ -325,31 +347,31 @@ class EasySHT(object):
         """Create an array representing a field in spectral space."""
         if value is None:
             field_lm = np.empty(self.nlm, dtype)
-        elif value == 'rand':
-            field_lm = np.random.randn(self.nlm)+1.j*np.random.randn(self.nlm)
+        elif value == "rand":
+            field_lm = np.random.randn(self.nlm) + 1.j * np.random.randn(self.nlm)
         elif value == 0:
             field_lm = np.zeros(self.nlm, dtype)
         else:
-            field_lm = value*np.ones(self.nlm, dtype)
+            field_lm = value * np.ones(self.nlm, dtype)
         return field_lm
 
     def create_array_spat(self, value=None):
         """Create an array representing a field in spatial space."""
         if value is None:
             field = np.empty(self.shapeX)
-        elif value == 'rand':
+        elif value == "rand":
             field = np.random.randn(self.nlat, self.nlon)
         elif value == 0:
             field = np.zeros(self.shapeX)
         else:
-            field = value*np.ones(self.shapeX)
+            field = value * np.ones(self.shapeX)
         # a spatial array matching a grid build with SHT_PHI_CONTIGUOUS
         return field
 
     def convert2complex64_save_netCFD(self, f_lm):
         result = np.empty(f_lm.shape, self._complex64_save_netCFD)
-        result['real'] = f_lm.real
-        result['imag'] = f_lm.imag
+        result["real"] = f_lm.real
+        result["imag"] = f_lm.imag
         return result
 
     # functions for scalar spherical harmonic transforms (forward and backward)
@@ -373,7 +395,7 @@ class EasySHT(object):
         or if f_lm already exists:
         sh_from_spat(f, f_lm)
         """
-        if field.dtype != np.dtype('float'):
+        if field.dtype != np.dtype("float"):
             field = np.array(field, float)
         if field_lm is None:
             field_lm = self.create_array_sh()
@@ -385,7 +407,7 @@ class EasySHT(object):
         """Inverse spherical harmonic transform.
 
         """
-        if field_lm.dtype != np.dtype('complex'):
+        if field_lm.dtype != np.dtype("complex"):
             field_lm = np.array(field_lm, complex)
         if field is None:
             field = self.create_array_spat()
@@ -398,30 +420,41 @@ class EasySHT(object):
         for i in range(nb_sht):
             f_lm = self.sh_from_spat(f)
         t2 = time()
-        print('    mean time for 1 forward SHT: {:3.6f} s'.format(
-            (t2-t1)/nb_sht))
+        print(
+            "    mean time for 1 forward SHT: {:3.6f} s".format(
+                (t2 - t1) / nb_sht
+            )
+        )
         t1 = time()
         for i in range(nb_sht):
             f = self.spat_from_sh(f_lm)
         t2 = time()
-        print('    mean time for 1 backward SHT: {:3.6f} s'.format(
-            (t2-t1)/nb_sht))
+        print(
+            "    mean time for 1 backward SHT: {:3.6f} s".format(
+                (t2 - t1) / nb_sht
+            )
+        )
         uu = np.random.rand(self.nlat, self.nlon)
         vv = np.random.rand(self.nlat, self.nlon)
         t1 = time()
         for i in range(nb_sht):
             hdiv, hrot = self.hdivrotsh_from_uv(uu, vv)
         t2 = time()
-        print('    mean time for hdivrotsh_from_uuvv vectorial SHT: '
-              '{:3.6f} s'.format((t2-t1)/nb_sht))
+        print(
+            "    mean time for hdivrotsh_from_uuvv vectorial SHT: "
+            "{:3.6f} s".format((t2 - t1) / nb_sht)
+        )
         t1 = time()
         for i in range(nb_sht):
             uu, vv = self.uv_from_hdivrotsh(hdiv, hrot)
         t2 = time()
-        print('    mean time for uv_from_hdivrotsh vectorial SHT: '
-              '{:3.6f} s'.format((t2-t1)/nb_sht))
+        print(
+            "    mean time for uv_from_hdivrotsh vectorial SHT: "
+            "{:3.6f} s".format((t2 - t1) / nb_sht)
+        )
 
     # functions for 2D vectorial spherical harmonic transforms
+
     def uv_from_hdivrotsh(self, hdiv_lm, hrot_lm, uu=None, vv=None):
         """
         u, v from h, div, rot (u and v are overwritten)
@@ -519,19 +552,19 @@ class EasySHT(object):
         if gradf_lon is None:
             gradf_lon = self.create_array_spat(0)
             gradf_lat = self.create_array_spat(0)  # becareful bug if not 0!!!
-#       We do not use SHsph_to_spat() because it seems that there is a problem
-####    self.sh.SHsph_to_spat(f_lm, gradf_lat, gradf_lon)
-#       instead we use SHsphtor_to_spat(...) with tor_lm= zeros_lm
+        #       We do not use SHsph_to_spat() because it seems that there is a problem
+        ####    self.sh.SHsph_to_spat(f_lm, gradf_lat, gradf_lon)
+        #       instead we use SHsphtor_to_spat(...) with tor_lm= zeros_lm
         zeros_lm = self.create_array_sh(0.)
         self.sh.SHsphtor_to_spat(f_lm, zeros_lm, gradf_lat, gradf_lon)
 
-        #if self.order_lat == 'south_to_north':
+        # if self.order_lat == 'south_to_north':
         #    sign_inv_vv = -1
-        #else:
+        # else:
         #    sign_inv_vv = 1
         # sign_inv_vv = 1
-        gradf_lat[:] = +gradf_lat/self.radius  # *sign_inv_vv
-        gradf_lon[:] = +gradf_lon/self.radius
+        gradf_lat[:] = +gradf_lat / self.radius  # *sign_inv_vv
+        gradf_lon[:] = +gradf_lon / self.radius
         # print('radius', self.radius)
         return gradf_lon, gradf_lat
 
@@ -557,18 +590,17 @@ class EasySHT(object):
     def print_info(self):
         print(self.produce_str_describing_oper())
         self.sh.print_info()
-        print('')
+        print("")
 
     def print_array_sh(self, field_lm, name_field_lm, lmax_print=10):
         lmax_print = np.min([lmax_print, self.lmax])
-        print(name_field_lm, '= ')
-        for n in range(lmax_print+1):
-            print('n={:2d} '.format(n), end='')
-            for m in range(n+1):
-                temp_idx = m*self.lmax - (m+1)*m/2 + m + n
-                sys.stdout.write('{:8.3g} '.format(
-                    np.abs(field_lm[temp_idx])))
-            print('')
+        print(name_field_lm, "= ")
+        for n in range(lmax_print + 1):
+            print("n={:2d} ".format(n), end="")
+            for m in range(n + 1):
+                temp_idx = m * self.lmax - (m + 1) * m / 2 + m + n
+                sys.stdout.write("{:8.3g} ".format(np.abs(field_lm[temp_idx])))
+            print("")
 
     # functions for the computation of spectra and co-spectra
 
@@ -578,31 +610,34 @@ class EasySHT(object):
 
     def _spectrum_from_array_desh(self, array_desh):
         """Compute spectrum(l) from array_desh(ilm)"""
-        spectrum = np.zeros(self.lmax+1)
+        spectrum = np.zeros(self.lmax + 1)
         for ilm in range(0, self.nlm):
             spectrum[self.l_idx[ilm]] += array_desh[ilm]
         return spectrum
 
     def _array_desh_from_sh(self, field_lm, key_field):
         """Compute the array_desh (density of energy) from an field_lm"""
-        if key_field[:1] == 'u' or key_field[:1] == 'v':
-            array_desh = abs(field_lm)**2/2.
-        elif (key_field[:1] == 'T' or key_field[:2] == 'ps' or
-              key_field[:1] == 'o'):
-            array_desh = abs(field_lm)**2/2.
-        elif key_field[:4] == 'beta':
+        if key_field[:1] == "u" or key_field[:1] == "v":
+            array_desh = abs(field_lm) ** 2 / 2.
+        elif (
+            key_field[:1] == "T" or key_field[:2] == "ps" or key_field[:1] == "o"
+        ):
+            array_desh = abs(field_lm) ** 2 / 2.
+        elif key_field[:4] == "beta":
             array_desh = self.create_array_sh(0., float)
-            array_desh = abs(field_lm)**2
-        elif key_field[:2] == 'uD' or key_field[:2] == 'uR':
-            array_desh = self.l2_idx * (abs(field_lm)**2)/2
-        elif key_field[:4] == 'hdiv' or key_field[:4] == 'hrot':
+            array_desh = abs(field_lm) ** 2
+        elif key_field[:2] == "uD" or key_field[:2] == "uR":
+            array_desh = self.l2_idx * (abs(field_lm) ** 2) / 2
+        elif key_field[:4] == "hdiv" or key_field[:4] == "hrot":
             array_desh = self.create_array_sh(0., float)
             COND = self.l2_idx > 0
-            array_desh[COND] = self.radius**2/self.l2_idx[COND]*abs(
-                field_lm[COND])**2/2
+            array_desh[COND] = self.radius ** 2 / self.l2_idx[COND] * abs(
+                field_lm[COND]
+            ) ** 2 / 2
         else:
-            raise ValueError('key_field is not correct')
-        array_desh[self.m_idx > 0] = 2*array_desh[self.m_idx > 0]
+            raise ValueError("key_field is not correct")
+
+        array_desh[self.m_idx > 0] = 2 * array_desh[self.m_idx > 0]
         return array_desh
 
     def spectrum_from_sh(self, field_lm, key_field):
@@ -613,26 +648,32 @@ class EasySHT(object):
 
     def cospectrum_from_2fieldssh(self, f_lm, g_lm):
         """ compute cospectrum(l) from f_lm(ilm) and g_lm(ilm)"""
-        cospectrum = np.zeros(self.lmax+1)
+        cospectrum = np.zeros(self.lmax + 1)
 
         array_desh = f_lm.conjugate() * g_lm + f_lm * g_lm.conjugate()
         array_desh = array_desh.real
-        array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0]/2
+        array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0] / 2
 
         for ilm in range(self.nlm):
             cospectrum[self.l_idx[ilm]] += array_desh[ilm]
         return cospectrum
 
-    def cospectrum_from_2vectorssh(self, f_lon_lm, f_lat_lm,
-                                   g_lon_lm, g_lat_lm):
+    def cospectrum_from_2vectorssh(self, f_lon_lm, f_lat_lm, g_lon_lm, g_lat_lm):
         """ compute cospectrum(l)..."""
-        cospectrum = np.zeros(self.lmax+1)
+        cospectrum = np.zeros(self.lmax + 1)
 
         array_desh = (
-            f_lon_lm.conjugate() * g_lon_lm + f_lon_lm * g_lon_lm.conjugate() +
-            f_lat_lm.conjugate() * g_lat_lm + f_lat_lm * g_lat_lm.conjugate())
+            f_lon_lm.conjugate()
+            * g_lon_lm
+            + f_lon_lm
+            * g_lon_lm.conjugate()
+            + f_lat_lm.conjugate()
+            * g_lat_lm
+            + f_lat_lm
+            * g_lat_lm.conjugate()
+        )
         array_desh = array_desh.real
-        array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0]/2
+        array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0] / 2
 
         for ilm in range(self.nlm):
             cospectrum[self.l_idx[ilm]] += array_desh[ilm]
@@ -641,35 +682,38 @@ class EasySHT(object):
     def cospectrum_from_2fieldssh2(self, f_lm, g_lm):
 
         """ compute cospectrum(l)..."""
-        cospectrum = np.zeros(self.lmax+1)
+        cospectrum = np.zeros(self.lmax + 1)
 
         array_desh = f_lm.conjugate() * g_lm + f_lm * g_lm.conjugate()
         array_desh = array_desh.real
-        array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0]/2
+        array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0] / 2
 
         array_desh2 = self.create_array_sh(0., float)
         COND = self.l2_idx > 0
-        array_desh2[COND] = self.radius**2/self.l2_idx[COND]*array_desh[COND]
+        array_desh2[COND] = self.radius ** 2 / self.l2_idx[COND] * array_desh[
+            COND
+        ]
 
         for ilm in range(self.nlm):
             cospectrum[self.l_idx[ilm]] += array_desh2[ilm]
         return cospectrum
 
-
-    def cospectrum_from_2divrotsh(self,
-                                  hdiva_lm, hrota_lm, hdivb_lm, hrotb_lm):
+    def cospectrum_from_2divrotsh(self, hdiva_lm, hrota_lm, hdivb_lm, hrotb_lm):
 
         """ compute cospectrum(l)..."""
-        cospectrum = np.zeros(self.lmax+1)
+        cospectrum = np.zeros(self.lmax + 1)
 
         array_desh = (
-            hrota_lm.conjugate() * hrotb_lm + hdiva_lm.conjugate() * hdivb_lm )
+            hrota_lm.conjugate() * hrotb_lm + hdiva_lm.conjugate() * hdivb_lm
+        )
         array_desh = array_desh.real
-        array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0]/2
+        array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0] / 2
 
         array_desh2 = self.create_array_sh(0., float)
         COND = self.l2_idx > 0
-        array_desh2[COND] = self.radius**2/self.l2_idx[COND]*array_desh[COND]
+        array_desh2[COND] = self.radius ** 2 / self.l2_idx[COND] * array_desh[
+            COND
+        ]
 
         for ilm in range(self.nlm):
             cospectrum[self.l_idx[ilm]] += array_desh2[ilm]
@@ -681,5 +725,5 @@ class EasySHT(object):
         return field_lm
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     obj = EasySHT()

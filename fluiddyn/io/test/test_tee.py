@@ -16,9 +16,10 @@ from ...io.redirect_stdout import stdout_redirected
 
 class TestUtil(unittest.TestCase):
     """Test fluiddyn.util.util module."""
+
     @classmethod
     def setUpClass(cls):
-        cls._work_dir = 'test_fluiddyn_io_tee'
+        cls._work_dir = "test_fluiddyn_io_tee"
         if not os.path.exists(cls._work_dir):
             os.mkdir(cls._work_dir)
 
@@ -26,15 +27,15 @@ class TestUtil(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        os.chdir('..')
+        os.chdir("..")
         rmtree(cls._work_dir)
 
     def test_tee(self):
 
         mf = MultiFile([sys.stdout])
         with stdout_redirected():
-            mf.write('')
+            mf.write("")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

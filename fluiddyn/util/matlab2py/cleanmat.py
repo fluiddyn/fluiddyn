@@ -9,13 +9,13 @@ import os
 
 from . import get_index_closing_parenthesis
 
-block_definers = ('if', 'while', 'for')
+block_definers = ("if", "while", "for")
 
-ident = 4 * ' '
+ident = 4 * " "
 
 
 def is_comment_line(line):
-    return line.strip().startswith('%')
+    return line.strip().startswith("%")
 
 
 def modif_identation(code_lines):
@@ -25,7 +25,7 @@ def modif_identation(code_lines):
 
     for line in code_lines:
         line = line.strip()
-        if line == '':
+        if line == "":
             lines_new.append(line)
             continue
 
@@ -37,10 +37,10 @@ def modif_identation(code_lines):
         first_name = line.split(None, 1)[0]
         if first_name in block_definers:
             ident_direction_for_next = 1
-        elif first_name in ('end', 'end;'):
+        elif first_name in ("end", "end;"):
             ident_direction_for_next = -1
             ident_this_line = -1
-        elif first_name == 'elseif':
+        elif first_name == "elseif":
             ident_direction_for_next = 0
             ident_this_line = -1
 
@@ -54,7 +54,7 @@ def modif_unwrap_if(code_lines):
     lines_new = []
     for line in code_lines:
         line = line.strip()
-        if_starts = ('if (', 'elseif (')
+        if_starts = ("if (", "elseif (")
 
         if not any(line.startswith(s) for s in if_starts):
             lines_new.append(line)
@@ -65,9 +65,9 @@ def modif_unwrap_if(code_lines):
                 index_begin = len(s) - 1
 
         index = get_index_closing_parenthesis(line, index_begin)
-        if_statement = line[:index+1]
+        if_statement = line[:index + 1]
         lines_new.append(if_statement)
-        rest_line = line[index+1:]
+        rest_line = line[index + 1:]
 
         if len(rest_line) == 0:
             continue
@@ -82,16 +82,16 @@ def modif_split_statements(code_lines):
     for line in code_lines:
         line = line.strip()
 
-        if is_comment_line(line) or ';' not in line:
+        if is_comment_line(line) or ";" not in line:
             lines_new.append(line)
             continue
 
-        statements = [stat.strip() for stat in line.split(';')]
+        statements = [stat.strip() for stat in line.split(";")]
 
         for i, stat in enumerate(statements[:-1]):
-            statements[i] = stat + ';'
+            statements[i] = stat + ";"
 
-        if statements[-1] == '':
+        if statements[-1] == "":
             statements = statements[:-1]
 
         lines_new.extend(statements)
@@ -104,28 +104,29 @@ def modif_split_comments_from_code(code_lines):
     for line in code_lines:
         line = line.strip()
 
-        if is_comment_line(line) or '%' not in line:
+        if is_comment_line(line) or "%" not in line:
             lines_new.append(line)
             continue
 
-        parts = line.split('%')
-        before_comment = ''
+        parts = line.split("%")
+        before_comment = ""
         for i, part in enumerate(parts):
             before_comment += part
-            if not before_comment.endswith('\\'):
+            if not before_comment.endswith("\\"):
                 break
-            else:
-                before_comment += '%'
 
-        comment_parts = parts[i+1:]
+            else:
+                before_comment += "%"
+
+        comment_parts = parts[i + 1:]
         if len(comment_parts) == 0:
             # no comment in the line
             lines_new.append(line)
             continue
 
-        comment = '%' + '%'.join(comment_parts)
+        comment = "%" + "%".join(comment_parts)
 
-        if line.startswith('if '):
+        if line.startswith("if "):
             lines_new.extend([before_comment, comment])
         else:
             lines_new.extend([comment, before_comment])
@@ -137,24 +138,24 @@ def modif_spaces_around_operators(code_lines):
     lines_new = []
     for line in code_lines:
 
-        if is_comment_line(line) or '=' not in line or 'for ' in line:
+        if is_comment_line(line) or "=" not in line or "for " in line:
             lines_new.append(line)
             continue
 
-        parts = line.split('=')
+        parts = line.split("=")
 
-        new_line = ''
+        new_line = ""
 
         for i, part in enumerate(parts[:-1]):
             new_line += part
 
-            if part != '' and not part.endswith(' '):
-                new_line += ' '
+            if part != "" and not part.endswith(" "):
+                new_line += " "
 
-            new_line += '='
+            new_line += "="
 
-            if parts[i+1] != '' and not parts[i+1].startswith(' '):
-                new_line += ' '
+            if parts[i + 1] != "" and not parts[i + 1].startswith(" "):
+                new_line += " "
 
         new_line += parts[-1]
         lines_new.append(new_line)
@@ -170,14 +171,14 @@ def modif_space_after_comma(code_lines):
             lines_new.append(line)
             continue
 
-        parts = line.split(',')
+        parts = line.split(",")
 
-        new_line = ''
+        new_line = ""
         for i, part in enumerate(parts[:-1]):
-            new_line += part + ','
+            new_line += part + ","
 
-            if not parts[i+1].startswith(' '):
-                new_line += ' '
+            if not parts[i + 1].startswith(" "):
+                new_line += " "
 
         new_line += parts[-1]
         lines_new.append(new_line)
@@ -191,22 +192,24 @@ def modif_code(path_file):
         code_lines = f.readlines()
 
     modif_functions = [
-        modif_split_comments_from_code, modif_split_statements,
-        modif_unwrap_if, modif_spaces_around_operators,
+        modif_split_comments_from_code,
+        modif_split_statements,
+        modif_unwrap_if,
+        modif_spaces_around_operators,
         modif_space_after_comma,
-        modif_identation
+        modif_identation,
     ]
 
     for func in modif_functions:
         code_lines = func(code_lines)
 
-    new_code = '\n'.join(code_lines)
+    new_code = "\n".join(code_lines)
     return new_code
 
 
 def treat_matlab_directory(path_dir):
 
-    path_cleaner = path_dir + '_cleaner'
+    path_cleaner = path_dir + "_cleaner"
 
     if not os.path.exists(path_cleaner):
         os.mkdir(path_cleaner)
@@ -219,7 +222,7 @@ def treat_matlab_directory(path_dir):
         if not os.path.exists(new_dir):
             os.mkdir(new_dir)
 
-        matlab_nfiles = [nfile for nfile in nfiles if nfile.endswith('.m')]
+        matlab_nfiles = [nfile for nfile in nfiles if nfile.endswith(".m")]
 
         for nfile in matlab_nfiles:
             path_file = os.path.join(root, nfile)
@@ -229,20 +232,20 @@ def treat_matlab_directory(path_dir):
 
             new_code = modif_code(path_file)
 
-            with open(path_file_new, 'w') as f:
+            with open(path_file_new, "w") as f:
                 f.write(new_code)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    path_dir = 'diablo_mat'
+    path_dir = "diablo_mat"
 
     treat_matlab_directory(path_dir)
 
-    # code = modif_code(path_dir + '/diablo.m')
-    # print(code)
+# code = modif_code(path_dir + '/diablo.m')
+# print(code)
 
-    # code_lines = [
-    #     "    TIME=TIME+DELTA_T;",
-    #     "    if (mod(TIME_STEP,10)==0 & toto == 2)"]
-    # print('\n'.join(modif_spaces_around_operators(code_lines)))
+# code_lines = [
+#     "    TIME=TIME+DELTA_T;",
+#     "    if (mod(TIME_STEP,10)==0 & toto == 2)"]
+# print('\n'.join(modif_spaces_around_operators(code_lines)))

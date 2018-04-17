@@ -55,10 +55,15 @@ class Figures(object):
         Font size of the pad in the figures.
     """
 
-    def __init__(self, path_save=None, hastosave=False,
-                 for_beamer=False,
-                 for_article=False,
-                 fontsize=18, fontsize_pad=9):
+    def __init__(
+        self,
+        path_save=None,
+        hastosave=False,
+        for_beamer=False,
+        for_article=False,
+        fontsize=18,
+        fontsize_pad=9,
+    ):
 
         self.hastosave = hastosave
 
@@ -71,10 +76,14 @@ class Figures(object):
 
         set_rcparams(fontsize, for_article, for_beamer, fontsize_pad=9)
 
-    def new_figure(self, name_file=None,
-                   num=None,
-                   fig_width_mm=200, fig_height_mm=150,
-                   size_axe=None):
+    def new_figure(
+        self,
+        name_file=None,
+        num=None,
+        fig_width_mm=200,
+        fig_height_mm=150,
+        size_axe=None,
+    ):
         """Create a new Figure object and return it.
 
         Parameters
@@ -97,16 +106,20 @@ class Figures(object):
         """
 
         one_inch_in_mm = 25.4
-        fig_width_inches = float(fig_width_mm)/one_inch_in_mm
-        fig_height_inches = float(fig_height_mm)/one_inch_in_mm
+        fig_width_inches = float(fig_width_mm) / one_inch_in_mm
+        fig_height_inches = float(fig_height_mm) / one_inch_in_mm
         figsize = [fig_width_inches, fig_height_inches]
 
         dpi_latex = 72.27
 
-        fig = Figure(num=num, figsize=figsize, dpi=dpi_latex,
-                     size_axe=size_axe,
-                     name_file=name_file,
-                     figures=self)
+        fig = Figure(
+            num=num,
+            figsize=figsize,
+            dpi=dpi_latex,
+            size_axe=size_axe,
+            name_file=name_file,
+            figures=self,
+        )
 
         return fig
 
@@ -122,8 +135,8 @@ def show(block=None):
             block = True
             plt.ioff()
 
-    if sys.platform.startswith('win') and not block:
-        print('Warning: bug with anaconda and non-blocking show (?)')
+    if sys.platform.startswith("win") and not block:
+        print("Warning: bug with anaconda and non-blocking show (?)")
 
     try:
         plt.show(block=block)
@@ -154,11 +167,9 @@ class Figure(matplotlib.figure.Figure):
 
     """
 
-    def __init__(self,  # *args,
-                 size_axe=None,
-                 name_file=None,
-                 figures=None,
-                 **kwargs):
+    def __init__(
+        self, size_axe=None, name_file=None, figures=None, **kwargs  # *args,
+    ):
 
         # Ugly workaround to be able to use the function plt.figure
         fig = plt.figure(**kwargs)
@@ -176,10 +187,10 @@ class Figure(matplotlib.figure.Figure):
             self.path_save = figures.path_save
             self.figures = figures
 
-        title = 'Fig ' + str(self.number)
+        title = "Fig " + str(self.number)
         if name_file is not None:
             fig.name_file = name_file
-            title += ' ' + name_file
+            title += " " + name_file
 
         self.clf()
         self.canvas.set_window_title(title)
@@ -187,8 +198,7 @@ class Figure(matplotlib.figure.Figure):
         if size_axe is not None:
             self.add_axes(size_axe)
 
-    def saveifhasto(self, name_file=None, hastosave=None,
-                    verbose=True):
+    def saveifhasto(self, name_file=None, hastosave=None, verbose=True):
         """Save the figure if `hastosave` is True.
 
         Parameters
@@ -214,7 +224,7 @@ class Figure(matplotlib.figure.Figure):
                 try:
                     name_file = self.name_file
                 except AttributeError:
-                    raise ValueError('No name given...')
+                    raise ValueError("No name given...")
 
             if not os.path.exists(self.path_save):
                 os.mkdir(self.path_save)
@@ -222,6 +232,6 @@ class Figure(matplotlib.figure.Figure):
             path = os.path.join(self.path_save, name_file)
 
             if verbose:
-                print('Save figure in file\n' + path)
+                print("Save figure in file\n" + path)
 
             super(Figure, self).savefig(path)

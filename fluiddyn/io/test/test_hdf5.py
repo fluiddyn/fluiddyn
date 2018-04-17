@@ -15,9 +15,10 @@ from ..hdf5 import H5File, save_variables_h5, load_variables_h5
 
 class TestHdf5(unittest.TestCase):
     """Test fluiddyn.io.hdf5 module."""
+
     @classmethod
     def setUpClass(cls):
-        cls._work_dir = 'test_fluiddyn_io_hdf5'
+        cls._work_dir = "test_fluiddyn_io_hdf5"
         if not os.path.exists(cls._work_dir):
             os.mkdir(cls._work_dir)
 
@@ -25,26 +26,26 @@ class TestHdf5(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        os.chdir('..')
+        os.chdir("..")
         rmtree(cls._work_dir)
 
     def test_dict(self):
-        path = 'test_dict.h5'
-        d = {'a': 1, 'b': 2}
+        path = "test_dict.h5"
+        d = {"a": 1, "b": 2}
 
-        with H5File(path, 'w') as f:
-            f.save_dict('d', d)
+        with H5File(path, "w") as f:
+            f.save_dict("d", d)
 
         with H5File(path) as f:
-            d1 = f.load_dict('d')
+            d1 = f.load_dict("d")
 
         self.assertEqual(d, d1)
 
     def test_dict_of_ndarrays(self):
-        name = 'myfile1.h5'
-        d = {'times': 0., 'a': np.ones(10), 'b': np.zeros([2, 2])}
+        name = "myfile1.h5"
+        d = {"times": 0., "a": np.ones(10), "b": np.zeros([2, 2])}
 
-        with H5File(name, 'w') as f:
+        with H5File(name, "w") as f:
             f.save_dict_of_ndarrays(d)
 
         with H5File(name) as f:
@@ -55,35 +56,36 @@ class TestHdf5(unittest.TestCase):
 
                 self.assertTrue(np.allclose(v, v1))
 
-        with H5File(name, 'a') as f:
-            d['times'] = 1.
+        with H5File(name, "a") as f:
+            d["times"] = 1.
             f.save_dict_of_ndarrays(d)
 
             f.load(times_slice=[0, 2, 0.1])
 
     def test_functions(self):
-        path = 'test_functions0.h5'
+        path = "test_functions0.h5"
 
         a = 1
-        b = 'str'
+        b = "str"
         c = np.ones(2)
         d = 10
 
-        save_variables_h5(path, locals(), ('a', 'b', 'c'))
+        save_variables_h5(path, locals(), ("a", "b", "c"))
         variables1 = load_variables_h5(path)
 
-        self.assertEqual(a, variables1['a'])
-        self.assertEqual(b, variables1['b'])
-        self.assertTrue(np.allclose(c, variables1['c']))
+        self.assertEqual(a, variables1["a"])
+        self.assertEqual(b, variables1["b"])
+        self.assertTrue(np.allclose(c, variables1["c"]))
 
-        path = 'test_functions1.h5'
-        variables = {'a': a, 'b': b, 'c': c}
+        path = "test_functions1.h5"
+        variables = {"a": a, "b": b, "c": c}
         save_variables_h5(path, variables)
         variables2 = load_variables_h5(path)
 
-        self.assertEqual(a, variables2['a'])
-        self.assertEqual(b, variables2['b'])
-        self.assertTrue(np.allclose(c, variables2['c']))
+        self.assertEqual(a, variables2["a"])
+        self.assertEqual(b, variables2["b"])
+        self.assertTrue(np.allclose(c, variables2["c"]))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

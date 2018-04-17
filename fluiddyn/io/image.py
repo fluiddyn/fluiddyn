@@ -6,7 +6,6 @@ Read and save image files
 """
 
 
-
 from __future__ import print_function
 import os
 import numpy as np
@@ -18,6 +17,7 @@ except ImportError:
 
 try:
     from cv2 import imread as _imread_opencv, IMREAD_ANYDEPTH
+
     use_opencv = True
 except ImportError:
     use_opencv = False
@@ -41,30 +41,32 @@ except ImportError:
 from .hdf5 import H5File
 
 
-__all__ = ['imread', 'imsave', 'imread_h5', 'imsave_h5', 'extensions_movies']
+__all__ = ["imread", "imsave", "imread_h5", "imsave_h5", "extensions_movies"]
 
 
-extensions_movies = ['cine', 'im7']
+extensions_movies = ["cine", "im7"]
 
 
 def imread(path, *args, **kwargs):
     """Wrapper for OpenCV/SciPy imread functions."""
-    if path.endswith(']'):
-        path, internal_index = path.split('[')
+    if path.endswith("]"):
+        path, internal_index = path.split("[")
         internal_index = int(internal_index[:-1])
         for ext in extensions_movies:
-            if path.endswith('.' + ext):
+            if path.endswith("." + ext):
                 with pims.open(path) as images:
                     return images.get_frame(internal_index)
 
-    if path.lower().endswith(('.tiff', '.tif')):
+    if path.lower().endswith((".tiff", ".tif")):
         try:
             return _imread_ski(path, *args, **kwargs)
+
         except NameError:
             pass
 
     if use_opencv:
         return _imread_opencv(path, IMREAD_ANYDEPTH)
+
     else:
         return _imread(path, *args, **kwargs)
 
@@ -72,23 +74,23 @@ def imread(path, *args, **kwargs):
 def _image_from_array(array, as_int):
     if as_int:
         if array.max() < 256:
-            mode = 'L'
+            mode = "L"
             dtype = np.uint8
         else:
-            mode = 'I'
+            mode = "I"
             dtype = np.uint32
 
         array = array.astype(dtype)
     else:
         dtype = array.dtype
         if np.issubdtype(dtype, np.floating):
-            mode = 'F'
+            mode = "F"
         elif np.issubdtype(dtype, np.uint8):
-            mode = 'L'
+            mode = "L"
         elif np.issubdtype(dtype, np.integer):
-            mode = 'I'
+            mode = "I"
         else:
-            raise NotImplementedError('Unexpected dtype %s' % dtype)
+            raise NotImplementedError("Unexpected dtype %s" % dtype)
 
     # im = toimage(arr=array, mode=mode, channel_axis=2)
     # print('in _image_from_array', mode, array)
@@ -110,27 +112,32 @@ def imsave(path, array, format=None, as_int=False):
     im = _image_from_array(array, as_int)
 
     if format is None:
-        if im.mode == 'F' or \
-           any([path.endswith(ext) for ext in ('.tif', '.tiff')]):
-            format = 'TIFF'
+        if (
+            im.mode == "F"
+            or any([path.endswith(ext) for ext in (".tif", ".tiff")])
+        ):
+            format = "TIFF"
         else:
-            format = 'PNG'
+            format = "PNG"
 
-    if format.lower() == 'tiff':
-        if any([path.endswith(ext) for ext in ('.png', '.PNG')]) and\
-           np.issubdtype(array.dtype, np.floating):
-            print('warning: can not save float image as png. '
-                  'Using tif format.')
+    if format.lower() == "tiff":
+        if (
+            any([path.endswith(ext) for ext in (".png", ".PNG")])
+            and np.issubdtype(array.dtype, np.floating)
+        ):
+            print(
+                "warning: can not save float image as png. " "Using tif format."
+            )
 
-        if not any([path.endswith(ext) for ext in ('.tif', '.tiff')]):
-            path += '.tiff'
-    elif format.lower == 'png':
-        if not any([path.endswith(ext) for ext in ('.png', '.PNG')]):
-            if path.endswith('.tif'):
-                path = path[:-len('.tif')]
-            if path.endswith('.tiff'):
-                path = path[:-len('.tiff')]
-            path += '.png'
+        if not any([path.endswith(ext) for ext in (".tif", ".tiff")]):
+            path += ".tiff"
+    elif format.lower == "png":
+        if not any([path.endswith(ext) for ext in (".png", ".PNG")]):
+            if path.endswith(".tif"):
+                path = path[:-len(".tif")]
+            if path.endswith(".tiff"):
+                path = path[:-len(".tiff")]
+            path += ".png"
 
     im.save(path, format)
     im.close()
@@ -139,17 +146,18 @@ def imsave(path, array, format=None, as_int=False):
 def imread_h5(path):
     """Read image(s) stored in a HDF5 file."""
 
-    with ImageH5File(path, 'r') as f:
-        return f.load(group='images')
+    with ImageH5File(path, "r") as f:
+        return f.load(group="images")
 
 
-def imsave_h5(path, array, params=None, attrs={}, compression='gzip',
-              as_int=False):
+def imsave_h5(
+    path, array, params=None, attrs={}, compression="gzip", as_int=False
+):
     """Saves an image as a compressed HDF5 file."""
 
     fname = os.path.basename(path)
     root, ext = os.path.splitext(path)
-    h5path = root + '.h5'
+    h5path = root + ".h5"
 
     if as_int:
         if array.max() < 256:
@@ -159,9 +167,10 @@ def imsave_h5(path, array, params=None, attrs={}, compression='gzip',
 
         array = array.astype(dtype)
 
-    with ImageH5File(h5path, 'w') as f:
-        f.save_dict('images', {fname: array},
-                    compression=compression, shuffle=True)
+    with ImageH5File(h5path, "w") as f:
+        f.save_dict(
+            "images", {fname: array}, compression=compression, shuffle=True
+        )
         f.save_attrs(attrs)
         if params is not None:
             params._save_as_hdf5(hdf5_parent=f)
@@ -180,6 +189,7 @@ class ImageH5File(H5File):
         if nb_images == 1:
             dset = list(images.items())[0][1]
             return dset[...]
+
         else:
             dico = {}
             for k, v in images.items():

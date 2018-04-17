@@ -18,12 +18,12 @@ import nbstripout
 
 
 def stripout(filename, keep_output=False, keep_count=False):
-    print('stripout notebook', os.path.relpath(filename))
+    print("stripout notebook", os.path.relpath(filename))
     try:
-        with io.open(filename, 'r', encoding='utf8') as f:
+        with io.open(filename, "r", encoding="utf8") as f:
             nb = nbstripout.read(f, as_version=nbstripout.NO_CONVERT)
         nb = nbstripout.strip_output(nb, keep_output, keep_count)
-        with io.open(filename, 'w', encoding='utf8') as f:
+        with io.open(filename, "w", encoding="utf8") as f:
             nbstripout.write(nb, f)
     except Exception:
         # Ignore exceptions for non-notebook files.
@@ -33,17 +33,23 @@ def stripout(filename, keep_output=False, keep_count=False):
 
 def main():
     parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
 
     parser.add_argument(
-        'which', nargs='?',
-        help='str indicating which notebooks have to be striped out.',
-        type=str, default=os.getcwd())
+        "which",
+        nargs="?",
+        help="str indicating which notebooks have to be striped out.",
+        type=str,
+        default=os.getcwd(),
+    )
 
-    parser.add_argument('-n', '--no_exclude_nbconvert',
-                        help='Do not exclude "nb_convert" notebooks.',
-                        action='store_true')
+    parser.add_argument(
+        "-n",
+        "--no_exclude_nbconvert",
+        help='Do not exclude "nb_convert" notebooks.',
+        action="store_true",
+    )
 
     args = parser.parse_args()
     which = args.which
@@ -54,23 +60,26 @@ def main():
         return
 
     if os.path.isdir(which):
-        which = os.path.join(which, '*.ipynb')
+        which = os.path.join(which, "*.ipynb")
 
     filenames = glob(which)
     filenames.sort()
-    
+
     if len(filenames) == 0:
         print('No notebooks found (input "{}").'.format(args.which))
         return
-    
+
     # Big change compared to original nbstripout! :-)
     if not args.no_exclude_nbconvert:
-        filenames = [filename for filename in filenames
-                     if not filename.endswith('.nbconvert.ipynb')]
+        filenames = [
+            filename
+            for filename in filenames
+            if not filename.endswith(".nbconvert.ipynb")
+        ]
 
     for filename in filenames:
         stripout(filename)
-        
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

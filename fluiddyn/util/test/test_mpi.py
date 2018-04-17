@@ -22,11 +22,12 @@ class TestMPI(unittest.TestCase):
     def barrier(cls):
         if _mpi_type is not None:
             from ..mpi import comm
+
             comm.barrier()
 
     @classmethod
     def setUpClass(cls):
-        cls._work_dir = 'test_fluiddyn_util_mpi'
+        cls._work_dir = "test_fluiddyn_util_mpi"
         if rank == 0:
             if not os.path.exists(cls._work_dir):
                 os.mkdir(cls._work_dir)
@@ -36,7 +37,7 @@ class TestMPI(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        os.chdir('..')
+        os.chdir("..")
         cls.barrier()
         if rank == 0:
             rmtree(cls._work_dir)
@@ -44,20 +45,20 @@ class TestMPI(unittest.TestCase):
     def test_print(self):
         """Test fluiddyn.util.mpi.printby0 to write to a buffer."""
 
-        msg_write = 'test by rank ='
+        msg_write = "test by rank ="
         output = StringIO()
         with stdout_redirected(to=output):
-            printby0(msg_write, rank, end='')
+            printby0(msg_write, rank, end="")
 
         output.flush()
         self.barrier()
         msg_read = output.getvalue()
         output.close()
 
-        msg_expected = msg_write + ' 0' if rank == 0 else ''
+        msg_expected = msg_write + " 0" if rank == 0 else ""
         self.assertEqual(msg_read, msg_expected)
 
-    @unittest.skipIf(nb_proc == 1, 'Meant for testing if mpi4py works.')
+    @unittest.skipIf(nb_proc == 1, "Meant for testing if mpi4py works.")
     def test_scatter_gather(self):
         """Test MPI Scatter and Gather functions for numpy objects."""
 
@@ -85,5 +86,5 @@ class TestMPI(unittest.TestCase):
             np.testing.assert_array_equal(arr * 2, arr2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

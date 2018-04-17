@@ -17,10 +17,10 @@ def modification_date(filename):
 
 
 def call_bash(commands):
-    subprocess.call(['/bin/bash', '-c', commands])
+    subprocess.call(["/bin/bash", "-c", commands])
 
 
-def ipynb_to_rst(path='ipynb', executed=None):
+def ipynb_to_rst(path="ipynb", executed=None):
     """Convert notebooks to rst files
 
     If the user does not specify that the notebooks have already been executed,
@@ -29,9 +29,10 @@ def ipynb_to_rst(path='ipynb', executed=None):
 
     """
 
-    paths_ipynb = glob(path + '/*.ipynb')
-    paths_ipynb = [path for path in paths_ipynb
-                   if not path.endswith('.nbconvert.ipynb')]
+    paths_ipynb = glob(path + "/*.ipynb")
+    paths_ipynb = [
+        path for path in paths_ipynb if not path.endswith(".nbconvert.ipynb")
+    ]
 
     paths_ipynb_executed = []
 
@@ -42,6 +43,7 @@ def ipynb_to_rst(path='ipynb', executed=None):
             except TypeError:
                 paths_ipynb_executed.append(filepath)
                 continue
+
             else:
                 nfile = os.path.split(filepath)[-1]
                 if nfile in executed:
@@ -49,18 +51,21 @@ def ipynb_to_rst(path='ipynb', executed=None):
                     continue
 
         basename = os.path.splitext(filepath)[0]
-        ipynb_executed = basename + '.nbconvert.ipynb'
+        ipynb_executed = basename + ".nbconvert.ipynb"
         paths_ipynb_executed.append(ipynb_executed)
 
-        if not os.path.exists(ipynb_executed) or \
-           modification_date(filepath) > modification_date(ipynb_executed):
+        if (
+            not os.path.exists(ipynb_executed)
+            or modification_date(filepath) > modification_date(ipynb_executed)
+        ):
             call_bash(
-                'jupyter-nbconvert --ExecutePreprocessor.timeout=200 '
-                '--to notebook --execute ' + filepath)
+                "jupyter-nbconvert --ExecutePreprocessor.timeout=200 "
+                "--to notebook --execute " + filepath
+            )
 
     for filepath in paths_ipynb_executed:
         basename = os.path.splitext(os.path.splitext(filepath)[0])[0]
-        rstpath = basename + '.rst'
+        rstpath = basename + ".rst"
         rstname = os.path.split(rstpath)[-1]
 
         if not os.path.exists(rstpath):
@@ -74,5 +79,6 @@ def ipynb_to_rst(path='ipynb', executed=None):
                 has_to_be_compiled = False
 
         if has_to_be_compiled:
-            call_bash('jupyter-nbconvert --to rst ' + filepath +
-                      ' --output ' + rstname)
+            call_bash(
+                "jupyter-nbconvert --to rst " + filepath + " --output " + rstname
+            )

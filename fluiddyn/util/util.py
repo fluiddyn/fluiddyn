@@ -34,15 +34,17 @@ def import_class(module_name, class_name):
     try:
         module = import_module(module_name)
     except ImportError as err:
-        msg = 'Error while attempting to import module ' + module_name + '\n'
+        msg = "Error while attempting to import module " + module_name + "\n"
         raise ImportError(msg + err.args[0])
 
     try:
         return module.__dict__[class_name]
+
     except KeyError:
         raise KeyError(
             'The given class_name "' + class_name + '" is wrong. '
-            'module_name: ' + module_name)
+            "module_name: " + module_name
+        )
 
 
 def ipydebug():
@@ -54,8 +56,7 @@ def ipydebug():
     ipshell = InteractiveShellEmbed()
 
     frame = inspect.currentframe().f_back
-    msg = 'Stopped at {0.f_code.co_filename} at line {0.f_lineno}'.format(
-        frame)
+    msg = "Stopped at {0.f_code.co_filename} at line {0.f_lineno}".format(frame)
 
     # Go back one level!  This is needed because the call to
     # ipshell is inside this function.
@@ -65,69 +66,72 @@ def ipydebug():
 def time_as_str(decimal=0):
     """Return a string coding the time."""
     dt = datetime.datetime.now()
-    ret = dt.strftime('%Y-%m-%d_%H-%M-%S')
+    ret = dt.strftime("%Y-%m-%d_%H-%M-%S")
     if decimal > 0:
         if not isinstance(decimal, int):
             raise TypeError
-        ret += '.{:06d}'.format(dt.microsecond)[:decimal+1]
+
+        ret += ".{:06d}".format(dt.microsecond)[:decimal + 1]
     return ret
 
 
-def copy_me_in(dest='~'):
+def copy_me_in(dest="~"):
     """Copy the file from where this function is called."""
     stack = inspect.stack()
     # bug Python 2 when using os.chdir
     path_caller = stack[1][1]
     name_file = os.path.basename(path_caller)
-    path_dest = os.path.abspath(os.path.expanduser(
-        os.path.join(dest, name_file + '_' + time_as_str())))
+    path_dest = os.path.abspath(
+        os.path.expanduser(os.path.join(dest, name_file + "_" + time_as_str()))
+    )
     shutil.copyfile(path_caller, path_dest)
     return path_dest
 
 
-def get_pathfile_from_strpath(str_path, ext='h5'):
+def get_pathfile_from_strpath(str_path, ext="h5"):
     """Get the path of a file with a particular extension from a string."""
-    if str_path.endswith('.' + ext) and os.path.exists(str_path):
+    if str_path.endswith("." + ext) and os.path.exists(str_path):
         return str_path
 
     if os.path.isdir(str_path):
-        path_glob = str_path + os.path.sep + '*'
+        path_glob = str_path + os.path.sep + "*"
     else:
-        path_glob = '*' + str_path + '*'
+        path_glob = "*" + str_path + "*"
 
     paths = glob.glob(path_glob)
     for p in paths:
-        if p.endswith('.' + ext):
+        if p.endswith("." + ext):
             return p
 
     raise ValueError(
         "Haven't been able to find a path corresponding to str_path."
-        "(str_path: {}).".format(str_path))
+        "(str_path: {}).".format(str_path)
+    )
 
 
 def create_object_from_file(str_path, *args, **kwargs):
     """Create an object from a file."""
     import h5py
 
-    path = get_pathfile_from_strpath(str_path, ext='h5')
+    path = get_pathfile_from_strpath(str_path, ext="h5")
 
     # temporary... for compatibility
     try:
-        with h5py.File(path, 'r+') as f:
+        with h5py.File(path, "r+") as f:
             keys = list(f.attrs.keys())
-            if 'class' in keys and 'class_name' not in keys:
-                f.attrs['class_name'] = f.attrs['class']
-            if 'module_tank' in keys and 'module_name' not in keys:
-                f.attrs['module_name'] = f.attrs['module_tank']
+            if "class" in keys and "class_name" not in keys:
+                f.attrs["class_name"] = f.attrs["class"]
+            if "module_tank" in keys and "module_name" not in keys:
+                f.attrs["module_name"] = f.attrs["module_tank"]
             else:
-                if path.endswith('tank.h5') and 'module_name' not in keys:
-                    f.attrs['module_name'] = 'fluiddyn.lab.tanks'
+                if path.endswith("tank.h5") and "module_name" not in keys:
+                    f.attrs["module_name"] = "fluiddyn.lab.tanks"
     except IOError:
         pass
 
-    with h5py.File(path, 'r') as f:
-        class_name = f.attrs['class_name']
-        module_name = f.attrs['module_name']
+    with h5py.File(path, "r") as f:
+        class_name = f.attrs["class_name"]
+        module_name = f.attrs["module_name"]
 
     if isinstance(class_name, np.ndarray):
         class_name = class_name[0]
@@ -160,7 +164,9 @@ def create_object_from_file(str_path, *args, **kwargs):
 
 def run_from_ipython():
     raise DeprecationWarning(
-        'run_from_ipython() is deprecated. Use is_run_from_ipython instead.')
+        "run_from_ipython() is deprecated. Use is_run_from_ipython instead."
+    )
+
     is_run_from_ipython()
 
 
@@ -169,6 +175,7 @@ def is_run_from_ipython():
     try:
         __IPYTHON__
         return True
+
     except NameError:
         return False
 
@@ -178,15 +185,18 @@ def is_run_from_jupyter():
         shell = get_ipython().__class__.__name__
     except NameError or AttributeError:
         return False
+
     else:
-        if shell == 'ZMQInteractiveShell':
+        if shell == "ZMQInteractiveShell":
             return True
+
         else:
             return False
 
 
 class Params(object):
     """Minimalist object to store some parameters."""
+
     def __repr__(self):
         return dict.__repr__(self.__dict__)
 
@@ -204,21 +214,21 @@ def print_memory_usage(string):
     if mpi.nb_proc > 1:
         mem = mpi.comm.allreduce(mem, op=mpi.MPI.SUM)
     if mpi.rank == 0:
-        print((string + ':').ljust(30), mem, 'Mo')
+        print((string + ":").ljust(30), mem, "Mo")
 
 
 def print_size_in_Mo(arr, string=None):
     """Print the size of an array."""
     if string is None:
-        string = 'Size of ndarray (equiv. seq.)'
+        string = "Size of ndarray (equiv. seq.)"
     else:
-        string = 'Size of '+string+' (equiv. seq.)'
+        string = "Size of " + string + " (equiv. seq.)"
 
-    mem = float(arr.nbytes)*1e-6
+    mem = float(arr.nbytes) * 1e-6
     if mpi.nb_proc > 1:
         mem = mpi.comm.allreduce(mem, op=mpi.MPI.SUM)
     if mpi.rank == 0:
-        print(string.ljust(30), ':', mem, 'Mo')
+        print(string.ljust(30), ":", mem, "Mo")
 
 
 @contextlib.contextmanager
@@ -232,19 +242,20 @@ def print_options(*args, **kwargs):
     original = np.get_printoptions()
     np.set_printoptions(*args, **kwargs)
     yield
+
     np.set_printoptions(**original)
 
 
-def config_logging(level='info', name='fluiddyn', file=None):
+def config_logging(level="info", name="fluiddyn", file=None):
     """Configure a logging with a particular level and output file."""
 
     if not level:
         return
 
     level = level.lower()
-    if level == 'info':
+    if level == "info":
         level = logging.INFO
-    elif level == 'debug':
+    elif level == "debug":
         level = logging.DEBUG
 
     logger = logging.getLogger(name)
@@ -257,7 +268,7 @@ def config_logging(level='info', name='fluiddyn', file=None):
     ch.setLevel(level)
 
     # create formatter and add it to the handlers
-    formatter = logging.Formatter('%(levelname)s: %(message)s')
+    formatter = logging.Formatter("%(levelname)s: %(message)s")
     ch.setFormatter(formatter)
 
     # add the handlers to the logger

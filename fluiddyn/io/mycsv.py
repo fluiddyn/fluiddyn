@@ -34,7 +34,7 @@ class CSVFile(object):
         else:
             for key in keys:
                 if key not in self.fieldnames:
-                    raise ValueError('A key is not in self.fieldnames')
+                    raise ValueError("A key is not in self.fieldnames")
 
         usecols = []
         for key in keys:
@@ -49,18 +49,20 @@ class CSVFile(object):
             for key in keys:
                 ret[key] = np.array([])
             return ret
+
         else:
             for ik, key in enumerate(keys):
                 value = row[key]
-                if '.' in value:
+                if "." in value:
                     dtype = np.float64
                 else:
                     dtype = np.int32
                 dtypes.append(dtype)
 
         self._textio.seek(0)
-        arr = np.loadtxt(self._textio, delimiter=',', skiprows=1+skiptimes,
-                         usecols=usecols).T
+        arr = np.loadtxt(
+            self._textio, delimiter=",", skiprows=1 + skiptimes, usecols=usecols
+        ).T
 
         ret = {}
         for ik, key in enumerate(keys):

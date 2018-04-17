@@ -32,9 +32,9 @@ try:
 except ImportError:
     try:
         from platform import linux_distribution
-        # Pending deprecation (Python 3.7)
+    # Pending deprecation (Python 3.7)
     except ImportError:
-        ImportError('Install distro package to use this module.')
+        ImportError("Install distro package to use this module.")
 
 
 try:
@@ -48,7 +48,7 @@ import numpy.distutils.system_info as np_sys_info
 import numpy.__config__ as np_build_info
 
 with warnings.catch_warnings():
-    warnings.filterwarnings('ignore', category=ImportWarning)
+    warnings.filterwarnings("ignore", category=ImportWarning)
     from ..io.redirect_stdout import stdout_redirected
     from .paramcontainer import ParamContainer
     from .terminal_colors import cprint
@@ -60,65 +60,72 @@ def safe_check_output(cmd, first_row_only=True):
     """Error-tolerant version of subprocess check output"""
     cmd = '/bin/sh -c "{}; exit 0"'.format(cmd)
     output = subprocess.check_output(
-        shlex.split(cmd), stderr=subprocess.STDOUT).decode('utf-8')
+        shlex.split(cmd), stderr=subprocess.STDOUT
+    ).decode(
+        "utf-8"
+    )
 
-    if first_row_only and output != '':
+    if first_row_only and output != "":
         return output.splitlines()[0]
+
     else:
         return output
 
 
 def _get_hg_repo(path_dir):
     """Parse `hg paths` command to find remote path."""
-    if path_dir == '':
-        return ''
+    if path_dir == "":
+        return ""
 
     pwd = os.getcwd()
     os.chdir(path_dir)
-    output = safe_check_output('hg paths')
+    output = safe_check_output("hg paths")
     os.chdir(pwd)
 
-    if output == '':
-        return 'not an hg repo'
-    elif output.startswith('default'):
-        return output.split(' ')[2]
+    if output == "":
+        return "not an hg repo"
+
+    elif output.startswith("default"):
+        return output.split(" ")[2]
+
     else:
         return output
 
 
 def make_dict_about(pkg):
     """Make dictionary with all collected information about one package."""
-    about_pkg = OrderedDict([
-        ('installed', None),
-        ('version', ''),
-        ('local_path', ''),
-        ('remote_path', ''),
-    ])
+    about_pkg = OrderedDict(
+        [
+            ("installed", None),
+            ("version", ""),
+            ("local_path", ""),
+            ("remote_path", ""),
+        ]
+    )
     try:
         pkg = _import(pkg)
     except ImportError:
-        about_pkg['installed'] = False
+        about_pkg["installed"] = False
         return about_pkg
+
     else:
-        about_pkg['installed'] = True
-        about_pkg['version'] = pkg.__version__
+        about_pkg["installed"] = True
+        about_pkg["version"] = pkg.__version__
         init_file = inspect.getfile(pkg)
-        if 'site-packages' in init_file or 'dist-packages' in init_file:
-            about_pkg['local_path'] = os.path.dirname(init_file)
-            about_pkg['remote_path'] = ''
+        if "site-packages" in init_file or "dist-packages" in init_file:
+            about_pkg["local_path"] = os.path.dirname(init_file)
+            about_pkg["remote_path"] = ""
         else:
-            about_pkg['local_path'] = os.path.dirname(os.path.dirname(init_file))
-            about_pkg['remote_path'] = _get_hg_repo(about_pkg['local_path'])
+            about_pkg["local_path"] = os.path.dirname(os.path.dirname(init_file))
+            about_pkg["remote_path"] = _get_hg_repo(about_pkg["local_path"])
         return about_pkg
 
 
 def get_info_python():
     """Python information."""
-    info_py = OrderedDict.fromkeys(
-        ['version', 'implementation', 'compiler']
-    )
+    info_py = OrderedDict.fromkeys(["version", "implementation", "compiler"])
     for k in info_py:
-        func = getattr(platform, 'python_' + k)
+        func = getattr(platform, "python_" + k)
         info_py[k] = func()
 
     return info_py
@@ -136,8 +143,15 @@ def _get_info(pkgs):
 def get_info_fluiddyn():
     """Create a dictionary of dictionaries for all FluidDyn packages."""
     pkgs = OrderedDict.fromkeys(
-        ['fluiddyn', 'fluidsim', 'fluidlab', 'fluidimage', 'fluidfft',
-         'fluidcoriolis', 'fluiddevops']
+        [
+            "fluiddyn",
+            "fluidsim",
+            "fluidlab",
+            "fluidimage",
+            "fluidfft",
+            "fluidcoriolis",
+            "fluiddevops",
+        ]
     )
     return _get_info(pkgs)
 
@@ -145,8 +159,17 @@ def get_info_fluiddyn():
 def get_info_third_party():
     """Create a dictionary of dictionaries for all third party packages."""
     pkgs = OrderedDict.fromkeys(
-        ['numpy', 'cython', 'mpi4py', 'pythran', 'pyfftw', 'matplotlib',
-         'scipy', 'skimage', 'h5py']
+        [
+            "numpy",
+            "cython",
+            "mpi4py",
+            "pythran",
+            "pyfftw",
+            "matplotlib",
+            "scipy",
+            "skimage",
+            "h5py",
+        ]
     )
     return _get_info(pkgs)
 
@@ -154,33 +177,36 @@ def get_info_third_party():
 def get_info_software():
     """Create a dictionary for compiler and OS information."""
     uname = platform.uname()
-    info_sw = OrderedDict(zip(
-        ['system', 'hostname', 'kernel'], uname))
+    info_sw = OrderedDict(zip(["system", "hostname", "kernel"], uname))
     try:
-        info_sw['distro'] = ' '.join(linux_distribution())
+        info_sw["distro"] = " ".join(linux_distribution())
     except Exception:
         pass
 
-    cc = os.getenv('CC', 'gcc')
+    cc = os.getenv("CC", "gcc")
 
-    info_sw['CC'] = safe_check_output(cc + ' --version')
-    info_sw['MPI'] = safe_check_output('mpirun --version')
+    info_sw["CC"] = safe_check_output(cc + " --version")
+    info_sw["MPI"] = safe_check_output("mpirun --version")
     return info_sw
 
 
 def get_info_numpy(only_print=False, verbosity=None):
     """Print or create a dictionary for numpy and linalg library information."""
-    libs = ['lapack_opt', 'blas_opt']
-    libs_sys = ['fftw']
+    libs = ["lapack_opt", "blas_opt"]
+    libs_sys = ["fftw"]
 
     def rm_configtest():
-        if os.path.exists('_configtest.o.d'):
-            os.remove('_configtest.o.d')
+        if os.path.exists("_configtest.o.d"):
+            os.remove("_configtest.o.d")
 
     def np_get_info():
         with stdout_redirected():
-            np_sys_info_dict = OrderedDict((k, np_sys_info.get_info(k)) for k in libs + libs_sys)
-            np_build_info_dict = OrderedDict((k, np_build_info.get_info(k)) for k in libs)
+            np_sys_info_dict = OrderedDict(
+                (k, np_sys_info.get_info(k)) for k in libs + libs_sys
+            )
+            np_build_info_dict = OrderedDict(
+                (k, np_build_info.get_info(k)) for k in libs
+            )
 
         rm_configtest()
         return np_sys_info_dict, np_build_info_dict
@@ -189,8 +215,8 @@ def get_info_numpy(only_print=False, verbosity=None):
         if verbosity == 1:
             np_sys_info_dict, np_build_info_dict = np_get_info()
 
-            _print_dict(np_sys_info_dict, subheading='system')
-            _print_dict(np_build_info_dict, subheading='\nbuild')
+            _print_dict(np_sys_info_dict, subheading="system")
+            _print_dict(np_build_info_dict, subheading="\nbuild")
         elif verbosity == 2:
             np_sys_info.show_all(argv=[])
             np.show_config()
@@ -219,12 +245,14 @@ def get_info_h5py():
     except AttributeError:
         swmr = False
 
-    info = OrderedDict((
-        ('HDF5_version', h5py.version.hdf5_version),
-        ('MPI_enabled', config.mpi),
-        ('virtual_dataset_available', vds),
-        ('single_writer_multiple_reader_available', swmr)
-    ))
+    info = OrderedDict(
+        (
+            ("HDF5_version", h5py.version.hdf5_version),
+            ("MPI_enabled", config.mpi),
+            ("virtual_dataset_available", vds),
+            ("single_writer_multiple_reader_available", swmr),
+        )
+    )
     return info
 
 
@@ -249,23 +277,28 @@ def update_dict(d1, d2):
 
 def get_info_hardware():
     """Create a dictionary for CPU information."""
+
     def _cpu_freq():
         """psutil can return `None` sometimes, esp. in Travis."""
-        func = 'psutil.cpu_freq: '
+        func = "psutil.cpu_freq: "
         try:
             hz = psutil.cpu_freq()
         except IOError:
-            return (func + 'IOError',) * 3  # See psutil issue #1071
-        except AttributeError:
-            return (func + 'AttributeError',) * 3  # See psutil issue #1006
-        except NotImplementedError:
-            return (func + 'NotImplementedError',) * 3 # on occigen (cluster cines)
+            return (func + "IOError",) * 3  # See psutil issue #1071
 
+        except AttributeError:
+            return (func + "AttributeError",) * 3  # See psutil issue #1006
+
+        except NotImplementedError:
+            return (
+                func + "NotImplementedError",
+            ) * 3  # on occigen (cluster cines)
 
         if hz is None:
-            return (func + 'None',) * 3  # See psutil issue #981
+            return (func + "None",) * 3  # See psutil issue #981
+
         else:
-            return ('{:.3f}'.format(h) for h in hz)
+            return ("{:.3f}".format(h) for h in hz)
 
     try:
         from numpy.distutils.cpuinfo import cpu
@@ -273,27 +306,43 @@ def get_info_hardware():
         # Keys are specific to Linux distributions only
         info_hw = filter_modify_dict(
             cpu.info[0],
-            ['uname_m', 'address sizes', 'bogomips', 'cache size', 'model name',
-             'cpu cores', 'siblings'],
-            ['arch', 'address_sizes', 'bogomips', 'cache_size', 'cpu_name',
-             'nb_cores', 'nb_siblings']
+            [
+                "uname_m",
+                "address sizes",
+                "bogomips",
+                "cache size",
+                "model name",
+                "cpu cores",
+                "siblings",
+            ],
+            [
+                "arch",
+                "address_sizes",
+                "bogomips",
+                "cache_size",
+                "cpu_name",
+                "nb_cores",
+                "nb_siblings",
+            ],
         )
-        info_hw['cpu_MHz_actual'] = []
+        info_hw["cpu_MHz_actual"] = []
         for d in cpu.info:
-            info_hw['cpu_MHz_actual'].append(float(d['cpu MHz']))
+            info_hw["cpu_MHz_actual"].append(float(d["cpu MHz"]))
     except KeyError as e:
-        print('KeyError with', e)
+        print("KeyError with", e)
         info_hw = OrderedDict()
 
     hz_current, hz_min, hz_max = _cpu_freq()
-    info_hw_alt = OrderedDict((
-        ('arch', platform.machine()),
-        ('cpu_name', platform.processor()),
-        ('nb_procs', psutil.cpu_count()),
-        ('cpu_MHz_current', hz_current),
-        ('cpu_MHz_min', hz_min),
-        ('cpu_MHz_max', hz_max)
-    ))
+    info_hw_alt = OrderedDict(
+        (
+            ("arch", platform.machine()),
+            ("cpu_name", platform.processor()),
+            ("nb_procs", psutil.cpu_count()),
+            ("cpu_MHz_current", hz_current),
+            ("cpu_MHz_min", hz_min),
+            ("cpu_MHz_max", hz_max),
+        )
+    )
     info_hw = update_dict(info_hw, info_hw_alt)
     return info_hw
 
@@ -302,7 +351,7 @@ def reset_col_width(nb_cols):
     """Detect total width of the current terminal."""
     global _COL_WIDTH
     try:
-        tot_width = int(subprocess.check_output(['tput', 'cols']))
+        tot_width = int(subprocess.check_output(["tput", "cols"]))
         _COL_WIDTH = tot_width // nb_cols
     except Exception:
         pass
@@ -310,47 +359,54 @@ def reset_col_width(nb_cols):
 
 # Table formatting functions
 
+
 def _print_item(item, color=None, bold=False):
-    cprint(item.ljust(_COL_WIDTH), end='', color=color, bold=bold)
+    cprint(item.ljust(_COL_WIDTH), end="", color=color, bold=bold)
 
 
-def _print_heading(heading, underline_with='=', case='title'):
+def _print_heading(heading, underline_with="=", case="title"):
     if isinstance(heading, str):
         heading = [heading]
 
-    if case == 'title':
-        heading = [h.replace('_', ' ').title() for h in heading]
-    elif case == 'upper':
-        heading = [h.replace('_', ' ').upper() for h in heading]
+    if case == "title":
+        heading = [h.replace("_", " ").title() for h in heading]
+    elif case == "upper":
+        heading = [h.replace("_", " ").upper() for h in heading]
 
     underline = [underline_with * len(h) for h in heading]
 
     for item in heading:
-        _print_item(item, color='RED', bold=True)
+        _print_item(item, color="RED", bold=True)
 
     print()
     for item in underline:
-        _print_item(item, color='RED')
+        _print_item(item, color="RED")
 
     print()
 
 
-def _print_dict(d, heading=None, underline_with='=', case='title',
-                subheading=None, indent_level=0):
+def _print_dict(
+    d,
+    heading=None,
+    underline_with="=",
+    case="title",
+    subheading=None,
+    indent_level=0,
+):
     if heading is not None:
-        _print_heading('\n' + heading, underline_with, case)
+        _print_heading("\n" + heading, underline_with, case)
 
-    indent = ' ' * indent_level * 2
+    indent = " " * indent_level * 2
     WIDTH = _COL_WIDTH - indent_level * 2
 
     if subheading is not None:
-        cprint('{}{}:'.format(indent, subheading), color='BLUE')
+        cprint("{}{}:".format(indent, subheading), color="BLUE")
 
     for k, v in d.items():
         if isinstance(v, dict):
-            _print_dict(v, subheading=k, indent_level=indent_level+1)
+            _print_dict(v, subheading=k, indent_level=indent_level + 1)
         else:
-            print('{}  - {}: {}'.format(indent, k.ljust(WIDTH), v))
+            print("{}  - {}: {}".format(indent, k.ljust(WIDTH), v))
 
 
 def print_sys_info(verbosity=None):
@@ -359,7 +415,7 @@ def print_sys_info(verbosity=None):
     pkgs = get_info_fluiddyn()
     pkgs_keys = list(pkgs)
 
-    heading = ['Package']
+    heading = ["Package"]
     heading.extend(pkgs[pkgs_keys[0]])
     reset_col_width(len(heading))
 
@@ -369,39 +425,39 @@ def print_sys_info(verbosity=None):
         for v in about_pkg.values():
             v = str(v)
             if len(v) > _COL_WIDTH:
-                v = v[:10] + '...' + v[10 + 4 - _COL_WIDTH:]
+                v = v[:10] + "..." + v[10 + 4 - _COL_WIDTH:]
             _print_item(str(v))
 
         print()
 
     for pkg_name, about_pkg in pkgs.items():
-        print(pkg_name.ljust(_COL_WIDTH), end='')
+        print(pkg_name.ljust(_COL_WIDTH), end="")
         print_pkg(about_pkg)
 
     pkgs_third_party = get_info_third_party()
     for pkg_name, about_pkg in pkgs_third_party.items():
-        print(pkg_name.ljust(_COL_WIDTH), end='')
+        print(pkg_name.ljust(_COL_WIDTH), end="")
         print_pkg(about_pkg)
 
     info_sw = get_info_software()
-    _print_dict(info_sw, 'Software')
+    _print_dict(info_sw, "Software")
     info_hw = get_info_hardware()
-    _print_dict(info_hw, 'Hardware')
+    _print_dict(info_hw, "Hardware")
     info_py = get_info_python()
-    _print_dict(info_py, 'Python')
+    _print_dict(info_py, "Python")
     if verbosity is not None:
-        _print_heading('\nNumPy', case=None)
+        _print_heading("\nNumPy", case=None)
         get_info_numpy(True, verbosity)
         info_h5py = get_info_h5py()
-        _print_dict(info_h5py, 'h5py', case=None)
+        _print_dict(info_h5py, "h5py", case=None)
 
     print()
 
 
-def save_sys_info(path_dir='.', filename='sys_info.xml'):
+def save_sys_info(path_dir=".", filename="sys_info.xml"):
     """Save all system information as a xml file."""
 
-    sys_info = ParamContainer('sys_info')
+    sys_info = ParamContainer("sys_info")
     info_sw = get_info_software()
     info_hw = get_info_hardware()
     info_py = get_info_python()
@@ -410,45 +466,53 @@ def save_sys_info(path_dir='.', filename='sys_info.xml'):
     pkgs = get_info_fluiddyn()
     pkgs_third_party = get_info_third_party()
 
-    sys_info._set_child('software', info_sw)
-    sys_info._set_child('hardware', info_hw)
-    sys_info._set_child('python', info_py)
+    sys_info._set_child("software", info_sw)
+    sys_info._set_child("hardware", info_hw)
+    sys_info._set_child("python", info_py)
     for pkg in pkgs:
         sys_info.python._set_child(pkg, pkgs[pkg])
 
     for pkg in pkgs_third_party:
         sys_info.python._set_child(pkg, pkgs_third_party[pkg])
 
-    sys_info.python.numpy._set_child('system')
-    sys_info.python.numpy._set_child('build')
+    sys_info.python.numpy._set_child("system")
+    sys_info.python.numpy._set_child("build")
     for k, v in info_np[0].items():
         sys_info.python.numpy.system._set_child(k, v)
     for k, v in info_np[1].items():
         sys_info.python.numpy.build._set_child(k, v)
 
-    sys_info.python.h5py._set_child('config', info_h5py)
+    sys_info.python.h5py._set_child("config", info_h5py)
     path = os.path.join(path_dir, filename)
     sys_info._save_as_xml(path, find_new_name=True)
 
 
 def _get_parser():
-    desc = '\n'.join(__doc__.splitlines()[2:])
+    desc = "\n".join(__doc__.splitlines()[2:])
     parser = argparse.ArgumentParser(
-        prog='fluidinfo',
+        prog="fluidinfo",
         description=desc,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.set_defaults(func=print_sys_info)
     parser.add_argument(
-        '-s', '--save', help='saves system information to an xml file '
-        '(sys_info.xml)',
-        action='store_true')
+        "-s",
+        "--save",
+        help="saves system information to an xml file " "(sys_info.xml)",
+        action="store_true",
+    )
     parser.add_argument(
-        '-o', '--output-dir', help='save to directory', default=None)
+        "-o", "--output-dir", help="save to directory", default=None
+    )
     parser.add_argument(
-        '-v', '--verbosity', help='increase output verbosity (max: -vvv)',
-        action='count')
+        "-v",
+        "--verbosity",
+        help="increase output verbosity (max: -vvv)",
+        action="count",
+    )
     parser.add_argument(
-        '-W', '--warnings', help='show warnings', action='store_true')
+        "-W", "--warnings", help="show warnings", action="store_true"
+    )
     return parser
 
 
@@ -459,7 +523,7 @@ def main(args=None):
         args = parser.parse_args()
 
     if not args.warnings:
-        warnings.filterwarnings('ignore', category=UserWarning)
+        warnings.filterwarnings("ignore", category=UserWarning)
 
     if args.save:
         save_sys_info()
@@ -472,5 +536,5 @@ def main(args=None):
         warnings.resetwarnings()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

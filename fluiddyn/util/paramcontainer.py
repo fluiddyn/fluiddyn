@@ -28,13 +28,18 @@ import six
 import re
 
 import numpy as np
+
 try:
     import h5py
     from fluiddyn.io.hdf5 import H5File
 except ImportError:
     from warnings import warn
-    warn('Cannot import h5py. Loading from and writing to HDF5 files will not'
-         'work', ImportWarning)
+
+    warn(
+        "Cannot import h5py. Loading from and writing to HDF5 files will not"
+        "work",
+        ImportWarning,
+    )
 
 from fluiddyn.util.xmltotext import produce_text_element
 
@@ -42,17 +47,21 @@ from fluiddyn.util.xmltotext import produce_text_element
 def _as_str(value):
     if not isinstance(value, six.string_types):
         return repr(value)
+
     else:
         return value
 
 
 def _as_value(value):
-    if value.startswith('array('):
+    if value.startswith("array("):
         return eval(value)
-    if '\t' in value:
+
+    if "\t" in value:
         return value
+
     try:
         return literal_eval(value)
+
     except (SyntaxError, ValueError):
         return value
 
@@ -132,31 +141,39 @@ class ParamContainer(object):
         An open hdf5 file.
 
     """
-    def __init__(self, tag=None, attribs=None,
-                 path_file=None, elemxml=None, hdf5_object=None, doc='',
-                 parent=None):
 
-        self._set_internal_attr('_key_attribs', list())
-        self._set_internal_attr('_tag_children', list())
-        self._set_internal_attr('_parent', parent)
+    def __init__(
+        self,
+        tag=None,
+        attribs=None,
+        path_file=None,
+        elemxml=None,
+        hdf5_object=None,
+        doc="",
+        parent=None,
+    ):
+
+        self._set_internal_attr("_key_attribs", list())
+        self._set_internal_attr("_tag_children", list())
+        self._set_internal_attr("_parent", parent)
         self._set_doc(doc)
 
         if path_file is not None:
-            self._set_internal_attr('_path_file', path_file)
-            if path_file.endswith('.xml'):
+            self._set_internal_attr("_path_file", path_file)
+            if path_file.endswith(".xml"):
                 self._load_from_xml_file(path_file)
-            elif path_file.endswith('.h5'):
+            elif path_file.endswith(".h5"):
                 self._load_from_hdf5_file(path_file)
         elif elemxml is not None:
             self._load_from_elemxml(elemxml)
         elif hdf5_object is not None:
             self._load_from_hdf5_object(hdf5_object)
         elif tag is not None:
-            self._set_internal_attr('_tag', tag)
+            self._set_internal_attr("_tag", tag)
         else:
             raise ValueError(
-                'To create an empty ParamContainer, '
-                'a tag has to be provided.')
+                "To create an empty ParamContainer, " "a tag has to be provided."
+            )
 
         if attribs is not None:
             self._set_attribs(attribs)
@@ -166,23 +183,34 @@ class ParamContainer(object):
             self._set_internal_attr(key, value)
         elif key in self._tag_children:
             if not isinstance(value, ParamContainer):
-                raise AttributeError(
-                    key + ' is a tag of a child.')
+                raise AttributeError(key + " is a tag of a child.")
+
         else:
             raise AttributeError(
-                key + ' is not already set in ' + self._tag +
-                '.\nThe attributes are: ' + str(self._key_attribs) +
-                '\nTo set a new attribute, use _set_attrib or _set_attribs.')
+                key
+                + " is not already set in "
+                + self._tag
+                + ".\nThe attributes are: "
+                + str(self._key_attribs)
+                + "\nTo set a new attribute, use _set_attrib or _set_attribs."
+            )
 
     def __getattr__(self, attr):
-        if attr.startswith('_'):
+        if attr.startswith("_"):
             raise AttributeError(
-                '{} object has no attribute {}'.format(self.__class__, attr))
+                "{} object has no attribute {}".format(self.__class__, attr)
+            )
+
         else:
             raise AttributeError(
-                attr + ' is not an attribute of ' + self._tag +
-                '.\nThe attributes are: ' + str(self._key_attribs) +
-                '\nThe children are: ' + str(self._tag_children))
+                attr
+                + " is not an attribute of "
+                + self._tag
+                + ".\nThe attributes are: "
+                + str(self._key_attribs)
+                + "\nThe children are: "
+                + str(self._tag_children)
+            )
 
     def __setitem__(self, key, value):
         self.__setattr__(key, value)
@@ -194,44 +222,46 @@ class ParamContainer(object):
         self.__dict__[key] = value
 
     def _set_doc(self, doc):
-        self._set_internal_attr('_doc', doc)
+        self._set_internal_attr("_doc", doc)
 
     def _contains_doc(self):
         if len(self._doc) > 0:
             return True
+
         for tag in self._tag_children:
             if self[tag]._contains_doc():
                 return True
+
         return False
 
     def _get_formatted_doc(self):
         full_tag = self._make_full_tag()
-        txt = 'Documentation for ' + full_tag
+        txt = "Documentation for " + full_tag
 
-        nb_points = full_tag.count('.')
+        nb_points = full_tag.count(".")
         if nb_points == 0:
-            char = '='
+            char = "="
         elif nb_points == 1:
-            char = '-'
+            char = "-"
         elif nb_points == 2:
-            char = '~'
+            char = "~"
         else:
-            char = '^'
+            char = "^"
 
-        txt += '\n' + char * len(txt) + '\n'
+        txt += "\n" + char * len(txt) + "\n"
 
         doc = self._doc.strip()
 
         if len(doc) == 0:
-            return txt + '\n'
+            return txt + "\n"
 
         if len(doc) > 0:
-            txt += '\n'
+            txt += "\n"
 
         txt += doc
 
         if len(doc) > 0:
-            txt += '\n'
+            txt += "\n"
 
         return txt
 
@@ -241,8 +271,8 @@ class ParamContainer(object):
     def _get_formatted_docs(self):
         txt = self._get_formatted_doc()
         for tag in self._tag_children:
-            if not txt.endswith('\n\n'):
-                txt += '\n'
+            if not txt.endswith("\n\n"):
+                txt += "\n"
             txt += self[tag]._get_formatted_docs()
 
         return txt
@@ -253,8 +283,9 @@ class ParamContainer(object):
     def _make_full_tag(self):
         if self._parent is None:
             return self._tag
+
         else:
-            return self._parent._make_full_tag() + '.' + self._tag
+            return self._parent._make_full_tag() + "." + self._tag
 
     def _set_attrib(self, key, value):
         """Add an attribute to the container."""
@@ -274,20 +305,21 @@ class ParamContainer(object):
         """Add a child (of the same class) to the container."""
         if tag in self.__dict__:
             raise ValueError('The tag "{}" is already used.'.format(tag))
-        self.__dict__[tag] = self.__class__(
-            tag=tag, attribs=attribs, parent=self)
+
+        self.__dict__[tag] = self.__class__(tag=tag, attribs=attribs, parent=self)
         self._tag_children.append(tag)
 
     def _set_as_child(self, child, change_parent=True):
         """Associate a ParamContainer as a child."""
         if not isinstance(child, ParamContainer):
-            raise ValueError('child should be a ParamContainer instance.')
+            raise ValueError("child should be a ParamContainer instance.")
+
         if child._tag in self.__dict__:
-            raise ValueError(
-                'The tag "{}" is already used.'.format(child._tag))
+            raise ValueError('The tag "{}" is already used.'.format(child._tag))
+
         self.__dict__[child._tag] = child
         if change_parent:
-            child._set_internal_attr('_parent', self)
+            child._set_internal_attr("_parent", self)
         self._tag_children.append(child._tag)
 
     def _make_dict_attribs(self):
@@ -298,14 +330,17 @@ class ParamContainer(object):
 
     def _make_dict(self):
         self._key_attribs.sort()
-        d = {'tag': self._tag, 'key_attribs': self._key_attribs,
-             'tag_children': self._tag_children}
+        d = {
+            "tag": self._tag,
+            "key_attribs": self._key_attribs,
+            "tag_children": self._tag_children,
+        }
 
-        attribs = d['attribs'] = []
+        attribs = d["attribs"] = []
         for k in self._key_attribs:
             attribs.append(self.__dict__[k])
 
-        children = d['children'] = []
+        children = d["children"] = []
         for k in self._tag_children:
             children.append(self.__dict__[k]._make_dict())
 
@@ -334,7 +369,6 @@ class ParamContainer(object):
 
         return this
 
-
     def _make_element_xml(self, parentxml=None):
         if parentxml is None:
             elemxml = etree.Element(self._tag)
@@ -345,7 +379,7 @@ class ParamContainer(object):
         for key in self._key_attribs:
             elemxml.attrib[key] = _as_str(self.__dict__[key])
 
-        if hasattr(self, '_value_text'):
+        if hasattr(self, "_value_text"):
             elemxml.text = str(self._value_text)
 
         for key in self._tag_children:
@@ -364,8 +398,11 @@ class ParamContainer(object):
         print(self._make_xml_text())
 
     def __repr__(self):
-        return (super(ParamContainer, self).__repr__() +
-                '\n\n'+self._make_xml_text())
+        return (
+            super(ParamContainer, self).__repr__()
+            + "\n\n"
+            + self._make_xml_text()
+        )
 
     def _load_from_xml_file(self, path_file):
         tree = etree.parse(path_file)
@@ -373,13 +410,13 @@ class ParamContainer(object):
         self._load_from_elemxml(elemxml)
 
     def _load_from_elemxml(self, elemxml):
-        self._set_internal_attr('_tag', elemxml.tag)
+        self._set_internal_attr("_tag", elemxml.tag)
 
         text = elemxml.text
         if text is not None:
             v = text.strip()
             if len(v) > 0:
-                self._set_internal_attr('_value_text', _as_value(v))
+                self._set_internal_attr("_value_text", _as_value(v))
 
         for k, v in list(elemxml.attrib.items()):
             self._set_attrib(k, _as_value(v))
@@ -399,37 +436,41 @@ class ParamContainer(object):
 
                 if len(childxml.attrib) == 1:
                     k = list(childxml.attrib.keys())[0]
-                    tag += '_' + str(childxml.attrib.pop(k))
+                    tag += "_" + str(childxml.attrib.pop(k))
                     childxml.tag = tag
 
-            self._set_internal_attr(
-                tag, self.__class__(elemxml=childxml))
+            self._set_internal_attr(tag, self.__class__(elemxml=childxml))
             self._tag_children.append(tag)
 
     def _save_as_xml(self, path_file=None, comment=None, find_new_name=False):
         """Save the xml text in a file."""
         if path_file is None:
-            path_file = self._tag + '.xml'
+            path_file = self._tag + ".xml"
 
         if os.path.exists(path_file):
             if not find_new_name:
-                raise ValueError('The file {} already exists.'.format(
-                    path_file))
-            else:
-                base = path_file.split('.xml')[0]
-                i = 1
-                while os.path.exists(base + '_{}.xml'.format(i)):
-                    i += 1
-                path_file = base + '_{}.xml'.format(i)
+                raise ValueError("The file {} already exists.".format(path_file))
 
-        with open(path_file, 'w') as f:
+            else:
+                base = path_file.split(".xml")[0]
+                i = 1
+                while os.path.exists(base + "_{}.xml".format(i)):
+                    i += 1
+                path_file = base + "_{}.xml".format(i)
+
+        with open(path_file, "w") as f:
             if comment is not None:
-                f.write('<!--\n'+comment+'\n-->\n')
+                f.write("<!--\n" + comment + "\n-->\n")
             f.write(self._make_xml_text())
         return path_file
 
-    def _save_as_hdf5(self, path_file=None, hdf5_object=None,
-                      hdf5_parent=None, invalid_netcdf=False):
+    def _save_as_hdf5(
+        self,
+        path_file=None,
+        hdf5_object=None,
+        hdf5_parent=None,
+        invalid_netcdf=False,
+    ):
         """Save in a hdf5 file."""
 
         if hdf5_parent is not None:
@@ -437,23 +478,23 @@ class ParamContainer(object):
 
         if hdf5_object is None:
             if path_file is None:
-                path_file = ''
-            if not path_file.endswith('.h5'):
-                path_file = os.path.join(path_file, self._tag + '.h5')
-            with H5File(path_file, 'w') as f:
+                path_file = ""
+            if not path_file.endswith(".h5"):
+                path_file = os.path.join(path_file, self._tag + ".h5")
+            with H5File(path_file, "w") as f:
                 try:
-                    tag = self._tag.encode('utf8')
+                    tag = self._tag.encode("utf8")
                 except AttributeError:
                     tag = self._tag
-                f.attrs['_tag'] = tag
+                f.attrs["_tag"] = tag
                 self._save_as_hdf5(hdf5_object=f)
         elif path_file is None:
             for key in self._key_attribs:
                 value = self.__dict__[key]
                 if value is None:
-                    value = 'None'
+                    value = "None"
                 try:
-                    value = value.encode('utf8')
+                    value = value.encode("utf8")
                 except AttributeError:
                     pass
 
@@ -461,7 +502,7 @@ class ParamContainer(object):
                     value_tmp = []
                     for v in value:
                         try:
-                            v_tmp = v.encode('utf8')
+                            v_tmp = v.encode("utf8")
                         except AttributeError:
                             v_tmp = v
                         value_tmp.append(v_tmp)
@@ -478,15 +519,17 @@ class ParamContainer(object):
                 except TypeError:
                     print(key, value, type(value))
                     raise
+
             for key in self._tag_children:
                 group = hdf5_object.create_group(key)
                 self.__dict__[key]._save_as_hdf5(hdf5_object=group)
         else:
-            raise ValueError('If hdf5_object is not None,'
-                             'path_file should be None.')
+            raise ValueError(
+                "If hdf5_object is not None," "path_file should be None."
+            )
 
     def _load_from_hdf5_file(self, path_file):
-        with H5File(path_file, 'r') as f:
+        with H5File(path_file, "r") as f:
             self._load_from_hdf5_object(f)
 
     def _load_from_hdf5_object(self, hdf5_object):
@@ -497,39 +540,39 @@ class ParamContainer(object):
             if isinstance(v, np.integer):
                 attrs[k] = int(v)
                 continue
-            
+
             try:
-                attrs[k] = v.decode('utf8')
+                attrs[k] = v.decode("utf8")
             except AttributeError:
                 pass
 
-            if isinstance(v, np.ndarray) and v.dtype.kind in ('S', 'U'):
+            if isinstance(v, np.ndarray) and v.dtype.kind in ("S", "U"):
                 attrs[k] = list(v.astype(np.unicode))
 
-        tag = hdf5_object.name.split('/')[-1]
+        tag = hdf5_object.name.split("/")[-1]
 
-        if tag == '':
+        if tag == "":
             try:
-                tag = hdf5_object.attrs['_tag']
-                attrs.pop('_tag')
+                tag = hdf5_object.attrs["_tag"]
+                attrs.pop("_tag")
             except KeyError:
-                tag = 'root_file'
+                tag = "root_file"
 
         try:
-            tag = tag.decode('utf8')
+            tag = tag.decode("utf8")
         except AttributeError:
             pass
 
-        self._set_internal_attr('_tag', tag)
+        self._set_internal_attr("_tag", tag)
 
         # detect None attributes
         for k, v in list(attrs.items()):
-            if isinstance(v, str) and v == 'None':
+            if isinstance(v, str) and v == "None":
                 attrs[k] = None
 
         for key in list(attrs.keys()):
-            if ' ' in key:
-                attrs[key.replace(' ', '_')] = attrs.pop(key)
+            if " " in key:
+                attrs[key.replace(" ", "_")] = attrs.pop(key)
 
         self._set_attribs(attrs)
         for tag in list(hdf5_object.keys()):
@@ -538,8 +581,7 @@ class ParamContainer(object):
                 self._set_attrib(tag, value)
 
             elif isinstance(hdf5_object[tag], h5py.Group):
-                self.__dict__[tag] = self.__class__(
-                    hdf5_object=hdf5_object[tag])
+                self.__dict__[tag] = self.__class__(hdf5_object=hdf5_object[tag])
                 self._tag_children.append(tag)
 
     def _modif_from_other_params(self, params):
@@ -549,10 +591,9 @@ class ParamContainer(object):
                 self[key] = params[key]
             except AttributeError:
                 pass
-        for tag_child in  params._tag_children:
+        for tag_child in params._tag_children:
             try:
-                self[tag_child]._modif_from_other_params(
-                    params[tag_child])
+                self[tag_child]._modif_from_other_params(params[tag_child])
             except AttributeError:
                 pass
 
@@ -562,7 +603,7 @@ def tidy_container(cont):
 
     """
     newtag = convert_capword_to_lowercaseunderscore(cont._tag)
-    cont._set_internal_attr('_tag', newtag)
+    cont._set_internal_attr("_tag", newtag)
 
     for i, oldtag in enumerate(cont._tag_children):
         newtag = convert_capword_to_lowercaseunderscore(oldtag)
@@ -580,7 +621,7 @@ def tidy_container(cont):
             try:
                 value_text = child._value_text
             except AttributeError:
-                value_text = ''
+                value_text = ""
             cont.__dict__.pop(tag)
             tag_child_to_remove.append(tag)
             cont._set_attrib(tag, value_text)
@@ -590,11 +631,11 @@ def tidy_container(cont):
 
 
 def convert_capword_to_lowercaseunderscore(name):
-    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+    s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # params = ParamContainer(tag='params')
 
     # params._set_attrib('a0', 1)
@@ -620,13 +661,13 @@ if __name__ == '__main__':
 
     # assert params != params2
 
-    params = ParamContainer(tag='params')
-    params._set_attribs({'a0': 1, 'a1': 1})
-    params._set_attrib('a2', 1)
+    params = ParamContainer(tag="params")
+    params._set_attribs({"a0": 1, "a1": 1})
+    params._set_attrib("a2", 1)
 
     params._print_as_xml()
 
-    params._set_child('child0', {'a0': 2, 'a1': 2})
+    params._set_child("child0", {"a0": 2, "a1": 2})
     params.child0.a0 = 3
 
     params._print_as_xml()
@@ -637,7 +678,7 @@ if __name__ == '__main__':
 
     params._save_as_xml()
 
-    params_loaded = ParamContainer(path_file=params._tag + '.xml')
-    os.remove(params._tag + '.xml')
+    params_loaded = ParamContainer(path_file=params._tag + ".xml")
+    os.remove(params._tag + ".xml")
 
     assert params_loaded == params

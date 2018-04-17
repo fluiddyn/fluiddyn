@@ -36,8 +36,9 @@ def glob_sorted(s):
 
 
 def _should_we_stop():
-    if query_yes_no('Some folders already exist\n Do you want to continue?'):
+    if query_yes_no("Some folders already exist\n Do you want to continue?"):
         return False
+
     return True
 
 
@@ -52,15 +53,15 @@ def _save_new_file(im, base_path, outputext, erase=False):
     >>> warnings.simplefilter('ignore', ResourceWarning)
 
     """
-    path_save = base_path + '.' + outputext
+    path_save = base_path + "." + outputext
     if not erase and os.path.exists(path_save):
         return False
-    if outputext == 'jp2':
-        with im.convert(mode='L') as new_im:
-            new_im.save(path_save,
-                        quality_mode='rate', quality_layers=[8])
+
+    if outputext == "jp2":
+        with im.convert(mode="L") as new_im:
+            new_im.save(path_save, quality_mode="rate", quality_layers=[8])
     else:
-        with im.convert(mode='I') as new_im:
+        with im.convert(mode="I") as new_im:
             new_im.save(path_save)
 
     return True
@@ -79,31 +80,38 @@ def imsave(path, arrays, as_int=False):
         Convert to integer or not.
 
     """
-    if PIL.__version__ < '3.4.0':
-        raise ImportError('imsave for multiframe TIFF not supported.')
+    if PIL.__version__ < "3.4.0":
+        raise ImportError("imsave for multiframe TIFF not supported.")
 
     im_list = [_image_from_array(a, as_int) for a in arrays]
 
-    if PIL.__version__ < '4.2.0':
+    if PIL.__version__ < "4.2.0":
         from warnings import warn
-        warn('imsave for multiframe TIFF uses an intermediate GIF workaround.',
-             DeprecationWarning)
+
+        warn(
+            "imsave for multiframe TIFF uses an intermediate GIF workaround.",
+            DeprecationWarning,
+        )
         gif = im_list.pop(0)
 
         with io.BytesIO() as output:
-            gif.save(output, format='GIF', save_all=True,
-                     append_images=im_list)
+            gif.save(output, format="GIF", save_all=True, append_images=im_list)
             gif.close()
 
             with Image.open(output) as im:
-                im.save(path, format='TIFF', save_all=True)
+                im.save(path, format="TIFF", save_all=True)
     else:
-        im_list[0].save(path, compression='tiff_deflate', save_all=True,
-                        append_images=im_list[1:])
+        im_list[0].save(
+            path,
+            compression="tiff_deflate",
+            save_all=True,
+            append_images=im_list[1:],
+        )
 
 
-def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
-                                              outputext='tif', erase=False):
+def reorganize_single_frame_3Dscannedpiv_data(
+    files, nb_levels, outputdir=".", outputext="tif", erase=False
+):
     """
     Reorganize data from multi tiff into a folders (one for each level).
 
@@ -141,20 +149,22 @@ def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
     nb_images = get_approximate_number_images(path_files)
     if nb_images == 0:
         return
-    format_index = ':0{}d'.format(int(ceil(log10(nb_images))))
-    format_level = ':0{}d'.format(int(ceil(log10(nb_levels))))
+
+    format_index = ":0{}d".format(int(ceil(log10(nb_images))))
+    format_level = ":0{}d".format(int(ceil(log10(nb_levels))))
 
     index_im = 0
 
     for ind in range(nb_levels):
-        dir_lev = (outputdir + '/level{' + format_level + '}').format(ind)
+        dir_lev = (outputdir + "/level{" + format_level + "}").format(ind)
         if not os.path.exists(dir_lev):
             os.makedirs(dir_lev)
 
     for path_tiff in path_files:
         t_start = time.time()
-        print('Convert and save file\n' +
-              path_tiff + '\nin directory\n' + outputdir)
+        print(
+            "Convert and save file\n" + path_tiff + "\nin directory\n" + outputdir
+        )
         with Image.open(path_tiff) as im:
             index_im_in_tiff = 0
             while True:
@@ -162,23 +172,35 @@ def reorganize_single_frame_3Dscannedpiv_data(files, nb_levels, outputdir='.',
                     im.seek(index_im_in_tiff)
                 except EOFError:
                     break
+
                 else:
                     base_path = (
-                        outputdir + '/level{' + format_level +
-                        '}/im{' + format_index + '}').format(
-                            index_im % nb_levels, index_im//nb_levels)
+                        outputdir
+                        + "/level{"
+                        + format_level
+                        + "}/im{"
+                        + format_index
+                        + "}"
+                    ).format(
+                        index_im % nb_levels, index_im // nb_levels
+                    )
                     if _save_new_file(im, base_path, outputext, erase):
-                        print('\r file {}; in {:.2f} s'.format(
-                            index_im, time.time() - t_start), end='')
+                        print(
+                            "\r file {}; in {:.2f} s".format(
+                                index_im, time.time() - t_start
+                            ),
+                            end="",
+                        )
                         sys.stdout.flush()
 
                     index_im += 1
                     index_im_in_tiff += 1
-            print('')
+            print("")
 
 
 def reorganize_piv3dscanning_doubleframe(
-        files, nb_levels, outputdir='.', outputext='tif', erase=False):
+    files, nb_levels, outputdir=".", outputext="tif", erase=False
+):
     """
     Reorganize data from multi tiff into a folders (one for each level).
 
@@ -215,20 +237,22 @@ def reorganize_piv3dscanning_doubleframe(
     nb_images = get_approximate_number_images(path_files)
     if nb_images == 0:
         return
-    format_index = ':0{}d'.format(int(ceil(log10(nb_images))))
-    format_level = ':0{}d'.format(int(ceil(log10(nb_levels))))
+
+    format_index = ":0{}d".format(int(ceil(log10(nb_images))))
+    format_level = ":0{}d".format(int(ceil(log10(nb_levels))))
 
     index_im = 0
 
     for ind in range(nb_levels):
-        dir_lev = (outputdir + '/level{' + format_level + '}').format(ind)
+        dir_lev = (outputdir + "/level{" + format_level + "}").format(ind)
         if not os.path.exists(dir_lev):
             os.makedirs(dir_lev)
 
     for path_tiff in path_files:
         t_start = time.time()
-        print('Convert and save file\n' +
-              path_tiff + '\nin directory\n' + outputdir)
+        print(
+            "Convert and save file\n" + path_tiff + "\nin directory\n" + outputdir
+        )
         with Image.open(path_tiff) as im:
             index_im_in_tiff = 0
             while True:
@@ -236,28 +260,44 @@ def reorganize_piv3dscanning_doubleframe(
                     im.seek(index_im_in_tiff)
                 except EOFError:
                     break
+
                 except SyntaxError:
-                    print('SyntaxError with file', path_tiff,
-                          '\nStop the conversion for this file.')
+                    print(
+                        "SyntaxError with file",
+                        path_tiff,
+                        "\nStop the conversion for this file.",
+                    )
                     return
+
                 else:
                     index_time = index_im // nb_levels
                     if index_time % 2 == 0:
-                        letter = 'a'
+                        letter = "a"
                     else:
-                        letter = 'b'
+                        letter = "b"
                     base_path = (
-                        outputdir + '/level{' + format_level + '}/im{' +
-                        format_index + '}' + letter).format(
-                            index_im % nb_levels, index_time // 2)
+                        outputdir
+                        + "/level{"
+                        + format_level
+                        + "}/im{"
+                        + format_index
+                        + "}"
+                        + letter
+                    ).format(
+                        index_im % nb_levels, index_time // 2
+                    )
                     if _save_new_file(im, base_path, outputext, erase):
-                        print('\r file {}; in {:.2f} s'.format(
-                            index_im, time.time() - t_start), end='')
+                        print(
+                            "\r file {}; in {:.2f} s".format(
+                                index_im, time.time() - t_start
+                            ),
+                            end="",
+                        )
                         sys.stdout.flush()
 
                     index_im += 1
                     index_im_in_tiff += 1
-            print('')
+            print("")
 
 
 def count_number_images(path_files):
@@ -266,8 +306,11 @@ def count_number_images(path_files):
     for path_tiff in path_files:
         with Image.open(path_tiff) as image:
             nb_images += image.n_frames
-            print('taking in account file {}, nb_images = {}'.format(
-                path_tiff, nb_images))
+            print(
+                "taking in account file {}, nb_images = {}".format(
+                    path_tiff, nb_images
+                )
+            )
 
     return nb_images
 
@@ -283,7 +326,8 @@ def get_approximate_number_images(path_files):
 
 
 def reorganize_piv2d_singleframe(
-        files, outputdir='.', outputext='tif', erase=False):
+    files, outputdir=".", outputext="tif", erase=False
+):
     """
     Reorganize data from multi tiff (single frame 2D).
 
@@ -316,7 +360,8 @@ def reorganize_piv2d_singleframe(
     nb_images = get_approximate_number_images(path_files)
     if nb_images == 0:
         return
-    format_index = ':0{}d'.format(int(ceil(log10(nb_images))))
+
+    format_index = ":0{}d".format(int(ceil(log10(nb_images))))
 
     if not os.path.exists(outputdir):
         os.makedirs(outputdir)
@@ -324,8 +369,9 @@ def reorganize_piv2d_singleframe(
     index_im = 0
     for path_tiff in path_files:
         t_start = time.time()
-        print('Convert and save file\n' +
-              path_tiff + '\nin directory\n' + outputdir)
+        print(
+            "Convert and save file\n" + path_tiff + "\nin directory\n" + outputdir
+        )
         with Image.open(path_tiff) as im:
             index_im_in_tiff = 0
             while True:
@@ -333,26 +379,35 @@ def reorganize_piv2d_singleframe(
                     im.seek(index_im_in_tiff)
                 except EOFError:
                     break
+
                 else:
                     base_path = (
-                        outputdir +
-                        ('/im{' + format_index + '}').format(index_im))
+                        outputdir + ("/im{" + format_index + "}").format(index_im)
+                    )
                     if _save_new_file(im, base_path, outputext, erase):
-                        print('\r file {}; in {:.2f} s'.format(
-                            index_im, time.time() - t_start), end='')
+                        print(
+                            "\r file {}; in {:.2f} s".format(
+                                index_im, time.time() - t_start
+                            ),
+                            end="",
+                        )
                         sys.stdout.flush()
                     index_im += 1
                     index_im_in_tiff += 1
 
-            print('')
+            print("")
 
-        print('End convert file {} in {} s'.format(
-            os.path.split(path_tiff)[0], time.time() - t_start))
+        print(
+            "End convert file {} in {} s".format(
+                os.path.split(path_tiff)[0], time.time() - t_start
+            )
+        )
         sys.stdout.flush()
 
 
 def reorganize_piv2d_doubleframe(
-        files, outputdir='.', outputext='tif', erase=False):
+    files, outputdir=".", outputext="tif", erase=False
+):
     """
     Reorganize data from multi tiff (double frame 2D).
 
@@ -384,7 +439,8 @@ def reorganize_piv2d_doubleframe(
     nb_images = get_approximate_number_images(path_files)
     if nb_images == 0:
         return
-    format_index = ':0{}d'.format(int(ceil(log10(nb_images))))
+
+    format_index = ":0{}d".format(int(ceil(log10(nb_images))))
 
     index_im = 0
     if not os.path.exists(outputdir):
@@ -392,8 +448,9 @@ def reorganize_piv2d_doubleframe(
 
     for path_tiff in path_files:
         t_start = time.time()
-        print('Convert and save file\n' +
-              path_tiff + '\nin directory\n' + outputdir)
+        print(
+            "Convert and save file\n" + path_tiff + "\nin directory\n" + outputdir
+        )
         with Image.open(path_tiff) as im:
             index_im_in_tiff = 0
             while True:
@@ -401,24 +458,33 @@ def reorganize_piv2d_doubleframe(
                     im.seek(index_im_in_tiff)
                 except EOFError:
                     break
+
                 else:
                     if index_im % 2 == 0:
-                        letter = 'a'
+                        letter = "a"
                     else:
-                        letter = 'b'
+                        letter = "b"
                     base_path = (
-                        outputdir +
-                        ('/im{' + format_index + '}').format(index_im//2) +
-                        letter)
+                        outputdir
+                        + ("/im{" + format_index + "}").format(index_im // 2)
+                        + letter
+                    )
                     if _save_new_file(im, base_path, outputext, erase):
-                        print('\r file {}; in {:.2f} s'.format(
-                            index_im, time.time() - t_start), end='')
+                        print(
+                            "\r file {}; in {:.2f} s".format(
+                                index_im, time.time() - t_start
+                            ),
+                            end="",
+                        )
                         sys.stdout.flush()
                     index_im += 1
                     index_im_in_tiff += 1
 
-            print('')
+            print("")
 
-        print('End convert file {} in {} s'.format(
-            os.path.split(path_tiff)[0], time.time() - t_start))
+        print(
+            "End convert file {} in {} s".format(
+                os.path.split(path_tiff)[0], time.time() - t_start
+            )
+        )
         sys.stdout.flush()
