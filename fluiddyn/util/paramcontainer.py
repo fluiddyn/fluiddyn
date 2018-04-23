@@ -16,7 +16,9 @@ from __future__ import division, print_function
 from builtins import str
 from builtins import object
 import os
-from copy import copy, deepcopy
+from copy import deepcopy
+
+from io import open
 
 try:
     from lxml import etree
@@ -458,9 +460,13 @@ class ParamContainer(object):
                     i += 1
                 path_file = base + "_{}.xml".format(i)
 
-        with open(path_file, "w") as f:
+        with open(path_file, "w", encoding="utf-8") as f:
             if comment is not None:
-                f.write("<!--\n" + comment + "\n-->\n")
+                try:
+                    comment = comment.decode("utf-8")
+                except (AttributeError, UnicodeEncodeError):
+                    pass
+                f.write(u"<!--\n" + comment + u"\n-->\n")
             f.write(self._make_xml_text())
         return path_file
 
@@ -495,7 +501,7 @@ class ParamContainer(object):
                     value = "None"
                 try:
                     value = value.encode("utf8")
-                except AttributeError:
+                except (AttributeError, UnicodeDecodeError):
                     pass
 
                 if isinstance(value, (list, tuple)):

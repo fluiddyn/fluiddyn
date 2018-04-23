@@ -50,7 +50,13 @@ def produce_text_element(elem, level=0):
             + tag_end
         )
 
-    return "\n".join(lines) + "\n"
+    txt = "\n".join(lines) + "\n"
+    try:
+        txt = txt.decode("UTF-8")
+    except (AttributeError, UnicodeEncodeError):
+        pass
+
+    return txt
 
 
 def get_position_first_letter(text):
