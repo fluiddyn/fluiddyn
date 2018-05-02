@@ -72,9 +72,7 @@ def main():
     # Big change compared to original nbstripout! :-)
     if not args.no_exclude_nbconvert:
         filenames = [
-            filename
-            for filename in filenames
-            if not filename.endswith(".nbconvert.ipynb")
+            fname for fname in filenames if not fname.endswith(".nbconvert.ipynb")
         ]
 
     for filename in filenames:

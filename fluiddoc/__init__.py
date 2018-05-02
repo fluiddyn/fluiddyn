@@ -16,6 +16,7 @@ by Readthedocs (by the way, thank you to the readthedocs people!).
    ipynb_maker
    fluidnbstripout
    fluiddocset
+   mathmacro
 
 """
 
@@ -44,13 +45,13 @@ def mock_modules(modules):
 
     Examples
     --------
-    
+
     .. code-block:: python
 
        mock_modules((
            'h5py', 'h5netcdf', 'pyfftw', 'theano',
            'reikna.cluda', 'reikna.fft', 'reikna.transformations'))
-    
+
 
     """
 

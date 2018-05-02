@@ -1,4 +1,13 @@
 
+0.2.3
+-----
+
+- ``fluiddoc.mathmacro``.
+- More fft (get_seq_indices_first_X, fftw_grid_size).
+- Better test coverage and less bugs.
+- ``fluidcluster-help``.
+- Better ``fluidinfo``.
+
 0.2.2
 -----
 

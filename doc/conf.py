@@ -22,8 +22,6 @@ from fluiddoc.ipynb_maker import ipynb_to_rst
 
 mock_modules(('nbstripout',))
 
-import fluiddoc.fluidnbstripout
-
 ipynb_to_rst()
 ipynb_to_rst('ipynb/executed', executed=True)
 
@@ -45,11 +43,10 @@ sys.path.insert(0, os.path.abspath('./'))
 extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.doctest',
     'sphinx.ext.todo',
-    # 'sphinx.ext.pngmath',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode', 'sphinx.ext.autosummary',
     'numpydoc',
-    'mathmacro',
+    'fluiddoc.mathmacro',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

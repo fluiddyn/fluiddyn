@@ -73,10 +73,13 @@ More
    :maxdepth: 1
 
    FluidDyn forge in Bitbucket <https://bitbucket.org/fluiddyn/fluiddyn>
-   FluidDyn in PyPI  <https://pypi.python.org/pypi/fluiddyn/>
+   FluidDyn in PyPI <https://pypi.org/project/fluiddyn/>
    to_do
    changes
    authors
+   FluidDyn blog <https://fluiddyn.bitbucket.io/>
+   FluidDyn developer chat room <https://riot.im/app/#/room/#fluiddyn-dev:matrix.org>
+   FluidDyn user chat room <https://riot.im/app/#/room/#fluiddyn-users:matrix.org>
 
 
 Indices and tables
