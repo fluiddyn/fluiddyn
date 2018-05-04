@@ -44,14 +44,18 @@ You can also download the source-code and run::
 Install in development mode
 ---------------------------
 
-Get the source by cloning the repository (as explained in :ref:`advicedev`) or
-by manually downloading the package from `the Bitbucket page
+Get the source by cloning the repository (as explained in :ref:`advicedev`)::
+
+  hg clone https://bitbucket.org/fluiddyn/fluiddyn
+
+or by manually downloading the package from `the Bitbucket page
 <https://bitbucket.org/fluiddyn/fluiddyn>`__ or from `the PyPI page
 <https://pypi.python.org/pypi/fluiddyn>`__.
 
 The development mode is often very convenient. From the root directory
 of the project, run::
 
+  cd fluiddyn
   python setup.py develop
 
 After the installation, it is a good practice to run the unit tests by

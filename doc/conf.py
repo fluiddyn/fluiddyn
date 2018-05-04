@@ -71,7 +71,7 @@ copyright = u'2014, Pierre Augier'
 #
 # The short X.Y version.
 version = fld.__version__.split('.')
-version = '{}.{}'.format(version[0], version[1])
+version = '{}.{}.{}'.format(version[0], version[1], version[2])
 # The full version, including alpha/beta/rc tags.
 release = fld.__version__
 

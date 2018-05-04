@@ -9,9 +9,12 @@ Advice for FluidDyn developers
 
 - Use a text editor with flake8 enabled (see for example `our emacs setup
   <https://bitbucket.org/fluiddyn/fluid_emacs.d>`_).
+
 - Use the Python code formatter `black <https://github.com/ambv/black>`_ with the
   command ``make black``.
+
 - Run the unittests before committing.
+
 
 Mercurial
 ---------

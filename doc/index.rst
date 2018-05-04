@@ -30,7 +30,6 @@ The FluidDyn project
 
    intro-motivations
    advice_on_Python
-   advice_developers
 
 User Guide of the fluiddyn package
 ----------------------------------
@@ -66,20 +65,33 @@ Fluiddyn also provides a small package for documentation:
 
    fluiddoc
 
+
 More
 ----
 
 .. toctree::
    :maxdepth: 1
 
-   FluidDyn forge in Bitbucket <https://bitbucket.org/fluiddyn/fluiddyn>
-   FluidDyn in PyPI <https://pypi.org/project/fluiddyn/>
-   to_do
    changes
+   advice_developers
+   to_do
    authors
-   FluidDyn blog <https://fluiddyn.bitbucket.io/>
-   FluidDyn developer chat room <https://riot.im/app/#/room/#fluiddyn-dev:matrix.org>
-   FluidDyn user chat room <https://riot.im/app/#/room/#fluiddyn-users:matrix.org>
+
+
+Links
+-----
+
+- `Forge of the FluidDyn project on Bitbucket <https://bitbucket.org/fluiddyn>`_
+- `Forge of the fluiddyn package on Bitbucket
+  <https://bitbucket.org/fluiddyn/fluiddyn>`_
+- `FluidDyn in PyPI <https://pypi.org/project/fluiddyn/>`_
+- `FluidDyn project blog <https://fluiddyn.bitbucket.io/>`_
+- `FluidDyn user chat room
+  <https://riot.im/app/#/room/#fluiddyn-users:matrix.org>`_
+- `FluidDyn mailing list <https://www.freelists.org/list/fluiddyn>`_
+- `FluidDyn on Twitter <https://twitter.com/pyfluiddyn>`_
+- `FluidDyn on Youtube
+  <https://www.youtube.com/channel/UCPhRtVq1v4HtcecEdEOcXBw>`_
 
 
 Indices and tables
