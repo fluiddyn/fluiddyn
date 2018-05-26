@@ -20,7 +20,8 @@ import fluiddyn as fld
 from fluiddoc import mock_modules
 from fluiddoc.ipynb_maker import ipynb_to_rst
 
-mock_modules(('nbstripout',))
+mock_modules(('nbstripout', 'scipy', 'scipy.fftpack', 'scipy.interpolate',
+              'skimage', 'skimage.io'))
 
 ipynb_to_rst()
 ipynb_to_rst('ipynb/executed', executed=True)
