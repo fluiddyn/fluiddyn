@@ -12,6 +12,7 @@ Provides:
 
    oar
    slurm
+   pbs
    local
    legi
    ciment

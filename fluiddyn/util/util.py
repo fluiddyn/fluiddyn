@@ -13,7 +13,6 @@ import glob
 import inspect
 import shutil
 import datetime
-import logging
 from importlib import import_module
 import contextlib
 
@@ -246,11 +245,20 @@ def print_options(*args, **kwargs):
     np.set_printoptions(**original)
 
 
-def config_logging(level="info", name="fluiddyn", file=None):
+def config_logging(level="info", name="fluiddyn", file=None, color=False):
     """Configure a logging with a particular level and output file."""
 
     if not level:
         return
+
+    if color:
+        try:
+            import colorlog as logging
+        except ImportError:
+            import logging
+
+            print("Colored logging requires colorlog package.")
+            color = False
 
     level = level.lower()
     if level == "info":
@@ -264,11 +272,17 @@ def config_logging(level="info", name="fluiddyn", file=None):
     # create console handler with a higher log level
     if file is None:
         file = sys.stdout
+
     ch = logging.StreamHandler(file)
     ch.setLevel(level)
 
     # create formatter and add it to the handlers
-    formatter = logging.Formatter("%(levelname)s: %(message)s")
+    if color:
+        formatter = logging.ColoredFormatter(
+            "%(log_color)s%(levelname)s: %(message)s"
+        )
+    else:
+        formatter = logging.Formatter("%(levelname)s: %(message)s")
     ch.setFormatter(formatter)
 
     # add the handlers to the logger
