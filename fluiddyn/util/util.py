@@ -235,14 +235,41 @@ def print_options(*args, **kwargs):
     """Set print option
 
     example:
+    >>> an_array = np.random.random((3,3))
     >>> with print_options(precision=3, suppress=True):
-    >>>     print something
+    >>>     print(an_array)
     """
     original = np.get_printoptions()
     np.set_printoptions(*args, **kwargs)
     yield
 
     np.set_printoptions(**original)
+
+
+@contextlib.contextmanager
+def setenv(**env):
+    """Temporarily set environment variables inside the context manager and
+    fully restore previous environment afterwards.
+
+    Adapted from: https://gist.github.com/igniteflow/7267431
+
+    Example
+    -------
+    >>> import os
+    >>> with setenv(CC="gcc"):
+    >>>     print(os.getenv("CC"))  # prints: gcc
+    >>> print(os.getenv("CC"))  # prints: the original value or none.
+    """
+    original_env = {key: os.getenv(key) for key in env}
+    try:
+        os.environ.update(env)
+        yield
+    finally:
+        for key, value in original_env.items():
+            if value is None:
+                del os.environ[key]
+            else:
+                os.environ[key] = value
 
 
 def config_logging(level="info", name="fluiddyn", file=None, color=False):
