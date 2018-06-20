@@ -35,7 +35,7 @@ addons:
 
 install:
     - pip install -U pip setuptools wheel six colorlog
-    - pip install -U tox coverage
+    - pip install -U tox-travis coverage
 
 before_script:
     - |
