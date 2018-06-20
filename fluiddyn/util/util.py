@@ -286,6 +286,8 @@ def config_logging(level="info", name="fluiddyn", file=None, color=False):
 
             print("Colored logging requires colorlog package.")
             color = False
+    else:
+        import logging
 
     level = level.lower()
     if level == "info":
