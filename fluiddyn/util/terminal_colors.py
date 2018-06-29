@@ -31,21 +31,13 @@ _color_dict = vars()
 
 def print_fail(*args, **kwargs):
     """Print in bold with "FAIL" font color."""
-    if len(args) > 0:
-        args = list(args)
-        args[0] = FAIL + BOLD + args[0]
-        args[-1] += ENDC
-
+    args, kwargs = _colorize(color="FAIL", bold=True, *args, **kwargs)
     print(*args, **kwargs)
 
 
 def print_warning(*args, **kwargs):
     """Print with "WARNING" font colour."""
-    if len(args) > 0:
-        args = list(args)
-        args[0] = WARNING + args[0]
-        args[-1] += ENDC
-
+    args, kwargs = _colorize(color="WARNING", *args, **kwargs)
     print(*args, **kwargs)
 
 
@@ -65,7 +57,7 @@ def _colorize(*args, **kwargs):
             if bold:
                 color += BOLD
             args[0] = "{}{}".format(color, args[0])
-            args[-1] += ENDC
+            args[-1] = "{}{}".format(args[-1], ENDC)
 
     finally:
         return args, kwargs
@@ -79,7 +71,8 @@ def cstring(*args, **kwargs):
     args : iterable of str
     bold : bool
     color : str, {'HEADER', 'OKBLUE', 'OKGREEN', 'WARNING', 'FAIL', 'ENDC',
-                  'BOLD', 'UNDERLINE'}
+                  'BOLD', 'UNDERLINE' 'BLACK', 'RED', 'GREEN', 'YELLOW', 'BLUE',
+                  'MAGENTA', 'CYAN', 'WHITE'}
         Terminal color to use.
 
     """
@@ -97,7 +90,9 @@ def cprint(*args, **kwargs):
         To be passed into print_function.
     bold : bool
     color : str, {'HEADER', 'OKBLUE', 'OKGREEN', 'WARNING', 'FAIL', 'ENDC',
-                  'BOLD', 'UNDERLINE'}
+                  'BOLD', 'UNDERLINE' 'BLACK', 'RED', 'GREEN', 'YELLOW', 'BLUE',
+                  'MAGENTA', 'CYAN', 'WHITE'}
+
         Terminal color to use.
 
     """
