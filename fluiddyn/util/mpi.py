@@ -49,9 +49,7 @@ def _detect_mpi_type():
     warning_msg = (
         "Warning: No known MPI environment variables detected.\n"
         "Try exporting environment variable {}=1 to skip MPI type check.\n"
-    ).format(
-        ENV_OVERRIDE
-    )
+    ).format(ENV_OVERRIDE)
 
     if len(set_detected_env) > 0:
         env = set_detected_env.pop()

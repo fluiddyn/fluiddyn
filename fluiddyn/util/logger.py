@@ -33,7 +33,7 @@ class Logger(object):
         email_from=None,
         email_title="title",
         email_delay=2 * 3600,
-        email_server="localhost"
+        email_server="localhost",
     ):
 
         if email_delay is None:
@@ -66,11 +66,9 @@ class Logger(object):
 
             with open(self.path_logerr, "a") as f:
                 f.write(
-                    "-"
-                    * 40
+                    "-" * 40
                     + "\nError at {}\n".format(str_time)
-                    + "-"
-                    * 40
+                    + "-" * 40
                     + "\n"
                     + "".join(traceback.format_exception(ex_cls, ex, tb))
                     + "\n"

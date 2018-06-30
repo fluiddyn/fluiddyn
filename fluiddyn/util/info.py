@@ -61,9 +61,7 @@ def safe_check_output(cmd, first_row_only=True):
     cmd = '/bin/sh -c "{}; exit 0"'.format(cmd)
     output = subprocess.check_output(
         shlex.split(cmd), stderr=subprocess.STDOUT
-    ).decode(
-        "utf-8"
-    )
+    ).decode("utf-8")
 
     if first_row_only and output != "":
         return output.splitlines()[0]
@@ -425,7 +423,7 @@ def print_sys_info(verbosity=None):
         for v in about_pkg.values():
             v = str(v)
             if len(v) > _COL_WIDTH:
-                v = v[:10] + "..." + v[10 + 4 - _COL_WIDTH:]
+                v = v[:10] + "..." + v[10 + 4 - _COL_WIDTH :]
             _print_item(str(v))
 
         print()

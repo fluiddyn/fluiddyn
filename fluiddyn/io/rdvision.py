@@ -61,7 +61,6 @@ def read_sqb(name, nb_files=1):
 
 
 class SetOfFiles(object):
-
     def __init__(self, name):
 
         self.d = d = read_seq(name)
@@ -95,12 +94,10 @@ class SetOfFiles(object):
             im = np.reshape(
                 f.readt(
                     self.width * self.height,
-                    "uint{}".format(self.bytesperpixel * 8)
+                    "uint{}".format(self.bytesperpixel * 8),
                 ),
                 [self.height, self.width],
-            ).astype(
-                np.dtype("int32")
-            )
+            ).astype(np.dtype("int32"))
 
         return im * 2 ** (16 - self.bitsperpixel)
 

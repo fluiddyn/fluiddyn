@@ -53,9 +53,8 @@ class FunctionLinInterp(object):
     """Function defined by a linear interpolation."""
 
     def __init__(self, x, f):
-        if (
-            not isinstance(x, (list, tuple, np.ndarray))
-            or not isinstance(f, (list, tuple, np.ndarray))
+        if not isinstance(x, (list, tuple, np.ndarray)) or not isinstance(
+            f, (list, tuple, np.ndarray)
         ):
             raise ValueError("x and f should be sequence.")
 
@@ -171,14 +170,14 @@ def smooth(x, window_len=11, window="hanning"):
             "'hamming', 'bartlett', 'blackman'"
         )
 
-    s = np.r_[x[window_len - 1:0:-1], x, x[-1:-window_len:-1]]
+    s = np.r_[x[window_len - 1 : 0 : -1], x, x[-1:-window_len:-1]]
     if window == "flat":  # moving average
         w = np.ones(window_len, "d")
     else:
         w = eval("np." + window + "(window_len)")
 
     y = np.convolve(w / w.sum(), s, mode="valid")
-    return y[(window_len // 2 - 1):-(window_len // 2 + 1)]
+    return y[(window_len // 2 - 1) : -(window_len // 2 + 1)]
 
 
 if __name__ == "__main__":

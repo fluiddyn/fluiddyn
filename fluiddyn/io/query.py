@@ -103,6 +103,6 @@ def query_number(question):
 def run_asking_agreement(command):
     """Use query_yes_no to ask if a command should be run."""
 
-    question = ('Should the command "\n' + command + '\n" be run ?')
+    question = 'Should the command "\n' + command + '\n" be run ?'
     if query_yes_no(question, default="no"):
         call_bash(command)

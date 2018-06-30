@@ -11,7 +11,6 @@ from .test_slurm_snic import SlurmTestCase, stdout_redirected
 
 
 class LocalTestCase(SlurmTestCase):
-
     def setUp(self):
         super(LocalTestCase, self).setUp(local.ClusterLocal)
 

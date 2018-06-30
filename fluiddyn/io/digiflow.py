@@ -136,9 +136,7 @@ class DigiflowImage(object):
                 r.ymin,
                 r.xmax,
                 r.ymax,
-            ) = f.readt(
-                8, "uint32"
-            )
+            ) = f.readt(8, "uint32")
 
         elif datatype == "Colour scheme":
             assert nbytes == 3 * 256 * 1
@@ -229,9 +227,7 @@ class DigiflowImage(object):
             assert nbytes == size_compressed + 16
             self.data = np.array(
                 f.readt_zlib(size_compressed, nx * ny * nz, "uint8")
-            ).reshape(
-                [nz, ny, nx]
-            )
+            ).reshape([nz, ny, nx])
 
         elif datatype == "32 bit image":
             assert nbytes == 4 * nx * ny + 8
@@ -249,9 +245,7 @@ class DigiflowImage(object):
             assert nbytes == size_compressed + 16
             self.data = np.array(
                 f.readt_zlib(size_compressed, nx * ny * nz, "float32")
-            ).reshape(
-                [nz, ny, nx]
-            )
+            ).reshape([nz, ny, nx])
 
         elif datatype == "64 bit image":
             assert nbytes == 8 * nx * ny + 8
@@ -269,9 +263,7 @@ class DigiflowImage(object):
             assert nbytes == size_compressed + 16
             self.data = np.array(
                 f.readt_zlib(size_compressed, nx * ny * nz, "float64")
-            ).reshape(
-                [nz, ny, nx]
-            )
+            ).reshape([nz, ny, nx])
 
     # def save(self):
     #     print('Not yet implemented...')

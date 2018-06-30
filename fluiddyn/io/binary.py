@@ -25,7 +25,7 @@ def chunks(l, n):
     """ Yield successive n-sized chunks from l.
     """
     for i in range(0, len(l), n):
-        yield l[i:i + n]
+        yield l[i : i + n]
 
 
 def _code_byte_order_from_str(byteorder=None):
@@ -139,7 +139,7 @@ class BinFile(_io.FileIO):
                 code_byte_order = _code_byte_order_from_str(byteorder)
 
             if not hasattr(to_be_saved, "__len__"):
-                fmt = (code_byte_order + self.dcodetypes[codetype])
+                fmt = code_byte_order + self.dcodetypes[codetype]
                 raw = struct.pack(fmt, to_be_saved)
                 self.write(raw)
             else:

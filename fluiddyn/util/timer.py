@@ -121,8 +121,7 @@ class Timer(object):
         tnow = time.time()
         tsleep = (
             self.time_between_ticks
-            - (tnow - self.tstart)
-            % self.time_between_ticks
+            - (tnow - self.tstart) % self.time_between_ticks
         )
         this_period = int((tnow - self.tstart) / self.time_between_ticks)
         if this_period == self.last_period:

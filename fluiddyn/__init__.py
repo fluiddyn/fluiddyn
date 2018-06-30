@@ -19,7 +19,10 @@ Use the question mark in ipython to view a function's docstring::
 """
 
 from .util.util import (
-    create_object_from_file, time_as_str, get_memory_usage, ipydebug
+    create_object_from_file,
+    time_as_str,
+    get_memory_usage,
+    ipydebug,
 )
 from .util import constants
 from ._version import __version__

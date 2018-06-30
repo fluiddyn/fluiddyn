@@ -112,19 +112,17 @@ def imsave(path, array, format=None, as_int=False):
     im = _image_from_array(array, as_int)
 
     if format is None:
-        if (
-            im.mode == "F"
-            or any([path.endswith(ext) for ext in (".tif", ".tiff")])
+        if im.mode == "F" or any(
+            [path.endswith(ext) for ext in (".tif", ".tiff")]
         ):
             format = "TIFF"
         else:
             format = "PNG"
 
     if format.lower() == "tiff":
-        if (
-            any([path.endswith(ext) for ext in (".png", ".PNG")])
-            and np.issubdtype(array.dtype, np.floating)
-        ):
+        if any(
+            [path.endswith(ext) for ext in (".png", ".PNG")]
+        ) and np.issubdtype(array.dtype, np.floating):
             print(
                 "warning: can not save float image as png. " "Using tif format."
             )
@@ -134,9 +132,9 @@ def imsave(path, array, format=None, as_int=False):
     elif format.lower == "png":
         if not any([path.endswith(ext) for ext in (".png", ".PNG")]):
             if path.endswith(".tif"):
-                path = path[:-len(".tif")]
+                path = path[: -len(".tif")]
             if path.endswith(".tiff"):
-                path = path[:-len(".tiff")]
+                path = path[: -len(".tiff")]
             path += ".png"
 
     im.save(path, format)
@@ -177,7 +175,6 @@ def imsave_h5(
 
 
 class ImageH5File(H5File):
-
     def __init__(self, *args, **kwargs):
         super(ImageH5File, self).__init__(*args, **kwargs)
 

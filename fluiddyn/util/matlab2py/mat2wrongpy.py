@@ -93,7 +93,10 @@ def create_py_code(path_file):
     code_lines = code.split("\n")
 
     modif_functions = [
-        modif_blocks, modif_comments, modif_remove_semicolon, modif_remove_3dots
+        modif_blocks,
+        modif_comments,
+        modif_remove_semicolon,
+        modif_remove_3dots,
     ]
 
     for func in modif_functions:
@@ -111,7 +114,7 @@ def treat_matlab_directory(path_dir):
         os.mkdir(path_cleaner)
 
     for root, subdirs, nfiles in os.walk(path_dir):
-        relative_path = root[len(path_dir):]
+        relative_path = root[len(path_dir) :]
 
         new_dir = path_cleaner + relative_path
 

@@ -25,7 +25,6 @@ class TestImage(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-
         def im(maxval, dtype, shape=(10, 10)):
             """Generate a test image."""
             return (maxval * np.random.random(shape)).astype(dtype)
@@ -44,7 +43,7 @@ class TestImage(unittest.TestCase):
             "gray16": im(2 ** 16 - 1, np.int32),
             "gray8f": im(2 ** 8 - 1, np.float16),
             "gray16f": im(2 ** 16 - 1, np.float32),
-            "color8": im(2 ** 8 - 1, np.uint8, (10, 10, 3))
+            "color8": im(2 ** 8 - 1, np.uint8, (10, 10, 3)),
         }
 
     @classmethod
@@ -60,10 +59,9 @@ class TestImage(unittest.TestCase):
                 if _type == "color8":
                     continue  # Cannot handle 3D images now
 
-                err = (
-                    err_msg(_format, _type, path)
-                    + " Function imread from OpenCV={}".format(use_opencv)
-                )
+                err = err_msg(
+                    _format, _type, path
+                ) + " Function imread from OpenCV={}".format(use_opencv)
                 as_int = bool(_type.endswith("f"))
                 try:
                     imsave(path, image, _format, as_int)

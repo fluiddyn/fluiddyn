@@ -15,7 +15,6 @@ except ImportError:
 
 
 class TestFFTWGrid(unittest.TestCase):
-
     def tearDown(self):
         lpfile = "FFTWGridSizeOptimizationModel.lp"
         if os.path.exists(lpfile):
@@ -23,7 +22,7 @@ class TestFFTWGrid(unittest.TestCase):
 
     @unittest.skipIf(
         pulp_import_error,
-        "fftw_grid_size depends on the package pulp, " "which is not installed.",
+        "fftw_grid_size depends on the package pulp, which is not installed.",
     )
     def test_fftw_grid_size(self):
         with stdout_redirected():
@@ -33,7 +32,6 @@ class TestFFTWGrid(unittest.TestCase):
 
 
 class TestFFTW1D(unittest.TestCase):
-
     def test_fft(self):
         op = easypyfft.FFTW1D(4)
         func_fft = np.zeros(op.shapeK, dtype=np.complex128)
@@ -42,7 +40,6 @@ class TestFFTW1D(unittest.TestCase):
 
 
 class TestFFTW1DReal2Complex(unittest.TestCase):
-
     def test_fft(self):
         """Should be able to..."""
         nx = 64
@@ -74,9 +71,7 @@ class TestFFTW1DReal2Complex(unittest.TestCase):
         nx = 64
         op = easypyfft.FFTW1DReal2Complex(nx)
 
-        func_fft = (
-            np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
-        )
+        func_fft = np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
         func = op.ifft(func_fft)
         func_fft = op.fft(func)
 
@@ -124,9 +119,7 @@ class TestFFTW2DReal2Complex(unittest.TestCase):
         ny = 32
         op = self.cls(nx, ny)
 
-        func_fft = (
-            np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
-        )
+        func_fft = np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
 
         with stdout_redirected():
             func = op.ifft2d(func_fft)
@@ -140,7 +133,6 @@ class TestFFTP2D(TestFFTW2DReal2Complex):
 
 
 class TestFFTW3DReal2Complex(unittest.TestCase):
-
     def test_fft(self):
         """Test easypyfft.FFTW3DReal2Complex"""
         nx = 4
@@ -196,9 +188,7 @@ class TestFFTW3DReal2Complex(unittest.TestCase):
         nz = 8
         op = easypyfft.FFTW3DReal2Complex(nx, ny, nz)
 
-        func_fft = (
-            np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
-        )
+        func_fft = np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
         func = op.ifft(func_fft)
         func_fft_back = op.fft(func)
 

@@ -34,7 +34,6 @@ on_rtd = os.environ.get("READTHEDOCS")
 
 
 class _MyMock(Mock):
-
     @classmethod
     def __getattr__(cls, name):
         return Mock()

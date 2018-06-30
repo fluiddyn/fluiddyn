@@ -22,6 +22,7 @@ slurm.input = my_test_input
 
 class ClusterSlurmMod(slurm.ClusterSlurm):
     """A modified class which skips checking if SLURM is installed or not."""
+
     cmd_launch = "echo"
 
     def check_slurm(self):
@@ -104,7 +105,6 @@ class BeskowMod(ClusterSlurmMod, snic.Beskow):
 
 
 class BeskowTestCase(SlurmTestCase):
-
     def setUp(self):
         super(BeskowTestCase, self).setUp(BeskowMod)
 
@@ -114,7 +114,6 @@ class TriolithMod(ClusterSlurmMod, snic.Triolith):
 
 
 class TriolithTestCase(SlurmTestCase):
-
     def setUp(self):
         super(TriolithTestCase, self).setUp(TriolithMod)
 
@@ -124,7 +123,6 @@ class AbiskoMod(ClusterSlurmMod, snic.Abisko):
 
 
 class AbiskoTestCase(SlurmTestCase):
-
     def setUp(self):
         super(AbiskoTestCase, self).setUp(AbiskoMod)
 
@@ -134,7 +132,6 @@ class OccigenMod(ClusterSlurmMod, cines.Occigen):
 
 
 class OccigenTestCase(SlurmTestCase):
-
     def setUp(self):
         super(OccigenTestCase, self).setUp(OccigenMod)
 

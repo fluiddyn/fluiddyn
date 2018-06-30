@@ -27,15 +27,13 @@ class ClusterOAR(Cluster):
     nb_cores_per_node = 12
     has_to_add_name_cluster = False
 
-    _doc_commands = (
-        """
+    _doc_commands = """
 Useful commands
 ---------------
 oarsub -S script.sh
 oarstat -u
 oardel $JOB_ID
 oarsub -C $JOB_ID"""
-    )
 
     def __init__(self):
         self.commands_setting_env = [
@@ -182,7 +180,7 @@ oarsub -C $JOB_ID"""
         network_address=None,
     ):
 
-        txt = ("#!/bin/bash\n\n" "#OAR -n {}\n".format(name_run))
+        txt = "#!/bin/bash\n\n" "#OAR -n {}\n".format(name_run)
 
         txt += "#OAR -l "
 

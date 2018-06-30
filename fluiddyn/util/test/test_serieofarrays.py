@@ -18,7 +18,6 @@ def create_image(path):
 
 
 class TestSeriesOfArrays(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         work_dir = cls.work_dir = "test_fluiddyn_util_serieofarrays"

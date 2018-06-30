@@ -7,7 +7,6 @@ from ..signal import decimate, FunctionLinInterp, deriv, smooth
 
 
 class TestFFTW1DReal2Complex(unittest.TestCase):
-
     def test_signal(self):
         x = np.linspace(0, 2 * np.pi, 100)
         f = np.sin(x) + .02 * (np.random.rand(100) - .5)

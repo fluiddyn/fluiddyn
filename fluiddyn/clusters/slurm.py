@@ -22,8 +22,8 @@ from .local import ClusterLocal
 
 class ClusterSlurm(ClusterLocal):
     """Base class for clusters with SLURM job scheduler."""
-    _doc_commands = (
-        """
+
+    _doc_commands = """
 Useful commands
 ---------------
 
@@ -32,7 +32,6 @@ squeue -u $USER
 scancel
 scontrol hold
 scontrol release"""
-    )
     name_cluster = ""
     nb_cores_per_node = 32
     default_project = None
@@ -168,9 +167,9 @@ scontrol release"""
             dependencies = None
 
         if nb_switches is not None and max_waittime is not None:
-            launching_command += " --switches=" + str(
-                nb_switches
-            ) + "{@" + max_waittime + "}"
+            launching_command += (
+                " --switches=" + str(nb_switches) + "{@" + max_waittime + "}"
+            )
 
         create_txt_kwargs = locals()
         del create_txt_kwargs["self"]
@@ -241,7 +240,7 @@ scontrol release"""
         logfile = "SLURM.{}".format(name_run)
         logfile_stdout = logfile + ".${SLURM_JOBID}.stdout"
 
-        txt = ("#!/bin/bash -l\n\n")
+        txt = "#!/bin/bash -l\n\n"
 
         txt += "#SBATCH -J {}\n\n".format(name_run)
         if project is not None:

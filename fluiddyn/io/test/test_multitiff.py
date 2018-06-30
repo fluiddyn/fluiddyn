@@ -27,7 +27,6 @@ class TestMultiTIFF(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-
         def im(maxval, dtype, shape=(10, 10)):
             """Generate a test image."""
             return (maxval * np.random.random(shape)).astype(dtype)

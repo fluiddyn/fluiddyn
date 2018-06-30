@@ -12,7 +12,6 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 
 class TestsBench(unittest.TestCase):
-
     def test2d(self):
         with stdout_redirected():
             if mpi.rank > 0:

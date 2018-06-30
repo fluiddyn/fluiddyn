@@ -21,6 +21,7 @@ from ..dump import main
 
 class TestDump(unittest.TestCase):
     """Test fluiddyn.io.dump module."""
+
     _work_dir = "test_fluiddyn_io_dump"
 
     @classmethod

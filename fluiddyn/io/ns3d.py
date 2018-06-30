@@ -54,6 +54,7 @@ class NS3DFile(object):
 
 class NS3DFieldFile(NS3DFile):
     """Fields in a NS3D binary file."""
+
     nb_bytes_header = 148
 
     def _read_header(self):
@@ -90,9 +91,7 @@ class NS3DFieldFile(NS3DFile):
             for iz in range(self.nz):
                 field[iz] = np.array(
                     f.readt(self.nx * self.ny, "float64")
-                ).reshape(
-                    [self.ny, self.nx]
-                )
+                ).reshape([self.ny, self.nx])
         return field
 
     def read_xy(self, ifield=0, iz=0):
@@ -102,14 +101,9 @@ class NS3DFieldFile(NS3DFile):
         with BinFile(self.path_file, byteorder=self.byteorder) as f:
             f.seek(
                 self.nb_bytes_header
-                + ifield
-                * (nb_pts_one_field + 1)
-                * 8
+                + ifield * (nb_pts_one_field + 1) * 8
                 + 4
-                + self.nx
-                * self.ny
-                * iz
-                * 8
+                + self.nx * self.ny * iz * 8
             )
             field = np.array(f.readt(self.nx * self.ny, "float64"))
 
@@ -255,10 +249,13 @@ class NS3DForcingInfoFile(NS3DFile):
             trash, flag = f.readt(2, "uint32")
             self.lx, self.ly, self.Delta_t = f.readt(3, "float64")
             (
-                self.nb_fields, self.nb_Delta_t, self.nkx, self.nky, trash, trash2
-            ) = f.readt(
-                6, "uint32"
-            )
+                self.nb_fields,
+                self.nb_Delta_t,
+                self.nkx,
+                self.nky,
+                trash,
+                trash2,
+            ) = f.readt(6, "uint32")
             self.vec_ind_field = f.readt(self.nb_Delta_t, "uint32")
 
     def save_with_byteorder_changed(self):
@@ -282,7 +279,7 @@ class NS3DForcingInfoFile(NS3DFile):
                     self.nkx,
                     self.nky,
                     44,
-                    self.nb_Delta_t * 4
+                    self.nb_Delta_t * 4,
                 ],
                 "uint32",
             )

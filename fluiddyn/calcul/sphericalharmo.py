@@ -631,9 +631,12 @@ class EasySHT(object):
         elif key_field[:4] == "hdiv" or key_field[:4] == "hrot":
             array_desh = self.create_array_sh(0., float)
             COND = self.l2_idx > 0
-            array_desh[COND] = self.radius ** 2 / self.l2_idx[COND] * abs(
-                field_lm[COND]
-            ) ** 2 / 2
+            array_desh[COND] = (
+                self.radius ** 2
+                / self.l2_idx[COND]
+                * abs(field_lm[COND]) ** 2
+                / 2
+            )
         else:
             raise ValueError("key_field is not correct")
 
@@ -663,14 +666,10 @@ class EasySHT(object):
         cospectrum = np.zeros(self.lmax + 1)
 
         array_desh = (
-            f_lon_lm.conjugate()
-            * g_lon_lm
-            + f_lon_lm
-            * g_lon_lm.conjugate()
-            + f_lat_lm.conjugate()
-            * g_lat_lm
-            + f_lat_lm
-            * g_lat_lm.conjugate()
+            f_lon_lm.conjugate() * g_lon_lm
+            + f_lon_lm * g_lon_lm.conjugate()
+            + f_lat_lm.conjugate() * g_lat_lm
+            + f_lat_lm * g_lat_lm.conjugate()
         )
         array_desh = array_desh.real
         array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0] / 2
@@ -690,9 +689,9 @@ class EasySHT(object):
 
         array_desh2 = self.create_array_sh(0., float)
         COND = self.l2_idx > 0
-        array_desh2[COND] = self.radius ** 2 / self.l2_idx[COND] * array_desh[
-            COND
-        ]
+        array_desh2[COND] = (
+            self.radius ** 2 / self.l2_idx[COND] * array_desh[COND]
+        )
 
         for ilm in range(self.nlm):
             cospectrum[self.l_idx[ilm]] += array_desh2[ilm]
@@ -711,9 +710,9 @@ class EasySHT(object):
 
         array_desh2 = self.create_array_sh(0., float)
         COND = self.l2_idx > 0
-        array_desh2[COND] = self.radius ** 2 / self.l2_idx[COND] * array_desh[
-            COND
-        ]
+        array_desh2[COND] = (
+            self.radius ** 2 / self.l2_idx[COND] * array_desh[COND]
+        )
 
         for ilm in range(self.nlm):
             cospectrum[self.l_idx[ilm]] += array_desh2[ilm]
