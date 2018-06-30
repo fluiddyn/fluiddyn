@@ -4,11 +4,11 @@ Installation
 Dependencies
 ------------
 
-- **Minimum** : Python (2.7, >=3.4), numpy, matplotlib, psutil, future,
-  subprocess32 (for Python 2.7 only)
+- **Minimum** : Python (2.7, >=3.4), numpy, matplotlib, h5py, h5netcdf, psutil,
+  future, subprocess32 (for Python 2.7 only)
 
-- **Full functionality**: h5py, h5netcdf, pillow, imageio, mpi4py, scipy,
-  pyfftw (requires FFTW library)
+- **Full functionality**: pillow, imageio, mpi4py, scipy, pyfftw (requires FFTW
+  library)
 
 - **Optional**: OpenCV with Python bindings, scikit-image
 

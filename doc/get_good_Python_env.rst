@@ -32,8 +32,8 @@ add the channel conda-forge::
 
 You are then ready to run typical conda and pip install commands, for example::
 
-  conda install numpy scipy matplotlib blas=*=openblas
-  conda pandas h5py ipython jupyterlab imageio cython psutil
+  conda install numpy matplotlib h5py blas=*=openblas
+  conda scipy pandas ipython jupyterlab imageio cython psutil
 
   # if you use Spyder (good idea if you do not use a good Python editor) 
   conda install spyder
@@ -41,7 +41,7 @@ You are then ready to run typical conda and pip install commands, for example::
   # to use clang to compile C++ files produced by Pythran
   conda install clangdev
 
-  # if can be better to install mpi4py from source rather than with conda to
+  # it can be better to install mpi4py from source rather than with conda to
   # use the native mpi library
   pip install mpi4py
 

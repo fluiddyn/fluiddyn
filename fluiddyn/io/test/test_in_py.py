@@ -1,6 +1,8 @@
 
 import unittest
 import os
+import sys
+
 from shutil import rmtree
 from runpy import run_path
 
@@ -31,6 +33,10 @@ class TestInPy(unittest.TestCase):
         c = np.ones([2, 2])
         d = 2
         save_in_py("file_globals.py", locals(), ("a", "b", "c"))
+
+        # for python 3.7
+        sys.path.insert(0, "")
+
         import file_globals as fg
 
         self.assertEqual(a, fg.a)
