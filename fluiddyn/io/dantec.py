@@ -117,7 +117,6 @@ class DantecImageEnsemble(object):
 
 
 class DantecVectorEnsemble(object):
-
     def __init__(self):
         self.xlm = LoadedXML("AnalysisEnsemble_PIV.xml")
 

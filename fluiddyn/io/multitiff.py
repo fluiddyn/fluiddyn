@@ -181,9 +181,7 @@ def reorganize_single_frame_3Dscannedpiv_data(
                         + "}/im{"
                         + format_index
                         + "}"
-                    ).format(
-                        index_im % nb_levels, index_im // nb_levels
-                    )
+                    ).format(index_im % nb_levels, index_im // nb_levels)
                     if _save_new_file(im, base_path, outputext, erase):
                         print(
                             "\r file {}; in {:.2f} s".format(
@@ -283,9 +281,7 @@ def reorganize_piv3dscanning_doubleframe(
                         + format_index
                         + "}"
                         + letter
-                    ).format(
-                        index_im % nb_levels, index_time // 2
-                    )
+                    ).format(index_im % nb_levels, index_time // 2)
                     if _save_new_file(im, base_path, outputext, erase):
                         print(
                             "\r file {}; in {:.2f} s".format(
@@ -381,8 +377,8 @@ def reorganize_piv2d_singleframe(
                     break
 
                 else:
-                    base_path = (
-                        outputdir + ("/im{" + format_index + "}").format(index_im)
+                    base_path = outputdir + ("/im{" + format_index + "}").format(
+                        index_im
                     )
                     if _save_new_file(im, base_path, outputext, erase):
                         print(

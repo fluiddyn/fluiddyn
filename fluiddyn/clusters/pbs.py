@@ -21,8 +21,8 @@ from .local import ClusterLocal
 
 class ClusterPBS(ClusterLocal):
     """Base class for clusters with PBS job scheduler."""
-    _doc_commands = (
-        """
+
+    _doc_commands = """
 Useful commands
 ---------------
 
@@ -31,7 +31,6 @@ qstat -u $USER
 qdel
 qhold
 qrls"""
-    )
     name_cluster = ""
     nb_cores_per_node = 32
     default_project = None
@@ -211,7 +210,7 @@ qrls"""
         logfile = "PBS.{}".format(name_run)
         logfile_stdout = logfile + ".${PBS_JOBID}.stdout"
 
-        txt = ("#!/bin/bash -l\n\n")
+        txt = "#!/bin/bash -l\n\n"
 
         txt += "#PBS -N {}\n\n".format(name_run)
         if project is not None:

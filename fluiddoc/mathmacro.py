@@ -99,7 +99,7 @@ def multiple_replacer(replace_dict):
 
     pattern = "|".join(
         [re.escape(k) + r"[\W_$]" for k in replace_dict.keys()]
-        + [re.escape(k) + '$' for k in replace_dict.keys()]
+        + [re.escape(k) + "$" for k in replace_dict.keys()]
     )
     pattern = re.compile(pattern, re.M)
 
@@ -177,8 +177,8 @@ def setup(app):
     app.add_directive("mathmacro", MathMacro)
 
 
-if __name__ == '__main__':
-    math_macros = {'\\vv': '\\textbf{v}'}
-    s = '\\vv'
+if __name__ == "__main__":
+    math_macros = {"\\vv": "\\textbf{v}"}
+    s = "\\vv"
     mreplace = multiple_replacer(math_macros)
     print(mreplace(s))

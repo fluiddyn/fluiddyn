@@ -10,7 +10,6 @@ xml_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "file.xml"))
 
 
 class TestContainer(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.params = ParamContainer(tag="params")

@@ -70,7 +70,7 @@ def time_as_str(decimal=0):
         if not isinstance(decimal, int):
             raise TypeError
 
-        ret += ".{:06d}".format(dt.microsecond)[:decimal + 1]
+        ret += ".{:06d}".format(dt.microsecond)[: decimal + 1]
     return ret
 
 

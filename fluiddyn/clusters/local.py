@@ -37,6 +37,7 @@ class ClusterLocal(Cluster):
      - ``timeout`` to set walltime..
 
     """
+
     _doc_commands = "\n".join(
         [
             "Useful commands",
@@ -181,9 +182,7 @@ class ClusterLocal(Cluster):
                 (
                     "Walltime requested {} exceeds permitted maximum walltime "
                     "{}"
-                ).format(
-                    walltime, self.max_walltime
-                )
+                ).format(walltime, self.max_walltime)
             )
 
     def _launch(self, launching_command, command="", bash=True, ask=True):
@@ -215,7 +214,7 @@ class ClusterLocal(Cluster):
         logfile_stdout = logfile + ".$$.stdout"
         logfile_stderr = logfile + ".$$.stderr"
 
-        txt = ("#!/bin/bash -l\n\n")
+        txt = "#!/bin/bash -l\n\n"
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
         txt += self._log_job(

@@ -29,10 +29,11 @@ Then load the conda environment (maybe start a new terminal). It can be good to
 add the channel conda-forge::
 
   conda config --add channels conda-forge
-  
+
 You are then ready to run typical conda and pip install commands, for example::
 
-  conda install scipy matplotlib pandas h5py ipython jupyterlab imageio cython psutil
+  conda install numpy scipy matplotlib blas=*=openblas
+  conda pandas h5py ipython jupyterlab imageio cython psutil
 
   # if you use Spyder (good idea if you do not use a good Python editor) 
   conda install spyder
@@ -53,6 +54,10 @@ You are then ready to run typical conda and pip install commands, for example::
   # pip is also the good tool to install pure python packages, for example:
   pip install h5netcdf yapf future mako
 
+.. attention::
+
+   Note the ``blas=*=openblas`` requirement in the first line. This is important
+   if you want to use the library fftw_mpi, with is incompatible with MKL.
 
 The intermediate way and the hard way: from source
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -83,10 +88,35 @@ example, you could use
 
 For flycheck, I install http://aspell.net/win32/
 
+And on macOS
+^^^^^^^^^^^^
+
+Using `homebrew <https://brew.sh/>`_ and pip...
+
+.. code::
+
+  brew install python
+  brew install mercurial
+  brew install open-mpi
+  brew install fftw --with-mpi
+  brew install --with-clang llvm
+
+  python 3 -m pip install virtualenv
+
+  virtualenv -p python3 envpy36
+
+  source envpy36/bin/activate
+
+  pip install numpy scipy matplotlib cython h5py ipython imageio pandas
+  pip install mpi4py mako
+  pip install pyfftw
+  pip install colorlog pythran
+  pip install pulp
 
 Recent Python versions on old GNU/Linux
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Some old Linux work with Python 2.6 but you can always install a more
-up-to-date Python version. If you can not install a package with python 3 (and
-conda or virtualenv), build Python from source.
+Some old Linux work with Python 2.6 but you can always install a more up-to-date
+Python version. If you can not install a package with python 3 (and conda or
+virtualenv), build Python from source (see `pyenv
+<https://github.com/pyenv/pyenv>`_).

@@ -73,6 +73,7 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
     elif {2, 3, 5, 7, 11, 13} == set(bases):
         try:
             import pyfftw
+
             return pyfftw.next_fast_len(nk)
 
         except (ImportError, AttributeError):
@@ -136,7 +137,6 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
 
 
 class BaseFFT(object):
-
     def run_tests(self):
         arr = np.random.rand(*self.shapeX)
         arr_fft = self.fft(arr)
@@ -229,7 +229,7 @@ class FFTP2D(BaseFFT):
         if not (isinstance(ff[0, 0], float)):
             print("Warning: not array of floats")
         big_ff_fft = fftp.fft2(ff) / self.coef_norm
-        small_ff_fft = big_ff_fft[:, 0:self.nkx]
+        small_ff_fft = big_ff_fft[:, 0 : self.nkx]
         return small_ff_fft
 
     def ifft(self, small_ff_fft, ARG_IS_COMPLEX=False):
@@ -237,10 +237,10 @@ class FFTP2D(BaseFFT):
             print("Warning: not array of complexes")
         # print('small_ff_fft\n', small_ff_fft)
         big_ff_fft = np.empty(self.shapeX, dtype=np.complex128)
-        big_ff_fft[:, 0:self.nkx] = small_ff_fft
+        big_ff_fft[:, 0 : self.nkx] = small_ff_fft
         for iky in range(self.ny):
-            big_ff_fft[iky, self.nkx:] = small_ff_fft[
-                -iky, self.nkx - 2:0:-1
+            big_ff_fft[iky, self.nkx :] = small_ff_fft[
+                -iky, self.nkx - 2 : 0 : -1
             ].conj()
 
         # print('big_ff_fft final\n', big_ff_fft)
@@ -261,8 +261,7 @@ class FFTP2D(BaseFFT):
     def compute_energy_from_Fourier(self, ff_fft):
         return (
             np.sum(abs(ff_fft[:, 0]) ** 2 + abs(ff_fft[:, -1]) ** 2)
-            + 2
-            * np.sum(abs(ff_fft[:, 1:-1]) ** 2)
+            + 2 * np.sum(abs(ff_fft[:, 1:-1]) ** 2)
         ) / 2
 
     def compute_energy_from_spatial(self, ff):
@@ -270,7 +269,6 @@ class FFTP2D(BaseFFT):
 
 
 class BasePyFFT(BaseFFT):
-
     def __init__(self, shapeX):
         try:
             import pyfftw
@@ -395,12 +393,11 @@ class FFTW2DReal2Complex(BasePyFFT):
             return (
                 np.sum(ff_fft[:, 0])
                 + np.sum(ff_fft[:, -1])
-                + 2
-                * np.sum(ff_fft[:, 1:-1])
+                + 2 * np.sum(ff_fft[:, 1:-1])
             )
 
         else:
-            return (np.sum(ff_fft[:, 0]) + 2 * np.sum(ff_fft[:, 1:]))
+            return np.sum(ff_fft[:, 0]) + 2 * np.sum(ff_fft[:, 1:])
 
     def get_seq_indices_first_K(self):
         return 0, 0
@@ -458,8 +455,8 @@ class FFTW2DReal2Complex(BasePyFFT):
         ik0_start, ik1_start = self.get_seq_indices_first_K()
         nk0loc, nk1loc = self.get_shapeK_loc()
 
-        k0_adim_loc = k0seq[ik0_start:ik0_start + nk0loc]
-        k1_adim_loc = k1seq[ik1_start:ik1_start + nk1loc]
+        k0_adim_loc = k0seq[ik0_start : ik0_start + nk0loc]
+        k1_adim_loc = k1seq[ik1_start : ik1_start + nk1loc]
 
         return k0_adim_loc, k1_adim_loc
 
@@ -478,12 +475,11 @@ class FFTW3DReal2Complex(BasePyFFT):
             return (
                 np.sum(ff_fft[:, :, 0])
                 + np.sum(ff_fft[:, :, -1])
-                + 2
-                * np.sum(ff_fft[:, :, 1:-1])
+                + 2 * np.sum(ff_fft[:, :, 1:-1])
             )
 
         else:
-            return (np.sum(ff_fft[:, :, 0]) + 2 * np.sum(ff_fft[:, :, 1:]))
+            return np.sum(ff_fft[:, :, 0]) + 2 * np.sum(ff_fft[:, :, 1:])
 
     def get_k_adim(self):
         nK0, nK1, nK2 = self.shapeK
@@ -492,8 +488,8 @@ class FFTW3DReal2Complex(BasePyFFT):
         ky_adim_max = nK1 // 2
         ky_adim_min = -((nK1 - 1) // 2)
         return (
-            np.r_[0:kz_adim_max + 1, kz_adim_min:0],
-            np.r_[0:ky_adim_max + 1, ky_adim_min:0],
+            np.r_[0 : kz_adim_max + 1, kz_adim_min:0],
+            np.r_[0 : ky_adim_max + 1, ky_adim_min:0],
             np.arange(nK2),
         )
 
@@ -576,10 +572,10 @@ class FFTW3DReal2Complex(BasePyFFT):
         i0_start, i1_start, i2_start = self.get_seq_indices_first_K()
 
         k0_adim = compute_k_adim_seq_3d(nK0, d0)
-        k0_adim_loc = k0_adim[i0_start:i0_start + nK0_loc]
+        k0_adim_loc = k0_adim[i0_start : i0_start + nK0_loc]
 
         k1_adim = compute_k_adim_seq_3d(nK1, d1)
-        k1_adim_loc = k1_adim[i1_start:i1_start + nK1_loc]
+        k1_adim_loc = k1_adim[i1_start : i1_start + nK1_loc]
 
         k2_adim_loc = compute_k_adim_seq_3d(nK2, d2)
 
@@ -607,7 +603,7 @@ def compute_k_adim_seq_3d(nk, axis):
     else:
         k_adim_max = nk // 2
         k_adim_min = -((nk - 1) // 2)
-        return np.r_[0:k_adim_max + 1, k_adim_min:0]
+        return np.r_[0 : k_adim_max + 1, k_adim_min:0]
 
 
 class FFTW1D(BasePyFFT):
@@ -714,19 +710,16 @@ class FFTW1DReal2Complex(BasePyFFT):
 
     def sum_wavenumbers(self, ff_fft):
         if self.shapeX[0] % 2 == 0:
-            return (ff_fft[0] + ff_fft[-1] + 2 * np.sum(ff_fft[1:-1]))
+            return ff_fft[0] + ff_fft[-1] + 2 * np.sum(ff_fft[1:-1])
 
         else:
-            return (ff_fft[0] + 2 * np.sum(ff_fft[1:]))
+            return ff_fft[0] + 2 * np.sum(ff_fft[1:])
 
     def compute_energy_from_Fourier(self, ff_fft):
         return (
-            abs(ff_fft[0])
-            ** 2
-            + 2
-            * np.sum(abs(ff_fft[1:-1]) ** 2)
-            + abs(ff_fft[-1])
-            ** 2
+            abs(ff_fft[0]) ** 2
+            + 2 * np.sum(abs(ff_fft[1:-1]) ** 2)
+            + abs(ff_fft[-1]) ** 2
         ) / 2
 
     def compute_energy_from_spatial(self, ff):

@@ -22,7 +22,6 @@ smtplib.SMTP = mySMTP
 
 
 class TestFFTW1DReal2Complex(unittest.TestCase):
-
     def tearDown(self):
         os.remove("storage_file.txt")
 

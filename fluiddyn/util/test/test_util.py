@@ -20,7 +20,6 @@ from ...io.redirect_stdout import stdout_redirected
 
 
 class MyObject(object):
-
     def __init__(self, str_path=None, *args, **kwargs):
         pass
 

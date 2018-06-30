@@ -5,7 +5,6 @@ from ..setofvariables import SetOfVariables
 
 
 class TestSetofvariables(unittest.TestCase):
-
     def test_sov(self):
         sov = SetOfVariables(keys=("a", "b", "c"), shape_variable=(2, 2))
         b = sov.get_var("b")

@@ -1,6 +1,10 @@
 Build Python from sources
 =========================
 
+The following is old. We keep it here for reference but to build recent Python
+interpreters on Linux, it is much easier to use `pyenv
+<https://github.com/pyenv/pyenv>`_!
+
 CPython
 .......
 
@@ -32,7 +36,7 @@ Build and install::
 
   ./configure --enable-shared --prefix=$path_new_python \
               LDFLAGS=-Wl,-rpath=$path_new_python/lib
-  make 
+  make
   make install
 
 Change the used python version::
@@ -111,7 +115,7 @@ Then we can install Spyder (Matlab users are happier)::
 
   pip install spyder
 
-Basemap 
+Basemap
 .......
 
 Plot data on map projections with matplotlib. It seems that we have to
@@ -134,4 +138,3 @@ We set the correct rights and the ownership to root::
 
   sudo chmod -R a+rX      $path_new_python
   sudo chown -R root:root $path_new_python
-

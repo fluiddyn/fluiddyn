@@ -54,10 +54,9 @@ def ipynb_to_rst(path="ipynb", executed=None):
         ipynb_executed = basename + ".nbconvert.ipynb"
         paths_ipynb_executed.append(ipynb_executed)
 
-        if (
-            not os.path.exists(ipynb_executed)
-            or modification_date(filepath) > modification_date(ipynb_executed)
-        ):
+        if not os.path.exists(ipynb_executed) or modification_date(
+            filepath
+        ) > modification_date(ipynb_executed):
             call_bash(
                 "jupyter-nbconvert --ExecutePreprocessor.timeout=200 "
                 "--to notebook --execute " + filepath

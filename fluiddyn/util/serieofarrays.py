@@ -176,7 +176,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         self.base_name = "".join(
             itertools.takewhile(
                 lambda c: not c.isdigit(),
-                self.filename_given[:-(1 + len(self.extension_file))],
+                self.filename_given[: -(1 + len(self.extension_file))],
             )
         )
 
@@ -184,11 +184,11 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             self.base_name = self.base_name[:-1]
 
         # remove base_name
-        remains = str(self.filename_given[len(self.base_name):])
+        remains = str(self.filename_given[len(self.base_name) :])
 
         # remove extension
         if self.extension_file != "":
-            remains = remains[:-(1 + len(self.extension_file))]
+            remains = remains[: -(1 + len(self.extension_file))]
 
         # separator between base and index
         if len(remains) > 0 and not remains[0].isdigit():
@@ -209,7 +209,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 self._index_types.append("alpha")
             index = "".join(itertools.takewhile(test_type, remains))
             self._index_lens.append(len(index))
-            remains = remains[len(index):]
+            remains = remains[len(index) :]
             if len(remains) > 0:
                 if not str.isalnum(remains[0]):
                     self._index_separators.append(remains[0])
@@ -251,13 +251,13 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 self._nb_arrays_file = {}
                 self._nb_arrays_file[
                     paths[0]
-                ] = self.nb_arrays_in_one_file = get_nb_arrays_in_file(
-                    paths[0]
-                )
+                ] = self.nb_arrays_in_one_file = get_nb_arrays_in_file(paths[0])
 
-                self._format_index = "[{" + ":0{}d".format(
-                    int(ceil(log10(self.nb_arrays_in_one_file)))
-                ) + "}]"
+                self._format_index = (
+                    "[{"
+                    + ":0{}d".format(int(ceil(log10(self.nb_arrays_in_one_file))))
+                    + "}]"
+                )
                 str_internal_index = [
                     self._format_index.format(i)
                     for i in range(self.nb_arrays_in_one_file)
@@ -498,7 +498,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         name: str
            Name of the array.
         """
-        str_indices = str(name[len(self.base_name):])
+        str_indices = str(name[len(self.base_name) :])
 
         if self._separator_base_index != "":
             str_indices = str_indices[1:]
@@ -510,7 +510,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             internal_index = None
 
         if self.extension_file != "":
-            str_indices = str_indices[:-(len(self.extension_file) + 1)]
+            str_indices = str_indices[: -(len(self.extension_file) + 1)]
 
         remains = str_indices
         indices = []
@@ -523,7 +523,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 raise Exception('The type should be "digit" or "alpha".')
 
             index = "".join(itertools.takewhile(test_type, remains))
-            remains = remains[len(index):]
+            remains = remains[len(index) :]
             if self._index_separators[i_ind] != "":
                 remains = remains[1:]
 
@@ -806,7 +806,7 @@ if __name__ == "__main__":
     # for serie in series:
     #     print([name for name in serie])
 
-    path = (os.environ["HOME"] + "/Dev/howtopiv/samples/Karman")
+    path = os.environ["HOME"] + "/Dev/howtopiv/samples/Karman"
 
     serie = SerieOfArraysFromFiles(path, base_name="PIVlab_Karman")
 

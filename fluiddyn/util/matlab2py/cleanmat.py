@@ -65,9 +65,9 @@ def modif_unwrap_if(code_lines):
                 index_begin = len(s) - 1
 
         index = get_index_closing_parenthesis(line, index_begin)
-        if_statement = line[:index + 1]
+        if_statement = line[: index + 1]
         lines_new.append(if_statement)
-        rest_line = line[index + 1:]
+        rest_line = line[index + 1 :]
 
         if len(rest_line) == 0:
             continue
@@ -118,7 +118,7 @@ def modif_split_comments_from_code(code_lines):
             else:
                 before_comment += "%"
 
-        comment_parts = parts[i + 1:]
+        comment_parts = parts[i + 1 :]
         if len(comment_parts) == 0:
             # no comment in the line
             lines_new.append(line)
@@ -215,7 +215,7 @@ def treat_matlab_directory(path_dir):
         os.mkdir(path_cleaner)
 
     for root, subdirs, nfiles in os.walk(path_dir):
-        relative_path = root[len(path_dir):]
+        relative_path = root[len(path_dir) :]
 
         new_dir = path_cleaner + relative_path
 

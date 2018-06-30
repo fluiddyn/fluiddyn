@@ -22,6 +22,7 @@ pbs.input = my_test_input
 
 class ClusterPBSMod(pbs.ClusterPBS):
     """A modified class which skips checking if PBS is installed or not."""
+
     cmd_launch = "echo"
 
     def check_pbs(self):
