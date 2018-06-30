@@ -58,13 +58,13 @@ def _detect_mpi_type():
         if env == ENV_OVERRIDE and os.environ[env] != "1":
             print(warning_msg)
             return None
-
         else:
             return MPIEXEC_TYPE[env]
 
-    else:
+    elif os.name == "posix":
         process = psutil.Process(os.getppid())
         process_name = process.name()
+
         if process_name in ["mpirun", "mpiexec"]:
             print(
                 warning_msg,
@@ -73,8 +73,8 @@ def _detect_mpi_type():
             )
             return MPIEXEC_TYPE[ENV_OVERRIDE]
 
-        else:
-            return None  # Sequential mode
+    # If none of the above cases match
+    return None
 
 
 try:
