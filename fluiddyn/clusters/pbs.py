@@ -166,8 +166,9 @@ qrls"""
 
     def _create_txt_launching_script(self, **kwargs):
         """
-        Example
-        -------
+        Examples
+        --------
+
             #!/bin/bash -l
             # The -l above is required to get the full environment with modules
 

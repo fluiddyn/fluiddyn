@@ -253,8 +253,9 @@ def setenv(**env):
 
     Adapted from: https://gist.github.com/igniteflow/7267431
 
-    Example
-    -------
+    Examples
+    --------
+
     >>> import os
     >>> with setenv(CC="gcc"):
     >>>     print(os.getenv("CC"))  # prints: gcc
