@@ -1,4 +1,11 @@
 
+0.2.4
+-----
+
+- Bugfixes and compatibility Python 3.7.
+- Context manager to set environ vars.
+- More colorlog.
+
 0.2.3
 -----
 
