@@ -1,5 +1,8 @@
-How to setup a fresh install of Ubuntu 18.04 for Python and fluiddyn
+How to setup a fresh install of Ubuntu 18.04 for Python for sciences
 ====================================================================
+
+This is just an example (2018-07-10), but it is useful for me (Pierre Augier) to
+have this page, so it may be useful to others.
 
 - Install some useful compilers, libraries and utilities::
 
@@ -8,27 +11,35 @@ How to setup a fresh install of Ubuntu 18.04 for Python and fluiddyn
      libpng-dev libfftw3-dev libfftw3-mpi-dev \
      libhdf5-dev libopenmpi-dev \
      qt5-default \
-     curl ack pandoc \
+     curl ack meld pandoc \
      fish
 
-- Setup https://fishshell.com/
-
 - Install Mercurial with pip, we still need python 2.7!
+
+  See http://fluiddyn.readthedocs.io/en/latest/mercurial_bitbucket.html
 
   .. code::
 
      sudo apt install python2.7 python-pip
      python2 -m pip install mercurial hg-git --user
+     hg config --edit
 
 - Install Git::
 
-    sudo apt-get install git
+    sudo apt install git
 
 - Install and setup emacs::
 
-    sudo apt-get install emacs
+    sudo apt install emacs
 
   and then follow https://bitbucket.org/fluiddyn/fluid_emacs.d
+
+- Setup Bash (``.bashrc`` and ``.bash_aliases``)
+
+- Setup https://fishshell.com/ (if you want Fish!)::
+
+    chsh -s $(which fish)
+    echo 'set -gx PATH $PATH $HOME/.cask/bin $HOME/.local/bin/' >> ~/.config/fish/config.fish
 
 - Install miniconda::
 
@@ -44,10 +55,15 @@ How to setup a fresh install of Ubuntu 18.04 for Python and fluiddyn
 - Install pyenv (see https://github.com/pyenv/pyenv)::
 
     git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+
+  Then, for Bash::
+
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
     echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
     echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bash'
     exec "$SHELL"
+
+  And for Fish, see https://github.com/fisherman/pyenv
 
 - Build nice Python versions and use Python 3.7::
 
@@ -58,17 +74,31 @@ How to setup a fresh install of Ubuntu 18.04 for Python and fluiddyn
   Then install several packages (as wheels) using pip::
 
     pip install ipython jupyterlab
-    pip install numpy scipy matplotlib
+    pip install numpy scipy matplotlib pandas
     pip install h5py h5netcdf
     pip install cython mako colorlog pythran
-    pip install future
     pip install mpi4py
+    pip install future
     pip install pyfftw
     pip install pylint flake8 mypy black yapf
     pip install trio
-    pip install sphinx numpydoc
+    pip install sphinx numpydoc sphinx-rtd-theme
     pip install pyqt5
     pip install spyder
     pip install pipenv
 
 - Install https://code.visualstudio.com
+
+- Setup ``~/.pythranrc``::
+
+    wget https://bitbucket.org/fluiddyn/fluiddyn/raw/default/doc/simple.pythranrc -O ~/.pythranrc
+
+- Fix Gnome::
+
+    sudo apt-get install chrome-gnome-shell gnome-tweak-tool
+
+  * Install https://extensions.gnome.org/extension/484/workspace-grid/
+
+  * Using ``gnome-tweaks``, set static workspaces
+
+  * Dock: hidden and smaller (in Settings)

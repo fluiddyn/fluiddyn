@@ -59,9 +59,8 @@ You are then ready to run typical conda and pip install commands, for example::
    Note the ``blas=*=openblas`` requirement in the first line. This is important
    if you want to use the library fftw_mpi, with is incompatible with MKL.
 
-
-Another easy way, slightly more difficult(?)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Another easy way (slightly more difficult?)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It is now very easy to build the most recent Python versions with `pyenv
 <https://github.com/pyenv/pyenv>`_.
