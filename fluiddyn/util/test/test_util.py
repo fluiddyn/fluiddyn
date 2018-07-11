@@ -7,7 +7,7 @@ Test hdf5 module
 import unittest
 import os
 from shutil import rmtree
-import sys
+import six
 
 import numpy as np
 import h5py
@@ -17,6 +17,13 @@ from ..terminal_colors import print_fail, print_warning
 from ..userconfig import load_user_conf_files
 
 from ...io.redirect_stdout import stdout_redirected
+
+
+def expectedFailureIf(condition):
+    if condition:
+        return unittest.expectedFailure
+    else:
+        return lambda func: func
 
 
 class MyObject(object):
@@ -53,7 +60,6 @@ class TestUtil(unittest.TestCase):
 
         util.is_run_from_ipython()
         util.is_run_from_jupyter()
-        util.copy_me_in(os.curdir)
         with stdout_redirected():
             util.print_memory_usage("test")
             util.print_size_in_Mo(np.arange(4))
@@ -67,6 +73,14 @@ class TestUtil(unittest.TestCase):
         util.config_logging()
         load_user_conf_files()
 
+    @expectedFailureIf(six.PY2)
+    def test_copy_me(self):
+        # Relative path before chdir are supplied with Python 2
+        util.copy_me_in(os.curdir)
+
+    @expectedFailureIf(six.PY2)
+    def test_mod_date(self):
+        # Relative path before chdir are supplied with Python 2
         util.modification_date(os.path.dirname(__file__))
 
     def test_create_object(self):

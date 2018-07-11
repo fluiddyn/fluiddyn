@@ -19,7 +19,7 @@ import contextlib
 import psutil
 import numpy as np
 
-from ..io import Path, USER_DIR
+from ..io import Path, HOME_DIR
 from . import mpi
 
 
@@ -75,7 +75,7 @@ def time_as_str(decimal=0):
     return ret
 
 
-def copy_me_in(dest=USER_DIR):
+def copy_me_in(dest=HOME_DIR):
     """Copy the file from where this function is called."""
     stack = inspect.stack()
     # bug Python 2 when using os.chdir
@@ -84,7 +84,7 @@ def copy_me_in(dest=USER_DIR):
     path_dest = (
         Path(dest) / (name_file + "_" + time_as_str())
     ).expanduser().absolute()
-    shutil.copyfile(path_caller, path_dest)
+    shutil.copyfile(str(path_caller), str(path_dest))
     return path_dest
 
 
@@ -182,6 +182,7 @@ def is_run_from_ipython():
 
 def is_run_from_jupyter():
     try:
+        from IPython import get_ipython
         shell = get_ipython().__class__.__name__
     except NameError or AttributeError:
         return False
