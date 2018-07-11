@@ -1,0 +1,6 @@
+[pythran]
+complex_hook = True
+
+[compiler]
+CXX=clang++-6.0
+CC=clang-6.0

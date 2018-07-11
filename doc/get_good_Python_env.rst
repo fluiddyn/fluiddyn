@@ -33,9 +33,9 @@ add the channel conda-forge::
 You are then ready to run typical conda and pip install commands, for example::
 
   conda install numpy matplotlib h5py blas=*=openblas
-  conda scipy pandas ipython jupyterlab imageio cython psutil
+  conda install scipy pandas ipython jupyterlab imageio cython psutil
 
-  # if you use Spyder (good idea if you do not use a good Python editor) 
+  # if you use Spyder (good idea if you do not use a good Python editor)
   conda install spyder
 
   # to use clang to compile C++ files produced by Pythran
@@ -59,17 +59,24 @@ You are then ready to run typical conda and pip install commands, for example::
    Note the ``blas=*=openblas`` requirement in the first line. This is important
    if you want to use the library fftw_mpi, with is incompatible with MKL.
 
-The intermediate way and the hard way: from source
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Another easy way (slightly more difficult?)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Another (harder) way is to build the packages from source (using the system
-Python interpreter) or (even harder) to build everything from source (the
-Python interpreter and then the packages) as explained here:
+It is now very easy to build the most recent Python versions with `pyenv
+<https://github.com/pyenv/pyenv>`_.
+
+With the latest versions of pip and the `wheels <https://github.com/pypa/wheel>`_,
+it is now easy and fast to install scientific packages without conda, using pip or
+`pipenv <https://github.com/pypa/pipenv>`_.
+
+But without conda, one needs to get the non-python dependencies with the system
+package management tool, for example apt for Debian/Ubuntu, as shown here:
 
 .. toctree::
-   :maxdepth: 0
+   :maxdepth: 1
 
-   build_Python
+   setup_ubuntu1804
+
 
 Python on Windows
 ^^^^^^^^^^^^^^^^^
@@ -113,10 +120,14 @@ Using `homebrew <https://brew.sh/>`_ and pip...
   pip install colorlog pythran
   pip install pulp
 
-Recent Python versions on old GNU/Linux
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The intermediate way and the hard way: from source
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Some old Linux work with Python 2.6 but you can always install a more up-to-date
-Python version. If you can not install a package with python 3 (and conda or
-virtualenv), build Python from source (see `pyenv
-<https://github.com/pyenv/pyenv>`_).
+Another (harder) way is to build the packages from source (using the system
+Python interpreter) or (even harder) to build everything from source (the
+Python interpreter and then the packages) as explained here:
+
+.. toctree::
+   :maxdepth: 0
+
+   build_Python

@@ -16,11 +16,10 @@ It is strongly recommended to install `NumPy
 <http://docs.scipy.org/doc/numpy/user/install.html>`_ and `Matplotlib
 <http://matplotlib.org/users/installing.html>`_ before installing FluidDyn.
 
-FluidDyn also used some other packages for some particular tasks, as
-in particular Scipy and h5py. Since they can be difficult to get for
-some small hardware, they are not considered as real dependencies, but
-be prepared to get ImportError if you try to do something using these
-packages without them.
+FluidDyn also used some other packages for some particular tasks, as in particular
+Scipy. Since it can be difficult to install them for some small hardware, they are
+not considered as real dependencies. However, be prepared to get some ImportError
+:-)
 
 We present how to install the requirements in this page:
 
