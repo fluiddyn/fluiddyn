@@ -31,7 +31,7 @@ else:
 
 install_requires = [
     'numpy', 'matplotlib', 'h5py', 'h5netcdf', 'psutil >= 5.2.1', 'future',
-    'pathlib2; python_version<"3.4"',
+    'pathlib2; python_version<"3.4"', 'distro; python_version>="3.8"',
 ]
 # Even though we also use scipy, we don't require its installation
 # because it can be heavy to install.
