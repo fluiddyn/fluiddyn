@@ -282,7 +282,7 @@ scontrol release"""
         if is_resume_script:
             jobid = dependencies[0]
             main_logfile = "SLURM.{}.{}.stdout".format(name_run, jobid)
-            txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' " + "{}\n".format(
+            txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' " + "{})\n".format(
                 main_logfile
             )
 

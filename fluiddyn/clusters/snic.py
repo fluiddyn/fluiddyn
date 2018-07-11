@@ -132,7 +132,6 @@ class Abisko(ClusterSlurm):
             "module load GCC/6.3.0-2.27 OpenMPI/2.0.2",
             "module load HDF5/1.10.0-patch1",
             "module load FFTW/3.3.6",
-            "module load Python/2.7.12",
             "source {}/bin/activate".format(_venv),
         ]
 
@@ -153,7 +152,8 @@ class Kebnekaise(ClusterSlurm):
         if six.PY2:
             self.commands_setting_env.extend(
                 [
-                    "module load GCC/5.4.0-2.26 OpenMPI/1.10.3",
+                    "module load foss/2016b",
+                    "module rm FFTW/3.3.5",
                     "module load HDF5/1.8.17",
                     "module load Python/2.7.12",
                     "module load PIL/1.1.7-Python-2.7.12",
