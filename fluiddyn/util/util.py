@@ -19,6 +19,7 @@ import contextlib
 import psutil
 import numpy as np
 
+from ..io import Path, USER_DIR
 from . import mpi
 
 
@@ -74,15 +75,15 @@ def time_as_str(decimal=0):
     return ret
 
 
-def copy_me_in(dest="~"):
+def copy_me_in(dest=USER_DIR):
     """Copy the file from where this function is called."""
     stack = inspect.stack()
     # bug Python 2 when using os.chdir
-    path_caller = stack[1][1]
-    name_file = os.path.basename(path_caller)
-    path_dest = os.path.abspath(
-        os.path.expanduser(os.path.join(dest, name_file + "_" + time_as_str()))
-    )
+    path_caller = Path(stack[1][1])
+    name_file = path_caller.name
+    path_dest = (
+        Path(dest) / (name_file + "_" + time_as_str())
+    ).expanduser().absolute()
     shutil.copyfile(path_caller, path_dest)
     return path_dest
 

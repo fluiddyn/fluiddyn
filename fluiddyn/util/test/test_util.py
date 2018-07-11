@@ -53,8 +53,7 @@ class TestUtil(unittest.TestCase):
 
         util.is_run_from_ipython()
         util.is_run_from_jupyter()
-        # pathnew = util.copy_me_in()
-        # os.remove(pathnew)
+        util.copy_me_in(os.curdir)
         with stdout_redirected():
             util.print_memory_usage("test")
             util.print_size_in_Mo(np.arange(4))
@@ -69,7 +68,6 @@ class TestUtil(unittest.TestCase):
         load_user_conf_files()
 
         util.modification_date(os.path.dirname(__file__))
-        util.copy_me_in()
 
     def test_create_object(self):
         o = MyObject()
