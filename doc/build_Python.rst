@@ -1,5 +1,5 @@
-Build Python from sources
-=========================
+Build Python from sources, the old way (deprecated, now use pyenv!)
+===================================================================
 
 The following is old. We keep it here for reference but to build recent Python
 interpreters on Linux, it is much easier to use `pyenv

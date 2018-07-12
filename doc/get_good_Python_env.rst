@@ -54,7 +54,7 @@ You are then ready to run typical conda and pip install commands, for example::
   # pip is also the good tool to install pure python packages, for example:
   pip install h5netcdf yapf future mako
 
-.. attention::
+.. warning::
 
    Note the ``blas=*=openblas`` requirement in the first line. This is important
    if you want to use the library fftw_mpi, with is incompatible with MKL.
@@ -98,27 +98,44 @@ For flycheck, I install http://aspell.net/win32/
 And on macOS
 ^^^^^^^^^^^^
 
-Using `homebrew <https://brew.sh/>`_ and pip...
+.. warning::
 
-.. code::
+   As of July 2018, there is a bad bug with clang++ with a pure conda install:
+   clang++ does not find the standard C++ library (see `this fluidsim_ocean issue
+   <https://bitbucket.org/fluiddyn/fluidsim_ocean/issues/1/mpi-not-working-yet-or-install-issue>`)... One
+   needs to use `homebrew <https://brew.sh/>`_ to install::
+
+      brew install open-mpi
+      brew install fftw --with-mpi
+      brew install --with-clang llvm
+      brew install mercurial
+
+Then, two alternatives. First with the "homebrew" Python and pip::
 
   brew install python
-  brew install mercurial
-  brew install open-mpi
-  brew install fftw --with-mpi
-  brew install --with-clang llvm
 
-  python 3 -m pip install virtualenv
+  python3 -m pip install virtualenv
+  virtualenv -p python3 fluid-env
+  source fluid-env/bin/activate
 
-  virtualenv -p python3 envpy36
+  pip install scipy matplotlib cython h5py ipython imageio pandas
 
-  source envpy36/bin/activate
-
-  pip install numpy scipy matplotlib cython h5py ipython imageio pandas
-  pip install mpi4py mako
+  pip install mpi4py
   pip install pyfftw
-  pip install colorlog pythran
-  pip install pulp
+  pip install pythran colorlog
+  pip install h5netcdf mako pulp
+
+Other alternative, using ``conda`` and pip::
+
+  conda config --add channels conda-forge
+  conda env create fluid-env blas=*=openblas scipy matplotlib cython h5py ipython imageio pandas 
+  conda activate fluid-env
+
+  pip install mpi4py
+  pip install pyfftw
+  pip install pythran colorlog
+  pip install h5netcdf mako pulp
+
 
 The intermediate way and the hard way: from source
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -128,6 +145,6 @@ Python interpreter) or (even harder) to build everything from source (the
 Python interpreter and then the packages) as explained here:
 
 .. toctree::
-   :maxdepth: 0
+   :titlesonly:
 
    build_Python

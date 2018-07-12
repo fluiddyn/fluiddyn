@@ -76,6 +76,7 @@ have this page, so it may be useful to others.
     pip install ipython jupyterlab
     pip install numpy scipy matplotlib pandas
     pip install h5py h5netcdf
+    pip install imageio
     pip install cython mako colorlog pythran
     pip install mpi4py
     pip install future
@@ -86,6 +87,8 @@ have this page, so it may be useful to others.
     pip install pyqt5
     pip install spyder
     pip install pipenv
+
+  Note that `pip install numpy` installs a numpy wheel containing openblas.
 
 - Install https://code.visualstudio.com
 
