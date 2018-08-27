@@ -102,7 +102,7 @@ And on macOS
 
    As of July 2018, there is a bad bug with clang++ with a pure conda install:
    clang++ does not find the standard C++ library (see `this fluidsim_ocean issue
-   <https://bitbucket.org/fluiddyn/fluidsim_ocean/issues/1/mpi-not-working-yet-or-install-issue>`)... One
+   <https://bitbucket.org/fluiddyn/fluidsim_ocean/issues/1/mpi-not-working-yet-or-install-issue>`_)... One
    needs to use `homebrew <https://brew.sh/>`_ to install::
 
       brew install open-mpi

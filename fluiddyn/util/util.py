@@ -82,8 +82,8 @@ def copy_me_in(dest=HOME_DIR):
     path_caller = Path(stack[1][1])
     name_file = path_caller.name
     path_dest = (
-        Path(dest) / (name_file + "_" + time_as_str())
-    ).expanduser().absolute()
+        (Path(dest) / (name_file + "_" + time_as_str())).expanduser().absolute()
+    )
     shutil.copyfile(str(path_caller), str(path_dest))
     return path_dest
 
@@ -183,6 +183,7 @@ def is_run_from_ipython():
 def is_run_from_jupyter():
     try:
         from IPython import get_ipython
+
         shell = get_ipython().__class__.__name__
     except NameError or AttributeError:
         return False

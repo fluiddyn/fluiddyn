@@ -38,6 +38,7 @@ terminal or in your .bashrc)::
 from builtins import str
 import os
 import sys
+
 try:
     import pathlib
 except ImportError:

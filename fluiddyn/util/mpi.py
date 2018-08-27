@@ -39,6 +39,7 @@ def _detect_mpi_type():
             "MP_CHILD": "IBM PE",
             "MP_RANK": "Sun CT",
             "MPIRUN_RANK": "MVAPICH >= 1.1",
+            "MPI_FLAVOR": os.environ.get("MPI_FLAVOR"),
             ENV_OVERRIDE: "Unknown. Force loading mpi4py if available",
         }
     )
@@ -63,7 +64,7 @@ def _detect_mpi_type():
         process = psutil.Process(os.getppid())
         process_name = process.name()
 
-        if process_name in ["mpirun", "mpiexec"]:
+        if any(process_name.startswith(name) for name in ("mpirun", "mpiexec")):
             print(
                 warning_msg,
                 "Loading MPI anyways, since the program was launched using ",
@@ -79,7 +80,6 @@ try:
     _mpi_type = _detect_mpi_type()
     if _mpi_type is None:
         raise ImportError
-
     else:
         from mpi4py import MPI
 except ImportError:
