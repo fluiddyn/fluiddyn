@@ -6,6 +6,7 @@ syntax: glob
 *temp
 
 \#*\#
+*/.vscode/*
 
 doc/_build/*
 doc/**generated/*

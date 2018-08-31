@@ -65,18 +65,22 @@ have this page, so it may be useful to others.
 
   And for Fish, see https://github.com/fisherman/pyenv
 
-- Build nice Python versions and use Python 3.7::
+- Build nice Python versions and use Python 3.6 or 3.7::
 
+    pyenv install 3.6.6
     pyenv install 3.7.0
     pyenv install pypy3.5-6.0.0
-    pyenv global 3.7.0
+    pyenv global 3.7.0  # or 3.6.6
 
   Then install several packages (as wheels) using pip::
 
+    pip install --upgrade pip
+    pip install pipenv
+    pip install pytest coverage
     pip install ipython jupyterlab
-    pip install numpy scipy matplotlib pandas
+    pip install numpy scipy matplotlib pandas ipympl
     pip install h5py h5netcdf
-    pip install imageio
+    pip install imageio pims
     pip install cython mako colorlog pythran
     pip install mpi4py
     pip install future
@@ -86,9 +90,24 @@ have this page, so it may be useful to others.
     pip install sphinx numpydoc sphinx-rtd-theme
     pip install pyqt5
     pip install spyder
-    pip install pipenv
+    pip install pyqtgraph
+
+    pip install opencv-python
+
+    pip install scikit-image scikit-learn
 
   Note that `pip install numpy` installs a numpy wheel containing openblas.
+
+- More Jupyter::
+
+    sudo apt install nodejs npm
+
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager
+    jupyter labextension install jupyter-matplotlib
+
+    sudo apt install chromium-browser
+    jupyter-lab --generate-config
+    echo 'c.NotebookApp.browser = "/usr/bin/chromium-browser"' >> ~/.jupyter/jupyter_notebook_config.py
 
 - Install https://code.visualstudio.com
 
@@ -100,8 +119,34 @@ have this page, so it may be useful to others.
 
     sudo apt-get install chrome-gnome-shell gnome-tweak-tool
 
-  * Install https://extensions.gnome.org/extension/484/workspace-grid/
+  * Install 
+
+    - https://extensions.gnome.org/extension/484/workspace-grid/
+
+    - https://extensions.gnome.org/extension/15/alternatetab/
 
   * Using ``gnome-tweaks``, set static workspaces
 
   * Dock: hidden and smaller (in Settings)
+
+- Install GMT 6 and gmt-python::
+
+    sudo apt install gmt-gshhg libgdal-dev libpcre2-dev libnetcdf-dev ghostscript
+
+    git clone https://github.com/GenericMappingTools/gmt
+    cd gmt/
+    cp cmake/ConfigUserTemplate.cmake cmake/ConfigUser.cmake
+    mkdir build
+    cd build/
+
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+    make -j4
+    sudo make -j4 install
+
+    pip install https://github.com/GenericMappingTools/gmt-python/archive/master.zip
+
+    # for bash
+    echo -e '\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/' >> ~/.bashrc
+
+    # for fish
+    echo -e '\nset -gx LD_LIBRARY_PATH $LD_LIBRARY_PATH /usr/local/lib/' >> ~/.config/fish/config.fish
