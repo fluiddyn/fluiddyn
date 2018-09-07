@@ -1,22 +1,40 @@
 
+from __future__ import print_function
+
+from time import sleep
 import unittest
 
 from ..daemons import DaemonThread, DaemonProcess
 
 
-def func():
-    pass
+def func(self):
+    assert self._args[0] == "hello"
+    assert list(self._kwargs.keys())[0] == "word"
+    while self.keepgoing.value:
+        print("!", end="")
+        sleep(0.01)
+
+
+class DThread(DaemonThread):
+    def run(self):
+        func(self)
+
+class DProcess(DaemonProcess):
+    def run(self):
+        func(self)
 
 
 class TestDaemonds(unittest.TestCase):
     """Test fluiddyn.util.daemons module."""
 
     def test_daemons(self):
-        dt = DaemonThread(func)
-        dt.run()
+        dt = DThread(args=("hello",), kwargs={"word": 1})
+        dt.start()
+        sleep(0.02)
         dt.stop()
-        dp = DaemonProcess(func)
-        dp.run()
+        dp = DProcess(args=("hello",), kwargs={"word": 1})
+        dp.start()
+        sleep(0.02)
         dp.stop()
 
 

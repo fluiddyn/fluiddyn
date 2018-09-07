@@ -12,18 +12,15 @@ matrix:
     - python: 2.7
       env: TOXENV=py,codecov-travis
 
-
 before_cache:
   - |
       coverage erase
       rm -f $HOME/.cache/pip/log/debug.log
 
-
 cache:
     directories:
         - $HOME/.cache/pip
         - $TRAVIS_BUILD_DIR/.tox
-
 
 addons:
     apt:
@@ -35,7 +32,7 @@ addons:
 
 install:
     - pip install -U pip setuptools wheel six colorlog
-    - pip install -U tox-travis coverage
+    - pip install -U tox-travis coverage pytest
 
 before_script:
     - |
