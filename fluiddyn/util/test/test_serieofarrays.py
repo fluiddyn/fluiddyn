@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image
 
 
-from fluiddyn.util.serieofarrays import SeriesOfArrays
+from fluiddyn.util.serieofarrays import SeriesOfArrays, SerieOfArraysFromFiles
 
 
 def create_image(path):
@@ -32,6 +32,15 @@ class TestSeriesOfArrays(unittest.TestCase):
         rmtree(cls.work_dir)
 
     def test0(self):
+
+        serie = SerieOfArraysFromFiles(self.work_dir, "1:1+3, :")
+        serie.get_path_arrays()
+        serie.get_name_path_arrays()
+        serie.check_all_arrays_exist()
+
+        serie = SerieOfArraysFromFiles(self.work_dir, "1:1+3:2, 1")
+        assert len(serie.get_name_files()) == 2
+
         series = SeriesOfArrays(
             self.work_dir, "i:i+3:2, 1", ind_start=0, ind_stop=None, ind_step=2
         )
@@ -44,6 +53,9 @@ class TestSeriesOfArrays(unittest.TestCase):
         self.assertEqual(series.ind_stop, 7)
         series.get_next_serie()
         series.get_name_all_files()
+        series.get_name_all_arrays()
+
+        tuple(series.items())
 
         serie = series.get_serie_from_index(0)
         serie.get_arrays()

@@ -49,6 +49,7 @@ extensions_movies = ["cine", "im7"]
 
 def imread(path, *args, **kwargs):
     """Wrapper for OpenCV/SciPy imread functions."""
+    path = str(path)
     if path.endswith("]"):
         path, internal_index = path.split("[")
         internal_index = int(internal_index[:-1])
@@ -110,6 +111,8 @@ def imsave(path, array, format=None, as_int=False):
     """
 
     im = _image_from_array(array, as_int)
+
+    path = str(path)
 
     if format is None:
         if im.mode == "F" or any(

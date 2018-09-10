@@ -19,6 +19,7 @@ class DThread(DaemonThread):
     def run(self):
         func(self)
 
+
 class DProcess(DaemonProcess):
     def run(self):
         func(self)
