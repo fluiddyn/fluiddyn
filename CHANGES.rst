@@ -1,4 +1,10 @@
 
+0.2.5 (2018-09-12)
+------------------
+
+- Improve serieofarrays for fluidimage
+- bugfixes...
+
 0.2.4
 -----
 
