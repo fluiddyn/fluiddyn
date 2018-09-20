@@ -46,7 +46,7 @@ have this page, so it may be useful to others.
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
     bash ./Miniconda3-latest-Linux-x86_64.sh
 
-- To build Cpython, we first have to modify a file (see
+- To build CPython, we first have to modify a file (see
   http://cpython-devguide.readthedocs.io/setup/#build-dependencies). Then::
 
     sudo apt-get update
@@ -60,7 +60,7 @@ have this page, so it may be useful to others.
 
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
     echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bash'
+    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bashrc'
     exec "$SHELL"
 
   And for Fish, see https://github.com/fisherman/pyenv
@@ -119,7 +119,7 @@ have this page, so it may be useful to others.
 
     sudo apt-get install chrome-gnome-shell gnome-tweak-tool
 
-  * Install 
+  * Install
 
     - https://extensions.gnome.org/extension/484/workspace-grid/
 

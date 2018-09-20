@@ -5,9 +5,9 @@ Read and save image files
 
 """
 
-
 from __future__ import print_function
 import os
+
 import numpy as np
 
 try:
@@ -59,14 +59,13 @@ def imread(path, *args, **kwargs):
                     return images.get_frame(internal_index)
 
     if path.lower().endswith((".tiff", ".tif")):
-        try:
-            return _imread_ski(path, *args, **kwargs)
-
-        except NameError:
-            pass
+        return _imread_ski(path, *args, **kwargs)
 
     if use_opencv:
-        return _imread_opencv(path, IMREAD_ANYDEPTH)
+        im = _imread_opencv(path, IMREAD_ANYDEPTH)
+        if im is None:
+            if not os.path.exists(path):
+                raise FileNotFoundError(f"No such file or directory: {path}")
 
     else:
         return _imread(path, *args, **kwargs)
