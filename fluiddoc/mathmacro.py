@@ -76,9 +76,18 @@ from __future__ import print_function
 import re
 
 from docutils.parsers.rst.directives.misc import Replace
+from docutils import nodes, utils
 
-from sphinx.ext.mathbase import MathDirective
-from sphinx.ext.mathbase import math_role
+from sphinx.directives.patches import MathDirective
+
+
+class math(nodes.Inline, nodes.TextElement):
+    pass
+
+
+def old_math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    latex = utils.unescape(text, restore_backslashes=True)
+    return [math(latex=latex)], []
 
 
 def multiple_replacer(replace_dict):
@@ -159,7 +168,7 @@ def new_math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
             rawtext = multiple_replace(rawtext, math_macros)
             text = rawtext.split("`")[1]
 
-    return math_role(
+    return old_math_role(
         role, rawtext, text, lineno, inliner, options=options, content=content
     )
 
