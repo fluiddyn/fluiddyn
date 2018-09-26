@@ -65,7 +65,8 @@ def imread(path, *args, **kwargs):
         im = _imread_opencv(path, IMREAD_ANYDEPTH)
         if im is None:
             if not os.path.exists(path):
-                raise FileNotFoundError(f"No such file or directory: {path}")
+                raise FileNotFoundError(
+                    "No such file or directory: {}".format(path))
         return im
     else:
         return _imread(path, *args, **kwargs)
