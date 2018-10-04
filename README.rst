@@ -83,6 +83,12 @@ Or, from the root directory or any of the "test" directories::
 
   python -m unittest discover
 
+Citing
+------
+
+If you need to cite a FluidDyn paper, feel free to use:
+https://arxiv.org/abs/1807.09224
+
 History
 -------
 
