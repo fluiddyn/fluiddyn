@@ -52,37 +52,48 @@ def _detect_mpi_type():
         "Try exporting environment variable {}=1 to skip MPI type check.\n"
     ).format(ENV_OVERRIDE)
 
+    if hasattr(os, 'getppid'):
+        process_name = psutil.Process(os.getppid()).name()
+    else:
+        # Python 2.7 on Windows
+        process_name = None
+
     if len(set_detected_env) > 0:
         env = set_detected_env.pop()
         if env == ENV_OVERRIDE and os.environ[env] != "1":
             print(warning_msg)
-            return None
+            return None, process_name
         else:
-            return MPIEXEC_TYPE[env]
-
-    elif os.name == "posix":
-        process = psutil.Process(os.getppid())
-        process_name = process.name()
-
+            return MPIEXEC_TYPE[env], process_name
+    else:
         if any(process_name.startswith(name) for name in ("mpirun", "mpiexec")):
             print(
                 warning_msg,
                 "Loading MPI anyways, since the program was launched using ",
                 process_name,
             )
-            return MPIEXEC_TYPE[ENV_OVERRIDE]
+            return MPIEXEC_TYPE[ENV_OVERRIDE], process_name
 
     # If none of the above cases match
-    return None
+    return None, process_name
+
+
+class NoMPIError(Exception):
+    pass
 
 
 try:
-    _mpi_type = _detect_mpi_type()
+    _mpi_type, process_name = _detect_mpi_type()
     if _mpi_type is None:
-        raise ImportError
+        raise NoMPIError
+    elif _mpi_type == "MPT":
+        if process_name is None or process_name == "mpiexec_mpt":
+            from mpi4py import MPI
+        else:
+            raise NoMPIError
     else:
         from mpi4py import MPI
-except ImportError:
+except (ImportError, NoMPIError):
     nb_proc = 1
     rank = 0
     printby0 = print
