@@ -66,7 +66,8 @@ def imread(path, *args, **kwargs):
         if im is None:
             if not os.path.exists(path):
                 raise FileNotFoundError(
-                    "No such file or directory: {}".format(path))
+                    "No such file or directory: {}".format(path)
+                )
         return im
     else:
         return _imread(path, *args, **kwargs)

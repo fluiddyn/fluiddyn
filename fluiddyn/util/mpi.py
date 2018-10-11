@@ -52,7 +52,7 @@ def _detect_mpi_type():
         "Try exporting environment variable {}=1 to skip MPI type check.\n"
     ).format(ENV_OVERRIDE)
 
-    if hasattr(os, 'getppid'):
+    if hasattr(os, "getppid"):
         process_name = psutil.Process(os.getppid()).name()
     else:
         # Python 2.7 on Windows
@@ -87,7 +87,8 @@ try:
     if _mpi_type is None:
         raise NoMPIError
     elif _mpi_type == "MPT":
-        if process_name is None or process_name == "mpiexec_mpt":
+	# "arrayd" like "Array Services daemon"
+        if process_name is None or process_name == "arrayd":
             from mpi4py import MPI
         else:
             raise NoMPIError
