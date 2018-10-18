@@ -17,6 +17,7 @@ from builtins import str
 from builtins import object
 import os
 from copy import deepcopy
+from pathlib import Path
 
 from io import open
 
@@ -47,7 +48,10 @@ from fluiddyn.util.xmltotext import produce_text_element
 
 
 def _as_str(value):
-    if not isinstance(value, six.string_types):
+    if isinstance(value, Path):
+        return str(value)
+
+    elif not isinstance(value, six.string_types):
         return repr(value)
 
     else:
@@ -519,6 +523,9 @@ class ParamContainer(object):
 
                 if not invalid_netcdf and isinstance(value, bool):
                     value = int(value)
+
+                if isinstance(value, Path):
+                    value = str(value)
 
                 try:
                     hdf5_object.attrs[key] = value

@@ -50,6 +50,8 @@ from copy import copy, deepcopy
 import itertools
 from math import ceil, log10
 
+from pathlib import Path
+
 # import re
 
 try:
@@ -677,7 +679,7 @@ class SeriesOfArrays(object):
         serie0 = serie
         indslices_from_indserie0 = indslices_from_indserie
 
-        if isinstance(serie, basestring):
+        if isinstance(serie, (basestring, Path)):
             serie = str(serie)
             serie = SerieOfArraysFromFiles(serie)
         if isinstance(serie, SerieOfArraysFromFiles):
