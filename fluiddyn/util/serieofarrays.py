@@ -50,7 +50,6 @@ from copy import copy, deepcopy
 import itertools
 from math import ceil, log10
 
-from pathlib import Path
 
 # import re
 
@@ -72,6 +71,7 @@ try:
 except ImportError:
     pass
 
+from fluiddyn.io import Path
 from fluiddyn.io.image import imread, extensions_movies
 
 
