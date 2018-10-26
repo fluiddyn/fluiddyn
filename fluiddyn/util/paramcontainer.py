@@ -17,7 +17,6 @@ from builtins import str
 from builtins import object
 import os
 from copy import deepcopy
-from pathlib import Path
 
 from io import open
 
@@ -44,6 +43,7 @@ except ImportError:
         ImportWarning,
     )
 
+from fluiddyn.io import Path
 from fluiddyn.util.xmltotext import produce_text_element
 
 
