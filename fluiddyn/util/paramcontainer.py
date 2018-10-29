@@ -165,6 +165,7 @@ class ParamContainer(object):
         self._set_doc(doc)
 
         if path_file is not None:
+            path_file = str(path_file)
             self._set_internal_attr("_path_file", path_file)
             if path_file.endswith(".xml"):
                 self._load_from_xml_file(path_file)
@@ -434,9 +435,9 @@ class ParamContainer(object):
         for childxml in elemxml:
             tag = childxml.tag
 
-            l = [c for c in elemxml if c.tag == tag]
+            children = [c for c in elemxml if c.tag == tag]
 
-            if len(l) > 1 or tag in tags_multiple:
+            if len(children) > 1 or tag in tags_multiple:
                 if tag not in tags_multiple:
                     tags_multiple.append(tag)
 
