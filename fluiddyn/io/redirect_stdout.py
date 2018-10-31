@@ -38,4 +38,4 @@ def stdout_redirected(
 
         stack.enter_context(contextlib.redirect_stdout(to_file))
         yield  # Control to the with block
-        stack.close()  # Finally, unwind the callback stack
+        # Exit the contextmanagers and finally, exit the stack
