@@ -100,7 +100,7 @@ class TimeStr(str):
         return self._operate(operator.gt, other)
 
 
-class Timer(object):
+class Timer:
     """Timer ticking with a particular period.
 
     Parameters

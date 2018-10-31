@@ -27,7 +27,7 @@ def print_with_emptyend(s):
     sys.stdout.flush()
 
 
-class NS3DFile(object):
+class NS3DFile:
     """Fields in a NS3D binary file."""
 
     def __init__(self, path_file=None):
@@ -289,7 +289,7 @@ class NS3DForcingInfoFile(NS3DFile):
         print("New file saved:\n" + new_path)
 
 
-class NS3DForcingSpectralFile(object):
+class NS3DForcingSpectralFile:
     """Fields in a NS3D binary file."""
 
     def __init__(self, path_file):

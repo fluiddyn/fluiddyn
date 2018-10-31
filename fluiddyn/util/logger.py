@@ -23,7 +23,7 @@ from fluiddyn.util import time_as_str
 from fluiddyn.util.mail import send_email
 
 
-class Logger(object):
+class Logger:
     """Logger that can send emails."""
 
     def __init__(

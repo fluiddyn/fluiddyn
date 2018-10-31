@@ -15,7 +15,7 @@ import csv
 import numpy as np
 
 
-class CSVFile(object):
+class CSVFile:
     def __init__(self, *args, **kargs):
         self._textio = open(*args, **kargs)
         self.reader = csv.DictReader(self._textio)

@@ -43,7 +43,7 @@ from glob import glob
 from fluiddyn.io.binary import BinFile
 
 
-class LoadedElement(object):
+class LoadedElement:
     """A loaded element of a xml file.
 
     Warning: no security at all. For example, it would fall in a loop
@@ -96,7 +96,7 @@ class LoadedXML(LoadedElement):
         super(LoadedXML, self).__init__(root)
 
 
-class DantecImageEnsemble(object):
+class DantecImageEnsemble:
     _offset_header = 0xC22
 
     def __init__(self, path_base):
@@ -116,7 +116,7 @@ class DantecImageEnsemble(object):
             return np.array(data, dtype=np.uint8).reshape(self.shape)
 
 
-class DantecVectorEnsemble(object):
+class DantecVectorEnsemble:
     def __init__(self):
         self.xlm = LoadedXML("AnalysisEnsemble_PIV.xml")
 

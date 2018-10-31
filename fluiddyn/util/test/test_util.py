@@ -26,7 +26,7 @@ def expectedFailureIf(condition):
         return lambda func: func
 
 
-class MyObject(object):
+class MyObject:
     def __init__(self, str_path=None, *args, **kwargs):
         pass
 

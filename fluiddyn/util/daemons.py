@@ -13,7 +13,7 @@ from multiprocessing import Process, Value
 from fluiddyn.util import Params
 
 
-class BaseDaemon(object):
+class BaseDaemon:
     """Base Daemon class
 
     You may override the `run` method in a subclass and use

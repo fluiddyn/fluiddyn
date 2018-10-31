@@ -41,7 +41,7 @@ except AttributeError:
         return QtWidgets.QApplication.translate(context, text, disambig)
 
 
-class QtParamContainer(object):
+class QtParamContainer:
     """QWidget application framework for loading, editing, saving and launching
     a job from a ParamContainer object.
 

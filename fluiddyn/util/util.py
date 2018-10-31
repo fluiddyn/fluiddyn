@@ -196,7 +196,7 @@ def is_run_from_jupyter():
             return False
 
 
-class Params(object):
+class Params:
     """Minimalist object to store some parameters."""
 
     def __repr__(self):

@@ -72,7 +72,7 @@ def _as_value(value):
         return value
 
 
-class ParamContainer(object):
+class ParamContainer:
     """Structured container of values.
 
     The objects ParamContainer can be used as containers of

@@ -49,7 +49,7 @@ def decimate(sig, q, nwindow=None, axis=-1):
     return sigdec
 
 
-class FunctionLinInterp(object):
+class FunctionLinInterp:
     """Function defined by a linear interpolation."""
 
     def __init__(self, x, f):

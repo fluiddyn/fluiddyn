@@ -136,7 +136,7 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
     return int(nk_new)
 
 
-class BaseFFT(object):
+class BaseFFT:
     def run_tests(self):
         arr = np.random.rand(*self.shapeX)
         arr_fft = self.fft(arr)

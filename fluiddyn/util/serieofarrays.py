@@ -92,7 +92,7 @@ def compute_slices(str_slice):
     return tuple(slices)
 
 
-class SerieOfArrays(object):
+class SerieOfArrays:
     """Serie of arrays used for post-processing.
 
     Parameters
@@ -636,7 +636,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return len(self.get_name_files())
 
 
-class SeriesOfArrays(object):
+class SeriesOfArrays:
     """Series of arrays.
 
     This class can be used to produce series of arrays from a

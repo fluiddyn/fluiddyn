@@ -97,7 +97,7 @@ def bin_int(n, width):
     return "".join(str((n >> i) & 1) for i in range(width - 1, -1, -1))
 
 
-class EasySHT(object):
+class EasySHT:
     """Simple possibilities of shtns.
 
     Less possibilities but very simple to use...  It has been written

@@ -28,7 +28,7 @@ from ..util import is_run_from_ipython
 from .rcparams import set_rcparams
 
 
-class Figures(object):
+class Figures:
     """Represent a set of figures.
 
     Utilities to plot and save figures with matplotlib.

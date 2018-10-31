@@ -63,7 +63,7 @@ keys_image = [
 ]
 
 
-class DigiflowImage(object):
+class DigiflowImage:
     """A digiflow image (.dfi, "image" containing 3 scalar fields).
 
 
@@ -275,7 +275,7 @@ class DigiflowImage(object):
         return self.data[self.infos_planes.keys.index(key)]
 
 
-class DigiflowMovie(object):
+class DigiflowMovie:
     """A digiflow movie (.dfm, "movies", set of images).
 
     """
