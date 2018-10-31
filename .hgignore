@@ -5,6 +5,8 @@ syntax: glob
 *~
 *temp
 
+*.swp
+*.swo
 \#*\#
 */.vscode/*
 
@@ -33,6 +35,7 @@ dist*
 .tox/*
 .coverage/*
 .pytest_cache/*
+.mypy_cache/*
 
 *.so
 

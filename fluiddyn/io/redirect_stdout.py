@@ -1,30 +1,19 @@
-"""Redirect stdoutput (:mod:`fluiddyn.io.redirect_stdout`)
+"""Redirect stdout (:mod:`fluiddyn.io.redirect_stdout`)
 ==========================================================
 
 
 """
-
+from typing import Union, TextIO
 import os
-import sys
-from contextlib import contextmanager
-
-if sys.version_info >= (3, 0):
-    from io import StringIO
-else:
-    from StringIO import StringIO
+import io
+import contextlib
 
 
-def fileno(file_or_fd):
-    fd = getattr(file_or_fd, "fileno", lambda: file_or_fd)()
-    if not isinstance(fd, int):
-        raise ValueError("Expected a file (`.fileno()`) or a file descriptor")
-
-    return fd
-
-
-@contextmanager
-def stdout_redirected(doit=True, to=os.devnull, stdout=None):
-    """Redirect stdout to os.devnull
+@contextlib.contextmanager
+def stdout_redirected(
+    doit: bool = True, to: Union[str, TextIO, io.StringIO] = os.devnull
+):
+    """Redirect stdout to os.devnull or a buffer
 
     Parameters
     ----------
@@ -36,44 +25,17 @@ def stdout_redirected(doit=True, to=os.devnull, stdout=None):
 
         Buffer or file or file path to redirect to.
 
-    stdout : file object
-
-        File from which output is redirected.
-
     """
     if not doit:
-        yield
-        return
+        yield  # Control to the with block
+        return  # Do nothing and exit contextmanager
 
-    if stdout is None:
-        stdout = sys.stdout
+    with contextlib.ExitStack() as stack:
+        if isinstance(to, str):
+            to_file = stack.enter_context(open(to, "w+"))
+        elif isinstance(to, (io.TextIOBase, io.StringIO)):
+            to_file = to
 
-    stdout_fd = fileno(stdout)
-    # copy stdout_fd before it is overwritten
-    # NOTE: `copied` is inheritable on Windows when duplicating a standard
-    # stream
-    with os.fdopen(os.dup(stdout_fd), "wb") as copied:
-        stdout.flush()  # flush library buffers that dup2 knows nothing about
-        if isinstance(to, StringIO):
-            sys.stdout = to
-            try:
-                yield to
-
-            finally:
-                to.flush()
-                sys.stdout = stdout
-        else:
-            try:
-                os.dup2(fileno(to), stdout_fd)  # $ exec >&to
-            except ValueError:  # filename
-                with open(to, "wb") as to_file:
-                    os.dup2(to_file.fileno(), stdout_fd)  # $ exec > to
-
-            try:
-                yield stdout  # allow code to be run with the redirected stdout
-
-            finally:
-                # restore stdout to its previous value
-                # NOTE: dup2 makes stdout_fd inheritable unconditionally
-                stdout.flush()
-                os.dup2(copied.fileno(), stdout_fd)  # $ exec >&copied
+        stack.enter_context(contextlib.redirect_stdout(to_file))
+        yield  # Control to the with block
+        stack.close()  # Finally, unwind the callback stack
