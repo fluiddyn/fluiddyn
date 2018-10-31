@@ -45,26 +45,13 @@ from builtins import range
 from builtins import object
 
 import os
-from glob import glob
+from glob import glob, escape
 from copy import copy, deepcopy
 import itertools
 from math import ceil, log10
 
 
 # import re
-
-try:
-    from glob import escape
-except ImportError:
-    # doesn't exist in python 2.7
-
-    def escape(s):
-        if s == "[":
-            return "[[]"
-
-        else:
-            return s
-
 
 try:
     import pims

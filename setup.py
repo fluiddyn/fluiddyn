@@ -41,11 +41,6 @@ install_requires = [
 # Even though we also use scipy, we don't require its installation
 # because it can be heavy to install.
 
-# subprocess32 should not be used on Windows and should not be
-# a required dependency
-if not sys.platform.startswith("win") and sys.version_info[0] < 3:
-    install_requires.append("subprocess32")
-
 
 setup(
     name="fluiddyn",

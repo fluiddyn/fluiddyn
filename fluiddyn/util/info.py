@@ -36,11 +36,7 @@ except ImportError:
     except ImportError:
         ImportError("Install distro package to use this module.")
 
-
-try:
-    import subprocess32 as subprocess
-except ImportError:
-    import subprocess
+import subprocess
 
 import psutil
 import numpy as np

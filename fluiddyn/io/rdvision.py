@@ -3,14 +3,8 @@
 
 """
 
-from builtins import range
-from builtins import object
 import os
-
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+import configparser
 
 try:
     from PIL import Image
@@ -60,7 +54,7 @@ def read_sqb(name, nb_files=1):
     return offsets, timestamps, indices_files
 
 
-class SetOfFiles(object):
+class SetOfFiles:
     def __init__(self, name):
 
         self.d = d = read_seq(name)

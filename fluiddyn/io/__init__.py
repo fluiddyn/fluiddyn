@@ -37,12 +37,7 @@ terminal or in your .bashrc)::
 
 from builtins import str
 import os
-import sys
-
-try:
-    import pathlib
-except ImportError:
-    import pathlib2 as pathlib
+import pathlib
 
 from .redirect_stdout import stdout_redirected
 
