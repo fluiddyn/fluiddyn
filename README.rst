@@ -33,7 +33,7 @@ FluidDyn project <https://bitbucket.org/fluiddyn>`_ (in particular in `fluidfft
 <http://fluidlab.readthedocs.io>`_ and `fluidimage
 <http://fluidimage.readthedocs.io>`_).
 
-*Keywords and ambitions*: fluid dynamics research with Python (2.7 or >= 3.4),
+*Keywords and ambitions*: fluid dynamics research with Python (>= 3.6),
 modular, object-oriented, collaborative, tested and documented, free and
 open-source software.
 
@@ -66,7 +66,7 @@ The development mode is often useful. From the root directory, run::
 Requirements
 ------------
 
-**Minimum** : Python (2.7, >=3.4), numpy, matplotlib, psutil, future, subprocess32 (for Python 2.7 only)
+**Minimum** : Python (>=3.6), numpy, matplotlib, psutil, future, fluidpythran
 
 **Full functionality**: h5py, h5netcdf, pillow, imageio, mpi4py, scipy, pyfftw (requires FFTW library)
 
