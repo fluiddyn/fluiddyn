@@ -6,12 +6,16 @@
 from typing import Union, TextIO
 import os
 import io
+import pathlib
 import contextlib
+
+
+__all__ = ["stdout_redirected"]
 
 
 @contextlib.contextmanager
 def stdout_redirected(
-    doit: bool = True, to: Union[str, TextIO, io.StringIO] = os.devnull
+    doit: bool = True, to: Union[str, pathlib.Path, TextIO, io.StringIO] = os.devnull
 ):
     """Redirect stdout to os.devnull or a buffer
 
@@ -31,7 +35,7 @@ def stdout_redirected(
         return  # Do nothing and exit contextmanager
 
     with contextlib.ExitStack() as stack:
-        if isinstance(to, str):
+        if isinstance(to, (str, pathlib.Path)):
             to_file = stack.enter_context(open(to, "w+"))
         elif isinstance(to, (io.TextIOBase, io.StringIO)):
             to_file = to

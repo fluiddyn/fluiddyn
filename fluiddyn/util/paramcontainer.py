@@ -11,10 +11,6 @@ Provides:
 
 """
 
-from __future__ import division, print_function
-
-from builtins import str
-from builtins import object
 import os
 from copy import deepcopy
 
@@ -353,6 +349,13 @@ class ParamContainer:
 
         return d
 
+    def _make_dict_tree(self):
+        """A tree-like nested dictionary, including attributes and children."""
+        d = self._make_dict_attribs()
+        for k in self._tag_children:
+            d[k] = self.__dict__[k]._make_dict_tree()
+        return d
+
     def __eq__(self, other):
         return self._make_dict() == other._make_dict()
 
@@ -410,6 +413,12 @@ class ParamContainer:
             + "\n\n"
             + self._make_xml_text()
         )
+
+    def _ipython_display_(self):
+        from IPython.display import JSON, display
+        data = self._make_dict_tree()
+        json = JSON(data, expanded=True)
+        return display(json)
 
     def _load_from_xml_file(self, path_file):
         tree = etree.parse(path_file)
