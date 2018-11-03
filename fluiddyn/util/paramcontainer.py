@@ -414,11 +414,14 @@ class ParamContainer:
             + self._make_xml_text()
         )
 
-    def _ipython_display_(self):
-        from IPython.display import JSON, display
+    def _repr_json_(self):
         data = self._make_dict_tree()
-        json = JSON(data, expanded=True, metadata={"root": self._tag})
-        return display(json)
+        this_id = hex(id(self))
+        metadata={
+            "root": f"{self._tag} of {self.__class__} at {this_id}",
+            "expanded": True,
+        }
+        return data, metadata
 
     def _load_from_xml_file(self, path_file):
         tree = etree.parse(path_file)
