@@ -11,6 +11,7 @@ Provides:
 
 """
 
+from typing import Dict, Any
 import os
 from copy import deepcopy
 
@@ -66,6 +67,31 @@ def _as_value(value):
 
     except (SyntaxError, ValueError):
         return value
+
+
+def sanitize_for_json(d: Dict[str, Any]) -> Dict[str, Any]:
+    """JSON rendering requires values in the dictionary to be a basic type.
+
+    That is the allowed types are ``{str, int, float, bool, None}``. If not,
+    sanitize beforehand.
+
+    """
+
+    def is_not_allowed(value):
+        allowed_types = (str, int, float, bool)
+        return not (value is None or isinstance(value, allowed_types))
+
+    for key, value in d.items():
+        if isinstance(value, dict):
+            d[key] = sanitize_for_json(value)  # recurse
+
+        elif isinstance(value, (list, tuple)):
+            d[key] = [_as_str(v) if is_not_allowed(v) else v for v in value]
+
+        elif is_not_allowed(value):
+            d[key] = _as_str(value)
+
+    return d
 
 
 class ParamContainer:
@@ -408,16 +434,14 @@ class ParamContainer:
         print(self._make_xml_text())
 
     def __repr__(self):
-        return (
-            super(ParamContainer, self).__repr__()
-            + "\n\n"
-            + self._make_xml_text()
-        )
+        return super().__repr__() + "\n\n" + self._make_xml_text()
 
     def _repr_json_(self):
         data = self._make_dict_tree()
+        data = sanitize_for_json(data)
+
         this_id = hex(id(self))
-        metadata={
+        metadata = {
             "root": f"{self._tag} of {self.__class__} at {this_id}",
             "expanded": True,
         }
@@ -483,7 +507,7 @@ class ParamContainer:
                     comment = comment.decode("utf-8")
                 except (AttributeError, UnicodeEncodeError):
                     pass
-                f.write(u"<!--\n" + comment + u"\n-->\n")
+                f.write("<!--\n" + comment + "\n-->\n")
             f.write(self._make_xml_text())
         return path_file
 

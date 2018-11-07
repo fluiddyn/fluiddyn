@@ -2,6 +2,7 @@ from __future__ import print_function
 import unittest
 import os
 from shutil import rmtree
+import json
 
 from ..paramcontainer import ParamContainer, tidy_container
 from ...io.redirect_stdout import stdout_redirected
@@ -102,6 +103,11 @@ class TestContainer(unittest.TestCase):
         param = ParamContainer(path_file=xml_file)
         param._make_xml_text()
         tidy_container(param)
+
+    def test_render_json(self):
+        """Test JSON rendering (used in Jupyter)."""
+        data, metadata = self.params._repr_json_()
+        json.dumps(data)
 
 
 if __name__ == "__main__":
