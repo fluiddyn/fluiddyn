@@ -66,8 +66,10 @@ help_docs = {
     "slurm": """sbatch
 squeue -u $USER
 scancel
-scontrol hold
-scontrol release""",
+scontrol hold <job_list>
+scontrol release <job_list>
+scontrol show job $JOBID
+""",
     "pbs": """qsub
 qstat -u $USER
 qdel
