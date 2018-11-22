@@ -1,12 +1,18 @@
-=====================================
-FluidDyn project and fluiddyn package
-=====================================
+======
+|logo|
+======
 
-|release| |docs| |coverage| |travis| |appveyor|
+|release| |pyversions| |docs| |coverage| |travis| |appveyor|
+
+.. |logo| image:: https://bitbucket.org/fluiddyn/fluiddyn/raw/default/doc/logo.svg
+   :alt: FluidDyn project and fluiddyn package
 
 .. |release| image:: https://img.shields.io/pypi/v/fluiddyn.svg
    :target: https://pypi.python.org/pypi/fluiddyn/
    :alt: Latest version
+
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/fluiddyn.svg
+   :alt: Supported Python versions
 
 .. |docs| image:: https://readthedocs.org/projects/fluiddyn/badge/?version=latest
    :target: http://fluiddyn.readthedocs.org
