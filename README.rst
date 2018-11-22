@@ -30,41 +30,46 @@
    :target: https://ci.appveyor.com/project/fluiddyn/fluiddyn
    :alt: AppVeyor status
 
-FluidDyn is a framework for research and teaching in fluid dynamics. The Python
-package fluiddyn contains basic utilities (file io, figures, clusters, mpi,
-etc.). It is used as a library in `the other specialized packages of the
-FluidDyn project <https://bitbucket.org/fluiddyn>`_ (in particular in `fluidfft
-<http://fluidfft.readthedocs.io>`_, `fluidsim
+.. |binder| image:: https://mybinder.org/badge_logo.svg
+   :target: https://mybinder.org/v2/gh/fluiddyn/fluiddyn/master?urlpath=lab/tree/doc/ipynb
+   :alt: Binder notebook
+
+FluidDyn project is an ecosystem of packages for research and teaching in fluid
+dynamics. The Python package fluiddyn contains:
+
+* **basic utilities to manage**: File I/O for some esoteric formats,
+  publication quality figures, job submission on clusters, MPI
+* **powerful classes to handle**: parameters, arrays, series of files
+* **simplified interfaces to calculate**: FFT, spherical harmonics
+
+and much more. It is used as a library in `the other specialized packages of
+the FluidDyn project <https://bitbucket.org/fluiddyn>`_ (in particular in
+`fluidfft <http://fluidfft.readthedocs.io>`_, `fluidsim
 <http://fluidsim.readthedocs.io>`_, `fluidlab
 <http://fluidlab.readthedocs.io>`_ and `fluidimage
 <http://fluidimage.readthedocs.io>`_).
 
-*Keywords and ambitions*: fluid dynamics research with Python (>= 3.6),
-modular, object-oriented, collaborative, tested and documented, free and
-open-source software.
+**Documentation**: https://fluiddyn.readthedocs.io
 
-License
--------
-
-FluidDyn is distributed under the CeCILL-B_ License, a BSD compatible
-french license.
-
-.. _CeCILL-B: http://www.cecill.info/index.en.html
+Getting started
+---------------
+To try fluiddyn without installation: |binder|
 
 Installation
 ------------
+The simplest way to install fluiddyn is by using pip::
 
-It is recommended to `install numpy <http://scipy.org/install.html>`_ before
-installing fluiddyn. Then, the simplest way to install fluiddyn is by using
-pip::
+  pip install fluiddyn [--user]
 
-  pip install fluiddyn
+Add ``--user`` flag if you are installing without setting up a virtual
+environment.
 
-You can get the source code from `Bitbucket
+You can also get the source code from `Bitbucket
 <https://bitbucket.org/fluiddyn/fluiddyn>`_ or from `the Python Package Index
-<https://pypi.python.org/pypi/fluiddyn/>`_.
-
-The development mode is often useful. From the root directory, run::
+<https://pypi.python.org/pypi/fluiddyn/>`_.  It is recommended to `install
+numpy <http://scipy.org/install.html>`_ before installing fluiddyn.  The
+development mode is often useful if you intend to modify fluiddyn. From the
+root directory::
 
   python setup.py develop
 
@@ -72,11 +77,19 @@ The development mode is often useful. From the root directory, run::
 Requirements
 ------------
 
-**Minimum** : Python (>=3.6), numpy, matplotlib, psutil, future, fluidpythran
++------------------------+-------------------------------------------------------------------------------+
+| **Minimum**            | Python (>=3.6), ``numpy matplotlib psutil future fluidpythran``               |
++------------------------+-------------------------------------------------------------------------------+
+| **Full functionality** | ``h5py h5netcdf pillow imageio mpi4py scipy pyfftw`` (requires FFTW library), |
+|                        | SHTns                                                                         |
++------------------------+-------------------------------------------------------------------------------+
+| **Optional**           | OpenCV with Python bindings, ``scikit-image``                                 |
++------------------------+-------------------------------------------------------------------------------+
 
-**Full functionality**: h5py, h5netcdf, pillow, imageio, mpi4py, scipy, pyfftw (requires FFTW library)
-
-**Optional**: OpenCV with Python bindings, scikit-image
+**Note**: Detailed instructions to install the above dependencies using Anaconda /
+Miniconda or in a specific operating system such as Ubuntu, macOS etc. can be
+found `here
+<https://fluiddyn.readthedocs.io/en/latest/get_good_Python_env.html>`__.
 
 Tests
 -----
@@ -106,3 +119,15 @@ code to solve fluid equations in a periodic two-dimensional space with a
 pseudo-spectral method, developed at KTH, Stockholm) and fluidlab (a toolkit to
 do experiments, developed in the G. K. Batchelor Fluid Dynamics Laboratory at
 DAMTP, University of Cambridge).
+
+*Keywords and ambitions*: fluid dynamics research with Python (>= 3.6),
+modular, object-oriented, collaborative, tested and documented, free and
+open-source software.
+
+License
+-------
+
+FluidDyn is distributed under the CeCILL-B_ License, a BSD compatible
+french license.
+
+.. _CeCILL-B: http://www.cecill.info/index.en.html
