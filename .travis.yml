@@ -34,9 +34,9 @@ addons:
             - libopenblas-dev
 
 install:
-    - pip install -U pip setuptools wheel six colorlog
-    - pip install -U tox-pipenv coverage pytest
-    - pip install -U "pyfftw<=0.11.0" fluiddevops fluidpythran
+    - pip install -U pip==18.0 setuptools wheel six colorlog
+    - pip install -U pipenv==2018.7.1 tox-pipenv coverage pytest
+    - pip install -U fluiddevops cython  # Cython to build pyfftw from source for PyPy
 
 before_script:
     - |
