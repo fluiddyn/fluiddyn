@@ -7,7 +7,6 @@ Test hdf5 module
 import unittest
 import os
 from shutil import rmtree
-import six
 
 import numpy as np
 import h5py
@@ -73,12 +72,10 @@ class TestUtil(unittest.TestCase):
         util.config_logging()
         load_user_conf_files()
 
-    @expectedFailureIf(six.PY2)
     def test_copy_me(self):
         # Relative path before chdir are supplied with Python 2
         util.copy_me_in(os.curdir)
 
-    @expectedFailureIf(six.PY2)
     def test_mod_date(self):
         # Relative path before chdir are supplied with Python 2
         util.modification_date(os.path.dirname(__file__))
