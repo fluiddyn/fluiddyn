@@ -36,6 +36,7 @@ addons:
 install:
     - pip install -U pip setuptools wheel six colorlog
     - pip install -U tox-travis coverage pytest
+    - pip install -U "pyfftw<=0.11.0" fluiddevops
 
 before_script:
     - |
@@ -43,7 +44,8 @@ before_script:
       echo 'backend      : agg' > $HOME/.config/matplotlib/matplotlibrc
 
 script:
-    - tox
+    - set -o pipefail
+    - tox -vv | fluidicat --every 1 --wait 300
 
 notifications:
   email: false
