@@ -26,6 +26,8 @@ from collections import OrderedDict
 import platform
 import argparse
 import warnings
+from pathlib import Path
+from configparser import ConfigParser
 
 try:
     from distro import linux_distribution
@@ -71,19 +73,16 @@ def _get_hg_repo(path_dir):
     if path_dir == "":
         return ""
 
-    pwd = os.getcwd()
-    os.chdir(path_dir)
-    output = safe_check_output("hg paths")
-    os.chdir(pwd)
-
-    if output == "":
-        return "not an hg repo"
-
-    elif output.startswith("default"):
-        return output.split(" ")[2]
-
+    hgrc = Path(path_dir) / ".hg" / "hgrc"
+    if hgrc.exists():
+        config = ConfigParser()
+        config.read(str(hgrc))
+        if "paths" in config:
+            return config["paths"].get("default", "hgrc: no default path?")
+        else:
+            return "hgrc: no [paths] section?"
     else:
-        return output
+        return "not a hg repo"
 
 
 def make_dict_about(pkg):
@@ -143,6 +142,7 @@ def get_info_fluiddyn():
             "fluidlab",
             "fluidimage",
             "fluidfft",
+            "fluidpythran",
             "fluidcoriolis",
             "fluiddevops",
         ]
