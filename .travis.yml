@@ -3,7 +3,7 @@ language: python
 
 python:
   - 3.6
-  - pypy3
+    # - pypy3  # No pypy3 in Xenial and pypy3.5-5.8.0 is too old (https://bitbucket.org/pypy/pypy/issues/2747)
 
 env:
   - TOXENV=py,codecov-travis
@@ -27,17 +27,20 @@ cache:
 
 addons:
     apt:
-        packages:
-            - libfftw3-dev
-            - libhdf5-openmpi-dev
-            - openmpi-bin
-            - libopenblas-dev
+      packages:
+        - libfftw3-dev
+        - libhdf5-dev
+        - libopenmpi-dev
+        - openmpi-bin
+        - libopenblas-dev
+          # - liblapack-dev  # for NumPy from source for PyPY
+          # - gfortran       # for SciPy from source
 
 install:
     - pip install -U pip setuptools wheel six colorlog
     - pip install -U tox-travis coverage pytest
-    - pip install -U fluiddevops numpy cython  # Cython to build pyfftw from source for PyPy
-    - pip install -U scipy h5py  # for PyPy
+    - pip install -U fluiddevops numpy # cython  # Cython to build pyfftw from source for PyPy
+      # - pip install -U scipy h5py  # for PyPy
     - pip install -U "pyfftw<=0.11.0"
 
 before_script:
