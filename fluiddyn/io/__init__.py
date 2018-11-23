@@ -28,7 +28,7 @@ provides utilities for input/output to different file formats:
    query
 
 
-To define environment variables, use something like (on \*unix systems, in the
+To define environment variables, use something like (on POSIX systems, in the
 terminal or in your .bashrc)::
 
   export FLUIDSIM_PATH="/fsnet/project/meige/2015/15DELDUCA/DataSim"
@@ -48,7 +48,7 @@ HOME_DIR = Path.home()
 FLUIDDYN_PATH_EXP = os.environ.get("FLUIDDYN_PATH_EXP")
 if FLUIDDYN_PATH_EXP is not None:
     raise DeprecationWarning(
-        "FLUIDDYN_PATH_EXP is depreciated: use FLUIDLAB_PATH."
+        "FLUIDDYN_PATH_EXP is deprecated: use FLUIDLAB_PATH."
     )
 
 del FLUIDDYN_PATH_EXP

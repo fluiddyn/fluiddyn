@@ -36,7 +36,8 @@ addons:
 install:
     - pip install -U pip setuptools wheel six colorlog
     - pip install -U tox-travis coverage pytest
-    - pip install -U fluiddevops cython  # Cython to build pyfftw from source for PyPy
+    - pip install -U fluiddevops numpy cython  # Cython to build pyfftw from source for PyPy
+    - pip install -U scipy h5py  # for PyPy
     - pip install -U "pyfftw<=0.11.0"
 
 before_script:

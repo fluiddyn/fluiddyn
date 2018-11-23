@@ -26,6 +26,7 @@ from collections import OrderedDict
 import platform
 import argparse
 import warnings
+import shutil
 from pathlib import Path
 from configparser import ConfigParser
 
@@ -52,6 +53,7 @@ with warnings.catch_warnings():
     from .terminal_colors import cprint
 
 _COL_WIDTH = 32
+_COL_MAX = 80
 
 
 def safe_check_output(cmd, first_row_only=True):
@@ -341,26 +343,41 @@ def get_info_hardware():
     return info_hw
 
 
-def reset_col_width(nb_cols):
+def reset_col_width(widths):
     """Detect total width of the current terminal."""
-    global _COL_WIDTH
-    try:
-        tot_width = int(subprocess.check_output(["tput", "cols"]))
-        _COL_WIDTH = tot_width // nb_cols
-    except Exception:
-        pass
+    global _COL_MAX, _COL_WIDTH
+    nb_cols = len(widths)
+    _COL_MAX = shutil.get_terminal_size().columns
+    _COL_WIDTH = _COL_MAX // nb_cols
 
+    widths_array = np.array(widths)
+    widths_sum = widths_array.sum()
+    if widths_sum > _COL_MAX:
+        too_long = np.greater(widths_array, _COL_WIDTH, dtype=int)
+        nb_too_long = np.count_nonzero(too_long)
+        widths_too_long = widths_array[too_long].sum()
+
+        _COL_WIDTH = (_COL_MAX - (widths_sum - widths_too_long)) // nb_too_long
+        widths = [_COL_WIDTH if w > _COL_WIDTH else w for w in widths]
+
+    return widths
 
 # Table formatting functions
 
 
-def _print_item(item, color=None, bold=False):
-    cprint(item.ljust(_COL_WIDTH), end="", color=color, bold=bold)
+def _print_item(item, color=None, bold=False, width=None):
+    if width is None:
+        width = _COL_WIDTH
+
+    cprint(item.ljust(width), end="", color=color, bold=bold)
 
 
-def _print_heading(heading, underline_with="=", case="title"):
+def _print_heading(heading, underline_with="=", case="title", widths=None):
     if isinstance(heading, str):
         heading = [heading]
+
+    if widths is None:
+        widths = [None] * len(heading)
 
     if case == "title":
         heading = [h.replace("_", " ").title() for h in heading]
@@ -369,12 +386,12 @@ def _print_heading(heading, underline_with="=", case="title"):
 
     underline = [underline_with * len(h) for h in heading]
 
-    for item in heading:
-        _print_item(item, color="RED", bold=True)
+    for item, w in zip(heading, widths):
+        _print_item(item, color="RED", bold=True, width=w)
 
     print()
-    for item in underline:
-        _print_item(item, color="RED")
+    for item, w in zip(underline, widths):
+        _print_item(item, color="RED", width=w)
 
     print()
 
@@ -403,34 +420,54 @@ def _print_dict(
             print("{}  - {}: {}".format(indent, k.ljust(WIDTH), v))
 
 
+def get_col_widths(d, widths=None):
+    if widths is None:
+        widths = [len(key) + 1 for key in d]
+
+    for i, string in enumerate(d.values()):
+        widths[i] = max(widths[i], len(repr(string)) + 1)
+
+    return widths
+
+
 def print_sys_info(verbosity=None):
     """Print package information as a formatted table."""
-
+    global _COL_MAX
     pkgs = get_info_fluiddyn()
-    pkgs_keys = list(pkgs)
+    pkgs_third_party = get_info_third_party()
 
+    widths = None
+    width_pkg_name = 0
+    for _pkgs in (pkgs, pkgs_third_party):
+        for pkg_name, pkg_details in _pkgs.items():
+            width_pkg_name = max(width_pkg_name, len(pkg_name) + 1)
+            widths = get_col_widths(pkg_details, widths)
+
+    widths.insert(0, width_pkg_name)
+
+    pkgs_keys = list(pkgs)
     heading = ["Package"]
     heading.extend(pkgs[pkgs_keys[0]])
-    reset_col_width(len(heading))
+    widths = reset_col_width(widths)
 
-    _print_heading(heading)
+
+    _print_heading(heading, widths=widths)
 
     def print_pkg(about_pkg):
-        for v in about_pkg.values():
+        for v, w in zip(about_pkg.values(), widths[1:]):
             v = str(v)
-            if len(v) > _COL_WIDTH:
-                v = v[:10] + "..." + v[10 + 4 - _COL_WIDTH :]
-            _print_item(str(v))
+            if len(v) > w:
+                v = v[:10] + "..." + v[10 + 4 - w :]
+            _print_item(str(v), width=w)
 
         print()
 
     for pkg_name, about_pkg in pkgs.items():
-        print(pkg_name.ljust(_COL_WIDTH), end="")
+        print(pkg_name.ljust(widths[0]), end="")
         print_pkg(about_pkg)
 
-    pkgs_third_party = get_info_third_party()
     for pkg_name, about_pkg in pkgs_third_party.items():
-        print(pkg_name.ljust(_COL_WIDTH), end="")
+        print(pkg_name.ljust(widths[0]), end="")
         print_pkg(about_pkg)
 
     info_sw = get_info_software()
