@@ -12,23 +12,27 @@ docsets.  Read more about generating docsets `here
 """
 from __future__ import print_function
 
-import importlib
 import os
 from shlex import split
 import shutil
 import argparse
 from subprocess import call
+from pkg_resources import resource_filename
 
 try:
     from doc2dash.__main__ import main as doc2dash
-    from click.testing import CliRunner
-except ImportError:
+except ModuleNotFoundError:
     print("Install doc2dash to use this tool.")
 
-from fluiddyn.io import stdout_redirected
+try:
+    from click.testing import CliRunner
+except ModuleNotFoundError:
+    print("Install click to use this tool.")
+
+from fluiddyn.io import stdout_redirected, Path
 
 
-def check_sphinx_build(pkg_name, verbose=True, regenerate=True):
+def check_sphinx_build(pkg_name, verbose, theme, regenerate=True):
     """Check if Sphinx docs has been built. If not build and return path to
     generated html.
 
@@ -42,30 +46,26 @@ def check_sphinx_build(pkg_name, verbose=True, regenerate=True):
     str
 
     """
-    pkg = importlib.import_module(pkg_name)
-    doc_src = os.path.abspath(
-        os.path.join(os.path.dirname(pkg.__file__), "../doc")
-    )
-    doc_build = os.path.join(doc_src, "_build/html")
-    if not os.path.exists(doc_build) or regenerate:
+    doc_src = Path(resource_filename(pkg_name, "/")).parent / "doc"
+    doc_build = doc_src / "_build" / "html"
+    if not doc_build.exists() or regenerate:
         print("Generating Sphinx documentation ...")
         os.chdir(doc_src)
         cmd = (
             "sphinx-build -b html -d _build/doctrees "
-            # We use this because sphinx_rtd_theme
-            # does not have a nosidebar option
-            "-D html_theme=classic "
+            f"-D html_theme={theme} "
             "-D html_theme_options.nosidebar=True "
             ". _build/html"
         )
         print(cmd)
         cmd = split(cmd)
+        # FIXME: with stdout_redirected(not verbose):
         call(cmd)
 
     return doc_src, doc_build
 
 
-def doc_to_docsets(pkg_name="fluiddyn", verbose=False, archive=False):
+def doc_to_docsets(pkg_name, verbose, archive, theme):
     """Convert Sphinx docs to docsets and install them.
 
     Parameters
@@ -86,7 +86,7 @@ def doc_to_docsets(pkg_name="fluiddyn", verbose=False, archive=False):
         doc_dest = os.path.expanduser("~/.local/share/Zeal/Zeal/docsets")
         os.makedirs(doc_dest, exist_ok=True)
 
-    doc_src, doc_build = check_sphinx_build(pkg_name, verbose)
+    doc_src, doc_build = check_sphinx_build(pkg_name, verbose, theme)
     docset_name = pkg_name.title()
 
     runner = CliRunner()
@@ -94,13 +94,15 @@ def doc_to_docsets(pkg_name="fluiddyn", verbose=False, archive=False):
         docset_name, doc_dest, pkg_name
     )
 
-    icon = os.path.join(doc_src, "icon.png")
-    if os.path.exists(icon):
-        cmd += "-i {} ".format(icon)
 
-    cmd += doc_build
+    path_icon= doc_src / "icon.png"
+    if path_icon.exists():
+        cmd += f"-i {path_icon} "
+
+    cmd += str(doc_build)
     print(cmd)
     cmd = split(cmd)
+    # FIXME: with stdout_redirected(not verbose):
     result = runner.invoke(doc2dash, args=cmd[1:])
 
     if archive:
@@ -136,10 +138,11 @@ def main():
         action="store_true",
     )
 
+    parser.add_argument("-t", "--theme", help="a builtin or installed sphinx theme", default="classic")
     parser.add_argument("-v", "--verbose", action="store_true")
 
     args = parser.parse_args()
-    doc_to_docsets(args.package, args.verbose, args.archive)
+    doc_to_docsets(args.package, args.verbose, args.archive, args.theme)
 
 
 if __name__ == "__main__":
