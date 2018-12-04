@@ -129,6 +129,10 @@ have this page, so it may be useful to others.
 
   * Dock: hidden and smaller (in Settings)
 
+- Install Latex::
+
+    sudo apt install dvipng texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
+
 - Install GMT 6 and gmt-python::
 
     sudo apt install gmt-gshhg libgdal-dev libpcre2-dev libnetcdf-dev ghostscript

@@ -5,7 +5,8 @@ How to upload to PyPI — the Python Package Index
 ------------------------------------------------
 
 First, run the tests::
-  python -m unittest discover
+  pytest
 
 With a correct $HOME/.pypirc, run::
-  python setup.py sdist upload
+  python setup.py sdist
+  twine upload dist/*
