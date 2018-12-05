@@ -6,6 +6,7 @@ Test SLURM and SNIC clusters
 import unittest
 import os
 from shutil import rmtree
+
 from .. import slurm, snic, cines
 from ...io import stdout_redirected
 
@@ -109,13 +110,13 @@ class BeskowTestCase(SlurmTestCase):
         super(BeskowTestCase, self).setUp(BeskowMod)
 
 
-class TriolithMod(ClusterSlurmMod, snic.Triolith):
+class TetralithMod(ClusterSlurmMod, snic.Tetralith):
     pass
 
 
-class TriolithTestCase(SlurmTestCase):
+class TetralithTestCase(SlurmTestCase):
     def setUp(self):
-        super(TriolithTestCase, self).setUp(TriolithMod)
+        super(TetralithTestCase, self).setUp(TetralithMod)
 
 
 class AbiskoMod(ClusterSlurmMod, snic.Abisko):

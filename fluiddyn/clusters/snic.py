@@ -28,11 +28,16 @@ Provides:
 from __future__ import print_function
 
 from os import getenv
-import six
 from .slurm import ClusterSlurm
 
 
-_venv = "$LOCAL_PYTHON" if six.PY2 else "$LOCAL_PYTHON3"
+_venv = getenv("VIRTUAL_ENV", getenv("CONDA_PREFIX", getenv("LOCAL_PYTHON")))
+
+
+if _venv is None:
+    from warnings import warn
+    warn("Cannot detect a virtualenv / conda env. You should set an environment "
+         "variable LOCAL_PYTHON instead for fluiddyn.clusters.snic to work.")
 
 
 class Beskow(ClusterSlurm):
@@ -44,29 +49,17 @@ class Beskow(ClusterSlurm):
     def __init__(self):
         super(Beskow, self).__init__()
         self.check_name_cluster("SNIC_RESOURCE")
-        if six.PY2:
-            self.commands_setting_env = [
-                "source /etc/profile",
-                "module swap PrgEnv-cray PrgEnv-gnu",
-                "module load fftw anaconda/py27/2.3" "export CRAY_ROOTFS=DSL",
-                "source {}/bin/activate {}".format(_venv, _venv),
-                "export ANACONDA_HOME=" + _venv,
-                "source activate_python",
-            ]
+        self.commands_setting_env = [
+            "source /etc/profile",
+            "module load gcc/4.9.1",
+            "module swap PrgEnv-cray PrgEnv-intel",
+            "module swap intel intel/18.0.0.128",
+            "module load cray-fftw/3.3.6.2",
+            "export CRAY_ROOTFS=DSL",
+            f"conda activate {_venv}",
+        ]
 
-            self.commands_unsetting_env = ["source deactivate_python"]
-        else:
-            self.commands_setting_env = [
-                "source /etc/profile",
-                "module load gcc/4.9.1",
-                "module swap PrgEnv-cray PrgEnv-intel",
-                "module swap intel intel/18.0.0.128",
-                "module load cray-fftw/3.3.6.2",
-                "export CRAY_ROOTFS=DSL",
-                "conda activate {}".format(_venv),
-            ]
-
-            self.commands_unsetting_env = ["conda deactivate"]
+        self.commands_unsetting_env = ["conda deactivate"]
 
 
 class Beskow32(Beskow):
@@ -90,6 +83,10 @@ class Tetralith(ClusterSlurm):
         self.check_name_cluster("SNIC_RESOURCE")
         self.commands_setting_env = []
 
+        # NOTE: Typically load the following modules and save them
+        # Python/3.6.3-anaconda-5.0.1-nsc1 intel/2018a
+        # buildtool-easybuild/3.5.3-nsc17d8ce4 buildenv-intel/2018a-eb
+        # FFTW/3.3.6-nsc1
         self.commands_setting_env.extend(
             [
                 "ml restore",
@@ -115,7 +112,7 @@ class Abisko(ClusterSlurm):
             "module load GCC/6.3.0-2.27 OpenMPI/2.0.2",
             "module load HDF5/1.10.0-patch1",
             "module load FFTW/3.3.6",
-            "source {}/bin/activate".format(_venv),
+            f"source {_venv}/bin/activate",
         ]
 
         self.commands_unsetting_env = []
@@ -132,29 +129,17 @@ class Kebnekaise(ClusterSlurm):
         self.check_name_cluster("SNIC_RESOURCE")
         self.commands_setting_env = ["source /etc/profile"]
 
-        if six.PY2:
-            self.commands_setting_env.extend(
-                [
-                    "module load foss/2016b",
-                    "module rm FFTW/3.3.5",
-                    "module load HDF5/1.8.17",
-                    "module load Python/2.7.12",
-                    "module load PIL/1.1.7-Python-2.7.12",
-                    "source {}/bin/activate".format(_venv),
-                ]
-            )
-        else:
-            self.commands_setting_env.extend(
-                [
-                    "module load foss/2017a",
-                    # also loads GCC/6.3.0-2.27  OpenMPI/2.0.2
-                    # OpenBLAS/0.2.19-LAPACK-3.7.0 FFTW/3.3.6
-                    "module rm FFTW/3.3.6",
-                    "module load HDF5/1.10.0-patch1",
-                    "module load Python/3.6.1",
-                    "source {}/bin/activate".format(_venv),
-                ]
-            )
+        self.commands_setting_env.extend(
+            [
+                "module load foss/2017a",
+                # also loads GCC/6.3.0-2.27  OpenMPI/2.0.2
+                # OpenBLAS/0.2.19-LAPACK-3.7.0 FFTW/3.3.6
+                "module rm FFTW/3.3.6",
+                "module load HDF5/1.10.0-patch1",
+                "module load Python/3.6.1",
+                f"source {_venv}/bin/activate",
+            ]
+        )
 
         self.commands_unsetting_env = []
 
