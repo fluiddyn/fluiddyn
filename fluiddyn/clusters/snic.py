@@ -15,7 +15,7 @@ Provides:
 .. autoclass:: Beskow36
    :members:
 
-.. autoclass:: Triolith
+.. autoclass:: Tetralith
    :members:
 
 .. autoclass:: Abisko
@@ -78,43 +78,26 @@ class Beskow36(Beskow):
     constraint = "Broadwell"
 
 
-class Triolith(ClusterSlurm):
-    name_cluster = "triolith"
-    nb_cores_per_node = 16
+class Tetralith(ClusterSlurm):
+    name_cluster = "tetralith"
+    nb_cores_per_node = 32
+    cmd_run = "mpprun"
     cmd_run_interactive = "mpirun"
     max_walltime = "7-00:00:00"
 
     def __init__(self):
-        super(Triolith, self).__init__()
+        super(Tetralith, self).__init__()
         self.check_name_cluster("SNIC_RESOURCE")
-        self.commands_setting_env = ["source /etc/profile"]
+        self.commands_setting_env = []
 
-        if six.PY2:
-            self.commands_setting_env.extend(
-                [
-                    "module add python/2.7.12",
-                    "module add gcc/4.9.0 openmpi/1.6.2-build1",
-                    "module add hdf5/1.8.11-i1214-parallel",
-                    "source {}/bin/activate".format(_venv),
-                ]
-            )
-        else:
-            self.commands_setting_env.extend(
-                [
-                    "module add python3/3.6.1",
-                    "module add gcc/6.2.0",
-                    "module add openmpi/1.6.5-g44",
-                    "module add hdf5/1.8.11-i1214-parallel",
-                    ## Intel compiler options
-                    # 'module add buildenv-intel/2016-3',
-                    # 'module add intel/16.0.2',
-                    # 'module add hdf5/1.8.17-i1602-impi-5.1.3',
-                    "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$NSC_COMP_LIB_PATH",
-                    "source {}/bin/activate".format(_venv),
-                ]
-            )
+        self.commands_setting_env.extend(
+            [
+                "ml restore",
+                f"source activate {_venv}",
+            ]
+        )
 
-        self.commands_unsetting_env = ["deactivate"]
+        self.commands_unsetting_env = ["source deactivate"]
 
 
 class Abisko(ClusterSlurm):
@@ -179,8 +162,8 @@ class Kebnekaise(ClusterSlurm):
 _host = getenv("SNIC_RESOURCE")
 if _host == "beskow":
     ClusterSNIC = Beskow
-elif _host == "triolith":
-    ClusterSNIC = Triolith
+elif _host == "tetralith":
+    ClusterSNIC = Tetralith
 elif _host == "abisko":
     ClusterSNIC = Abisko
 elif _host == "kebnekaise":
