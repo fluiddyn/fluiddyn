@@ -6,39 +6,39 @@ have this page, so it may be useful to others.
 
 - Install some useful compilers, libraries and utilities::
 
-   sudo apt-get install \
+   sudo apt install \
      clang-6.0 gfortran cmake \
      libpng-dev libfftw3-dev libfftw3-mpi-dev \
      libhdf5-dev libopenmpi-dev \
      qt5-default \
      curl ack meld pandoc \
-     fish
+     fish \
+     python2.7 python-pip \
+     git emacs \
+     libopenblas-dev
 
-- Install Mercurial with pip, we still need python 2.7!
 
-  See http://fluiddyn.readthedocs.io/en/latest/mercurial_bitbucket.html
+  * python 2.7 and pip are used to install Mercurial !
 
-  .. code::
+    .. code::
 
-     sudo apt install python2.7 python-pip
-     python2 -m pip install mercurial hg-git --user
-     hg config --edit
+       python2 -m pip install mercurial hg-git hg-evolve --user
+       # in Ubuntu 18.04 ~/.local/bin is not in $PATH !
+       echo -e "\nexport PATH=\$HOME/.local/bin/:\$PATH\n" >> ~/.bashrc
+       hg config --edit
 
-- Install Git::
+    Be prepared to use Vi! Good luck :-)
 
-    sudo apt install git
+    See http://fluiddyn.readthedocs.io/en/latest/mercurial_bitbucket.html
 
-- Install and setup emacs::
-
-    sudo apt install emacs
-
-  and then follow https://bitbucket.org/fluiddyn/fluid_emacs.d
+  * Setup emacs, for example with https://bitbucket.org/fluiddyn/fluid_emacs.d
 
 - Setup Bash (``.bashrc`` and ``.bash_aliases``)
 
 - Setup https://fishshell.com/ (if you want Fish!)::
 
     chsh -s $(which fish)
+    fish
     echo 'set -gx PATH $PATH $HOME/.cask/bin $HOME/.local/bin/' >> ~/.config/fish/config.fish
 
 - Install miniconda::
@@ -47,10 +47,14 @@ have this page, so it may be useful to others.
     bash ./Miniconda3-latest-Linux-x86_64.sh
 
 - To build CPython, we first have to modify a file (see
-  http://cpython-devguide.readthedocs.io/setup/#build-dependencies). Then::
+  http://cpython-devguide.readthedocs.io/setup/#build-dependencies)::
 
-    sudo apt-get update
-    sudo apt-get build-dep python3.6
+    sudo apt edit-sources
+
+  Then::
+
+    sudo apt update
+    sudo apt build-dep python3.6
 
 - Install pyenv (see https://github.com/pyenv/pyenv)::
 
@@ -60,17 +64,18 @@ have this page, so it may be useful to others.
 
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
     echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bashrc'
+    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bashrc
     exec "$SHELL"
 
-  And for Fish, see https://github.com/fisherman/pyenv
+  And for Fish, see https://github.com/fisherman/pyenv (It's a bit tricky so
+  read carefully. The file ``~/.config/fish/conf.d/000-env.fish`` is needed).
 
 - Build nice Python versions and use Python 3.6 or 3.7::
 
     pyenv install 3.6.6
-    pyenv install 3.7.0
+    pyenv install 3.7.1
     pyenv install pypy3.5-6.0.0
-    pyenv global 3.7.0  # or 3.6.6
+    pyenv global 3.7.1  # or 3.6.6
 
   Then install several packages (as wheels) using pip::
 
@@ -115,15 +120,20 @@ have this page, so it may be useful to others.
 
     wget https://bitbucket.org/fluiddyn/fluiddyn/raw/default/doc/simple.pythranrc -O ~/.pythranrc
 
+  Note that with this setup, Pythran needs clang and openblas (which have been
+  install previously).
+
 - Fix Gnome::
 
-    sudo apt-get install chrome-gnome-shell gnome-tweak-tool
+    sudo apt install chrome-gnome-shell gnome-tweak-tool
 
   * Install
 
     - https://extensions.gnome.org/extension/484/workspace-grid/
 
     - https://extensions.gnome.org/extension/15/alternatetab/
+
+    - https://extensions.gnome.org/extension/826/suspend-button/
 
   * Using ``gnome-tweaks``, set static workspaces
 
@@ -132,6 +142,9 @@ have this page, so it may be useful to others.
 - Install Latex::
 
     sudo apt install dvipng texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
+
+If needed
+---------
 
 - Install GMT 6 and gmt-python::
 
@@ -143,14 +156,11 @@ have this page, so it may be useful to others.
     mkdir build
     cd build/
 
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/share/gmt-6 -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
     make -j4
     sudo make -j4 install
 
     pip install https://github.com/GenericMappingTools/gmt-python/archive/master.zip
 
-    # for bash
-    echo -e '\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/' >> ~/.bashrc
-
-    # for fish
-    echo -e '\nset -gx LD_LIBRARY_PATH $LD_LIBRARY_PATH /usr/local/lib/' >> ~/.config/fish/config.fish
+  Then, set the environment variables ``PATH`` and ``LD_LIBRARY_PATH`` as
+  needed by modifying your ``~/.bashrc``.
