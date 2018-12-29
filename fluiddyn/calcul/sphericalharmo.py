@@ -278,8 +278,9 @@ class EasySHT:
         self.x_seq = self.lons
         self.y_seq = self.lats
 
+        # degree
         self.l_idx = self.sh.l
-        # print('l_idx=', self.l_idx)
+        # laplacian:=l(l+1)/r^2 and laplacian^2
         self.l2_idx = self.l_idx * (self.l_idx + 1)
         self.K2 = self.l2_idx / self.radius ** 2
         self.K4 = self.K2 ** 2
@@ -421,6 +422,10 @@ class EasySHT:
         return field
 
     def chrono_sht(self, nb_sht=10):
+        """Microbenchmark forward and inverse SHT, and 
+        vorticity, divergence <-> u, v transformations.
+
+        """
         f = np.random.rand(self.nlat, self.nlon)
         t1 = time()
         for i in range(nb_sht):
@@ -436,7 +441,7 @@ class EasySHT:
             f = self.spat_from_sh(f_lm)
         t2 = time()
         print(
-            "    mean time for 1 backward SHT: {:3.6f} s".format(
+            "    mean time for 1 inverse SHT: {:3.6f} s".format(
                 (t2 - t1) / nb_sht
             )
         )
@@ -500,11 +505,14 @@ class EasySHT:
         return hdiv_lm, hrot_lm
 
     def uv_from_uDuRsh(self, uD_lm, uR_lm, uu=None, vv=None):
-        """
-        u, v from uD, uR (uu and vv are overwritten)
+        """Compute velocities uu, vv from uD, uR (uu and vv are 
+        overwritten).
+
         """
         if uu is None:
             uu = self.create_array_spat()
+
+        if vv is None:
             vv = self.create_array_spat()
         self.sh.SHphtor_to_spat(uD_lm, uR_lm, vv, uu)
 
@@ -513,26 +521,26 @@ class EasySHT:
 
         return uu, vv
 
-    def uDuRsh_from_uv(self, uu, vv, hdiv_lm=None, hrot_lm=None):
-        """Compute hdivrotsh from uuvv.
+    def uDuRsh_from_uv(self, uu, vv, uD_lm=None, uR_lm=None):
+        """Compute helmholtz decomposition of the velocities from uu, vv.
+        (uD_lm and uR_lm are overwritten).
 
-        (div_lm and rot_lm are overwritten)
         """
-        if hdiv_lm is None:
-            hdiv_lm = self.create_array_sh()
-            hrot_lm = self.create_array_sh()
+        if uD_lm is None:
+            uD_lm = self.create_array_sh()
+
+        if uR_lm is None:
+            uR_lm = self.create_array_sh()
 
         # if self.order_lat == 'south_to_north':
         #     vv = -vv
         # print('order_lat', self.order_lat)
-        self.sh.spat_to_SHsphtor(vv, uu, hdiv_lm, hrot_lm)
-        # in fact there is uD_lm in hdiv_lm and
-        #                  uR_lm in hrot_lm
-        # we compute div_lm and rot_lm
-        hdiv_lm[:] = -hdiv_lm[:]
-        hrot_lm[:] = -hrot_lm[:]
+        self.sh.spat_to_SHsphtor(vv, uu, uD_lm, uR_lm)
+        # removed minus
+        uD_lm[:] = -uD_lm[:]
+        uR_lm[:] = -uR_lm[:]
         # print(self.radius)
-        return hdiv_lm, hrot_lm
+        return uD_lm, uR_lm
 
     def hdivrotsh_from_uDuRsh(self, uD_lm, uR_lm):
         hdiv_lm = -self.l2_idx * uD_lm / self.radius
@@ -561,8 +569,8 @@ class EasySHT:
         #       We do not use SHsph_to_spat() because it seems that there is a problem
         ####    self.sh.SHsph_to_spat(f_lm, gradf_lat, gradf_lon)
         #       instead we use SHsphtor_to_spat(...) with tor_lm= zeros_lm
-        zeros_lm = self.create_array_sh(0.)
-        self.sh.SHsphtor_to_spat(f_lm, zeros_lm, gradf_lat, gradf_lon)
+        # zeros_lm = self.create_array_sh(0.)
+        self.sh.SHsphtor_to_spat(f_lm, self._zeros_sh, gradf_lat, gradf_lon)
 
         # if self.order_lat == 'south_to_north':
         #    sign_inv_vv = -1
