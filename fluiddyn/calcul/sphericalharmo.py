@@ -566,7 +566,9 @@ class EasySHT:
         if gradf_lon is None:
             gradf_lon = self.create_array_spat(0)
             gradf_lat = self.create_array_spat(0)  # becareful bug if not 0!!!
-        #       We do not use SHsph_to_spat() because it seems that there is a problem
+        #       We do not use SHsph_to_spat() because it seems that there is a
+        #       problem
+        # FIXME: av: What exactly is the problem and does it still exist? Issue link?
         ####    self.sh.SHsph_to_spat(f_lm, gradf_lat, gradf_lon)
         #       instead we use SHsphtor_to_spat(...) with tor_lm= zeros_lm
         # zeros_lm = self.create_array_sh(0.)
