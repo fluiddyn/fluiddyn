@@ -514,7 +514,7 @@ class EasySHT:
 
         if vv is None:
             vv = self.create_array_spat()
-        self.sh.SHphtor_to_spat(uD_lm, uR_lm, vv, uu)
+        self.sh.SHsphtor_to_spat(uD_lm, uR_lm, vv, uu)
 
         # if self.order_lat == 'south_to_north':
         #    vv[:] = -vv+0       # because SHTns uses colatitude basis
@@ -542,14 +542,34 @@ class EasySHT:
         # print(self.radius)
         return uD_lm, uR_lm
 
-    def hdivrotsh_from_uDuRsh(self, uD_lm, uR_lm):
-        hdiv_lm = -self.l2_idx * uD_lm / self.radius
-        hrot_lm = self.l2_idx * uR_lm / self.radius
+    def hdivrotsh_from_uDuRsh(self, uD_lm, uR_lm, hdiv_lm=None, hrot_lm=None):
+        """Compute horizontal divergence and vertical vorticity spherical
+        harmonics from velocity vector spherical harmonics (hdiv_lm and hrot_lm
+        are overwritten).
+
+        """
+        if hdiv_lm is None:
+            hdiv_lm = self.create_array_sh(0.)  # TODO: Maybe can be empty?
+
+        if hrot_lm is None:
+            hrot_lm = self.create_array_sh(0.)
+
+        hdiv_lm[:] = -self.l2_idx * uD_lm / self.radius
+        hrot_lm[:] = self.l2_idx * uR_lm / self.radius
         return hdiv_lm, hrot_lm
 
-    def uDuRsh_from_hdivrotsh(self, hdiv_lm, hrot_lm):
-        uD_lm = self.create_array_sh(0.)
-        uR_lm = self.create_array_sh(0.)
+    def uDuRsh_from_hdivrotsh(self, hdiv_lm, hrot_lm, uD_lm=None, uR_lm=None):
+        """Compute velocity vector spherical harmonics from horizontal
+        divergence and vertical vorticity spherical harmonics (uD_lm and
+        uR_lm are overwritten).
+
+        """
+        if uD_lm is None:
+            uD_lm = self.create_array_sh(0.)
+
+        if uR_lm is None:
+            uR_lm = self.create_array_sh(0.)
+
         COND = self.l2_idx > 0
         uD_lm[COND] = -hdiv_lm[COND] / self.l2_idx[COND] * self.radius
         uR_lm[COND] = +hrot_lm[COND] / self.l2_idx[COND] * self.radius
