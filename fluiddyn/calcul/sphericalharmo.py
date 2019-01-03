@@ -280,13 +280,14 @@ class EasySHT:
 
         # degree
         self.l_idx = self.sh.l
-        # laplacian:=l(l+1)/r^2 and laplacian^2
         self.l2_idx = self.l_idx * (self.l_idx + 1)
+        # laplacian:=l(l+1)/r^2 and laplacian^2
         self.K2 = self.l2_idx / self.radius ** 2
         self.K4 = self.K2 ** 2
 
         self.K2_not0 = self.K2[:]
-        self.K2_not0[0] = 1e-15
+        COND = self.l2_idx == 0
+        self.K2_not0[COND] = 1e-15
 
         # print('l2_idx=', self.l2_idx)
         self.m_idx = self.sh.m
