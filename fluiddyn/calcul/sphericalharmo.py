@@ -469,7 +469,7 @@ class EasySHT:
 
     def uv_from_hdivrotsh(self, hdiv_lm, hrot_lm, uu=None, vv=None):
         """
-        u, v from h, div, rot (u and v are overwritten)
+        u, v from div, rot (u and v are overwritten)
         """
         if uu is None:
             uu = self.create_array_spat()
@@ -735,7 +735,6 @@ class EasySHT:
         return cospectrum
 
     def cospectrum_from_2divrotsh(self, hdiva_lm, hrota_lm, hdivb_lm, hrotb_lm):
-
         """ compute cospectrum(l)..."""
         cospectrum = np.zeros(self.lmax + 1)
 
