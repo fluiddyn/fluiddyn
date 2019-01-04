@@ -536,7 +536,7 @@ class FFTW3DReal2Complex(BasePyFFT):
     def build_invariant_arrayK_from_2d_indices12X(self, o2d, arr2d):
 
         nK0, nK1, nK2 = self.get_shapeK_seq()
-        ret = np.zeros((nK0,) + tuple(o2d.get_shapeK_seq()), dtype=np.complex128)
+        ret = np.zeros((nK0,) + o2d.shapeK_seq, dtype=np.complex128)
 
         ret[0] = arr2d
         return ret
