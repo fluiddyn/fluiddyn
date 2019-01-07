@@ -43,7 +43,7 @@ class TestHdf5(unittest.TestCase):
 
     def test_dict_of_ndarrays(self):
         name = "myfile1.h5"
-        d = {"times": 0., "a": np.ones(10), "b": np.zeros([2, 2])}
+        d = {"times": 0.0, "a": np.ones(10), "b": np.zeros([2, 2])}
 
         with H5File(name, "w") as f:
             f.save_dict_of_ndarrays(d)
@@ -57,7 +57,7 @@ class TestHdf5(unittest.TestCase):
                 self.assertTrue(np.allclose(v, v1))
 
         with H5File(name, "a") as f:
-            d["times"] = 1.
+            d["times"] = 1.0
             f.save_dict_of_ndarrays(d)
 
             f.load(times_slice=[0, 2, 0.1])

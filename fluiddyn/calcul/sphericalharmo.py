@@ -27,13 +27,15 @@ import numpy as np
 try:
     import shtns
 except ImportError:
-    warn("ImportError shtns.\n\n"
-         "To install shtns, you can run the following:\n"
-         "    hg clone https://bitbucket.org/nschaeff/shtns\n"
-         "    cd shtns\n"
-         "    ./configure --prefix=$VIRTUAL_ENV --enable-python\n"
-         "    make\n"
-         "    make install\n")
+    warn(
+        "ImportError shtns.\n\n"
+        "To install shtns, you can run the following:\n"
+        "    hg clone https://bitbucket.org/nschaeff/shtns\n"
+        "    cd shtns\n"
+        "    ./configure --prefix=$VIRTUAL_ENV --enable-python\n"
+        "    make\n"
+        "    make install\n"
+    )
 else:
     sht_orthonormal = shtns.sht_orthonormal
     sht_fourpi = shtns.sht_fourpi
@@ -72,7 +74,7 @@ flags = (shtns.sht_quick_init | shtns.SHT_PHI_CONTIGUOUS |
          shtns.SHT_SOUTH_POLE_FIRST)
 """
 
-radius_earth = 6367470.  # earth radius (m)
+radius_earth = 6367470.0  # earth radius (m)
 
 
 def compute_lmax(nlat, nl_order=2):
@@ -271,8 +273,8 @@ class EasySHT:
         # print('flags', flags)
 
         self.sin_lats = self.sh.cos_theta
-        self.lons = np.arange(self.nlon) * 360. / (self.nlon * self.mres)
-        self.lats = np.arcsin(self.sin_lats) / np.pi * 180.
+        self.lons = np.arange(self.nlon) * 360.0 / (self.nlon * self.mres)
+        self.lats = np.arcsin(self.sin_lats) / np.pi * 180.0
 
         # for fluidsim plotting
         self.x_seq = self.lons
@@ -293,7 +295,7 @@ class EasySHT:
         self.m_idx = self.sh.m
         self.nlm = self.sh.nlm
 
-        self.deltax = 360. / (self.nlon * self.mres)
+        self.deltax = 360.0 / (self.nlon * self.mres)
         # wrong but useful for fluidsim
         self.deltay = self.deltax
 
@@ -318,7 +320,7 @@ class EasySHT:
         self.sht_as_arg = self.sh.spat_to_SH
         self.isht_as_arg = self.sh.SH_to_spat
 
-        self._zeros_sh = self.create_array_sh(0.)
+        self._zeros_sh = self.create_array_sh(0.0)
 
     def vec_from_rotsh(self, rot_sh):
         return self.uv_from_hdivrotsh(self._zeros_sh, rot_sh)
@@ -356,7 +358,9 @@ class EasySHT:
         if value is None:
             field_lm = np.empty(self.nlm, dtype)
         elif value == "rand":
-            field_lm = np.random.randn(self.nlm) + 1.j * np.random.randn(self.nlm)
+            field_lm = np.random.randn(self.nlm) + 1.0j * np.random.randn(
+                self.nlm
+            )
         elif value == 0:
             field_lm = np.zeros(self.nlm, dtype)
         else:
@@ -474,8 +478,8 @@ class EasySHT:
         if uu is None:
             uu = self.create_array_spat()
             vv = self.create_array_spat()
-        uD_lm = self.create_array_sh(0.)
-        uR_lm = self.create_array_sh(0.)
+        uD_lm = self.create_array_sh(0.0)
+        uR_lm = self.create_array_sh(0.0)
         COND = self.l2_idx > 0
         uD_lm[COND] = -hdiv_lm[COND] / self.l2_idx[COND] * self.radius
         uR_lm[COND] = -hrot_lm[COND] / self.l2_idx[COND] * self.radius
@@ -550,10 +554,10 @@ class EasySHT:
 
         """
         if hdiv_lm is None:
-            hdiv_lm = self.create_array_sh(0.)  # TODO: Maybe can be empty?
+            hdiv_lm = self.create_array_sh(0.0)  # TODO: Maybe can be empty?
 
         if hrot_lm is None:
-            hrot_lm = self.create_array_sh(0.)
+            hrot_lm = self.create_array_sh(0.0)
 
         hdiv_lm[:] = -self.l2_idx * uD_lm / self.radius
         hrot_lm[:] = self.l2_idx * uR_lm / self.radius
@@ -566,10 +570,10 @@ class EasySHT:
 
         """
         if uD_lm is None:
-            uD_lm = self.create_array_sh(0.)
+            uD_lm = self.create_array_sh(0.0)
 
         if uR_lm is None:
-            uR_lm = self.create_array_sh(0.)
+            uR_lm = self.create_array_sh(0.0)
 
         COND = self.l2_idx > 0
         uD_lm[COND] = -hdiv_lm[COND] / self.l2_idx[COND] * self.radius
@@ -655,18 +659,18 @@ class EasySHT:
     def _array_desh_from_sh(self, field_lm, key_field):
         """Compute the array_desh (density of energy) from an field_lm"""
         if key_field[:1] == "u" or key_field[:1] == "v":
-            array_desh = abs(field_lm) ** 2 / 2.
+            array_desh = abs(field_lm) ** 2 / 2.0
         elif (
             key_field[:1] == "T" or key_field[:2] == "ps" or key_field[:1] == "o"
         ):
-            array_desh = abs(field_lm) ** 2 / 2.
+            array_desh = abs(field_lm) ** 2 / 2.0
         elif key_field[:4] == "beta":
-            array_desh = self.create_array_sh(0., float)
+            array_desh = self.create_array_sh(0.0, float)
             array_desh = abs(field_lm) ** 2
         elif key_field[:2] == "uD" or key_field[:2] == "uR":
             array_desh = self.l2_idx * (abs(field_lm) ** 2) / 2
         elif key_field[:4] == "hdiv" or key_field[:4] == "hrot":
-            array_desh = self.create_array_sh(0., float)
+            array_desh = self.create_array_sh(0.0, float)
             COND = self.l2_idx > 0
             array_desh[COND] = (
                 self.radius ** 2
@@ -724,7 +728,7 @@ class EasySHT:
         array_desh = array_desh.real
         array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0] / 2
 
-        array_desh2 = self.create_array_sh(0., float)
+        array_desh2 = self.create_array_sh(0.0, float)
         COND = self.l2_idx > 0
         array_desh2[COND] = (
             self.radius ** 2 / self.l2_idx[COND] * array_desh[COND]
@@ -745,7 +749,7 @@ class EasySHT:
         array_desh = array_desh.real
         array_desh[self.m_idx == 0] = array_desh[self.m_idx == 0] / 2
 
-        array_desh2 = self.create_array_sh(0., float)
+        array_desh2 = self.create_array_sh(0.0, float)
         COND = self.l2_idx > 0
         array_desh2[COND] = (
             self.radius ** 2 / self.l2_idx[COND] * array_desh[COND]

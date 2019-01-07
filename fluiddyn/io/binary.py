@@ -176,7 +176,7 @@ if __name__ == "__main__":
     with BinFile(path_test_file, "w") as f:
         f.write_as("poum", buffersize=1)
         f.write_as([1, 3.55], "I", buffersize=1)
-        f.write_as(np.array([1., 1.5]), "float64", buffersize=1)
+        f.write_as(np.array([1.0, 1.5]), "float64", buffersize=1)
 
     with BinFile(path_test_file) as f:
         s = f.readt(4, "s")

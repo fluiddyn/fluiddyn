@@ -1,4 +1,3 @@
-
 import unittest
 
 from ..colorchart import make_colorchart

@@ -100,7 +100,7 @@ class H5File(h5py.File):
             if len(times_slice) > 2 and times_slice[2] is not None:
                 tstep = times_slice[2]
             else:
-                tstep = 0.
+                tstep = 0.0
 
             its = [itstart]
             for it in range(itstart + 1, itend):

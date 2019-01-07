@@ -1,4 +1,3 @@
-
 import unittest
 import os
 import numpy as np
@@ -71,7 +70,9 @@ class TestFFTW1DReal2Complex(unittest.TestCase):
         nx = 64
         op = easypyfft.FFTW1DReal2Complex(nx)
 
-        func_fft = np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
+        func_fft = np.random.random(op.shapeK) + 1.0j * np.random.random(
+            op.shapeK
+        )
         func = op.ifft(func_fft)
         func_fft = op.fft(func)
 
@@ -119,7 +120,9 @@ class TestFFTW2DReal2Complex(unittest.TestCase):
         ny = 32
         op = self.cls(nx, ny)
 
-        func_fft = np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
+        func_fft = np.random.random(op.shapeK) + 1.0j * np.random.random(
+            op.shapeK
+        )
 
         with stdout_redirected():
             func = op.ifft2d(func_fft)
@@ -188,7 +191,9 @@ class TestFFTW3DReal2Complex(unittest.TestCase):
         nz = 8
         op = easypyfft.FFTW3DReal2Complex(nx, ny, nz)
 
-        func_fft = np.random.random(op.shapeK) + 1.j * np.random.random(op.shapeK)
+        func_fft = np.random.random(op.shapeK) + 1.0j * np.random.random(
+            op.shapeK
+        )
         func = op.ifft(func_fft)
         func_fft_back = op.fft(func)
 

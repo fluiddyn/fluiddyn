@@ -36,8 +36,11 @@ _venv = getenv("VIRTUAL_ENV", getenv("CONDA_PREFIX", getenv("LOCAL_PYTHON")))
 
 if _venv is None:
     from warnings import warn
-    warn("Cannot detect a virtualenv / conda env. You should set an environment "
-         "variable LOCAL_PYTHON instead for fluiddyn.clusters.snic to work.")
+
+    warn(
+        "Cannot detect a virtualenv / conda env. You should set an environment "
+        "variable LOCAL_PYTHON instead for fluiddyn.clusters.snic to work."
+    )
 
 
 class Beskow(ClusterSlurm):
@@ -88,10 +91,7 @@ class Tetralith(ClusterSlurm):
         # buildtool-easybuild/3.5.3-nsc17d8ce4 buildenv-intel/2018a-eb
         # FFTW/3.3.6-nsc1
         self.commands_setting_env.extend(
-            [
-                "ml restore",
-                f"source activate {_venv}",
-            ]
+            ["ml restore", f"source activate {_venv}"]
         )
 
         self.commands_unsetting_env = ["source deactivate"]

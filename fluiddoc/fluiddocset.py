@@ -94,8 +94,7 @@ def doc_to_docsets(pkg_name, verbose, archive, theme):
         docset_name, doc_dest, pkg_name
     )
 
-
-    path_icon= doc_src / "icon.png"
+    path_icon = doc_src / "icon.png"
     if path_icon.exists():
         cmd += f"-i {path_icon} "
 
@@ -138,7 +137,12 @@ def main():
         action="store_true",
     )
 
-    parser.add_argument("-t", "--theme", help="a builtin or installed sphinx theme", default="classic")
+    parser.add_argument(
+        "-t",
+        "--theme",
+        help="a builtin or installed sphinx theme",
+        default="classic",
+    )
     parser.add_argument("-v", "--verbose", action="store_true")
 
     args = parser.parse_args()

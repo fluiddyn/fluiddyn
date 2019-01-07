@@ -83,7 +83,7 @@ def make_colorchart(nb_colors=4, darkest_gray=0.03, lightest_gray=0.85):
             colors.append([h, RGBcolor, luminance])
 
     # round of luminance values
-    lumRnd = 2.
+    lumRnd = 2.0
     nbGray = int(round(256.0 / lumRnd))
     # list of list where color are sorted
     color_table = [[0 for i in range(nbHue)] for j in range(nbGray)]
@@ -174,7 +174,7 @@ def make_colorchart(nb_colors=4, darkest_gray=0.03, lightest_gray=0.85):
             y = 2 + i1 * step_y
             color = [round(c / 255, 2) for c in color]
             ax.add_patch(Rectangle((x, y), width, height, color=color))
-            ax.text(x + 1, y + step_y / 4., str(color), fontsize=7)
+            ax.text(x + 1, y + step_y / 4.0, str(color), fontsize=7)
 
     y += 1.5 * step_y
 
@@ -182,7 +182,7 @@ def make_colorchart(nb_colors=4, darkest_gray=0.03, lightest_gray=0.85):
         color = [round(g / 255, 2)] * 3
         x = 2 + i0 * step_x
         ax.add_patch(Rectangle((x, y), width, height, color=color))
-        ax.text(x + 1, y + step_y / 4., str(color), fontsize=7)
+        ax.text(x + 1, y + step_y / 4.0, str(color), fontsize=7)
 
     ax.set_xlim([0, x + step_x])
     ax.set_ylim([0, y + step_y])

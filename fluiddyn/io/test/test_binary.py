@@ -31,7 +31,7 @@ class TestBinary(unittest.TestCase):
         name = "myfile"
         s = "poum"
         l = [1, 3]
-        a = np.array([1., 1.5])
+        a = np.array([1.0, 1.5])
 
         with BinFile(name, "w") as f:
             f.write_as(s, buffersize=1)

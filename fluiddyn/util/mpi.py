@@ -87,7 +87,7 @@ try:
     if _mpi_type is None:
         raise NoMPIError
     elif _mpi_type == "MPT":
-	# "arrayd" like "Array Services daemon"
+        # "arrayd" like "Array Services daemon"
         if process_name is None or process_name == "arrayd":
             from mpi4py import MPI
         else:

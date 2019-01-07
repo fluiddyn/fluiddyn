@@ -80,8 +80,8 @@ class NS3DFieldFile(NS3DFile):
         if not self.stratification:
             self.N == 0
 
-        self.Re = np.round(1. / self.nu, decimals=2)
-        self.Fh = np.round(1. / self.N, decimals=4)
+        self.Re = np.round(1.0 / self.nu, decimals=2)
+        self.Fh = np.round(1.0 / self.N, decimals=4)
 
     def read_field(self, ifield=0):
         nb_pts_one_field = self.nx * self.ny * self.nz

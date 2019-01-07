@@ -362,6 +362,7 @@ def reset_col_width(widths):
 
     return widths
 
+
 # Table formatting functions
 
 
@@ -449,7 +450,6 @@ def print_sys_info(verbosity=None):
     heading = ["Package"]
     heading.extend(pkgs[pkgs_keys[0]])
     widths = reset_col_width(widths)
-
 
     _print_heading(heading, widths=widths)
 

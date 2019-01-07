@@ -1,4 +1,3 @@
-
 import unittest
 
 from ..setofvariables import SetOfVariables

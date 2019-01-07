@@ -22,10 +22,6 @@ Provides classes for performing fft in 1, 2, and 3 dimensions:
 
 """
 
-from __future__ import division, print_function
-
-from builtins import range
-from builtins import object
 import os
 import numpy as np
 from copy import copy
@@ -192,7 +188,7 @@ class BaseFFT:
         return self.__class__.__name__.lower()
 
     def compute_energy_from_X(self, fieldX):
-        return np.mean(fieldX ** 2 / 2.)
+        return np.mean(fieldX ** 2 / 2.0)
 
     def get_local_size_X(self):
         return np.prod(self.shapeX)
@@ -219,7 +215,7 @@ class FFTP2D(BaseFFT):
         self.ny = ny
         self.shapeX = (ny, nx)
         self.nkx = int(float(nx) / 2 + 1)
-        self.shapeK = (ny, self.nkx)
+        self.shapeK = self.shapeK_seq = self.shapeK_loc = (ny, self.nkx)
         self.coef_norm = nx * ny
 
         self.fft2d = self.fft
@@ -282,7 +278,7 @@ class BasePyFFT(BaseFFT):
         shapeK = tuple(shapeK)
 
         self.shapeX = shapeX
-        self.shapeK = shapeK
+        self.shapeK = self.shapeK_seq = self.shapeK_loc = shapeK
 
         self.empty_aligned = pyfftw.empty_aligned
         self.arrayX = pyfftw.empty_aligned(shapeX, np.float64)
@@ -306,7 +302,7 @@ class BasePyFFT(BaseFFT):
         )
 
         self.coef_norm = np.prod(shapeX)
-        self.inv_coef_norm = 1. / self.coef_norm
+        self.inv_coef_norm = 1.0 / self.coef_norm
 
     def fft(self, fieldX):
         fieldK = self.empty_aligned(self.shapeK, np.complex128)
@@ -466,7 +462,7 @@ class FFTW3DReal2Complex(BasePyFFT):
 
     def __init__(self, nx, ny, nz):
         shapeX = (nz, ny, nx)
-        super(FFTW3DReal2Complex, self).__init__(shapeX)
+        super().__init__(shapeX)
         self.fft3d = self.fft
         self.ifft3d = self.ifft
 
@@ -621,7 +617,7 @@ class FFTW1D(BasePyFFT):
         shapeX = (n,)
         shapeK = (n,)
         self.shapeX = shapeX
-        self.shapeK = shapeK
+        self.shapeK = self.shapeK_seq = self.shapeK_loc = shapeK
         self.arrayX = pyfftw.empty_aligned(shapeX, "complex128")
         self.arrayK = pyfftw.empty_aligned(shapeK, "complex128")
         self.fftplan = pyfftw.FFTW(
@@ -640,7 +636,7 @@ class FFTW1D(BasePyFFT):
         )
 
         self.coef_norm = n
-        self.inv_coef_norm = 1. / n
+        self.inv_coef_norm = 1.0 / n
 
     def fft(self, ff):
         self.arrayX[:] = ff
@@ -696,7 +692,7 @@ class FFTW1DReal2Complex(BasePyFFT):
         )
 
         self.coef_norm = n
-        self.inv_coef_norm = 1. / n
+        self.inv_coef_norm = 1.0 / n
 
     def fft(self, ff):
         self.arrayX[:] = ff

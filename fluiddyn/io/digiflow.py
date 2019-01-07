@@ -515,7 +515,7 @@ class DigiflowMovie:
             data = data[::decimate, ::decimate]
 
         quadmesh = ax.pcolormesh(data)
-        quadmesh.set_clim([0., 255.])
+        quadmesh.set_clim([0.0, 255.0])
 
         ax.set_xlim([0, data.shape[1]])
         ax.set_ylim([0, data.shape[0]])

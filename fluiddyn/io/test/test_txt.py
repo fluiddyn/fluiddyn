@@ -21,7 +21,7 @@ zklflzefk
 3  4.  9
 """
 
-t_example = ([1, 2, 3], [3., 5., 4.], [1, 9])
+t_example = ([1, 2, 3], [3.0, 5.0, 4.0], [1, 9])
 
 
 class TestTxt(unittest.TestCase):

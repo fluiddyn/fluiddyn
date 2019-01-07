@@ -184,7 +184,7 @@ if __name__ == "__main__":
 
     # Data:
     x = np.linspace(0, 2 * np.pi, 100)
-    f = np.sin(x) + .02 * (np.random.rand(100) - .5)
+    f = np.sin(x) + 0.02 * (np.random.rand(100) - 0.5)
 
     # First derivatives:
     dx = x[1] - x[0]  # use np.diff(x) if x is not uniform

@@ -15,7 +15,8 @@ __all__ = ["stdout_redirected"]
 
 @contextlib.contextmanager
 def stdout_redirected(
-    doit: bool = True, to: Union[str, pathlib.Path, TextIO, io.StringIO] = os.devnull
+    doit: bool = True,
+    to: Union[str, pathlib.Path, TextIO, io.StringIO] = os.devnull,
 ):
     """Redirect stdout to os.devnull or a buffer
 
