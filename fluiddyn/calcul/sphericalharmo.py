@@ -286,6 +286,7 @@ class EasySHT:
         # laplacian:=l(l+1)/r^2 and laplacian^2
         self.K2 = self.l2_idx / self.radius ** 2
         self.K4 = self.K2 ** 2
+        self.K8 = self.K4 ** 2
 
         self.K2_not0 = self.K2[:]
         COND = self.l2_idx == 0
