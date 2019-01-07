@@ -337,6 +337,9 @@ class EasySHT:
             (
                 "Spherical harmonic transforms "
                 "nlat = {0} ; nlon = {1}".format(self.nlat, self.nlon),
+                "(1 point every {0:6.2g} m for the current sphere of radius {1})".format(
+                    2 * np.pi * self.radius / self.nlon, self.radius
+                ),
                 "(1 point every {0:6.2g} km for the earth)\n".format(
                     2 * np.pi * radius_earth / self.nlon / 1000
                 ),
@@ -473,7 +476,7 @@ class EasySHT:
 
     def uv_from_hdivrotsh(self, hdiv_lm, hrot_lm, uu=None, vv=None):
         """
-        u, v from h, div, rot (u and v are overwritten)
+        u, v from div, rot (u and v are overwritten)
         """
         if uu is None:
             uu = self.create_array_spat()
@@ -739,7 +742,6 @@ class EasySHT:
         return cospectrum
 
     def cospectrum_from_2divrotsh(self, hdiva_lm, hrota_lm, hdivb_lm, hrotb_lm):
-
         """ compute cospectrum(l)..."""
         cospectrum = np.zeros(self.lmax + 1)
 
