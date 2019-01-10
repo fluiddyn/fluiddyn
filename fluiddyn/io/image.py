@@ -153,13 +153,19 @@ def imread_h5(path):
 
 
 def imsave_h5(
-    path, array, params=None, attrs={}, compression="gzip", as_int=False
+    path, array, params=None, attrs={}, compression="gzip", as_int=False,
+    splitext=True
 ):
     """Saves an image as a compressed HDF5 file."""
 
     fname = os.path.basename(path)
-    root, ext = os.path.splitext(path)
-    h5path = root + ".h5"
+    if splitext:
+        root, ext = os.path.splitext(path)
+    else:
+        root = path
+    print(root)
+    print("toto")
+    h5path = str(root) + ".h5"
 
     if as_int:
         if array.max() < 256:
