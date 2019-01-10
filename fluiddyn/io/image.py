@@ -163,8 +163,6 @@ def imsave_h5(
         root, ext = os.path.splitext(path)
     else:
         root = path
-    print(root)
-    print("toto")
     h5path = str(root) + ".h5"
 
     if as_int:
