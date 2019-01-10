@@ -1,4 +1,3 @@
-
 from setuptools import setup, find_packages
 
 import os
@@ -37,6 +36,7 @@ install_requires = [
     "psutil >= 5.2.1",
     "future",
     'distro; python_version>="3.8"',
+    'cached_property; python_version < "3.8"',
 ]
 # Even though we also use scipy, we don't require its installation
 # because it can be heavy to install.
