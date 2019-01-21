@@ -153,8 +153,13 @@ def imread_h5(path):
 
 
 def imsave_h5(
-    path, array, params=None, attrs={}, compression="gzip", as_int=False,
-    splitext=True
+    path,
+    array,
+    params=None,
+    attrs={},
+    compression="gzip",
+    as_int=False,
+    splitext=True,
 ):
     """Saves an image as a compressed HDF5 file."""
 

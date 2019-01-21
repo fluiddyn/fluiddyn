@@ -51,6 +51,8 @@ class TestImage(unittest.TestCase):
         for path in chain(cls.paths.values(), cls.paths_h5.values()):
             if os.path.exists(path):
                 os.remove(path)
+            if os.path.exists(path + ".h5"):
+                os.remove(path + ".h5")
 
     def test_save_load_image(self):
         """Test save to and load from image file."""
@@ -79,6 +81,7 @@ class TestImage(unittest.TestCase):
         _format = "HDF5"
         for _type, path in self.paths_h5.items():
             image = self.images[_type]
+            imsave_h5(path, image, splitext=False)
             imsave_h5(path, image)
             image2 = imread_h5(path)
             np.testing.assert_array_equal(
