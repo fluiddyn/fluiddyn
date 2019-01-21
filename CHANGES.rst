@@ -1,4 +1,16 @@
 
+0.3.0?
+------------------
+- Python>=3.6 only
+- Native implementation for ``stdout_redirected``
+- JSON rendering for ParamContainer objects in Jupyter
+- Use pathlib when possible
+- Minor fixes and cleanup for EasySHT class
+- Update SNIC cluster classes
+- Compatibility layer for ``cached_property``
+- Function ``imsave_h5`` has a ``splitext`` option, allowing the function to
+  preserve the original file extension
+
 0.2.5 (2018-09-12)
 ------------------
 
