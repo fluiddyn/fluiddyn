@@ -31,11 +31,12 @@ the command::
 
   hg config --edit
 
-A simple example of configation file::
+A simple example of configuration file::
 
   [ui]
-  username=myusername  <email@adress.org>
+  username=myusername <email@adress.org>
   editor=emacs -nw
+  tweakdefaults = True
 
   [extensions]
   color =
@@ -66,7 +67,7 @@ Get the FluidDyn repository
 
 There are at least two methods...
 
-1. Create your own FluidDyn repository on Bitbucket. 
+1. Create your own FluidDyn repository on Bitbucket.
 
    Go to the page of the main repository. Create your own FluidDyn
    repository on Bitbucket by clicking on Fork. Then from the page of
@@ -189,19 +190,90 @@ usefull::
   hg up master
 
   hg help bookmarks
+
+  # list the bookmarks
   hg bookmarks
-  hg bookmark master
 
-Remark: ``bookmarks`` and ``bookmark`` correspond to the same mercurial
-command.
+  # put the bookmark master where you are
+  hg book master
 
-For fluiddyn developers, we can add in the file ``.hg/hgrc`` something like::
+  # deactivate the active bookmark (-i like --inactive)
+  hg book -i
+
+.. note ::
+
+  ``bookmarks``, ``bookmark`` and ``book`` correspond to the same
+  mercurial command.
+
+.. warning ::
+
+  If a bookmark is active, ``hg pull -u`` or ``hg up`` will move the bookmark
+  to the tip of the active branch. You may not want that so it is important to
+  always deactivate an unused bookmark with ``hg book -i`` or with ``hg up
+  master``.
+
+Do not forget to place the bookmark ``master`` as wanted.
+
+For fluiddyn core developers, we can add in the file ``.hg/hgrc`` something like::
 
   [paths]
   default = https://paugier@bitbucket.org/fluiddyn/fluidimage
   github = git+ssh://git@github.com/fluiddyn/fluidimage
 
-Do not forget to place the bookmark ``master`` as wanted.
+For fluidsim developers: we use a Pull Request (PR) workflow and unpublishing
+repositories. The fluidsim ``.hg/hgrc`` can contain something like::
+
+  [paths]
+  default = https://paugier@bitbucket.org/paugier/fluidsim
+  fluiddyn = https://paugier@bitbucket.org/fluiddyn/fluidsim
+  github = git+ssh://git@github.com/fluiddyn/fluidsim
+
+  [alias]
+  start_new_work = !hg pull fluiddyn && hg up $(hg identify --id fluiddyn)
+  update_master_fluiddyn = !hg pull fluiddyn && hg up $(hg identify --id fluiddyn) && hg book master && hg book -i && hg push fluiddyn -B master
+
+The first alias ``start_new_work`` is really useful for all fluidsim
+developers. For example, when I want to start a new development work on
+fluidsim, I run::
+
+  hg start_new_work
+  hg book fix/improve_tests
+  # some changes
+  hg commit -m "Improve some tests"
+  hg push -B fix/improve_tests
+
+.. warning ::
+
+  This workflow is highly inspired by the Git / Github workflow so Mercurial /
+  Bitbucket may not fit very well with this and we have a small problem with
+  hg-git.
+
+  The master bookmark (the main bookmark which should follow the tip of the
+  default branch of the main fluidsim repository, and which is used only for
+  GitHub) is not updated when PR are merged on Bitbucket. So we need to do this
+  task by hand with the alias command ``hg update_master_fluiddyn``.
+
+A quite complicated example with hg-git
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We open a PR::
+
+  hg pull
+  hg up master
+  hg book fix/a_bug
+  # Modify/add/remove files
+  hg commit -m "A commit message"
+  hg push -B fix/a_bug
+
+We want to change something in the commit of the PR. We first try `hg absorb`.
+Let's say that we are in a situation for which it does not work::
+
+  # Modify/add/remove files
+  hg commit -m "A different commit message" --amend
+  # clean up Git commit map after history editing
+  hg git-cleanup
+  hg pull
+  hg push -B fix/a_bug --force
 
 Forget a bad commit
 -------------------
