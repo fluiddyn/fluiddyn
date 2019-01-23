@@ -78,7 +78,7 @@ Requirements
 ------------
 
 +------------------------+-------------------------------------------------------------------------------+
-| **Minimum**            | Python (>=3.6), ``numpy matplotlib psutil future fluidpythran``               |
+| **Minimum**            | Python (>=3.6), ``numpy matplotlib h5py psutil``                              |
 +------------------------+-------------------------------------------------------------------------------+
 | **Full functionality** | ``h5py h5netcdf pillow imageio mpi4py scipy pyfftw`` (requires FFTW library), |
 |                        | SHTns                                                                         |
@@ -86,9 +86,9 @@ Requirements
 | **Optional**           | OpenCV with Python bindings, ``scikit-image``                                 |
 +------------------------+-------------------------------------------------------------------------------+
 
-**Note**: Detailed instructions to install the above dependencies using Anaconda /
-Miniconda or in a specific operating system such as Ubuntu, macOS etc. can be
-found `here
+**Note**: Detailed instructions to install the above dependencies using
+Anaconda / Miniconda or in a specific operating system such as Ubuntu, macOS
+etc. can be found `here
 <https://fluiddyn.readthedocs.io/en/latest/get_good_Python_env.html>`__.
 
 Tests

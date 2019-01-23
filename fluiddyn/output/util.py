@@ -1,9 +1,3 @@
-from __future__ import division
-
-
-from builtins import range
-from past.utils import old_div
-
 
 def gradient_colors(nb_colors, color_start=None, color_end=None):
     """Produce a color gradient."""
@@ -23,8 +17,7 @@ def gradient_colors(nb_colors, color_start=None, color_end=None):
         gradient.append(
             [
                 color_start[j]
-                + (old_div(float(t), (nb_colors - 1)))
-                * (color_end[j] - color_start[j])
+                + (float(t) / (nb_colors - 1)) * (color_end[j] - color_start[j])
                 for j in range(3)
             ]
         )

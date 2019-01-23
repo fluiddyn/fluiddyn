@@ -4,15 +4,14 @@ Installation
 Dependencies
 ------------
 
-- **Minimum** : Python (2.7, >=3.4), numpy, matplotlib, h5py, h5netcdf, psutil,
-  future, subprocess32 (for Python 2.7 only)
+- **Minimum** : Python (>=3.6), numpy, matplotlib, h5py, h5netcdf, psutil
 
 - **Full functionality**: pillow, imageio, mpi4py, scipy, pyfftw (requires FFTW
   library)
 
 - **Optional**: OpenCV with Python bindings, scikit-image
 
-It is strongly recommended to install `NumPy
+It is recommended to install `NumPy
 <http://docs.scipy.org/doc/numpy/user/install.html>`_ and `Matplotlib
 <http://matplotlib.org/users/installing.html>`_ before installing FluidDyn.
 
@@ -36,10 +35,6 @@ FluidDyn can be installed from the Python Package Index by the command::
 
   pip install fluiddyn
 
-You can also download the source-code and run::
-
-  python setup.py install
-
 Install in development mode
 ---------------------------
 
@@ -55,8 +50,11 @@ The development mode is often very convenient. From the root directory
 of the project, run::
 
   cd fluiddyn
-  python setup.py develop
+  pip install -e .
 
-After the installation, it is a good practice to run the unit tests by
-running ``python -m unittest discover`` from the root directory or
-from any of the "test" directories.
+After the installation, it is a good practice to run the unit tests by running
+``pytest`` from the root directory or from any of the "test" directories.
+To install the test dependencies::
+
+  pip install -e .[test]
+

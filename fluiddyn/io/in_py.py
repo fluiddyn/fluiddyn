@@ -5,6 +5,7 @@
 
 """
 
+import sys
 import numpy as np
 
 
@@ -53,7 +54,7 @@ def save_in_py(path, variables, names=None):
         for name in names:
             variables[name] = variables_all[name]
 
-    np.set_printoptions(threshold=np.nan)
+    np.set_printoptions(threshold=sys.maxsize)
     with open(path, "w") as f:
         f.write("from numpy import array, nan\n")
         for key, value in variables.items():

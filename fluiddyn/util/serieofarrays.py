@@ -35,15 +35,6 @@ API:
 
 """
 
-from __future__ import division, print_function
-
-from past.builtins import basestring
-from builtins import zip
-from builtins import chr
-from builtins import str
-from builtins import range
-from builtins import object
-
 import os
 from glob import glob, escape
 from copy import copy, deepcopy
@@ -299,7 +290,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 [min(indices_indices[i_ind]), max(indices_indices[i_ind]) + 1, 1]
             )
 
-        if isinstance(index_slices, basestring):
+        if isinstance(index_slices, str):
             self.set_index_slices_from_str(index_slices)
         elif index_slices is None:
             self._index_slices = copy(self._index_slices_all_files)
@@ -666,7 +657,7 @@ class SeriesOfArrays:
         serie0 = serie
         indslices_from_indserie0 = indslices_from_indserie
 
-        if isinstance(serie, (basestring, Path)):
+        if isinstance(serie, (str, Path)):
             serie = str(serie)
             serie = SerieOfArraysFromFiles(serie)
         if isinstance(serie, SerieOfArraysFromFiles):
@@ -679,7 +670,7 @@ class SeriesOfArrays:
             for i in range(serie.nb_indices - 1):
                 indslices_from_indserie += ",:"
 
-        if isinstance(indslices_from_indserie, basestring):
+        if isinstance(indslices_from_indserie, str):
             str_ranges = indslices_from_indserie.split(",")
 
             def indslices_from_indserie(i):

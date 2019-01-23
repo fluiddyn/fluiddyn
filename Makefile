@@ -1,6 +1,6 @@
 
 develop:
-	python setup.py develop
+	pip install -v -e .[dev] | grep -v link
 
 help:
 	@echo "targets: develop, clean_so and tests"

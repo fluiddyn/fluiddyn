@@ -3,8 +3,6 @@ Test image saving and reading
 =============================
 
 """
-from __future__ import print_function
-from future.utils import raise_from
 
 import unittest
 import os
@@ -69,7 +67,7 @@ class TestImage(unittest.TestCase):
                     imsave(path, image, _format, as_int)
                     image2 = imread(path)
                 except Exception as e:
-                    raise_from(Exception(err), e)
+                    raise Exception(err) from e
 
                 if as_int:
                     np.testing.assert_array_almost_equal(image, image2, 0, err)

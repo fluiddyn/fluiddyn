@@ -4,9 +4,10 @@ import os
 from runpy import run_path
 import sys
 
-here = os.path.abspath(os.path.dirname(__file__))
+if sys.version_info[:2] < (3, 6):
+    raise RuntimeError("Python version >= 3.6 required.")
 
-f"In >=2018, you should use a Python supporting f-strings!"
+here = os.path.abspath(os.path.dirname(__file__))
 
 # Get the long description from the relevant file
 with open(os.path.join(here, "README.rst")) as f:
@@ -26,32 +27,12 @@ elif "b" in __version__:
 else:
     devstatus = "Development Status :: 5 - Production/Stable"
 
-
-install_requires = [
-    "fluidpythran",
-    "numpy",
-    "matplotlib",
-    "h5py",
-    "h5netcdf",
-    "psutil >= 5.2.1",
-    "future",
-    'distro; python_version>="3.8"',
-    'cached_property; python_version < "3.8"',
-]
-# Even though we also use scipy, we don't require its installation
-# because it can be heavy to install.
-
-
 setup(
-    name="fluiddyn",
     version=__version__,
-    description=("framework for studying fluid dynamics."),
     long_description=long_description,
-    keywords="Fluid dynamics, research",
     author="Pierre Augier",
     author_email="pierre.augier@legi.cnrs.fr",
     url="https://bitbucket.org/fluiddyn/fluiddyn",
-    license="CeCILL-B",
     classifiers=[
         # How mature is this project? Common values are
         # 3 - Alpha
@@ -71,7 +52,6 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     packages=find_packages(exclude=["doc"]),
-    install_requires=install_requires,
     scripts=["bin/fluidconvertim7"],
     entry_points={
         "console_scripts": [
@@ -83,5 +63,4 @@ setup(
             "fluidcluster-help = fluiddyn.clusters:print_help_scheduler",
         ]
     },
-    extras_require=dict(doc=["Sphinx>=1.1", "numpydoc"]),
 )
