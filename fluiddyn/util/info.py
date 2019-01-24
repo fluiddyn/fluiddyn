@@ -144,9 +144,10 @@ def get_info_fluiddyn():
             "fluidlab",
             "fluidimage",
             "fluidfft",
-            "fluidpythran",
+            "fluidsht",
             "fluidcoriolis",
             "fluiddevops",
+            "transonic",
         ]
     )
     return _get_info(pkgs)
