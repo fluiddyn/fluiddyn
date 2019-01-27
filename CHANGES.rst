@@ -1,6 +1,7 @@
 
-0.3.0?
+0.3.0 (2019-01-27)
 ------------------
+
 - Python>=3.6 only
 - Native implementation for ``stdout_redirected``
 - JSON rendering for ParamContainer objects in Jupyter
@@ -95,7 +96,7 @@
 
 - Clusters slurm.
 
-- Multitiff.  
+- Multitiff.
 
 - Better paramcontainer and serieofarrays.
 
