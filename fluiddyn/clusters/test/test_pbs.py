@@ -14,7 +14,7 @@ jobid = 123
 
 
 def my_test_input(message):
-    return "{} {}".format(jobid, jobid)
+    return f"{jobid} {jobid}"
 
 
 pbs.input = my_test_input
@@ -30,7 +30,7 @@ class ClusterPBSMod(pbs.ClusterPBS):
 
     def check_name_cluster(self, env="HOSTNAME"):
         os.environ[env] = self.name_cluster
-        super(ClusterPBSMod, self).check_name_cluster(env)
+        super().check_name_cluster(env)
 
 
 class PBSTestCase(unittest.TestCase):
@@ -95,7 +95,7 @@ class PBSTestCase(unittest.TestCase):
 
         if os.path.exists(launcher):
             raise ValueError(
-                "PBS launching script {} was left behind".format(launcher)
+                f"PBS launching script {launcher} was left behind"
             )
 
 

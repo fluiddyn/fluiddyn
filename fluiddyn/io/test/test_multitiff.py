@@ -41,7 +41,7 @@ class TestMultiTIFF(unittest.TestCase):
 
         for ifile in range(cls.nb_files):
             arrays = [im(2 ** 8 - 1, np.int8) for i in range(cls.n_frames)]
-            imsave("test_multitiff{}.tif".format(ifile), arrays, as_int=True)
+            imsave(f"test_multitiff{ifile}.tif", arrays, as_int=True)
 
     @classmethod
     def tearDownClass(cls):

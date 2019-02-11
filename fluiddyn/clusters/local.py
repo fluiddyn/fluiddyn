@@ -187,7 +187,7 @@ class ClusterLocal(Cluster):
 
     def _launch(self, launching_command, command="", bash=True, ask=True):
         """Ask and launch the command using a subprocess call."""
-        print("A launcher for the command {} has been created.".format(command))
+        print(f"A launcher for the command {command} has been created.")
 
         if ask:
             run_asking_agreement(launching_command)
@@ -210,7 +210,7 @@ class ClusterLocal(Cluster):
         omp_num_threads = kwargs["omp_num_threads"]
         interactive = kwargs["interactive"]
 
-        logfile = "LOCAL.{}".format(name_run)
+        logfile = f"LOCAL.{name_run}"
         logfile_stdout = logfile + ".$$.stdout"
         logfile_stderr = logfile + ".$$.stderr"
 
@@ -227,14 +227,14 @@ class ClusterLocal(Cluster):
         txt += "\n".join(self.commands_setting_env) + "\n\n"
 
         if omp_num_threads is not None:
-            txt += "export OMP_NUM_THREADS={}\n\n".format(omp_num_threads)
+            txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"
 
         cmd = command
         if nb_mpi_processes > 1:
-            cmd = "{} -n {} {}".format(self.cmd_run, nb_mpi_processes, cmd)
+            cmd = f"{self.cmd_run} -n {nb_mpi_processes} {cmd}"
 
         walltime_seconds = timestamp_to_seconds(walltime)
-        cmd = "timeout -s TERM {}s {}".format(walltime_seconds, cmd)
+        cmd = f"timeout -s TERM {walltime_seconds}s {cmd}"
 
         if interactive:
             txt += cmd

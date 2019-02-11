@@ -93,7 +93,7 @@ class LoadedXML(LoadedElement):
     def __init__(self, name_file):
         tree = etree.parse(name_file)
         root = tree.getroot()
-        super(LoadedXML, self).__init__(root)
+        super().__init__(root)
 
 
 class DantecImageEnsemble:

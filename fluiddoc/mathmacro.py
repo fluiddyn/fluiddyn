@@ -136,7 +136,7 @@ class MathMacro(Replace):
         self.content[0] = ":math:`" + self.content[0]
         self.content[-1] = self.content[-1] + "`"
 
-        return super(MathMacro, self).run()
+        return super().run()
 
 
 class NewMathDirective(MathDirective):
@@ -154,7 +154,7 @@ class NewMathDirective(MathDirective):
                     self.content[i] = mreplace(c)
                 for i, a in enumerate(self.arguments):
                     self.arguments[i] = mreplace(a)
-        return super(NewMathDirective, self).run()
+        return super().run()
 
 
 def new_math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):

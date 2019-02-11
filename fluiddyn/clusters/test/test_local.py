@@ -12,7 +12,7 @@ from .test_slurm_snic import SlurmTestCase, stdout_redirected
 
 class LocalTestCase(SlurmTestCase):
     def setUp(self):
-        super(LocalTestCase, self).setUp(local.ClusterLocal)
+        super().setUp(local.ClusterLocal)
 
     def test_submit_non_default(self):
         """Test submit_script method with its non-default options."""

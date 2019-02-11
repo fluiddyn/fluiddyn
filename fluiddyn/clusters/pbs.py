@@ -208,29 +208,29 @@ qrls"""
         email = kwargs["email"]
         is_resume_script = kwargs["is_resume_script"]
 
-        logfile = "PBS.{}".format(name_run)
+        logfile = f"PBS.{name_run}"
         logfile_stdout = logfile + ".${PBS_JOBID}.stdout"
 
         txt = "#!/bin/bash -l\n\n"
 
-        txt += "#PBS -N {}\n\n".format(name_run)
+        txt += f"#PBS -N {name_run}\n\n"
         if project is not None:
-            txt += "#PBS -A {}\n\n".format(project)
+            txt += f"#PBS -A {project}\n\n"
 
         if queue is not None:
-            txt += "#PBS -q {}\n\n".format(queue)
+            txt += f"#PBS -q {queue}\n\n"
 
         if walltime is not None:
-            txt += "#PBS -l walltime={}\n".format(walltime)
+            txt += f"#PBS -l walltime={walltime}\n"
 
-        txt += "#PBS -l nodes={}:ppn={}\n".format(nb_nodes, nb_cores_per_node)
+        txt += f"#PBS -l nodes={nb_nodes}:ppn={nb_cores_per_node}\n"
 
         if email is not None:
             txt += "#PBS -m a\n"
-            txt += "#PBS -M {}\n".format(email)
+            txt += f"#PBS -M {email}\n"
 
-        txt += "#PBS -e {}.%J.stderr\n".format(logfile)
-        txt += "#PBS -o {}.%J.stdout\n\n".format(logfile)
+        txt += f"#PBS -e {logfile}.%J.stderr\n"
+        txt += f"#PBS -o {logfile}.%J.stdout\n\n"
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
         txt += self._log_job(
@@ -244,11 +244,11 @@ qrls"""
         txt += "\n".join(self.commands_setting_env) + "\n\n"
 
         if omp_num_threads is not None:
-            txt += "export OMP_NUM_THREADS={}\n\n".format(omp_num_threads)
+            txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"
 
         if is_resume_script:
             jobid = dependencies[0]
-            main_logfile = "PBS.{}.{}.stdout".format(name_run, jobid)
+            main_logfile = f"PBS.{name_run}.{jobid}.stdout"
             txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' " + "{}\n".format(
                 main_logfile
             )
@@ -256,10 +256,10 @@ qrls"""
         cmd = self.cmd_run
 
         if nb_mpi_processes > 1:
-            txt += "{} -n {} ".format(cmd, nb_mpi_processes)
+            txt += f"{cmd} -n {nb_mpi_processes} "
 
         if is_resume_script:
-            txt += "{} $PATH_RUN".format(command)
+            txt += f"{command} $PATH_RUN"
         else:
             txt += command
 

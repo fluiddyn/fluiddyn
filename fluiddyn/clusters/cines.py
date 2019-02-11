@@ -20,7 +20,7 @@ class Occigen(ClusterSlurm):
     cmd_run = "srun --mpi=pmi2 -K1 --resv-ports"
 
     def __init__(self):
-        super(Occigen, self).__init__()
+        super().__init__()
         self.check_name_cluster()
 
         self.commands_setting_env = [

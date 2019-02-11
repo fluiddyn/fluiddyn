@@ -50,7 +50,7 @@ class Beskow(ClusterSlurm):
     max_walltime = "23:59:59"
 
     def __init__(self):
-        super(Beskow, self).__init__()
+        super().__init__()
         self.check_name_cluster("SNIC_RESOURCE")
         self.commands_setting_env = [
             "source /etc/profile",
@@ -82,7 +82,7 @@ class Tetralith(ClusterSlurm):
     max_walltime = "7-00:00:00"
 
     def __init__(self):
-        super(Tetralith, self).__init__()
+        super().__init__()
         self.check_name_cluster("SNIC_RESOURCE")
         self.commands_setting_env = []
 
@@ -104,7 +104,7 @@ class Abisko(ClusterSlurm):
     max_walltime = "7-00:00:00"
 
     def __init__(self):
-        super(Abisko, self).__init__()
+        super().__init__()
         self.check_name_cluster("SNIC_RESOURCE")
 
         self.commands_setting_env = [
@@ -125,7 +125,7 @@ class Kebnekaise(ClusterSlurm):
     max_walltime = "7-00:00:00"
 
     def __init__(self):
-        super(Kebnekaise, self).__init__()
+        super().__init__()
         self.check_name_cluster("SNIC_RESOURCE")
         self.commands_setting_env = ["source /etc/profile"]
 

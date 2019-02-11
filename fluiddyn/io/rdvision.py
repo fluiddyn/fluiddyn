@@ -102,6 +102,6 @@ class SetOfFiles:
 
         for index in range(self.nb_files):
             im = self.read_im(index)
-            path = os.path.join(new_dir, "im_{}.png".format(index))
+            path = os.path.join(new_dir, f"im_{index}.png")
             im_pil = Image.fromarray(im)
             im_pil.save(path)

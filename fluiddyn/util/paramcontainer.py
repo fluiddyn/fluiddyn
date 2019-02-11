@@ -48,7 +48,7 @@ def _as_str(value):
     if isinstance(value, Path):
         return str(value)
 
-    elif not isinstance(value, six.string_types):
+    elif not isinstance(value, str):
         return repr(value)
 
     else:
@@ -227,7 +227,7 @@ class ParamContainer:
     def __getattr__(self, attr):
         if attr.startswith("_"):
             raise AttributeError(
-                "{} object has no attribute {}".format(self.__class__, attr)
+                f"{self.__class__} object has no attribute {attr}"
             )
 
         else:
@@ -333,7 +333,7 @@ class ParamContainer:
     def _set_child(self, tag, attribs=None):
         """Add a child (of the same class) to the container."""
         if tag in self.__dict__:
-            raise ValueError('The tag "{}" is already used.'.format(tag))
+            raise ValueError(f'The tag "{tag}" is already used.')
 
         self.__dict__[tag] = self.__class__(tag=tag, attribs=attribs, parent=self)
         self._tag_children.append(tag)
@@ -344,7 +344,7 @@ class ParamContainer:
             raise ValueError("child should be a ParamContainer instance.")
 
         if child._tag in self.__dict__:
-            raise ValueError('The tag "{}" is already used.'.format(child._tag))
+            raise ValueError(f'The tag "{child._tag}" is already used.')
 
         self.__dict__[child._tag] = child
         if change_parent:
@@ -492,14 +492,14 @@ class ParamContainer:
 
         if os.path.exists(path_file):
             if not find_new_name:
-                raise ValueError("The file {} already exists.".format(path_file))
+                raise ValueError(f"The file {path_file} already exists.")
 
             else:
                 base = path_file.split(".xml")[0]
                 i = 1
-                while os.path.exists(base + "_{}.xml".format(i)):
+                while os.path.exists(base + f"_{i}.xml"):
                     i += 1
-                path_file = base + "_{}.xml".format(i)
+                path_file = base + f"_{i}.xml"
 
         with open(path_file, "w", encoding="utf-8") as f:
             if comment is not None:

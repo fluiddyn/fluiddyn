@@ -94,7 +94,7 @@ def print_help_scheduler(scheduler=None):
 
     if scheduler:
         print(
-            "Scheduler detected: {}\n".format(scheduler)
+            f"Scheduler detected: {scheduler}\n"
             + "Useful commands:\n----------------\n"
             + help_docs[scheduler]
         )

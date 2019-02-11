@@ -61,7 +61,7 @@ class TestImage(unittest.TestCase):
 
                 err = err_msg(
                     _format, _type, path
-                ) + " Function imread from OpenCV={}".format(use_opencv)
+                ) + f" Function imread from OpenCV={use_opencv}"
                 as_int = bool(_type.endswith("f"))
                 try:
                     imsave(path, image, _format, as_int)

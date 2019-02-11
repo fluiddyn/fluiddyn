@@ -24,7 +24,7 @@ class TestSeriesOfArrays(unittest.TestCase):
             os.makedirs(work_dir)
         for i in range(7):
             for j in range(2):
-                create_image(os.path.join(work_dir, "file{}_{}.png".format(i, j)))
+                create_image(os.path.join(work_dir, f"file{i}_{j}.png"))
 
     @classmethod
     def tearDownClass(cls):

@@ -58,7 +58,7 @@ _COL_MAX = 80
 
 def safe_check_output(cmd, first_row_only=True):
     """Error-tolerant version of subprocess check output"""
-    cmd = '/bin/sh -c "{}; exit 0"'.format(cmd)
+    cmd = f'/bin/sh -c "{cmd}; exit 0"'
     output = subprocess.check_output(
         shlex.split(cmd), stderr=subprocess.STDOUT
     ).decode("utf-8")
@@ -295,7 +295,7 @@ def get_info_hardware():
             return (func + "None",) * 3  # See psutil issue #981
 
         else:
-            return ("{:.3f}".format(h) for h in hz)
+            return (f"{h:.3f}" for h in hz)
 
     try:
         from numpy.distutils.cpuinfo import cpu
@@ -413,7 +413,7 @@ def _print_dict(
     WIDTH = _COL_WIDTH - indent_level * 2
 
     if subheading is not None:
-        cprint("{}{}:".format(indent, subheading), color="BLUE")
+        cprint(f"{indent}{subheading}:", color="BLUE")
 
     for k, v in d.items():
         if isinstance(v, dict):

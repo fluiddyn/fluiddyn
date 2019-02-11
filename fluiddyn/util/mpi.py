@@ -124,6 +124,6 @@ else:
         comm.barrier()
         for irank in range(nb_proc):
             if rank == irank:
-                standard_print("rank {}:".format(rank), flush=True)
+                standard_print(f"rank {rank}:", flush=True)
                 standard_print(*args, **kwargs)
             comm.barrier()

@@ -331,17 +331,17 @@ class EasySHT:
 
     def produce_str_describing_oper(self):
         """Produce a string describing the operator."""
-        return "lmax{}_nlat{}_nlon{}".format(self.lmax, self.nlat, self.nlon)
+        return f"lmax{self.lmax}_nlat{self.nlat}_nlon{self.nlon}"
 
     def produce_long_str_describing_oper(self):
         return "\n".join(
             (
                 "Spherical harmonic transforms "
-                "nlat = {0} ; nlon = {1}".format(self.nlat, self.nlon),
-                "(1 point every {0:6.2g} m for the current sphere of radius {1})".format(
+                "nlat = {} ; nlon = {}".format(self.nlat, self.nlon),
+                "(1 point every {:6.2g} m for the current sphere of radius {})".format(
                     2 * np.pi * self.radius / self.nlon, self.radius
                 ),
-                "(1 point every {0:6.2g} km for the earth)\n".format(
+                "(1 point every {:6.2g} km for the earth)\n".format(
                     2 * np.pi * radius_earth / self.nlon / 1000
                 ),
             )
@@ -641,7 +641,7 @@ class EasySHT:
         lmax_print = np.min([lmax_print, self.lmax])
         print(name_field_lm, "= ")
         for n in range(lmax_print + 1):
-            print("n={:2d} ".format(n), end="")
+            print(f"n={n:2d} ", end="")
             for m in range(n + 1):
                 temp_idx = m * self.lmax - (m + 1) * m / 2 + m + n
                 sys.stdout.write("{:8.3g} ".format(np.abs(field_lm[temp_idx])))

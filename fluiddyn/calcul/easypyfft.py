@@ -125,7 +125,7 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
             print(v.name, "=", v.varValue)
 
     if pulp.LpStatus[prob.status] == "Infeasible":
-        raise ValueError("Not enough bases: {}".format(bases))
+        raise ValueError(f"Not enough bases: {bases}")
 
     exps_solution = [v.varValue for v in prob.variables()]
     nk_new = np.prod(np.power(bases, exps_solution))
@@ -179,7 +179,7 @@ class BaseFFT:
         printby0(
             "Internal bench (" + name + ")\n"
             "time fft ({}):  {:.6f} s\n".format(name, time_fft)
-            + "time ifft ({}): {:.6f} s".format(name, time_ifft)
+            + f"time ifft ({name}): {time_ifft:.6f} s"
         )
 
         return time_fft, time_ifft
@@ -380,7 +380,7 @@ class FFTW2DReal2Complex(BasePyFFT):
 
     def __init__(self, nx, ny):
         shapeX = (ny, nx)
-        super(FFTW2DReal2Complex, self).__init__(shapeX)
+        super().__init__(shapeX)
         self.fft2d = self.fft
         self.ifft2d = self.ifft
 

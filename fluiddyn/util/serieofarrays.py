@@ -180,7 +180,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
     def __init__(self, path, index_slices=None, str_slices=None):
 
-        super(SerieOfArraysFromFiles, self).__init__(path)
+        super().__init__(path)
 
         self.base_name = "".join(
             itertools.takewhile(
@@ -600,7 +600,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             raise ValueError(
                 "len(index_slices) != self.nb_indices\n"
                 "filename_given = {}\n".format(self.filename_given)
-                + "path_dir = {}".format(self.path_dir)
+                + f"path_dir = {self.path_dir}"
             )
 
         for i, islice in enumerate(index_slices):

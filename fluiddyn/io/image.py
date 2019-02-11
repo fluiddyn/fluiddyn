@@ -66,7 +66,7 @@ def imread(path, *args, **kwargs):
         if im is None:
             if not os.path.exists(path):
                 raise FileNotFoundError(
-                    "No such file or directory: {}".format(path)
+                    f"No such file or directory: {path}"
                 )
         return im
     else:
@@ -189,7 +189,7 @@ def imsave_h5(
 
 class ImageH5File(H5File):
     def __init__(self, *args, **kwargs):
-        super(ImageH5File, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def load(self, group):
         """Load images in the HDF5 file."""

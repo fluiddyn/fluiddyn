@@ -240,35 +240,35 @@ scontrol release"""
         signal_num = kwargs["signal_num"]
         signal_time = kwargs["signal_time"]
 
-        logfile = "SLURM.{}".format(name_run)
+        logfile = f"SLURM.{name_run}"
         logfile_stdout = logfile + ".${SLURM_JOBID}.stdout"
 
         txt = "#!/bin/bash -l\n\n"
 
-        txt += "#SBATCH -J {}\n\n".format(name_run)
+        txt += f"#SBATCH -J {name_run}\n\n"
         if project is not None:
-            txt += "#SBATCH -A {}\n\n".format(project)
+            txt += f"#SBATCH -A {project}\n\n"
 
-        txt += "#SBATCH --time={}\n".format(self.max_walltime)
-        txt += "#SBATCH --time-min={}\n".format(walltime)
+        txt += f"#SBATCH --time={self.max_walltime}\n"
+        txt += f"#SBATCH --time-min={walltime}\n"
         if signal_num:
             txt += f"#SBATCH --signal={signal_num}@{signal_time}\n"
 
-        txt += "#SBATCH --nodes={}\n".format(nb_nodes)
+        txt += f"#SBATCH --nodes={nb_nodes}\n"
         if nb_cores_per_node > 0:
-            txt += "#SBATCH --ntasks-per-node={}\n".format(nb_cores_per_node)
+            txt += f"#SBATCH --ntasks-per-node={nb_cores_per_node}\n"
 
-        txt += "#SBATCH --ntasks={}\n\n".format(nb_mpi_processes)
+        txt += f"#SBATCH --ntasks={nb_mpi_processes}\n\n"
 
         if hasattr(self, "constraint"):
             txt += "#SBATCH --constraint=" + self.constraint + "\n"
 
         if email is not None:
             txt += "#SBATCH --mail-type=FAIL\n"
-            txt += "#SBATCH --mail-user={}\n".format(email)
+            txt += f"#SBATCH --mail-user={email}\n"
 
-        txt += "#SBATCH -e {}.%J.stderr\n".format(logfile)
-        txt += "#SBATCH -o {}.%J.stdout\n\n".format(logfile)
+        txt += f"#SBATCH -e {logfile}.%J.stderr\n"
+        txt += f"#SBATCH -o {logfile}.%J.stdout\n\n"
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
         txt += self._log_job(
@@ -282,11 +282,11 @@ scontrol release"""
         txt += "\n".join(self.commands_setting_env) + "\n\n"
 
         if omp_num_threads is not None:
-            txt += "export OMP_NUM_THREADS={}\n\n".format(omp_num_threads)
+            txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"
 
         if is_resume_script:
             jobid = dependencies[0]
-            main_logfile = "SLURM.{}.{}.stdout".format(name_run, jobid)
+            main_logfile = f"SLURM.{name_run}.{jobid}.stdout"
             txt += "PATH_RUN=$(sed -n '/path_run/{n;p;q}' " + "{})\n".format(
                 main_logfile
             )
@@ -297,15 +297,15 @@ scontrol release"""
             cmd = self.cmd_run
 
         if nb_mpi_processes > 1:
-            txt += "{} -n {} ".format(cmd, nb_mpi_processes)
+            txt += f"{cmd} -n {nb_mpi_processes} "
 
         if is_resume_script:
-            txt += "{} $PATH_RUN".format(command)
+            txt += f"{command} $PATH_RUN"
         else:
             txt += command
 
         if interactive:
-            txt += " > {} 2>&1".format(logfile_stdout)
+            txt += f" > {logfile_stdout} 2>&1"
 
         txt += "\n" + "\n".join(self.commands_unsetting_env)
         return txt

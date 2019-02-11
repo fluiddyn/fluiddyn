@@ -15,7 +15,7 @@ jobid = 123
 
 
 def my_test_input(message):
-    return "{} {}".format(jobid, jobid)
+    return f"{jobid} {jobid}"
 
 
 slurm.input = my_test_input
@@ -31,7 +31,7 @@ class ClusterSlurmMod(slurm.ClusterSlurm):
 
     def check_name_cluster(self, env="HOSTNAME"):
         os.environ[env] = self.name_cluster
-        super(ClusterSlurmMod, self).check_name_cluster(env)
+        super().check_name_cluster(env)
 
 
 class SlurmTestCase(unittest.TestCase):
@@ -97,7 +97,7 @@ class SlurmTestCase(unittest.TestCase):
 
         if os.path.exists(launcher):
             raise ValueError(
-                "SLURM launching script {} was left behind".format(launcher)
+                f"SLURM launching script {launcher} was left behind"
             )
 
 
@@ -107,7 +107,7 @@ class BeskowMod(ClusterSlurmMod, snic.Beskow):
 
 class BeskowTestCase(SlurmTestCase):
     def setUp(self):
-        super(BeskowTestCase, self).setUp(BeskowMod)
+        super().setUp(BeskowMod)
 
 
 class TetralithMod(ClusterSlurmMod, snic.Tetralith):
@@ -116,7 +116,7 @@ class TetralithMod(ClusterSlurmMod, snic.Tetralith):
 
 class TetralithTestCase(SlurmTestCase):
     def setUp(self):
-        super(TetralithTestCase, self).setUp(TetralithMod)
+        super().setUp(TetralithMod)
 
 
 class AbiskoMod(ClusterSlurmMod, snic.Abisko):
@@ -125,7 +125,7 @@ class AbiskoMod(ClusterSlurmMod, snic.Abisko):
 
 class AbiskoTestCase(SlurmTestCase):
     def setUp(self):
-        super(AbiskoTestCase, self).setUp(AbiskoMod)
+        super().setUp(AbiskoMod)
 
 
 class OccigenMod(ClusterSlurmMod, cines.Occigen):
@@ -134,7 +134,7 @@ class OccigenMod(ClusterSlurmMod, cines.Occigen):
 
 class OccigenTestCase(SlurmTestCase):
     def setUp(self):
-        super(OccigenTestCase, self).setUp(OccigenMod)
+        super().setUp(OccigenMod)
 
 
 if __name__ == "__main__":

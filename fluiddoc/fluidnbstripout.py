@@ -27,7 +27,7 @@ def stripout(filename, keep_output=False, keep_count=False):
             nbstripout.write(nb, f)
     except Exception:
         # Ignore exceptions for non-notebook files.
-        print("Could not strip '{}'".format(filename))
+        print(f"Could not strip '{filename}'")
         raise
 
 
@@ -66,7 +66,7 @@ def main():
     filenames.sort()
 
     if len(filenames) == 0:
-        print('No notebooks found (input "{}").'.format(args.which))
+        print(f'No notebooks found (input "{args.which}").')
         return
 
     # Big change compared to original nbstripout! :-)

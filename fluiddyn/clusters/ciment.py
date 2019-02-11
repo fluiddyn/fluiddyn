@@ -23,7 +23,7 @@ class Froggy(ClusterOAR):
 
     def __init__(self):
 
-        super(Froggy, self).__init__()
+        super().__init__()
 
         self.commands_setting_env = [
             "source /applis/site/env.bash",

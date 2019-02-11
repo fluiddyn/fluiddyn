@@ -234,4 +234,4 @@ class Figure(matplotlib.figure.Figure):
             if verbose:
                 print("Save figure in file\n" + path)
 
-            super(Figure, self).savefig(path)
+            super().savefig(path)

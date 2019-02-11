@@ -65,14 +65,14 @@ class BinFile(_io.FileIO):
     def __init__(self, file_path, mode="rb", byteorder=None):
         if "b" not in mode:
             mode += "b"
-        super(BinFile, self).__init__(file_path, mode)
+        super().__init__(file_path, mode)
 
         self.code_byte_order = _code_byte_order_from_str(byteorder)
 
     def readt(self, nb_values, codetype, byteorder=None):
         """Read some values coded in a particular type."""
         if codetype == "s":
-            fmt = "{0:d}s".format(nb_values)
+            fmt = f"{nb_values:d}s"
             return struct.unpack(fmt, self.read(nb_values))[0].rstrip()
 
         elif codetype in self.keys_types:
@@ -83,7 +83,7 @@ class BinFile(_io.FileIO):
 
             fmt = (
                 code_byte_order
-                + "{0:d}".format(nb_values)
+                + f"{nb_values:d}"
                 + self.dcodetypes[codetype]
             )
             nb_bytes = struct.calcsize(fmt)
@@ -105,7 +105,7 @@ class BinFile(_io.FileIO):
     def readt_zlib(self, nb_bytes, nb_values, codetype):
         """Read some value encoded with zlib."""
         if codetype in self.keys_types:
-            fmt = "={0:d}".format(nb_values) + self.dcodetypes[codetype]
+            fmt = f"={nb_values:d}" + self.dcodetypes[codetype]
             nb_bytes_decompressed = struct.calcsize(fmt)
             raw = self.read(nb_bytes)
             raw_decompressed = zlib.decompress(raw)

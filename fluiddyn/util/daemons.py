@@ -31,7 +31,7 @@ class BaseDaemon:
 class DaemonThread(BaseDaemon, Thread):
     def __init__(self, target=None, args=None, kwargs=None):
         Thread.__init__(self, target=target, args=args, kwargs=kwargs)
-        super(DaemonThread, self).__init__()
+        super().__init__()
         # for compatibility with Process
         self.keepgoing = Params()
         self.keepgoing.value = True
@@ -40,5 +40,5 @@ class DaemonThread(BaseDaemon, Thread):
 class DaemonProcess(BaseDaemon, Process):
     def __init__(self, target=None, args=None, kwargs=None):
         Process.__init__(self, target=target, args=args, kwargs=kwargs)
-        super(DaemonProcess, self).__init__()
+        super().__init__()
         self.keepgoing = Value("i", 1)

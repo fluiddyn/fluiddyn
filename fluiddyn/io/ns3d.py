@@ -160,7 +160,7 @@ class NS3DFieldFile(NS3DFile):
         op_new = easypyfft.FFTW3DReal2Complex(nx_new, ny_new, nz_new)
         print(" Done.")
 
-        new_path = self.path_file + "_{}x{}x{}".format(nx_new, ny_new, nz_new)
+        new_path = self.path_file + f"_{nx_new}x{ny_new}x{nz_new}"
 
         nb_pts = nx_new * ny_new * nz_new
 
@@ -181,7 +181,7 @@ class NS3DFieldFile(NS3DFile):
             f.write_as(8, "uint32")
             # write the 4 fields
             for ifield in range(4):
-                print("treat field {} (over 4)".format(ifield))
+                print(f"treat field {ifield} (over 4)")
                 print_with_emptyend("    read_field...")
                 try:
                     field = self.read_field(ifield)

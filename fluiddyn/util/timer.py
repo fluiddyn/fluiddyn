@@ -72,7 +72,7 @@ class TimeStr(str):
 
     def __init__(self, value):
         self._struct = parse_timestamp(value)
-        super(TimeStr, self).__init__()
+        super().__init__()
 
     def _operate(self, operator_func, other):
         if isinstance(other, TimeStr):

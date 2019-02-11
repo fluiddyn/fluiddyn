@@ -200,7 +200,7 @@ class DigiflowImage:
             infop.params = []
             infop.dunno = []
             for ip in range(nplanes):
-                infop.codes.append(int("{0:x}".format(f.readt(1, "uint32"))))
+                infop.codes.append(int("{:x}".format(f.readt(1, "uint32"))))
                 infop.keys.append(f.readt(32, "s"))
                 infop.params.append(list(f.readt(4, "float64")))
                 infop.dunno.append(f.readt(32, "s"))

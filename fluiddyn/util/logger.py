@@ -61,13 +61,13 @@ class Logger:
 
             with open(self.path, "a") as f:
                 f.write(
-                    "Python error ({}) at {}\n".format(name_exception, str_time)
+                    f"Python error ({name_exception}) at {str_time}\n"
                 )
 
             with open(self.path_logerr, "a") as f:
                 f.write(
                     "-" * 40
-                    + "\nError at {}\n".format(str_time)
+                    + f"\nError at {str_time}\n"
                     + "-" * 40
                     + "\n"
                     + "".join(traceback.format_exception(ex_cls, ex, tb))
@@ -119,7 +119,7 @@ class Logger:
             os.makedirs(path_tmp)
             files = []
             for i, fig in enumerate(figures):
-                fname = "fig_{}.png".format(i)
+                fname = f"fig_{i}.png"
                 path = os.path.join(path_tmp, fname)
                 fig.savefig(path)
                 files.append(path)

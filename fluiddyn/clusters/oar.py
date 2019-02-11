@@ -157,7 +157,7 @@ oarsub -C $JOB_ID"""
 
         launching_command += " -S ./" + path_launching_script
 
-        print('A launcher for the command "{}" has been created.'.format(command))
+        print(f'A launcher for the command "{command}" has been created.')
         if submit:
             if ask:
                 run_asking_agreement(launching_command)
@@ -198,7 +198,7 @@ oarsub -C $JOB_ID"""
         txt += "\n".join(self.commands_setting_env) + "\n\n"
 
         if omp_num_threads is not None:
-            txt += "export OMP_NUM_THREADS={}\n\n".format(omp_num_threads)
+            txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"
 
         if nb_mpi_processes is not None and nb_nodes > 1:
             txt += (
@@ -209,7 +209,7 @@ oarsub -C $JOB_ID"""
         txt += "exec "
 
         if nb_mpi_processes is not None:
-            txt += "mpirun -np {} ".format(nb_mpi_processes)
+            txt += f"mpirun -np {nb_mpi_processes} "
 
             if nb_nodes > 1:
                 txt += "-machinefile ${OAR_NODEFILE} "
