@@ -9,11 +9,6 @@ Provides:
 
 """
 
-from __future__ import print_function
-
-from builtins import input
-from builtins import str
-from builtins import range
 import os
 
 from . import subprocess
@@ -88,6 +83,8 @@ scontrol release"""
         bash=True,
         email=None,
         interactive=False,
+        signal_num=12,
+        signal_time=300,
         **kwargs
     ):
         """Submit a command.
@@ -138,6 +135,9 @@ scontrol release"""
             In case of failure notify to the specified email address
         interactive : boolean
             Use `cmd_run_interactive` instead of `cmd_run` inside the jobscript
+        signal_num : int or False
+        signal_time : int
+            Send the signal `signal_num` `signal_time` seconds before the end of the job.
         """
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
             nb_nodes, nb_cores_per_node, nb_mpi_processes
@@ -237,6 +237,8 @@ scontrol release"""
         email = kwargs["email"]
         interactive = kwargs["interactive"]
         is_resume_script = kwargs["is_resume_script"]
+        signal_num = kwargs["signal_num"]
+        signal_time = kwargs["signal_time"]
 
         logfile = "SLURM.{}".format(name_run)
         logfile_stdout = logfile + ".${SLURM_JOBID}.stdout"
@@ -249,6 +251,9 @@ scontrol release"""
 
         txt += "#SBATCH --time={}\n".format(self.max_walltime)
         txt += "#SBATCH --time-min={}\n".format(walltime)
+        if signal_num:
+            txt += f"#SBATCH --signal={signal_num}@{signal_time}\n"
+
         txt += "#SBATCH --nodes={}\n".format(nb_nodes)
         if nb_cores_per_node > 0:
             txt += "#SBATCH --ntasks-per-node={}\n".format(nb_cores_per_node)
