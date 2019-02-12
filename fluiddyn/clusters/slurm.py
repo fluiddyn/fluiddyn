@@ -249,7 +249,12 @@ scontrol release"""
         if project is not None:
             txt += f"#SBATCH -A {project}\n\n"
 
-        txt += f"#SBATCH --time={self.max_walltime}\n"
+        if signal_num:
+            time = walltime
+        else:
+            time = self.max_walltime
+
+        txt += f"#SBATCH --time={time}\n"
         txt += f"#SBATCH --time-min={walltime}\n"
         if signal_num:
             txt += f"#SBATCH --signal={signal_num}@{signal_time}\n"
