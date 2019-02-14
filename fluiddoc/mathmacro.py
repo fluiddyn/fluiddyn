@@ -71,23 +71,12 @@ operator, :math:`\nu` the viscosity and :math:`\bnabla^2` the Laplacian operator
 
 """
 
-from __future__ import print_function
-
 import re
 
 from docutils.parsers.rst.directives.misc import Replace
-from docutils import nodes, utils
+from docutils.parsers.rst.roles import math_role as old_math_role
 
 from sphinx.directives.patches import MathDirective
-
-
-class math(nodes.Inline, nodes.TextElement):
-    pass
-
-
-def old_math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
-    latex = utils.unescape(text, restore_backslashes=True)
-    return [math(latex=latex)], []
 
 
 def multiple_replacer(replace_dict):
@@ -174,15 +163,10 @@ def new_math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 
 
 def setup(app):
-    # when sphinx 1.8 is available, we can add the argument override=True to
-    # add_role and add_directive to avoid warnings...
-    try:
-        # sphinx 1.8
-        app.add_role("math", new_math_role, override=True)
-        app.add_directive("math", NewMathDirective, override=True)
-    except TypeError:
-        app.add_role("math", new_math_role)
-        app.add_directive("math", NewMathDirective)
+
+    app.add_role("math", new_math_role, override=True)
+    app.add_directive("math", NewMathDirective, override=True)
+
     app.add_directive("mathmacro", MathMacro)
 
 
