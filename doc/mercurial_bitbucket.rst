@@ -74,27 +74,8 @@ or for a specific command (here ``clone``)::
 
   hg help clone
 
-Get the FluidDyn repository
----------------------------
-
-There are at least two methods...
-
-1. Create your own repository on Bitbucket.
-
-  Go to the page of the main repository of one FluidDyn package (for example
-  for fluidsim, https://bitbucket.org/fluiddyn/fluidsim). Create your own
-  repository on Bitbucket by clicking on Fork. Then from the page of your
-  repository, click on Clone, copy the given command line and run it from the
-  directory where you want to have the root directory of the repository.
-
-2. Go where you want to have the root directory and run (for the fluiddyn package)::
-
-    hg clone https://bitbucket.org/fluiddyn/fluiddyn
-
-  Then modify the file .hg/hgrc in the created directory.
-
-Workflow
---------
+Simple workflow
+---------------
 
 We have already seen the command ``hg clone``.
 
@@ -194,24 +175,17 @@ repositories (for example https://bitbucket.org/paugier/fluidsim).
 The new commits are pushed in the development repositories and developers have
 to create Pull Requests (PR) to get things merged in the main repositories.
 
-It's strongly adviced to enable the Bitbucket Pipelines for the development
-repositories (for paugier/fluidsim, here
-https://bitbucket.org/paugier/fluidsim/admin/addon/admin/pipelines/settings).
-
-We strongly advice to install and activate the `evolve
-<https://www.mercurial-scm.org/doc/evolution/>`_ and `absorb
-<https://gregoryszorc.com/blog/2018/11/05/absorbing-commit-changes-in-mercurial-4.8/>`_
-extensions locally (see the example of ``.hgrc`` above) and to activate the
-experiemental support of evolve in Bitbucket (here
-https://bitbucket.org/account/admin/features/). This gives a very nice user
-experience for the PRs, with the ability to modify a PR with ``hg absorb`` and
-safe history editing. NOTE that you have to use ssh pushes (because there is `a
-bug for https pushes
-<https://bitbucket.org/site/master/issues/17123/mercurial-obsolescence-markers-seem-to-be>`_)!
+The first thing to do to start to develop something in one of the FluidDyn
+repository is to create your own repository on Bitbucket. Go to the page of the
+main repository of the package (for example for fluidsim,
+https://bitbucket.org/fluiddyn/fluidsim). Create your own repository on
+Bitbucket by clicking on Fork. Then from the page of your repository, click on
+Clone, copy the given command line and run it from the directory where you want
+to have the root directory of the repository.
 
 .. tip ::
 
-  For FluidDyn developers, add in ``.hg/hgrc`` in your local repositories
+  FluidDyn developers can add in ``.hg/hgrc`` in their local repositories
   something like (replace ``paugier`` by your Bitbucket login)::
 
     [paths]
@@ -223,8 +197,50 @@ bug for https pushes
     [alias]
     start_new_work = !hg pull fluiddyn && hg up -r $(hg identify --id fluiddyn)
 
-  Then, you can run ``hg start_new_work`` to be sure to start a new development
+  Then, one can run ``hg start_new_work`` to be sure to start a new development
   from the right commit.
+
+Then, you can modify and add things. Create changesets using ``hg clone``, push
+them in your repository in Bitbucket. Once you have something coherent, create
+a PR on the Bitbucket website.
+
+It's strongly adviced to enable the Bitbucket Pipelines for the development
+repositories (for paugier/fluidsim, here
+https://bitbucket.org/paugier/fluidsim/admin/addon/admin/pipelines/settings),
+so that we know if the tests pass or fail.
+
+We strongly advice to install and activate the `evolve
+<https://www.mercurial-scm.org/doc/evolution/>`_ and `absorb
+<https://gregoryszorc.com/blog/2018/11/05/absorbing-commit-changes-in-mercurial-4.8/>`_
+extensions locally (see the example of ``.hgrc`` above) and to activate the
+experimental support of evolve in Bitbucket (here
+https://bitbucket.org/account/admin/features/). This gives a very nice user
+experience for the PRs, with the ability to modify a PR with ``hg absorb`` and
+safe history editing. NOTE that you have to use ssh pushes (because there is `a
+bug for https pushes
+<https://bitbucket.org/site/master/issues/17123/mercurial-obsolescence-markers-seem-to-be>`_)!
+
+.. tip ::
+
+  ``hg absorb`` is very useful during code review. Let say that a developer
+  submitted a PR containing few commits. As explained in `this blog post
+  <https://gregoryszorc.com/blog/2018/11/05/absorbing-commit-changes-in-mercurial-4.8/>`_,
+  ``hg absorb`` is a mechanism to automatically and intelligently incorporate
+  uncommitted changes into prior commits. Edit the files to take into account
+  the remarks of the code review and just run::
+
+    hg absorb
+    hg push
+
+  and the PR is updated!
+
+.. note ::
+
+  Advanced users can also take advantage of the `topic extension
+  <https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_,
+  which is especially useful when one has to work on different PRs for the same
+  repository "at the same time" (lightweight branching with multiple heads,
+  better than bookmarks).
 
 
 Working with hggit and Github
@@ -310,7 +326,7 @@ Let's say that we are in a situation for which it does not work::
 
 
 Delete a bookmark in a remote repository (close a remote Git branch)
---------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 With Mercurial, `we can
 do <https://stackoverflow.com/questions/6825355/how-do-i-delete-a-remote-bookmark-in-mercurial>`_::
