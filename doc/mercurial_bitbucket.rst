@@ -24,14 +24,14 @@ Set-up Mercurial
 
 Install Mercurial and the extensions you want. I usually do::
 
-  pip2 install mercurial hg-git -U
+  pip2 install mercurial hg-git hg-evolve -U --user
 
 You need to create a file ``~/.hgrc``. For a good starting point, you can use
 the command::
 
   hg config --edit
 
-A simple example of configuration file::
+A example of configuration file::
 
   [ui]
   username=myusername <email@adress.org>
@@ -39,10 +39,16 @@ A simple example of configuration file::
   tweakdefaults = True
 
   [extensions]
-  color =
-  churn =
   hgext.extdiff =
+  # only to use Mercurial with GitHub and Gitlab
   hggit =
+  # more advanced extensions
+  churn =
+  shelve =
+  rebase =
+  absorb =
+  evolve =
+  topic =
 
   [extdiff]
   cmd.meld =
@@ -50,6 +56,12 @@ A simple example of configuration file::
 The line starting with hggit is optional and enables the extension `hg-git
 <http://hg-git.github.io/>`_. This extension is useful to work on projects
 using Git, for example hosted on Github and Gitlab.
+
+The extensions churn, shelve, rebase, absorb, evolve and topic are very useful
+for more advanced users. Note that `evolve
+<https://www.mercurial-scm.org/doc/evolution/>`_ and `topic
+<https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_
+comes from the package `hg-evolve <https://pypi.org/project/hg-evolve>`_.
 
 Get help
 --------
@@ -67,19 +79,19 @@ Get the FluidDyn repository
 
 There are at least two methods...
 
-1. Create your own FluidDyn repository on Bitbucket.
+1. Create your own repository on Bitbucket.
 
-   Go to the page of the main repository. Create your own FluidDyn
-   repository on Bitbucket by clicking on Fork. Then from the page of
-   your repository, click on Clone, copy the given command line and
-   run it from the directory where you want to have the root directory
-   of FluidDyn.
+  Go to the page of the main repository of one FluidDyn package (for example
+  for fluidsim, https://bitbucket.org/fluiddyn/fluidsim). Create your own
+  repository on Bitbucket by clicking on Fork. Then from the page of your
+  repository, click on Clone, copy the given command line and run it from the
+  directory where you want to have the root directory of the repository.
 
-2. Go where you want to have the root directory of FluidDyn and run::
+2. Go where you want to have the root directory and run (for the fluiddyn package)::
 
-     hg clone https://bitbucket.org/fluiddyn/fluiddyn
+    hg clone https://bitbucket.org/fluiddyn/fluiddyn
 
-   Then modify the file .hg/hgrc in the created directory.
+  Then modify the file .hg/hgrc in the created directory.
 
 Workflow
 --------
@@ -155,12 +167,12 @@ You can get a list of the changesets with::
 or just ``hg log -G``. With the ``--graph`` or ``-G`` option, the revisions are
 shown as an ASCII art.
 
-Update the code to a old revision
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Update the code to an old revision
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Use ``hg up 220`` to update to the revision 220. We can use a tag, bookmark or
-branch name instead of a number. To get a clean copy, add the option ``-C``
-(beware).
+Use ``hg up 220`` to update to the revision 220. We can use a tag, bookmark,
+topic name or branch name instead of a number. To get a clean copy, add the
+option ``-C`` (beware).
 
 
 Create a repository from nothing
@@ -171,7 +183,51 @@ Create a new repository in the given directory by doing::
   hg init
 
 
-Working with hggit and github
+Pull-request based workflow with hg-evolve
+------------------------------------------
+
+We now use a PR based workflow for the development of FluidDyn packages with
+main publishing repositories (for example
+https://bitbucket.org/fluiddyn/fluidsim) and development non-publishing
+repositories (for example https://bitbucket.org/paugier/fluidsim).
+
+The new commits are pushed in the development repositories and developers have
+to create Pull Requests (PR) to get things merged in the main repositories.
+
+It's strongly adviced to enable the Bitbucket Pipelines for the development
+repositories (for paugier/fluidsim, here
+https://bitbucket.org/paugier/fluidsim/admin/addon/admin/pipelines/settings).
+
+We strongly advice to install and activate the `evolve
+<https://www.mercurial-scm.org/doc/evolution/>`_ and `absorb
+<https://gregoryszorc.com/blog/2018/11/05/absorbing-commit-changes-in-mercurial-4.8/>`_
+extensions locally (see the example of ``.hgrc`` above) and to activate the
+experiemental support of evolve in Bitbucket (here
+https://bitbucket.org/account/admin/features/). This gives a very nice user
+experience for the PRs, with the ability to modify a PR with ``hg absorb`` and
+safe history editing. NOTE that you have to use ssh pushes (because there is `a
+bug for https pushes
+<https://bitbucket.org/site/master/issues/17123/mercurial-obsolescence-markers-seem-to-be>`_)!
+
+.. tip ::
+
+  For FluidDyn developers, add in ``.hg/hgrc`` in your local repositories
+  something like (replace ``paugier`` by your Bitbucket login)::
+
+    [paths]
+    default = ssh://hg@bitbucket.org/paugier/fluidsim
+    fluiddyn = ssh://hg@bitbucket.org/fluiddyn/fluidsim
+
+  and in ``~/.hgrc``::
+
+    [alias]
+    start_new_work = !hg pull fluiddyn && hg up -r $(hg identify --id fluiddyn)
+
+  Then, you can run ``hg start_new_work`` to be sure to start a new development
+  from the right commit.
+
+
+Working with hggit and Github
 -----------------------------
 
 To clone a git repository::
@@ -214,44 +270,21 @@ usefull::
 
 Do not forget to place the bookmark ``master`` as wanted.
 
-For fluiddyn core developers, we can add in the file ``.hg/hgrc`` something like::
-
-  [paths]
-  default = https://paugier@bitbucket.org/fluiddyn/fluidimage
-  github = git+ssh://git@github.com/fluiddyn/fluidimage
-
-For fluidsim developers: we use a Pull Request (PR) workflow and unpublishing
-repositories. The fluidsim ``.hg/hgrc`` can contain something like::
-
-  [paths]
-  default = https://paugier@bitbucket.org/paugier/fluidsim
-  fluiddyn = https://paugier@bitbucket.org/fluiddyn/fluidsim
-  github = git+ssh://git@github.com/fluiddyn/fluidsim
-
-  [alias]
-  start_new_work = !hg pull fluiddyn && hg up $(hg identify --id fluiddyn)
-  update_master_fluiddyn = !hg pull fluiddyn && hg up $(hg identify --id fluiddyn) && hg book master && hg book -i && hg push fluiddyn -B master
-
-The first alias ``start_new_work`` is really useful for all fluidsim
-developers. For example, when I want to start a new development work on
-fluidsim, I run::
-
-  hg start_new_work
-  hg book fix/improve_tests
-  # some changes
-  hg commit -m "Improve some tests"
-  hg push -B fix/improve_tests
-
 .. warning ::
 
-  This workflow is highly inspired by the Git / Github workflow so Mercurial /
-  Bitbucket may not fit very well with this and we have a small problem with
-  hg-git.
+  For fluiddyn core developers, we can add in the file ``.hg/hgrc`` something
+  like::
 
-  The master bookmark (the main bookmark which should follow the tip of the
-  default branch of the main fluidsim repository, and which is used only for
-  GitHub) is not updated when PR are merged on Bitbucket. So we need to do this
-  task by hand with the alias command ``hg update_master_fluiddyn``.
+    [paths]
+    default = ssh://hg@bitbucket.org/paugier/fluidimage
+    fluiddyn = ssh://hg@bitbucket.org/fluiddyn/fluidimage
+    github = git+ssh://git@github.com/fluiddyn/fluidimage
+
+  And in ``~/.hgrc``::
+
+    [alias]
+    update_master_github = !hg pull fluiddyn && hg up -r $(hg identify --id fluiddyn) && hg book master && hg book -i && hg push github -B master
+
 
 A quite complicated example with hg-git
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -274,46 +307,6 @@ Let's say that we are in a situation for which it does not work::
   hg git-cleanup
   hg pull
   hg push -B fix/a_bug --force
-
-Forget a bad commit
--------------------
-
-A bad commit that you want to forget... First find the revision number of
-the last good commit::
-
-  hg log --graph
-
-Let's say that it is 180 and that there are actually two bad commits (181 and
-182). Update to the last good revision::
-
-  hg up 180
-
-You may have to add the ``--clean`` (``-C``) option. Commit something from here
-(you need to modify something)::
-
-  hg commit -m "New commit from the last good commit"
-
-You have just created another head (unnamed branch). You can see this with::
-
-  hg heads
-
-Then back to the last bad commit (let's say it's 182)::
-
-  hg up 182
-
-To close this bad branch::
-
-  hg commit --close-branch -m "Commit to close the bad branch"
-
-And finally we come back to the last commit::
-
-  hg up default
-
-(in Mercurial ``default`` is the name of the default branch, as ``master`` for
-Git) and we check that everything is ok::
-
-  hg sum
-  hg log --graph
 
 
 Delete a bookmark in a remote repository (close a remote Git branch)
