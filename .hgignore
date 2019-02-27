@@ -8,7 +8,7 @@ syntax: glob
 *.swp
 *.swo
 \#*\#
-*/.vscode/*
+**/.vscode/*
 
 doc/_build/*
 doc/**generated/*

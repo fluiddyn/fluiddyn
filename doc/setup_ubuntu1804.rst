@@ -73,9 +73,9 @@ have this page, so it may be useful to others.
 - Build nice Python versions and use Python 3.6 or 3.7::
 
     pyenv install 3.6.6
-    pyenv install 3.7.1
+    pyenv install 3.7.2
     pyenv install pypy3.5-6.0.0
-    pyenv global 3.7.1  # or 3.6.6
+    pyenv global 3.7.2  # or 3.6.6
 
   Then install several packages (as wheels) using pip::
 
@@ -109,6 +109,7 @@ have this page, so it may be useful to others.
 
     jupyter labextension install @jupyter-widgets/jupyterlab-manager
     jupyter labextension install jupyter-matplotlib
+    jupyter labextension install @ijmbarr/jupyterlab_spellchecker
 
     sudo apt install chromium-browser
     jupyter-lab --generate-config
