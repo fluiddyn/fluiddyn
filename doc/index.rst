@@ -8,6 +8,9 @@ The FluidDyn project aims at promoting the use of open-source Python software
 in research in fluid dynamics.  The project provides some Python packages
 specialized for different tasks, in particular
 
+- `transonic <http://transonic.readthedocs.org>`_, to make your Python code fly
+  at transonic speeds!
+
 - `fluidfft <http://fluidfft.readthedocs.org>`_ for 2D and 3D Fast Fourier
   Transforms,
 
@@ -16,11 +19,15 @@ specialized for different tasks, in particular
 - `fluidlab <http://fluidlab.readthedocs.org>`_ for laboratory experiments,
 
 - `fluidimage <http://fluidimage.readthedocs.io>`_ for processing of images of
-  fluid.
+  fluid,
+
+- `fluidsht <http://fluidsht.readthedocs.org>`_ for Spherical Harmonic
+  Transforms.
 
 This documentation presents the FluidDyn project and the package of the same
 name, which is the base package on which the other packages depend on. For the
 specific documentations of these specialized packages, follow the links above.
+
 
 The FluidDyn project
 --------------------
@@ -30,6 +37,17 @@ The FluidDyn project
 
    intro-motivations
    advice_on_Python
+
+
+Metapaper and citation
+^^^^^^^^^^^^^^^^^^^^^^
+
+`Our metapaper presenting the FluidDyn project and the fluiddyn package
+<http://www.legi.grenoble-inp.fr/people/Pierre.Augier/docs/fluiddyn_metapaper.pdf>`_
+has been accepted by the `Journal of Open Research Software (JORS)
+<https://openresearchsoftware.metajnl.com/>`_. If you use any of the FluidDyn
+packages to produce scientific articles, please cite it!
+
 
 User Guide of the fluiddyn package
 ----------------------------------
@@ -86,8 +104,9 @@ Links
   <https://bitbucket.org/fluiddyn/fluiddyn>`_
 - `FluidDyn in PyPI <https://pypi.org/project/fluiddyn/>`_
 - `FluidDyn project blog <https://fluiddyn.bitbucket.io/>`_
-- `FluidDyn user chat room
-  <https://riot.im/app/#/room/#fluiddyn-users:matrix.org>`_
+- FluidDyn user chat room in
+  `riot <https://riot.im/app/#/room/#fluiddyn-users:matrix.org>`_ or
+  `slack <https://fluiddyn.slack.com>`_
 - `FluidDyn mailing list <https://www.freelists.org/list/fluiddyn>`_
 - `FluidDyn on Twitter <https://twitter.com/pyfluiddyn>`_
 - `FluidDyn on Youtube
@@ -100,4 +119,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

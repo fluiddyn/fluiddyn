@@ -6,11 +6,12 @@ dependencies:
   - python=3.6
   - numpy
   - h5py
-  - sphinx
-  - numpydoc
   - jupyter
   - matplotlib
   - pandas
   - imageio
   - pip:
+    - sphinx
+    - numpydoc
     - sphinx_rtd_theme
+    - sphinxemoji
