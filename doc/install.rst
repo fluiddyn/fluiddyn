@@ -35,6 +35,11 @@ FluidDyn can be installed from the Python Package Index by the command::
 
   pip install fluiddyn
 
+Or, to also install all optional dependencies::
+
+  pip install fluiddyn[full]
+
+
 Install in development mode
 ---------------------------
 
@@ -57,4 +62,3 @@ After the installation, it is a good practice to run the unit tests by running
 To install the test dependencies::
 
   pip install -e .[test]
-

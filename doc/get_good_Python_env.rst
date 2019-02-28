@@ -1,16 +1,16 @@
 Get a good scientific Python environment
 ========================================
 
-By a "good Python environment", I mean a recent version of Python with
-recent versions of the main packages for sciences installed (SciPy,
-NumPy, Matplotlib, IPython, h5py, etc.) and a good editor with fly checks.
+By a "good Python environment", I mean a recent version of Python with recent
+versions of the main packages for sciences installed (SciPy, NumPy, Matplotlib,
+IPython, h5py, etc.) and a good editor with fly checks.
 
-.. warning:: 
+.. warning::
 
-   **Announcement: Moving to require Python 3**. As `many other
-   scientific projects <http://www.python3statement.org/>`_, we are planning to
-   soon require Python 3 for all new feature releases. For science, try to use
-   a recent version of Python (>= 3.5 in 2018).
+   **Announcement: require Python 3**. As `many other scientific projects
+   <http://www.python3statement.org/>`_, we now require Python 3 for all new
+   feature releases. For science, try to use a recent version of Python (>= 3.6
+   in 2019).
 
 The easy way: Python distributions (for example Anaconda)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -20,7 +20,7 @@ science-oriented Python distributions, for example the good `Python - Anaconda
 <http://anaconda.io/downloads>`_ (for slightly more advanced users, `Miniconda
 <https://conda.io/miniconda.html>`_ is surely better).
 
-To get started with Miniconda::
+To get started with Miniconda (commands for Linux)::
 
   wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
   bash Miniconda3-latest-Linux-x86_64.sh
@@ -65,9 +65,9 @@ Another easy way (slightly more difficult?)
 It is now very easy to build the most recent Python versions with `pyenv
 <https://github.com/pyenv/pyenv>`_.
 
-With the latest versions of pip and the `wheels <https://github.com/pypa/wheel>`_,
-it is now easy and fast to install scientific packages without conda, using pip or
-`pipenv <https://github.com/pypa/pipenv>`_.
+With the latest versions of pip and the `wheels
+<https://github.com/pypa/wheel>`_, it is now easy and fast to install
+scientific packages without conda, using pip.
 
 But without conda, one needs to get the non-python dependencies with the system
 package management tool, for example apt for Debian/Ubuntu, as shown here:
@@ -83,10 +83,9 @@ Python on Windows
 
 On windows, I use `Python - Anaconda <http://anaconda.io/downloads>`_.
 
-For FluidDyn, you really need a good terminal. The standard console of
-Windows (cmd) is just surprisingly bad. DO NOT use it since you could
-get some silly problems and there are simple alternatives. For
-example, you could use
+For FluidDyn, you really need a good terminal. The standard console of Windows
+7 (cmd) is just surprisingly bad. DO NOT use it since you could get some silly
+problems and there are simple alternatives. For example, you could use
 
 - `Console2 with bash from git
   <https://www.google.com/search?q=console2+git+bash>`_ instead.
@@ -100,15 +99,16 @@ And on macOS
 
 .. warning::
 
-   As of July 2018, there is a bad bug with clang++ with a pure conda install:
-   clang++ does not find the standard C++ library (see `this fluidsim_ocean issue
-   <https://bitbucket.org/fluiddyn/fluidsim_ocean/issues/1/mpi-not-working-yet-or-install-issue>`_)... One
-   needs to use `homebrew <https://brew.sh/>`_ to install::
+  As of July 2018, there is a bad bug with clang++ with a pure conda install:
+  clang++ does not find the standard C++ library (see `this fluidsim_ocean
+  issue
+  <https://bitbucket.org/fluiddyn/fluidsim_ocean/issues/1/mpi-not-working-yet-or-install-issue>`_)...
+  One needs to use `homebrew <https://brew.sh/>`_ to install::
 
-      brew install open-mpi
-      brew install fftw --with-mpi
-      brew install --with-clang llvm
-      brew install mercurial
+    brew install open-mpi
+    brew install fftw --with-mpi
+    brew install --with-clang llvm
+    brew install mercurial
 
 Then, two alternatives. First with the "homebrew" Python and pip::
 
@@ -128,7 +128,7 @@ Then, two alternatives. First with the "homebrew" Python and pip::
 Other alternative, using ``conda`` and pip::
 
   conda config --add channels conda-forge
-  conda env create fluid-env blas=*=openblas scipy matplotlib cython h5py ipython imageio pandas 
+  conda env create fluid-env blas=*=openblas scipy matplotlib cython h5py ipython imageio pandas
   conda activate fluid-env
 
   pip install mpi4py

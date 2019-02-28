@@ -1,16 +1,16 @@
 Advice on how to work with Python
 =================================
 
-FluidDyn should be used also by scientists that are not experienced in
-Python. We provide some advice on how to work with Python and how to get a good
-Python environment.
+FluidDyn should be used also by scientists that are not experienced in Python.
+We provide some advice on how to work with Python and how to get a good Python
+environment.
 
 Use an up-to-date Python environment!
 -------------------------------------
 
-Python is an old language but the strong dynamics in scientific Python is
-actually young.  The base pakages have greatly improved these last years so it
-is really better to use recent versions. Therefore it is not a good idea to use
+Python is an old language but the strong dynamics in scientific Python is quite
+young. The base packages have greatly improved these last years so it is really
+better to use recent versions. Therefore, it is not a good idea to use
 scientific python libraries packaged in not very recent Linux versions.
 
 .. toctree::
@@ -18,12 +18,11 @@ scientific python libraries packaged in not very recent Linux versions.
 
    get_good_Python_env
 
-Read!
------
+Read and watch!
+---------------
 
-- If you have only weak knowledge on Python, start with the `the
-  official Python tutorial
-  <https://docs.python.org/2/tutorial/index.html>`_.
+- If you have only basic knowledge on Python, start with the `the official
+  Python tutorial <https://docs.python.org/3/tutorial/index.html>`_.
 
 - It is always useful to have a look at `the official Python documentation
   <https://www.python.org/doc/>`_.
@@ -39,23 +38,29 @@ Read!
 
 - http://www.scipy-lectures.org/
 
-Python 2.7 and Python 3
------------------------
+There are also plenty interesting Python videos on the web...
 
-Python 3.6 is cleaner and better on many aspects that the 2.7 version of the
-language. The CPython interpreter for Python 3.6 is also faster for most of the
-tasks that the version for Python 2.7. Now (2017), for scientific purposes, I
-see no reason why not to use python >= 3.5.  Conda is very convenient to use
-recent versions of Python.
 
-Writing Python 2-3 compatible code is not difficult (with some ``try`` and
-``from __future__`` statements and using for example the package `future
-<http://python-future.org/>`_) but yet it is time consuming and we cannot
-benefit from the nice new features of recent versions of Python. I tend to
-think that the time when the new versions of the fluiddyn packages drop
-compatibility with Python 2.7 is not far...
+Don't use Python 2.7 and try to use Python >= 3.6
+-------------------------------------------------
 
-Use fly checks and a good editor!
+If you still use Python 2.7 in 2019, it is time to stop! In few months, Python
+2.7 won't be supported anymore by the CPython developers
+(https://pythonclock.org/) and a number of critical Python projects have
+`pledged to stop supporting Python 2 soon <https://python3statement.org/>`_.
+
+We even strongly advice to stop using Python < 3.6. Conda and pyenv are very
+convenient to use recent versions of Python in most systems (see :doc:`Get a
+good scientific Python environment <get_good_Python_env>`).
+
+With Python 3.6, one can use `f-strings
+<https://www.python.org/dev/peps/pep-0498/>`_ and the support for `pathlib
+<https://docs.python.org/3/library/pathlib.html>`_ is much better. These are
+the reasons why we decided to support only Python >= 3.6 for the FluidDyn
+packages.
+
+
+Use a good editor with fly checks
 ---------------------------------
 
 Python is a very dynamics language. It is very nice but it is also
@@ -72,24 +77,27 @@ Most experienced Python programmers use an good Python editor with fly
 checking and it is really very useful. So of course beginners have to
 use a good Python editor running fly checks!
 
-If you like integrated development environment, you can for example
-use `Spyder <https://github.com/spyder-ide/spyder>`_ (Scientific
-PYthon Development EnviRonment). Note that Spyder has to be setup
-correctly to use fly checks.
+For scientists and for simpler programming (only scripts), you can for example
+use `Spyder <https://github.com/spyder-ide/spyder>`_ (Scientific PYthon
+Development EnviRonment). Note that Spyder has to be setup correctly to use fly
+checks.
 
-Another good solution is `Emacs
-<https://www.gnu.org/software/emacs/>`_, but it should be setup
-correctly (for example with `Flycheck
-<http://flycheck.readthedocs.org>`_, see `my Emacs
-configuration <https://bitbucket.org/fluiddyn/fluid_emacs.d>`_).
+`Visual studio code <https://code.visualstudio.com/>`_ is great for more
+advanced programming (with at least the `Python
+<https://marketplace.visualstudio.com/items?itemName=ms-python.python>`_ and
+`Settings Sync
+<https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync>`_
+extensions). For developping a Python package, it is indeed very good and it
+really improves productivity and even the quality of the code, see for example
+this `blog post by Kenneth Reitz
+<https://www.kennethreitz.org/essays/why-you-should-use-vs-code-if-youre-a-python-developer>`_.
+On Unix, one may want to avoid using a binary built by Microsoft so we can use
+`vscodium <https://github.com/VSCodium/vscodium>`_.
 
-Note that code checkers can also be used outside of the editor, for
-example with pylint. we can use the commands (from the FluidDyn root
-directory)::
-
-  pylint fluiddyn
-  pylint -E fluiddyn.lab.probes
-  pylint --help-msg=no-member
+Another GNUer solution is `Emacs <https://www.gnu.org/software/emacs/>`_, but
+it should be setup correctly (for example with `Flycheck
+<http://flycheck.readthedocs.org>`_, see `my Emacs configuration
+<https://bitbucket.org/fluiddyn/fluid_emacs.d>`_).
 
 
 The style is important
@@ -113,31 +121,8 @@ In particular,
 - Python is in English. It is a good idea to write Python modules all
   in English.
 
-
-Use virtualenv (if you do not use conda)
-----------------------------------------
-
-It is a good idea to use a virtual environment. With `virtualenv
-<https://virtualenv.pypa.io>`_ it is very easy. I do something like
-this::
-
-  MYPY=$HOME/path/mypy
-  mkdir -p $MYPY
-  virtualenv --system-site-packages $MYPY
-
-Then I have a non-executable script ``load_mypy.sh`` in the directory
-~/bin with something like this::
-
-  export VIRTUAL_ENV_DISABLE_PROMPT=0
-  MYPY=$HOME/path/mypy
-  source $MYPY/bin/activate
-
-This script should be use by `source ~/bin/load_mypy.sh` so you can
-have a line with `alias load_mypython='source ~/bin/load_mypy.sh'` in the
-file ~/.bash_aliases.
-
-Remark: it could also be convenient to use the ``module load ...``
-procedure...
+For FluidDyn packages, we use `black <https://github.com/ambv/black>`_ with the
+command ``black -l 82``.
 
 
 For Matlab users
