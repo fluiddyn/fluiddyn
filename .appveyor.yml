@@ -6,9 +6,6 @@ branches:
   only:
     - default
 
-# clone entire repository history if not defined
-shallow_clone: true
-
 # Reference: https://packaging.python.org/guides/supporting-windows-using-appveyor/
 environment:
 
