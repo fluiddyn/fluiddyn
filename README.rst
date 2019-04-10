@@ -102,11 +102,25 @@ Or, from the root directory or any of the "test" directories::
 
   python -m unittest discover
 
-Citing
-------
+Metapaper and citation
+----------------------
 
-If you need to cite a FluidDyn paper, feel free to use:
-https://arxiv.org/abs/1807.09224
+If you use any of the FluidDyn packages to produce scientific articles, please
+cite `our metapaper presenting the FluidDyn project and the fluiddyn package
+<https://openresearchsoftware.metajnl.com/articles/10.5334/jors.237/>`_:
+
+.. code ::
+
+    @article{fluiddyn,
+    doi = {10.5334/jors.237},
+    year = {2019},
+    publisher = {Ubiquity Press,  Ltd.},
+    volume = {7},
+    author = {Pierre Augier and Ashwin Vishnu Mohanan and Cyrille Bonamy},
+    title = {{FluidDyn}: A Python Open-Source Framework for Research and Teaching in Fluid Dynamics
+        by Simulations,  Experiments and Data Processing},
+    journal = {Journal of Open Research Software}
+    }
 
 History
 -------

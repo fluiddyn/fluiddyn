@@ -42,11 +42,22 @@ The FluidDyn project
 Metapaper and citation
 ^^^^^^^^^^^^^^^^^^^^^^
 
-`Our metapaper presenting the FluidDyn project and the fluiddyn package
-<http://www.legi.grenoble-inp.fr/people/Pierre.Augier/docs/fluiddyn_metapaper.pdf>`_
-has been accepted by the `Journal of Open Research Software (JORS)
-<https://openresearchsoftware.metajnl.com/>`_. If you use any of the FluidDyn
-packages to produce scientific articles, please cite it!
+If you use any of the FluidDyn packages to produce scientific articles, please
+cite `our metapaper presenting the FluidDyn project and the fluiddyn package
+<https://openresearchsoftware.metajnl.com/articles/10.5334/jors.237/>`_:
+
+.. code ::
+
+    @article{fluiddyn,
+    doi = {10.5334/jors.237},
+    year = {2019},
+    publisher = {Ubiquity Press,  Ltd.},
+    volume = {7},
+    author = {Pierre Augier and Ashwin Vishnu Mohanan and Cyrille Bonamy},
+    title = {{FluidDyn}: A Python Open-Source Framework for Research and Teaching in Fluid Dynamics
+        by Simulations,  Experiments and Data Processing},
+    journal = {Journal of Open Research Software}
+    }
 
 
 User Guide of the fluiddyn package
