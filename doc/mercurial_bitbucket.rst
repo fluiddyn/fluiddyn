@@ -22,9 +22,22 @@ this page, I focus on what is needed to use and develop FluidDyn.
 Set-up Mercurial
 ----------------
 
-Install Mercurial and the extensions you want. I usually do::
+Install Mercurial and the extensions you want. I usually do on Linux::
 
   pip2 install mercurial hg-git hg-evolve -U --user
+
+.. note ::
+
+  On macOS and Windows, one can install Mercurial and useful extensions with::
+
+    conda create -n py27_mercurial -c conda-forge python=2.7 mercurial dulwich ipaddress
+    conda activate py27_mercurial
+    pip install hg-evolve
+    pip install hg+https://bitbucket.org/durin42/hg-git
+
+  To get the command ``hg`` available in other terminals, permanently add the
+  path of the directory containing ``hg`` in the environment variable ``PATH``.
+  One can get it with ``where hg`` on Windows and ``which hg`` on macOS.
 
 You need to create a file ``~/.hgrc``. For a good starting point, you can use
 the command::
