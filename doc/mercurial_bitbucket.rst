@@ -18,26 +18,43 @@ Bitbucket (for example `the official Mercurial tutorial
 <http://www.math.wisc.edu/~jeanluc/bitbucket_instructions.php>`_). In
 this page, I focus on what is needed to use and develop FluidDyn.
 
+Installation
+------------
 
-Set-up Mercurial
-----------------
-
-Install Mercurial and the extensions you want. I usually do on Linux::
+To install Mercurial with few important extensions, I usually do on Linux::
 
   pip2 install mercurial hg-git hg-evolve -U --user
 
-.. note ::
+On Windows, macOS and Linux, one can use conda to install Mercurial with few
+extensions::
 
-  On macOS and Windows, one can install Mercurial and useful extensions with::
+  conda config --add channels conda-forge
+  conda create -n env_hg mercurial-app
+  conda activate env_hg
+  pip install hg+https://bitbucket.org/durin42/hg-git
 
-    conda create -n py27_mercurial -c conda-forge python=2.7 mercurial dulwich ipaddress
-    conda activate py27_mercurial
-    pip install hg-evolve
-    pip install hg+https://bitbucket.org/durin42/hg-git
+To get the command ``hg`` available in other terminals, we need to run:
 
-  To get the command ``hg`` available in other terminals, permanently add the
-  path of the directory containing ``hg`` in the environment variable ``PATH``.
-  One can get it with ``where hg`` on Windows and ``which hg`` on macOS.
+- On Unix and with Bash::
+
+    APP_DIR=$HOME/.local/bin/bin-conda-app/
+    mkdir -p $APP_DIR
+    echo -e "\nexport PATH=\$PATH:$APP_DIR\n" >> ~/.bashrc
+    ln -s $(which hg) $APP_DIR/hg
+
+- On Unix and with Fish::
+
+    set APP_DIR $HOME/.local/bin/bin-conda-app/
+    mkdir -p $APP_DIR
+    echo -e "\nset -gx PATH \$PATH $APP_DIR\n" >> ~/.config/fish/config.fish
+    ln -s (which hg) $APP_DIR/hg
+
+- On Windows in the conda prompt:
+
+  ???
+
+Set-up Mercurial
+----------------
 
 You need to create a file ``~/.hgrc``. For a good starting point, you can use
 the command::
