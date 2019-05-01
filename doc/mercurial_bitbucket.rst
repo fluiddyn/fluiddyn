@@ -8,8 +8,9 @@ seems to me that Mercurial is a good solution for researchers (in particular it
 is in my opinion simpler and nicer to learn and use than `Git
 <https://www.mercurial-scm.org/wiki/GitConcepts>`_).
 
-Mercurial couples very well with the programs TortoiseHG and Meld (if you can,
-just install them, especially Meld) and with the site `Bitbucket
+Mercurial couples very well with the programs `TortoiseHG
+<https://tortoisehg.bitbucket.io/>`__ and `Meld <https://meldmerge.org/>`__ (if
+you can, just install them, especially Meld) and with the site `Bitbucket
 <https://bitbucket.org>`_.
 
 There are a lot of tutorials and documentations about Mercurial and
@@ -21,12 +22,28 @@ this page, I focus on what is needed to use and develop FluidDyn.
 Installation
 ------------
 
-To install Mercurial with few important extensions, I usually do on Linux::
+With pip2
+^^^^^^^^^
+
+To install Mercurial with few important external extensions, I usually do **on
+Linux**::
 
   pip2 install mercurial hg-git hg-evolve -U --user
 
-On Windows, macOS and Linux, one can use conda to install Mercurial with few
-extensions::
+With TortoiseHG (simple for Windows)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Download the installer from https://tortoisehg.bitbucket.io/.
+
+With conda (cross-platform)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+On Windows, macOS and Linux, one can use `conda
+<https://docs.conda.io/en/latest/miniconda.html>`__ to install Mercurial with
+few extensions. On Windows, these commands have to be run in the Anaconda
+Prompt.
+
+.. code ::
 
   conda config --add channels conda-forge
   conda create -n env_hg mercurial-app
@@ -49,9 +66,10 @@ To get the command ``hg`` available in other terminals, we need to run:
     echo -e "\nset -gx PATH \$PATH $APP_DIR\n" >> ~/.config/fish/config.fish
     ln -s (which hg) $APP_DIR/hg
 
-- On Windows in the conda prompt:
+.. note ::
 
-  ???
+  If you don't use TortoiseHG, you should really install the visual diff and
+  merge tool `Meld <https://meldmerge.org/>`__!
 
 Set-up Mercurial
 ----------------
