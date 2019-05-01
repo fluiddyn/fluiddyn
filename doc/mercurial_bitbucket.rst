@@ -5,7 +5,9 @@ Mercurial and Bitbucket short tutorial for FluidDyn
 control management tool. It's is a great tool and if you are doing research
 (coding and/or writing papers), you should use a version control software! It
 seems to me that Mercurial is a good solution for researchers (in particular it
-is in my opinion simpler and nicer to learn and use than `Git
+is `in my opinion
+<http://www.legi.grenoble-inp.fr/people/Pierre.Augier/mercurial-as-a-great-version-source-control-management-tool-in-academics.html>`__
+simpler and nicer to learn and use than `Git
 <https://www.mercurial-scm.org/wiki/GitConcepts>`_).
 
 Mercurial couples very well with the programs `TortoiseHG
@@ -54,14 +56,14 @@ To get the command ``hg`` available in other terminals, we need to run:
 
 - On Unix and with Bash::
 
-    APP_DIR=$HOME/.local/bin/bin-conda-app/
+    APP_DIR=$HOME/.local/bin/conda-app/
     mkdir -p $APP_DIR
     echo -e "\nexport PATH=\$PATH:$APP_DIR\n" >> ~/.bashrc
     ln -s $(which hg) $APP_DIR/hg
 
 - On Unix and with Fish::
 
-    set APP_DIR $HOME/.local/bin/bin-conda-app/
+    set APP_DIR $HOME/.local/bin/conda-app/
     mkdir -p $APP_DIR
     echo -e "\nset -gx PATH \$PATH $APP_DIR\n" >> ~/.config/fish/config.fish
     ln -s (which hg) $APP_DIR/hg
@@ -79,7 +81,7 @@ the command::
 
   hg config --edit
 
-A example of configuration file::
+An example of configuration file::
 
   [ui]
   username=myusername <email@adress.org>
@@ -114,7 +116,7 @@ comes from the package `hg-evolve <https://pypi.org/project/hg-evolve>`_.
 Get help
 --------
 
-Get help::
+To get help on Mercurial, one can start with::
 
   hg help
 
@@ -125,7 +127,9 @@ or for a specific command (here ``clone``)::
 Simple workflow
 ---------------
 
-We have already seen the command ``hg clone``.
+To make a copy of an existing repository::
+
+  hg clone https://bitbucket.org/fluiddyn/fluiddyn
 
 To get a summary of the working directory state::
 
@@ -204,8 +208,8 @@ topic name or branch name instead of a number. To get a clean copy, add the
 option ``-C`` (beware).
 
 
-Create a repository from nothing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Create a repository from a directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Create a new repository in the given directory by doing::
 
