@@ -58,7 +58,11 @@ _COL_MAX = 80
 
 def safe_check_output(cmd, first_row_only=True):
     """Error-tolerant version of subprocess check output"""
-    cmd = f'/bin/sh -c "{cmd}; exit 0"'
+    if os.name == "posix":
+        cmd = f'/bin/sh -c "{cmd}; exit 0"'
+    else:
+        cmd = f'bash -c "{cmd}; exit 0"'
+
     output = subprocess.check_output(
         shlex.split(cmd), stderr=subprocess.STDOUT
     ).decode("utf-8")

@@ -26,7 +26,7 @@
    :target: https://travis-ci.org/fluiddyn/fluiddyn
    :alt: Travis CI status
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/8tipjogdw679ucsh?svg=true
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/rxafwwpmxymki2u1/branch/default?svg=true
    :target: https://ci.appveyor.com/project/fluiddyn/fluiddyn
    :alt: AppVeyor status
 

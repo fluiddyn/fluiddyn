@@ -54,6 +54,7 @@ class FroggyNoCheck(ClusterNoCheck, Froggy):
     pass
 
 
+@unittest.skipUnless(os.name == "posix", "requires POSIX")
 class TestCaseOAR(unittest.TestCase):
     Cluster = ClusterOAR
     ClusterNoCheck = ClusterNoCheck

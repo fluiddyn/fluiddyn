@@ -34,6 +34,7 @@ class ClusterSlurmMod(slurm.ClusterSlurm):
         super().check_name_cluster(env)
 
 
+@unittest.skipUnless(os.name == "posix", "requires POSIX")
 class SlurmTestCase(unittest.TestCase):
     """Test ClusterSlurm submit_script method."""
 

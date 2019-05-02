@@ -1,4 +1,9 @@
 # Reference: https://www.appveyor.com/docs/appveyor-yml/
+image:
+  - Visual Studio 2017
+
+platform:
+  - x64
 
 # branches to build
 branches:
@@ -14,8 +19,8 @@ environment:
     # For Python versions available on Appveyor, see
     # http://www.appveyor.com/docs/installed-software#python
 
-    - PYTHON: "C:\\Python36-x64"
-    - PYTHON: "C:\\Python37-x64"
+    - PYTHON: C:\Python36-x64
+    - PYTHON: C:\Python37-x64
 
 install:
   - "set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"

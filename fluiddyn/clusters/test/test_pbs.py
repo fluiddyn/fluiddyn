@@ -33,6 +33,7 @@ class ClusterPBSMod(pbs.ClusterPBS):
         super().check_name_cluster(env)
 
 
+@unittest.skipUnless(os.name == "posix", "requires POSIX")
 class PBSTestCase(unittest.TestCase):
     """Test ClusterPBS submit_script method."""
 

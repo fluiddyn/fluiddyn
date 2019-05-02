@@ -7,12 +7,19 @@ Utilities to query (:mod:`fluiddyn.io.query`)
 """
 
 import builtins
+import os
 import sys
 import subprocess
 
 
 def call_bash(commands):
-    subprocess.call(["/bin/bash", "-c", commands])
+    if os.name == 'posix':
+        bash = "/bin/bash"
+    else:
+        # esp. windows / cygwin
+        bash = "bash"
+
+    subprocess.call([bash, "-c", commands])
 
 
 def query_yes_no(question, default="yes"):
