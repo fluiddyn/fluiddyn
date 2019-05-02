@@ -5,11 +5,14 @@ Mercurial and Bitbucket short tutorial for FluidDyn
 control management tool. It's is a great tool and if you are doing research
 (coding and/or writing papers), you should use a version control software! It
 seems to me that Mercurial is a good solution for researchers (in particular it
-is in my opinion simpler and nicer to learn and use than `Git
+is `in my opinion
+<http://www.legi.grenoble-inp.fr/people/Pierre.Augier/mercurial-as-a-great-version-source-control-management-tool-in-academics.html>`__
+simpler and nicer to learn and use than `Git
 <https://www.mercurial-scm.org/wiki/GitConcepts>`_).
 
-Mercurial couples very well with the programs TortoiseHG and Meld (if you can,
-just install them, especially Meld) and with the site `Bitbucket
+Mercurial couples very well with the programs `TortoiseHG
+<https://tortoisehg.bitbucket.io/>`__ and `Meld <https://meldmerge.org/>`__ (if
+you can, just install them, especially Meld) and with the site `Bitbucket
 <https://bitbucket.org>`_.
 
 There are a lot of tutorials and documentations about Mercurial and
@@ -18,20 +21,67 @@ Bitbucket (for example `the official Mercurial tutorial
 <http://www.math.wisc.edu/~jeanluc/bitbucket_instructions.php>`_). In
 this page, I focus on what is needed to use and develop FluidDyn.
 
+Installation
+------------
+
+With pip2
+^^^^^^^^^
+
+To install Mercurial with few important external extensions, I usually do **on
+Linux**::
+
+  pip2 install mercurial hg-git hg-evolve -U --user
+
+With TortoiseHG (simple for Windows)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Download the installer from https://tortoisehg.bitbucket.io/.
+
+With conda (cross-platform)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+On Windows, macOS and Linux, one can use `conda
+<https://docs.conda.io/en/latest/miniconda.html>`__ to install Mercurial with
+few extensions. On Windows, these commands have to be run in the Anaconda
+Prompt.
+
+.. code ::
+
+  conda config --add channels conda-forge
+  conda create -n env_hg mercurial-app
+  conda activate env_hg
+  pip install hg+https://bitbucket.org/durin42/hg-git
+
+To get the command ``hg`` available in other terminals, we need to run:
+
+- On Unix and with Bash::
+
+    APP_DIR=$HOME/.local/bin/conda-app/
+    mkdir -p $APP_DIR
+    echo -e "\nexport PATH=\$PATH:$APP_DIR\n" >> ~/.bashrc
+    ln -s $(which hg) $APP_DIR/hg
+
+- On Unix and with Fish::
+
+    set APP_DIR $HOME/.local/bin/conda-app/
+    mkdir -p $APP_DIR
+    echo -e "\nset -gx PATH \$PATH $APP_DIR\n" >> ~/.config/fish/config.fish
+    ln -s (which hg) $APP_DIR/hg
+
+.. note ::
+
+  If you don't use TortoiseHG, you should really install the visual diff and
+  merge tool `Meld <https://meldmerge.org/>`__!
 
 Set-up Mercurial
 ----------------
-
-Install Mercurial and the extensions you want. I usually do::
-
-  pip2 install mercurial hg-git hg-evolve -U --user
 
 You need to create a file ``~/.hgrc``. For a good starting point, you can use
 the command::
 
   hg config --edit
 
-A example of configuration file::
+An example of configuration file::
 
   [ui]
   username=myusername <email@adress.org>
@@ -66,7 +116,7 @@ comes from the package `hg-evolve <https://pypi.org/project/hg-evolve>`_.
 Get help
 --------
 
-Get help::
+To get help on Mercurial, one can start with::
 
   hg help
 
@@ -77,7 +127,9 @@ or for a specific command (here ``clone``)::
 Simple workflow
 ---------------
 
-We have already seen the command ``hg clone``.
+To make a copy of an existing repository::
+
+  hg clone https://bitbucket.org/fluiddyn/fluiddyn
 
 To get a summary of the working directory state::
 
@@ -156,8 +208,8 @@ topic name or branch name instead of a number. To get a clean copy, add the
 option ``-C`` (beware).
 
 
-Create a repository from nothing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Create a repository from a directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Create a new repository in the given directory by doing::
 
