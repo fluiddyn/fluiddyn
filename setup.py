@@ -30,9 +30,6 @@ else:
 setup(
     version=__version__,
     long_description=long_description,
-    author="Pierre Augier",
-    author_email="pierre.augier@legi.cnrs.fr",
-    url="https://bitbucket.org/fluiddyn/fluiddyn",
     classifiers=[
         # How mature is this project? Common values are
         # 3 - Alpha
