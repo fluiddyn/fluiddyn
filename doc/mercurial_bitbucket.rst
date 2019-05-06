@@ -24,6 +24,31 @@ this page, I focus on what is needed to use and develop FluidDyn.
 Installation
 ------------
 
+With TortoiseHG (simple for Windows)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Download the installer from https://tortoisehg.bitbucket.io/.
+
+With conda (cross-platform, recommended for Linux and macOS)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+On Windows, macOS and Linux, one can use ``conda`` (installed with `miniconda
+<https://docs.conda.io/en/latest/miniconda.html>`__) to install Mercurial with
+few extensions (`hg-evolve <https://pypi.org/project/hg-evolve>`_ and `hg-git
+<http://hg-git.github.io/>`_). On Windows, these commands have to be run in the
+Anaconda Prompt. First, we need to install `conda-app
+<https://pypi.org/project/conda-app>`_ in the base conda environment::
+
+  conda activate base
+  pip install conda-app
+
+Then, with the conda-forge channel added (``conda config --add channels
+conda-forge``), one just needs to run::
+
+  conda-app install mercurial
+
+**Open a new terminal** and the Mercurial command ``hg`` should be available.
+
 With pip2
 ^^^^^^^^^
 
@@ -31,42 +56,6 @@ To install Mercurial with few important external extensions, I usually do **on
 Linux**::
 
   pip2 install mercurial hg-git hg-evolve -U --user
-
-With TortoiseHG (simple for Windows)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Download the installer from https://tortoisehg.bitbucket.io/.
-
-With conda (cross-platform)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-On Windows, macOS and Linux, one can use `conda
-<https://docs.conda.io/en/latest/miniconda.html>`__ to install Mercurial with
-few extensions. On Windows, these commands have to be run in the Anaconda
-Prompt.
-
-.. code ::
-
-  conda config --add channels conda-forge
-  conda create -n env_hg mercurial-app
-  conda activate env_hg
-  pip install hg+https://bitbucket.org/durin42/hg-git
-
-To get the command ``hg`` available in other terminals, we need to run:
-
-- On Unix and with Bash::
-
-    APP_DIR=$HOME/.local/bin/conda-app/
-    mkdir -p $APP_DIR
-    echo -e "\nexport PATH=\$PATH:$APP_DIR\n" >> ~/.bashrc
-    ln -s $(which hg) $APP_DIR/hg
-
-- On Unix and with Fish::
-
-    set APP_DIR $HOME/.local/bin/conda-app/
-    mkdir -p $APP_DIR
-    echo -e "\nset -gx PATH \$PATH $APP_DIR\n" >> ~/.config/fish/config.fish
-    ln -s (which hg) $APP_DIR/hg
 
 .. note ::
 
