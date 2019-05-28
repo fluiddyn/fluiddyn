@@ -236,7 +236,7 @@ to have the root directory of the repository.
   and in ``~/.hgrc``::
 
     [alias]
-    start_new_work = !hg pull fluiddyn && hg up -r $(hg identify --id fluiddyn)
+    start_new_work = !hg pull && hg pull fluiddyn && hg up -r $(hg identify --id fluiddyn) && hg sum
 
   Then, one can run ``hg start_new_work`` to be sure to start a new development
   from the right commit.
