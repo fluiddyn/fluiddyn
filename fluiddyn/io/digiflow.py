@@ -331,7 +331,7 @@ class DigiflowMovie:
         ModifiedDate = f.readt(8, "s")
         ModifiedTime = f.readt(8, "s")
         UnUsed = f.readt(40, "s")
-        del (UnUsed)
+        del UnUsed
         d = locals()
         del (d["f"], d["self"])
         self.hist_info = d
@@ -361,7 +361,7 @@ class DigiflowMovie:
 
         dtSampleSpacing = f.readt(1, "float32")
         UnUsed = f.readt(204, "uint8")
-        del (UnUsed)
+        del UnUsed
 
         d = locals()
         del (d["f"], d["self"])

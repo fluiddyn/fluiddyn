@@ -51,7 +51,7 @@ def quantities_from_txt_file(name_file):
 
     while len(lines) > 0:
         words = lines[0].split()
-        del (lines[0])
+        del lines[0]
         try:
             float(words[0])
             lines_with_num_data.append(words)

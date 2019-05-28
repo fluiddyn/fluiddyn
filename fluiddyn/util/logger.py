@@ -60,9 +60,7 @@ class Logger:
             str_time = time_as_str()
 
             with open(self.path, "a") as f:
-                f.write(
-                    f"Python error ({name_exception}) at {str_time}\n"
-                )
+                f.write(f"Python error ({name_exception}) at {str_time}\n")
 
             with open(self.path_logerr, "a") as f:
                 f.write(

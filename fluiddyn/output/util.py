@@ -1,4 +1,3 @@
-
 def gradient_colors(nb_colors, color_start=None, color_end=None):
     """Produce a color gradient."""
     if color_start is None:

@@ -81,11 +81,7 @@ class BinFile(_io.FileIO):
             else:
                 code_byte_order = _code_byte_order_from_str(byteorder)
 
-            fmt = (
-                code_byte_order
-                + f"{nb_values:d}"
-                + self.dcodetypes[codetype]
-            )
+            fmt = code_byte_order + f"{nb_values:d}" + self.dcodetypes[codetype]
             nb_bytes = struct.calcsize(fmt)
             raw = self.read(nb_bytes)
             if len(raw) != nb_bytes:

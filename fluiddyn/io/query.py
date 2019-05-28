@@ -13,7 +13,7 @@ import subprocess
 
 
 def call_bash(commands):
-    if os.name == 'posix':
+    if os.name == "posix":
         bash = "/bin/bash"
     else:
         # esp. windows / cygwin

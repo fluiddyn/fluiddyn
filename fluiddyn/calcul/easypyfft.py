@@ -142,7 +142,7 @@ class BaseFFT:
         nrj = self.compute_energy_from_spatial(arr)
         nrj_fft = self.compute_energy_from_Fourier(arr_fft)
 
-        assert np.allclose(nrj, nrj_fft), (nrj, nrj_fft, nb_proc*nrj_fft-nrj)
+        assert np.allclose(nrj, nrj_fft), (nrj, nrj_fft, nb_proc * nrj_fft - nrj)
 
         arr2_fft = np.zeros(self.shapeK, dtype=np.complex128)
         self.fft_as_arg(arr, arr2_fft)

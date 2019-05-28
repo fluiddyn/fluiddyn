@@ -79,7 +79,7 @@ qrls"""
         bash=True,
         email=None,
         interactive=False,
-        **kwargs
+        **kwargs,
     ):
         """Submit a command.
 

@@ -59,9 +59,10 @@ class TestImage(unittest.TestCase):
                 if _type == "color8":
                     continue  # Cannot handle 3D images now
 
-                err = err_msg(
-                    _format, _type, path
-                ) + f" Function imread from OpenCV={use_opencv}"
+                err = (
+                    err_msg(_format, _type, path)
+                    + f" Function imread from OpenCV={use_opencv}"
+                )
                 as_int = bool(_type.endswith("f"))
                 try:
                     imsave(path, image, _format, as_int)

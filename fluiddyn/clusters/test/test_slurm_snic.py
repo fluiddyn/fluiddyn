@@ -97,9 +97,7 @@ class SlurmTestCase(unittest.TestCase):
             )
 
         if os.path.exists(launcher):
-            raise ValueError(
-                f"SLURM launching script {launcher} was left behind"
-            )
+            raise ValueError(f"SLURM launching script {launcher} was left behind")
 
 
 class BeskowMod(ClusterSlurmMod, snic.Beskow):

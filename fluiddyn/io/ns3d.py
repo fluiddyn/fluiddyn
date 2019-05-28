@@ -190,13 +190,13 @@ class NS3DFieldFile(NS3DFile):
 
                 print_with_emptyend(" Done.\n    _compute_field_new_resol...")
                 field_new = self._compute_field_new_resol(field, op, op_new)
-                del (field)
+                del field
                 print_with_emptyend(
                     " Done.\n    write the array in the new file..."
                 )
                 f.write_as(nb_pts, "uint32")
                 f.write_as(field_new.flat, "float64")
-                del (field_new)
+                del field_new
                 print(" Done.")
                 f.write_as(nb_pts, "uint32")
 

@@ -91,8 +91,11 @@ class Tetralith(ClusterSlurm):
         # buildtool-easybuild/3.5.3-nsc17d8ce4 buildenv-intel/2018a-eb
         # FFTW/3.3.6-nsc1
         self.commands_setting_env.extend(
-            ["ml restore", f"source activate {_venv}",
-             'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH":"$LIBRARY_PATH"']
+            [
+                "ml restore",
+                f"source activate {_venv}",
+                'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH":"$LIBRARY_PATH"',
+            ]
         )
 
         self.commands_unsetting_env = ["source deactivate"]

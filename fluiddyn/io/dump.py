@@ -103,10 +103,7 @@ def dump_h5_object(obj, level=0, print_variables=False):
     if len(variables) > 0:
         print(indentp1 + "variables:")
         for value in variables:
-            print(
-                indentp1
-                + f"- variable {value.name} (dtype {value.dtype})"
-            )
+            print(indentp1 + f"- variable {value.name} (dtype {value.dtype})")
             if len(value.attrs) != 0:
                 print(indent1 + indentp1 + "attrs:", dict(value.attrs))
             if print_variables:

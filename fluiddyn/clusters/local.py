@@ -89,7 +89,7 @@ class ClusterLocal(Cluster):
         ask=True,
         bash=True,
         interactive=False,
-        **kwargs
+        **kwargs,
     ):
         """Submit a command.
 

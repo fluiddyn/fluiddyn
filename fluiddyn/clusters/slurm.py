@@ -85,7 +85,7 @@ scontrol release"""
         interactive=False,
         signal_num=12,
         signal_time=300,
-        **kwargs
+        **kwargs,
     ):
         """Submit a command.
 
