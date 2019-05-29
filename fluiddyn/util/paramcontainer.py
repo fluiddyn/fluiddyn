@@ -23,7 +23,6 @@ except ImportError:
     import xml.etree.ElementTree as etree
 
 from ast import literal_eval
-import six
 import re
 
 import numpy as np
@@ -57,7 +56,7 @@ def _as_str(value):
 
 def _as_value(value):
     if value.startswith("array("):
-        return eval(value)
+        return eval(value, {"array": np.array})
 
     if "\t" in value:
         return value
