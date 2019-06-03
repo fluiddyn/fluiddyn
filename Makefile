@@ -14,6 +14,9 @@ clean: clean_pyc
 black:
 	black -l 82 fluiddyn fluiddoc
 
+isort:
+	isort -rc --atomic fluiddyn fluiddoc
+
 tests:
 	pytest
 
