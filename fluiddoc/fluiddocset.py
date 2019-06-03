@@ -11,12 +11,15 @@ docsets.  Read more about generating docsets `here
 
 """
 
-import os
-from shlex import split
-import shutil
 import argparse
+import os
+import shutil
+from shlex import split
 from subprocess import call
+
 from pkg_resources import resource_filename
+
+from fluiddyn.io import Path, stdout_redirected
 
 try:
     from doc2dash.__main__ import main as doc2dash
@@ -27,8 +30,6 @@ try:
     from click.testing import CliRunner
 except ModuleNotFoundError:
     print("Install click to use this tool.")
-
-from fluiddyn.io import stdout_redirected, Path
 
 
 def check_sphinx_build(pkg_name, verbose, theme, regenerate=True):

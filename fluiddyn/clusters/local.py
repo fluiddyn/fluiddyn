@@ -9,14 +9,16 @@ Provides:
 
 """
 
-import os
-import psutil
 import datetime
+import os
 import stat
 from shlex import split
 from socket import gethostname
-from . import subprocess, Cluster
-from ..io.query import run_asking_agreement, call_bash
+
+import psutil
+
+from . import Cluster, subprocess
+from ..io.query import call_bash, run_asking_agreement
 from ..util.timer import TimeStr, timestamp_to_seconds
 
 

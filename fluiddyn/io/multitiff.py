@@ -9,22 +9,21 @@ IO for multitiff files (:mod:`fluiddyn.io.multitiff`)
 
 """
 
-import sys
-import time
-import os
 import glob
 import io
+import os
+import sys
+import time
 from math import ceil, log10
 
+from .image import _image_from_array
+from .query import query_yes_no
 
 try:
     import PIL
     from PIL import Image
 except ImportError:
     pass
-
-from .query import query_yes_no
-from .image import _image_from_array
 
 
 def glob_sorted(s):

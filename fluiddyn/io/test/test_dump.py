@@ -4,19 +4,17 @@ Test dump utility
 
 """
 
-import unittest
 import os
-from shutil import rmtree
 import sys
+import unittest
+from shutil import rmtree
 
+import h5netcdf
+import h5py
 import numpy as np
 
-import h5py
-import h5netcdf
-
-from ..redirect_stdout import stdout_redirected
-
 from ..dump import main
+from ..redirect_stdout import stdout_redirected
 
 
 class TestDump(unittest.TestCase):

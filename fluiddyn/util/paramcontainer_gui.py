@@ -10,10 +10,10 @@ Provides:
 """
 
 import os
-from copy import deepcopy
 import subprocess
+from copy import deepcopy
 
-from matplotlib.backends.qt_compat import QtWidgets, QtCore
+from matplotlib.backends.qt_compat import QtCore, QtWidgets
 
 from fluiddyn.util import time_as_str
 

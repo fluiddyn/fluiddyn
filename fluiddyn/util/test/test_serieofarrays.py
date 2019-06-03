@@ -1,12 +1,11 @@
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
 import numpy as np
 from PIL import Image
 
-
-from fluiddyn.util.serieofarrays import SeriesOfArrays, SerieOfArraysFromFiles
+from fluiddyn.util.serieofarrays import SerieOfArraysFromFiles, SeriesOfArrays
 
 
 def create_image(path):

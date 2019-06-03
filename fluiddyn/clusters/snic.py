@@ -27,8 +27,8 @@ Provides:
 """
 
 from os import getenv
-from .slurm import ClusterSlurm
 
+from .slurm import ClusterSlurm
 
 _venv = getenv("VIRTUAL_ENV", getenv("CONDA_PREFIX", getenv("LOCAL_PYTHON")))
 

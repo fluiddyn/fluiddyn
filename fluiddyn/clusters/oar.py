@@ -10,13 +10,13 @@ Provides:
 """
 
 
-import os
 import datetime
+import os
 import stat
 from sys import version_info as version
 
-from . import subprocess, Cluster
-from ..io.query import run_asking_agreement, call_bash
+from . import Cluster, subprocess
+from ..io.query import call_bash, run_asking_agreement
 
 
 class ClusterOAR(Cluster):

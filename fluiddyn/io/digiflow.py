@@ -15,8 +15,8 @@ Provides the classes :class:`DigiflowImage` and :class:`DigiflowMovie`.
 """
 
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 from fluiddyn.io.binary import BinFile
 from fluiddyn.util import Params

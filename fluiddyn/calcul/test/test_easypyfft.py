@@ -1,9 +1,10 @@
-import unittest
 import os
+import unittest
+
 import numpy as np
 
-from ...io import stdout_redirected
 from .. import easypyfft
+from ...io import stdout_redirected
 
 try:
     import pulp

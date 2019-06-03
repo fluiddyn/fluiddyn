@@ -23,9 +23,12 @@ Provides classes for performing fft in 1, 2, and 3 dimensions:
 """
 
 import os
-import numpy as np
 from copy import copy
 from time import time
+
+import numpy as np
+
+from ..util.mpi import nb_proc, printby0
 
 try:
     import scipy.fftpack as fftp
@@ -36,8 +39,6 @@ if "OMP_NUM_THREADS" in os.environ:
     nthreads = int(os.environ["OMP_NUM_THREADS"])
 else:
     nthreads = 1
-
-from ..util.mpi import printby0, nb_proc
 
 
 def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):

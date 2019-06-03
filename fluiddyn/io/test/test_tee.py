@@ -4,14 +4,13 @@ Test tee module
 
 """
 
-import unittest
 import os
-from shutil import rmtree
 import sys
-
-from ..tee import MultiFile
+import unittest
+from shutil import rmtree
 
 from ...io.redirect_stdout import stdout_redirected
+from ..tee import MultiFile
 
 
 class TestUtil(unittest.TestCase):

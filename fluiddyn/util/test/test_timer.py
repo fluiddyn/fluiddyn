@@ -6,7 +6,7 @@ Test timer module
 
 import unittest
 
-from ..timer import Timer, TimerIrregular, time_gteq, TimeStr
+from ..timer import Timer, TimerIrregular, TimeStr, time_gteq
 
 
 class TestTimer(unittest.TestCase):

@@ -10,9 +10,9 @@ By default, fluidnbstripout excludes the notebooks whose name ends with
 """
 
 import argparse
+import io
 import os
 from glob import glob
-import io
 
 import nbstripout
 

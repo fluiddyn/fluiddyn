@@ -17,8 +17,8 @@ Provides:
    :members:
 
 """
-from subprocess import check_output
 import time
+from subprocess import check_output
 
 from fluiddyn.clusters.oar import ClusterOAR
 

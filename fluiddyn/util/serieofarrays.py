@@ -35,12 +35,14 @@ API:
 
 """
 
-import os
-from glob import glob, escape
-from copy import copy, deepcopy
 import itertools
+import os
+from copy import copy, deepcopy
+from glob import escape, glob
 from math import ceil, log10
 
+from fluiddyn.io import Path
+from fluiddyn.io.image import extensions_movies, imread
 
 # import re
 
@@ -48,9 +50,6 @@ try:
     import pims
 except ImportError:
     pass
-
-from fluiddyn.io import Path
-from fluiddyn.io.image import imread, extensions_movies
 
 
 def get_nb_arrays_in_file(fname):

@@ -5,8 +5,8 @@ Daemons (:mod:`fluiddyn.util.daemons`)
 """
 
 
-from threading import Thread
 from multiprocessing import Process, Value
+from threading import Thread
 
 from fluiddyn.util import Params
 

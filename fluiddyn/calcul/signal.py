@@ -5,10 +5,10 @@ Simple operations on signals (:mod:`fluiddyn.calcul.signal`)
 """
 
 
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy import ndimage
 from scipy.interpolate import interp1d
-import matplotlib.pyplot as plt
 
 from fluiddyn.output import show
 

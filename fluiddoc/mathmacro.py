@@ -75,7 +75,6 @@ import re
 
 from docutils.parsers.rst.directives.misc import Replace
 from docutils.parsers.rst.roles import math_role as old_math_role
-
 from sphinx.directives.patches import MathDirective
 
 

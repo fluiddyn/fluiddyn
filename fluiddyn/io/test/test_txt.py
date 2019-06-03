@@ -4,8 +4,8 @@ Test txt functions
 
 """
 
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
 from ..txt import quantities_from_txt_file, save_quantities_in_txt_file

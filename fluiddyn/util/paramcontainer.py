@@ -11,21 +11,23 @@ Provides:
 
 """
 
-from typing import Dict, Any
 import os
+import re
+from ast import literal_eval
 from copy import deepcopy
-
 from io import open
+from typing import Any, Dict
+
+import numpy as np
+
+from fluiddyn.io import Path
+from fluiddyn.util.xmltotext import produce_text_element
 
 try:
     from lxml import etree
 except ImportError:
     import xml.etree.ElementTree as etree
 
-from ast import literal_eval
-import re
-
-import numpy as np
 
 try:
     import h5py
@@ -38,9 +40,6 @@ except ImportError:
         "work",
         ImportWarning,
     )
-
-from fluiddyn.io import Path
-from fluiddyn.util.xmltotext import produce_text_element
 
 
 def _as_str(value):

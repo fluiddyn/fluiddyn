@@ -4,8 +4,8 @@ Test mycsv module
 
 """
 
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
 from ..mycsv import CSVFile

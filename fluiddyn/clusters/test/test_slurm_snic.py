@@ -3,13 +3,12 @@ Test SLURM and SNIC clusters
 ============================
 
 """
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
-from .. import slurm, snic, cines
+from .. import cines, slurm, snic
 from ...io import stdout_redirected
-
 
 jobid = 123
 

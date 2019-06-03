@@ -6,9 +6,9 @@
 """
 
 import os
-from glob import glob
-from datetime import datetime
 import subprocess
+from datetime import datetime
+from glob import glob
 
 
 def modification_date(filename):

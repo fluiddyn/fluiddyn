@@ -7,8 +7,8 @@ Utilities to query (:mod:`fluiddyn.io.query`)
 """
 
 import os
-import sys
 import subprocess
+import sys
 
 
 def call_bash(commands):

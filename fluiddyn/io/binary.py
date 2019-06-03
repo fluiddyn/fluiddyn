@@ -13,9 +13,9 @@ Provides the class :class:`BinFile`.
 """
 
 
+import io as _io
 import struct
 import zlib
-import io as _io
 
 
 def chunks(l, n):

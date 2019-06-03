@@ -4,15 +4,15 @@ Test mpi module
 
 """
 
-import unittest
-import os
-from shutil import rmtree
 import io
+import os
+import unittest
+from shutil import rmtree
 
 import numpy as np
 
-from ..mpi import _mpi_type, nb_proc, rank, printby0
 from ...io.redirect_stdout import stdout_redirected
+from ..mpi import _mpi_type, nb_proc, printby0, rank
 
 
 class TestMPI(unittest.TestCase):

@@ -1,7 +1,7 @@
-from time import sleep
 import unittest
+from time import sleep
 
-from ..daemons import DaemonThread, DaemonProcess
+from ..daemons import DaemonProcess, DaemonThread
 
 
 def func(self):

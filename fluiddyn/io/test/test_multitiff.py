@@ -4,8 +4,8 @@ Test multitiff module
 
 """
 
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
 import numpy as np
@@ -13,12 +13,11 @@ from PIL import Image
 
 from ..multitiff import (
     imsave,
-    reorganize_single_frame_3Dscannedpiv_data,
-    reorganize_piv3dscanning_doubleframe,
-    reorganize_piv2d_singleframe,
     reorganize_piv2d_doubleframe,
+    reorganize_piv2d_singleframe,
+    reorganize_piv3dscanning_doubleframe,
+    reorganize_single_frame_3Dscannedpiv_data,
 )
-
 from ..redirect_stdout import stdout_redirected
 
 

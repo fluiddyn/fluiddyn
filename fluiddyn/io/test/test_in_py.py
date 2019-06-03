@@ -1,9 +1,8 @@
-import unittest
 import os
 import sys
-
-from shutil import rmtree
+import unittest
 from runpy import run_path
+from shutil import rmtree
 
 import numpy as np
 

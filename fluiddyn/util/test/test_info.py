@@ -2,11 +2,12 @@
 =================
 
 """
-import unittest
 import os
-from ..info import _get_parser, main, print_sys_info
-from ...io.redirect_stdout import stdout_redirected
+import unittest
 import warnings
+
+from ...io.redirect_stdout import stdout_redirected
+from ..info import _get_parser, main, print_sys_info
 
 
 class TestInfo(unittest.TestCase):

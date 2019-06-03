@@ -3,10 +3,12 @@
 
 """
 
+import argparse
 import os
 from glob import glob
-import argparse
 from multiprocessing import Pool, cpu_count
+
+from .query import query_yes_no
 
 try:
     import ReadIM
@@ -24,9 +26,6 @@ try:
 except ImportError as error:
     _error_png = error
     _png_ok = False
-
-
-from .query import query_yes_no
 
 
 def _import_error_readim():

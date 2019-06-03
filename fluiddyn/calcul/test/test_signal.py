@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from ..signal import decimate, FunctionLinInterp, deriv, smooth
+from ..signal import FunctionLinInterp, decimate, deriv, smooth
 
 
 class TestFFTW1DReal2Complex(unittest.TestCase):

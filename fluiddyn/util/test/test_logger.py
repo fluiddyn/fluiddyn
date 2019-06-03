@@ -1,6 +1,6 @@
 import os
-import unittest
 import smtplib
+import unittest
 
 import matplotlib.pyplot as plt
 

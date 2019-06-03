@@ -7,22 +7,18 @@ Provides:
 
 """
 
+# For guessing MIME type based on file name extension
+import mimetypes
 import os
 import smtplib
 import socket
-
-# For guessing MIME type based on file name extension
-import mimetypes
-
 from email import encoders
-from email.utils import formatdate
-
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
 from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.utils import formatdate
 
 
 def send_email(

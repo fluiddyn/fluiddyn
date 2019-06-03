@@ -3,12 +3,11 @@
 
 
 """
-from typing import Union, TextIO
-import os
-import io
-import pathlib
 import contextlib
-
+import io
+import os
+import pathlib
+from typing import TextIO, Union
 
 __all__ = ["stdout_redirected"]
 

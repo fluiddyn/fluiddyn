@@ -27,18 +27,18 @@ files.
 """
 
 
-import numpy as np
 import os
+from ast import literal_eval
+from glob import glob
+
+import numpy as np
+
+from fluiddyn.io.binary import BinFile
 
 try:
     from lxml import etree
 except ImportError:
     import xml.etree.ElementTree as etree
-
-from ast import literal_eval
-from glob import glob
-
-from fluiddyn.io.binary import BinFile
 
 
 class LoadedElement:

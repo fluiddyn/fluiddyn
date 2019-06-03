@@ -18,7 +18,6 @@ import sys
 from time import time
 from warnings import warn
 
-
 import numpy as np
 
 try:

@@ -5,11 +5,9 @@ Test query module
 """
 
 import builtins
-
-from contextlib import contextmanager
-import unittest
-
 import subprocess
+import unittest
+from contextlib import contextmanager
 
 from .. import query
 from ...io.redirect_stdout import stdout_redirected

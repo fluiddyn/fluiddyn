@@ -4,12 +4,12 @@ Test rdvision module
 
 """
 
-import unittest
 import os
+import unittest
 from glob import glob
-from shutil import rmtree, copy
+from shutil import copy, rmtree
 
-from ..rdvision import read_seq, read_xml, read_sqb, SetOfFiles
+from ..rdvision import SetOfFiles, read_seq, read_sqb, read_xml
 
 input_dir = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "rdvision_files")

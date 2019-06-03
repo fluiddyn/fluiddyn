@@ -17,17 +17,23 @@ Examples
     Use a YAML package to print.
 
 """
-from importlib import import_module as _import
-import os
-import shlex
-import inspect
-from collections import OrderedDict
-import platform
 import argparse
-import warnings
+import inspect
+import os
+import platform
+import shlex
 import shutil
-from pathlib import Path
+import subprocess
+import warnings
+from collections import OrderedDict
 from configparser import ConfigParser
+from importlib import import_module as _import
+from pathlib import Path
+
+import numpy as np
+import numpy.__config__ as np_build_info
+import numpy.distutils.system_info as np_sys_info
+import psutil
 
 try:
     from distro import linux_distribution
@@ -38,12 +44,6 @@ except ImportError:
     except ImportError:
         ImportError("Install distro package to use this module.")
 
-import subprocess
-
-import psutil
-import numpy as np
-import numpy.distutils.system_info as np_sys_info
-import numpy.__config__ as np_build_info
 
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=ImportWarning)

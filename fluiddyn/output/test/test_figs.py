@@ -1,11 +1,11 @@
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
 from .. import figs
+from ...io.redirect_stdout import stdout_redirected
 from ..figs import Figures, show
 from ..util import gradient_colors
-from ...io.redirect_stdout import stdout_redirected
 
 
 def do_nothing(*args):

@@ -3,9 +3,10 @@ Test local cluster
 ==================
 
 """
-import unittest
 import os
+import unittest
 from shutil import rmtree
+
 from .. import local
 from .test_slurm_snic import SlurmTestCase, stdout_redirected
 

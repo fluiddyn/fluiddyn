@@ -1,10 +1,10 @@
-import unittest
-import os
-from shutil import rmtree
 import json
+import os
+import unittest
+from shutil import rmtree
 
-from ..paramcontainer import ParamContainer, tidy_container
 from ...io.redirect_stdout import stdout_redirected
+from ..paramcontainer import ParamContainer, tidy_container
 
 xml_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "file.xml"))
 

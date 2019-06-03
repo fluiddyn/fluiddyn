@@ -1,6 +1,6 @@
-import unittest
 import os
 import sys
+import unittest
 
 from fluiddyn.io import stdout_redirected
 from fluiddyn.util import mpi

@@ -12,9 +12,10 @@ IO for HDF5 files (:mod:`fluiddyn.io.hdf5`)
 """
 
 
-import numpy as np
 import numbers
+
 import h5py
+import numpy as np
 
 
 class H5File(h5py.File):

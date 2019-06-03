@@ -4,8 +4,8 @@ Test txt functions
 
 """
 
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
 import numpy as np

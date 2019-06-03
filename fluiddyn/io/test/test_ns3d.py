@@ -4,10 +4,10 @@ Test ns3d module
 
 """
 
-import unittest
 import os
+import unittest
 from glob import glob
-from shutil import rmtree, copy
+from shutil import copy, rmtree
 
 from ..ns3d import NS3DFieldFile, NS3DForcingInfoFile
 from ..redirect_stdout import stdout_redirected

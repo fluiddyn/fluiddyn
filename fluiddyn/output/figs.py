@@ -15,11 +15,11 @@ Provides
 """
 
 
-import sys
 import os
+import sys
 
-import matplotlib.pyplot as plt
 import matplotlib
+import matplotlib.pyplot as plt
 
 from ..util import is_run_from_ipython
 from .rcparams import set_rcparams

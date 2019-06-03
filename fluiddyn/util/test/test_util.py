@@ -4,18 +4,17 @@ Test hdf5 module
 
 """
 
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
-import numpy as np
 import h5py
+import numpy as np
 
 from .. import util
+from ...io.redirect_stdout import stdout_redirected
 from ..terminal_colors import print_fail, print_warning
 from ..userconfig import load_user_conf_files
-
-from ...io.redirect_stdout import stdout_redirected
 
 
 def expectedFailureIf(condition):

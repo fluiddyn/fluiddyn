@@ -1,5 +1,9 @@
 import unittest
+
 from numpy.testing import assert_allclose
+
+from .. import sphericalharmo
+from ...io import stdout_redirected
 
 try:
     import shtns
@@ -7,9 +11,6 @@ except ImportError:
     use_shtns = False
 else:
     use_shtns = True
-
-from ...io import stdout_redirected
-from .. import sphericalharmo
 
 
 class TestSphericalHarmo(unittest.TestCase):

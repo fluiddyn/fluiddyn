@@ -3,18 +3,18 @@
 
 """
 
-import os
 import configparser
+import os
+
+import numpy as np
+
+from fluiddyn.io.binary import BinFile
+from fluiddyn.util.paramcontainer import ParamContainer, tidy_container
 
 try:
     from PIL import Image
 except ImportError:
     pass
-
-import numpy as np
-
-from fluiddyn.util.paramcontainer import ParamContainer, tidy_container
-from fluiddyn.io.binary import BinFile
 
 
 def read_seq(name):

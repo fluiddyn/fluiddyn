@@ -4,13 +4,13 @@ Test hdf5 module
 
 """
 
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
 import numpy as np
 
-from ..hdf5 import H5File, save_variables_h5, load_variables_h5
+from ..hdf5 import H5File, load_variables_h5, save_variables_h5
 
 
 class TestHdf5(unittest.TestCase):

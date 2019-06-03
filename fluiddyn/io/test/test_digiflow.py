@@ -4,13 +4,13 @@ Test digiflow module
 
 """
 
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
-# import numpy as np
-
 from ..digiflow import DigiflowImage, DigiflowMovie
+
+# import numpy as np
 
 
 class TestDigiflow(unittest.TestCase):

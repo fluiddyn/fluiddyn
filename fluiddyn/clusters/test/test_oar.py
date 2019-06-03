@@ -3,16 +3,15 @@ Test oar clusters
 =================
 
 """
-import unittest
 import os
-from shutil import rmtree
 import subprocess
+import unittest
+from shutil import rmtree
 
 from ...io import stdout_redirected
-
-from ..oar import ClusterOAR
-from ..legi import Calcul, Calcul3, Calcul9, Calcul7, Calcul8
 from ..ciment import Froggy
+from ..legi import Calcul, Calcul3, Calcul7, Calcul8, Calcul9
+from ..oar import ClusterOAR
 
 path_test = "tmp_test"
 

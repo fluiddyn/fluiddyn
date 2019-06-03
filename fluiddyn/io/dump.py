@@ -4,12 +4,11 @@
 """
 
 
+import argparse
 import os
 from glob import glob
-import argparse
 
 import h5py
-
 
 description = """
 

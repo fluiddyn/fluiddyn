@@ -5,20 +5,20 @@ Toolkit (:mod:`fluiddyn.util.util`)
 """
 
 
-import os
-import sys
+import contextlib
+import datetime
 import glob
 import inspect
+import os
 import shutil
-import datetime
+import sys
 from importlib import import_module
-import contextlib
 
-import psutil
 import numpy as np
+import psutil
 
-from ..io import Path, HOME_DIR
 from . import mpi
+from ..io import HOME_DIR, Path
 
 
 def modification_date(path):

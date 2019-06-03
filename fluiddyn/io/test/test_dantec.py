@@ -4,8 +4,8 @@ Test dantec module
 
 """
 
-import unittest
 import os
+import unittest
 from shutil import rmtree
 
 from .. import dantec

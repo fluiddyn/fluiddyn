@@ -9,6 +9,8 @@ import os
 
 import numpy as np
 
+from .hdf5 import H5File
+
 try:
     from PIL import Image
 except ImportError:
@@ -36,8 +38,6 @@ try:
     import pims
 except ImportError:
     pass
-
-from .hdf5 import H5File
 
 
 __all__ = ["imread", "imsave", "imread_h5", "imsave_h5", "extensions_movies"]

@@ -16,9 +16,9 @@ Provides:
 
 """
 
+import operator
 import time
 from datetime import timedelta
-import operator
 
 
 def parse_timestamp(timestr):
