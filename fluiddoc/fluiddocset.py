@@ -10,7 +10,6 @@ docsets.  Read more about generating docsets `here
 .. autofunction::  doc_to_docsets
 
 """
-from __future__ import print_function
 
 import os
 from shlex import split

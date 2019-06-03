@@ -11,7 +11,6 @@ Many more simple transformations can be implemented, for example:
 
 """
 
-from __future__ import print_function
 
 import os
 

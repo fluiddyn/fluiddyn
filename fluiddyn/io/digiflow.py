@@ -14,10 +14,7 @@ Provides the classes :class:`DigiflowImage` and :class:`DigiflowMovie`.
 
 """
 
-from __future__ import division, print_function
 
-from builtins import range
-from builtins import object
 import numpy as np
 import matplotlib.pyplot as plt
 

@@ -4,9 +4,7 @@ Toolkit (:mod:`fluiddyn.util.util`)
 
 """
 
-from __future__ import division, print_function
 
-from builtins import object, str
 import os
 import sys
 import glob

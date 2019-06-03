@@ -3,8 +3,6 @@
 
 """
 
-from __future__ import print_function
-
 
 def produce_text_element(elem, level=0):
     lines = []

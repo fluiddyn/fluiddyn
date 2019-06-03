@@ -8,9 +8,7 @@ IO for multitiff files (:mod:`fluiddyn.io.multitiff`)
 .. autofunction:: reorganize_piv2d_doubleframe
 
 """
-from __future__ import print_function, division
 
-from builtins import range
 import sys
 import time
 import os

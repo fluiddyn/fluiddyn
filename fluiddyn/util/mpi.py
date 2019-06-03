@@ -11,7 +11,6 @@ If the program as been launch using mpi, also defines the variable ``comm``
 with is the ``MPI.COMM_WORLD`` communicator.
 
 """
-from __future__ import print_function
 
 import os
 import sys

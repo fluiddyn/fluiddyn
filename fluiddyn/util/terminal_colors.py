@@ -5,7 +5,6 @@ Defines string variables useful to print in color in a terminal.
 
 """
 
-from __future__ import print_function
 
 HEADER = "\033[95m"
 OKBLUE = "\033[94m"

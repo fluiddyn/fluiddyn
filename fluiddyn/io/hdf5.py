@@ -12,9 +12,6 @@ IO for HDF5 files (:mod:`fluiddyn.io.hdf5`)
 """
 
 
-from __future__ import division, print_function
-
-from builtins import range
 import numpy as np
 import numbers
 import h5py
