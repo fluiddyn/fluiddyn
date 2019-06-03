@@ -16,10 +16,6 @@ Provides:
 
 """
 
-from __future__ import division, print_function
-
-from builtins import range
-from builtins import object
 import time
 from datetime import timedelta
 import operator

@@ -14,9 +14,6 @@ This module requires the C library shtns. To install it, run something like::
 """
 
 
-from __future__ import division, print_function
-
-
 import sys
 from time import time
 from warnings import warn
@@ -431,7 +428,7 @@ class EasySHT:
         return field
 
     def chrono_sht(self, nb_sht=10):
-        """Microbenchmark forward and inverse SHT, and 
+        """Microbenchmark forward and inverse SHT, and
         vorticity, divergence <-> u, v transformations.
 
         """
@@ -514,7 +511,7 @@ class EasySHT:
         return hdiv_lm, hrot_lm
 
     def uv_from_uDuRsh(self, uD_lm, uR_lm, uu=None, vv=None):
-        """Compute velocities uu, vv from uD, uR (uu and vv are 
+        """Compute velocities uu, vv from uD, uR (uu and vv are
         overwritten).
 
         """

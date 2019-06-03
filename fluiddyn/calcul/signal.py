@@ -4,11 +4,7 @@ Simple operations on signals (:mod:`fluiddyn.calcul.signal`)
 
 """
 
-from __future__ import division, print_function
 
-from builtins import zip
-from builtins import range
-from builtins import object
 import numpy as np
 from scipy import ndimage
 from scipy.interpolate import interp1d

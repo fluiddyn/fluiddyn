@@ -12,10 +12,7 @@ Provides the class :class:`BinFile`.
 
 """
 
-from __future__ import division, print_function
 
-
-from builtins import range
 import struct
 import zlib
 import io as _io

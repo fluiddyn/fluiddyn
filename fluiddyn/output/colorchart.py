@@ -7,11 +7,6 @@ Provides
 
 """
 
-from __future__ import division
-from __future__ import print_function
-
-# from builtins import str
-from builtins import range
 from colorsys import hsv_to_rgb
 
 import matplotlib.pyplot as plt

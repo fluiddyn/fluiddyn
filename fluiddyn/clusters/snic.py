@@ -25,7 +25,6 @@ Provides:
    :members:
 
 """
-from __future__ import print_function
 
 from os import getenv
 from .slurm import ClusterSlurm

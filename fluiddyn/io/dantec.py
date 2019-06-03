@@ -26,9 +26,7 @@ files.
 
 """
 
-from __future__ import division, print_function
 
-from builtins import object
 import numpy as np
 import os
 

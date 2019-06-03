@@ -17,7 +17,6 @@ Examples
     Use a YAML package to print.
 
 """
-from __future__ import print_function
 from importlib import import_module as _import
 import os
 import shlex

@@ -6,7 +6,6 @@ Test query module
 
 import builtins
 
-# import sys
 from contextlib import contextmanager
 import unittest
 

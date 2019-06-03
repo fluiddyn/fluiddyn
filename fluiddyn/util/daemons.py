@@ -4,9 +4,7 @@ Daemons (:mod:`fluiddyn.util.daemons`)
 
 """
 
-from __future__ import division, print_function
 
-from builtins import object
 from threading import Thread
 from multiprocessing import Process, Value
 
