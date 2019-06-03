@@ -15,7 +15,7 @@ black:
 	black -l 82 fluiddyn fluiddoc
 
 isort:
-	isort -rc --atomic fluiddyn fluiddoc
+	isort -rc --atomic -tc fluiddyn fluiddoc
 
 tests:
 	pytest
