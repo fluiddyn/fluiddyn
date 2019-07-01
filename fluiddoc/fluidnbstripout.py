@@ -14,17 +14,28 @@ import io
 import os
 from glob import glob
 
-import nbstripout
+try:
+    import nbstripout
+except ModuleNotFoundError as err:
+    if "nbstripout" in str(err):
+        print(
+            "ModuleNotFoundError: No module named 'nbstripout'. "
+            "You should try:\npip install nbstripout"
+        )
+        import sys
+
+        sys.exit(1)
+import nbformat
 
 
 def stripout(filename, keep_output=False, keep_count=False):
     print("stripout notebook", os.path.relpath(filename))
     try:
         with io.open(filename, "r", encoding="utf8") as f:
-            nb = nbstripout.read(f, as_version=nbstripout.NO_CONVERT)
+            nb = nbformat.read(f, as_version=nbformat.NO_CONVERT)
         nb = nbstripout.strip_output(nb, keep_output, keep_count)
         with io.open(filename, "w", encoding="utf8") as f:
-            nbstripout.write(nb, f)
+            nbformat.write(nb, f)
     except Exception:
         # Ignore exceptions for non-notebook files.
         print(f"Could not strip '{filename}'")
