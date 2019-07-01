@@ -34,9 +34,7 @@ _venv = getenv("VIRTUAL_ENV", getenv("CONDA_PREFIX", getenv("LOCAL_PYTHON")))
 
 
 if _venv is None:
-    from warnings import warn
-
-    warn(
+    print(
         "Cannot detect a virtualenv / conda env. You should set an environment "
         "variable LOCAL_PYTHON instead for fluiddyn.clusters.snic to work."
     )

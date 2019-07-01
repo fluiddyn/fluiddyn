@@ -16,14 +16,13 @@ This module requires the C library shtns. To install it, run something like::
 
 import sys
 from time import time
-from warnings import warn
 
 import numpy as np
 
 try:
     import shtns
 except ImportError:
-    warn(
+    print(
         "ImportError shtns.\n\n"
         "To install shtns, you can run the following:\n"
         "    hg clone https://bitbucket.org/nschaeff/shtns\n"

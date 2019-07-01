@@ -175,7 +175,7 @@ def load_variables_h5(path):
 
     with h5py.File(path, "r") as f:
         for key, dataset in f.items():
-            variables[key] = dataset.value
+            variables[key] = dataset[()]
 
     return variables
 

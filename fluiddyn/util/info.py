@@ -35,14 +35,18 @@ import numpy.__config__ as np_build_info
 import numpy.distutils.system_info as np_sys_info
 import psutil
 
+# linux_distribution is deprecated and no longer exists in Python 3.8
 try:
+    # for 3.8, we use the package distro
     from distro import linux_distribution
 except ImportError:
-    try:
-        from platform import linux_distribution
-    # Pending deprecation (Python 3.7)
-    except ImportError:
-        ImportError("Install distro package to use this module.")
+    # for < 3.8, it should work without distro
+    from platform import linux_distribution as _linux_dist
+
+    def linux_distribution():
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            return _linux_dist()
 
 
 with warnings.catch_warnings():
