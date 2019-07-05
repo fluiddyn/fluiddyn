@@ -39,7 +39,6 @@ class Calcul(ClusterOAR):
     has_to_add_name_cluster = False
     nb_cores_per_node = 20
     frontends = ["nrj1sv223", "nrj1sv224"]
-    job_count = 0
 
 
 class Calcul7(Calcul):

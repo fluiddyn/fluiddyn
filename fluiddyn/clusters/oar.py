@@ -14,7 +14,7 @@ import datetime
 import os
 import stat
 from sys import version_info as version
-from subprocess import check_output
+from subprocess import getoutput
 import time
 
 from . import Cluster, subprocess
@@ -22,8 +22,8 @@ from ..io.query import call_bash, run_asking_agreement
 
 
 def count_number_jobs(name_job):
-    output = check_output(["oarstat", "-u"])
-    return sum(True for line in output.split(b"\n") if name_job in line)
+    output = getoutput("oarstat -u")
+    return sum(True for line in output.split("\n") if name_job in line)
 
 
 class ClusterOAR(Cluster):
