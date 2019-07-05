@@ -22,15 +22,7 @@ import numpy as np
 try:
     import shtns
 except ImportError:
-    print(
-        "ImportError shtns.\n\n"
-        "To install shtns, you can run the following:\n"
-        "    hg clone https://bitbucket.org/nschaeff/shtns\n"
-        "    cd shtns\n"
-        "    ./configure --prefix=$VIRTUAL_ENV --enable-python\n"
-        "    make\n"
-        "    make install\n"
-    )
+    pass
 else:
     sht_orthonormal = shtns.sht_orthonormal
     sht_fourpi = shtns.sht_fourpi
@@ -200,7 +192,19 @@ class EasySHT:
     ):
 
         # to get a clear ImportError
-        import shtns
+        try:
+            import shtns
+        except ImportError:
+            print(
+                "ImportError shtns.\n\n"
+                "To install shtns, you can run the following:\n"
+                "    hg clone https://bitbucket.org/nschaeff/shtns\n"
+                "    cd shtns\n"
+                "    ./configure --prefix=$VIRTUAL_ENV --enable-python\n"
+                "    make\n"
+                "    make install\n"
+            )
+            raise
 
         if norm is None:
             norm = sht_fourpi

@@ -3,7 +3,6 @@ Clusters
 ========
 
 .. _clusters:
-.. currentmodule:: fluiddyn.clusters
 
 Provides:
 
@@ -19,16 +18,22 @@ Provides:
    cines
    snic
 
+.. autoclass:: Cluster
+   :members:
+
 """
 
 import subprocess
 
 
 class Cluster:
+    """Base class for clusters"""
+
     _doc_commands = ""
 
     @classmethod
     def print_doc_commands(cls):
+        """Print a short documentation about the commands available in the cluster"""
         print(cls._doc_commands)
 
 

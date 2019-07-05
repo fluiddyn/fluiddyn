@@ -7,13 +7,10 @@ Provides:
 .. autoclass:: Calcul
    :members:
 
-.. autoclass:: Calcul3
-   :members:
-
-.. autoclass:: Calcul9
-   :members:
-
 .. autoclass:: Calcul7
+   :members:
+
+.. autoclass:: Calcul8
    :members:
 
 """
@@ -43,37 +40,6 @@ class Calcul(ClusterOAR):
     nb_cores_per_node = 20
     frontends = ["nrj1sv223", "nrj1sv224"]
     job_count = 0
-
-    def stall(self, name_run="fluiddyn", stall_after=1, t_sleep=30):
-        """Stall job submission to wait for similar jobs to complete.
-
-        Parameters
-        ----------
-        name_run: str
-            Description of the job. Should be the same as in submit_script.
-        stall_after: int
-            Continue launching jobs, and stall when `job_count` is divisible
-            by `stall_after`.
-        t_sleep: int
-            Time to sleep in seconds.
-
-        """
-        tstart = time.time()
-        self.job_count += 1
-        while (
-            name_run in check_output(["oarstat", "-u"])
-            and self.job_count % stall_after == 0
-        ):
-            tnow = time.time()
-            print(
-                "\rWaiting for",
-                name_run,
-                "to finish...",
-                tnow - tstart,
-                "seconds",
-                end=" ",
-            )
-            time.sleep(t_sleep)
 
 
 class Calcul7(Calcul):

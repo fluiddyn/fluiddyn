@@ -14,9 +14,16 @@ import datetime
 import os
 import stat
 from sys import version_info as version
+from subprocess import check_output
+import time
 
 from . import Cluster, subprocess
 from ..io.query import call_bash, run_asking_agreement
+
+
+def count_number_jobs(name_job):
+    output = check_output(["oarstat", "-u"])
+    return sum(True for line in output.split(b"\n") if name_job in line)
 
 
 class ClusterOAR(Cluster):
@@ -65,6 +72,7 @@ oarsub -C $JOB_ID"""
         network_address=None,
         ask=True,
         submit=True,
+        run_with_exec=True,
     ):
 
         path = os.path.expanduser(path)
@@ -88,6 +96,7 @@ oarsub -C $JOB_ID"""
             network_address=network_address,
             ask=ask,
             submit=submit,
+            run_with_exec=run_with_exec,
         )
 
     def submit_command(
@@ -105,6 +114,7 @@ oarsub -C $JOB_ID"""
         network_address=None,
         ask=True,
         submit=True,
+        run_with_exec=True,
     ):
 
         self.check_oar()
@@ -132,6 +142,7 @@ oarsub -C $JOB_ID"""
             nb_mpi_processes=nb_mpi_processes,
             omp_num_threads=omp_num_threads,
             network_address=network_address,
+            run_with_exec=run_with_exec,
         )
 
         with open(path_launching_script, "w") as f:
@@ -175,9 +186,10 @@ oarsub -C $JOB_ID"""
         nb_mpi_processes=None,
         omp_num_threads=None,
         network_address=None,
+        run_with_exec=True,
     ):
 
-        txt = "#!/bin/bash\n\n" "#OAR -n {}\n".format(name_run)
+        txt = f"#!/bin/bash\n\n#OAR -n {name_run}\n"
 
         txt += "#OAR -l "
 
@@ -203,7 +215,8 @@ oarsub -C $JOB_ID"""
                 "export OMPI_MCA_plm_rsh_agent=oar-envsh\n\n"
             )
 
-        txt += "exec "
+        if run_with_exec:
+            txt += "exec "
 
         if nb_mpi_processes is not None:
             txt += f"mpirun -np {nb_mpi_processes} "
@@ -214,3 +227,23 @@ oarsub -C $JOB_ID"""
         txt += command + "\n"
 
         return txt
+
+    def stall(self, name_job, limit_number_jobs=1, time_check=30):
+        """Wait until job(s) completion.
+
+        Parameters
+        ----------
+
+        name_run: str
+            Description of the job. Should be the same as in submit_script.
+
+        limit_number_jobs: int (default: 1)
+            Stall when the number of job is larger or equal to `limit_number_jobs`.
+
+        time_check: int
+            Time to sleep in seconds.
+        """
+        tstart = time.time()
+        while count_number_jobs(name_job) >= limit_number_jobs:
+            time.sleep(time_check)
+        print(f"job {name_job} finished in {time.time() - tstart} s")

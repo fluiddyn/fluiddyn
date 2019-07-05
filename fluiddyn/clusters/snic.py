@@ -33,14 +33,19 @@ from .slurm import ClusterSlurm
 _venv = getenv("VIRTUAL_ENV", getenv("CONDA_PREFIX", getenv("LOCAL_PYTHON")))
 
 
-if _venv is None:
-    print(
-        "Cannot detect a virtualenv / conda env. You should set an environment "
-        "variable LOCAL_PYTHON instead for fluiddyn.clusters.snic to work."
-    )
+class SNIC(ClusterSlurm):
+    def __init__(self):
+        if _venv is None:
+            from warnings import warn
+
+            warn(
+                "Cannot detect a virtualenv / conda env. You should set an environment "
+                "variable LOCAL_PYTHON instead for fluiddyn.clusters.snic to work."
+            )
+        super().__init__()
 
 
-class Beskow(ClusterSlurm):
+class Beskow(SNIC):
     name_cluster = "beskow"
     nb_cores_per_node = 32
     cmd_run_interactive = "aprun"
@@ -71,7 +76,7 @@ class Beskow36(Beskow):
     constraint = "Broadwell"
 
 
-class Tetralith(ClusterSlurm):
+class Tetralith(SNIC):
     name_cluster = "tetralith"
     nb_cores_per_node = 32
     cmd_run = "mpprun"
@@ -98,7 +103,7 @@ class Tetralith(ClusterSlurm):
         self.commands_unsetting_env = ["source deactivate"]
 
 
-class Abisko(ClusterSlurm):
+class Abisko(SNIC):
     name_cluster = "abisko"
     nb_cores_per_node = 24
     cmd_run_interactive = "mpirun"
@@ -119,7 +124,7 @@ class Abisko(ClusterSlurm):
         self.commands_unsetting_env = []
 
 
-class Kebnekaise(ClusterSlurm):
+class Kebnekaise(SNIC):
     name_cluster = "kebnekaise"
     nb_cores_per_node = 28
     cmd_run_interactive = "mpirun"
