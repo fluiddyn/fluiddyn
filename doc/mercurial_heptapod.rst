@@ -74,7 +74,7 @@ An example of configuration file::
   hgext.extdiff =
   # only to use Mercurial with GitHub and Gitlab
   hggit =
-  # more advanced extensions
+  # more advanced extensions (really useful for FluidDyn dev)
   churn =
   shelve =
   rebase =
@@ -217,18 +217,41 @@ packages.
   In contrast to the standard workflow in Github, Gitlab and Bitbucket, you
   don't need to fork the repository to create Merge Requests.
 
-Instead, you need to become a "developer" of the project, i.e. to have the
-permission to push commits in a topic in a main repository (for example
-https://foss.heptapod.net/fluiddyn/fluidsim). To acquire the "developer" role,
-please send a message in an issue or create a dedicated issue.
+Instead, you need to become a "developer" of the project. The developers have
+the permission to push changesets (i.e. "commits") in a topic in the main
+repository (for example https://foss.heptapod.net/fluiddyn/fluidsim). To
+acquire the "developer" role, please send a message in an issue_ or if needed,
+create a dedicated issue.
 
-Topics are used in Mercurial for "lightweight branches" (like Git branches).
-You should read `this tutorial
-<https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_
-is you don't know well Mercurial topics.
+.. _issue: https://foss.heptapod.net/fluiddyn/fluiddyn/issues/6
 
-The new commits gathered in a topic can be pushed in the main repository and
-developers have to create Merge Requests to get things merged in the targeted
+Topics are used in Mercurial for "lightweight branches" (like Git branches). If
+you are unfamiliar with Mercurial topics, you should read `this tutorial
+<https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_.
+The principle is that you first create a topic (with ``hg topic``). Once a
+topic is activated, the changesets created belong to this topic. The new
+changesets gathered in a topic can be pushed in the main repository. Even after
+having been pushed to the main repository, they stay in the ``draft`` phase
+(which means they can be modified, as opposed to ``public`` changesets. Run
+``hg help phases`` for more info).
+
+To list the topics::
+
+  hg topic
+
+To activate a topic already created::
+
+  hg up the_name_of_the_topic
+
+To deactivate the topic and come back the tip of the default branch::
+
+  hg up default
+
+To get the list of the changesets in the active topic (very useful)::
+
+  hg stack
+
+Developers have to create Merge Requests to get things merged in the targeted
 branch (which is usually default for FluidDyn packages). Let's present an
 example. A FluidDyn developer can do (here, we use ssh but you can also use
 https)::
@@ -239,8 +262,10 @@ https)::
   hg push
 
 Mercurial is going to print an URL to create the associated MR. Once created,
-the MR should then be reviewed by a "maintainer". The maintainer can tell you
-how to modify your MR and s-he can also directly modify the MR.
+the MR should then be reviewed by a "maintainer". Only maintainers have the
+right to merge a MR, i.e. to publish changesets. The maintainer can tell you
+how to modify your MR and s-he can also directly modify the changesets of the
+MR!
 
 We strongly advice to install and activate the `evolve
 <https://www.mercurial-scm.org/doc/evolution/>`_, rebase and `absorb
