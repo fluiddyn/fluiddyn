@@ -3,14 +3,15 @@ channels:
   - conda-forge
 
 dependencies:
-  - python=3.6
+  - python=3.7
+  - pip
   - numpy
   - h5py
-  - jupyter
-  - matplotlib
-  - pandas
-  - imageio
   - pip:
+    - jupyter
+    - matplotlib
+    - pandas
+    - imageio
     - sphinx
     - numpydoc
     - sphinx_rtd_theme
