@@ -302,7 +302,14 @@ def get_info_hardware():
             return (func + "None",) * 3  # See psutil issue #981
 
         else:
-            return (f"{h:.3f}" for h in hz)
+            ret = []
+            for h in hz:
+                try:
+                    h = f"{h:.3f}"
+                except TypeError:
+                    pass
+                ret.append(h)
+            return ret
 
     try:
         from numpy.distutils.cpuinfo import cpu
