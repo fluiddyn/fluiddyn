@@ -1,5 +1,5 @@
-Mercurial and Bitbucket short tutorial for FluidDyn
-===================================================
+Mercurial and Heptapod short tutorial for FluidDyn
+==================================================
 
 `Mercurial <http://mercurial.selenic.com/>`_ is a free, distributed source
 control management tool. It's is a great tool and if you are doing research
@@ -12,14 +12,15 @@ simpler and nicer to learn and use than `Git
 
 Mercurial couples very well with the programs `TortoiseHG
 <https://tortoisehg.bitbucket.io/>`__ and `Meld <https://meldmerge.org/>`__ (if
-you can, just install them, especially Meld) and with the site `Bitbucket
-<https://bitbucket.org>`_.
+you can, just install them, especially Meld).
 
-There are a lot of tutorials and documentations about Mercurial and
-Bitbucket (for example `the official Mercurial tutorial
-<http://mercurial.selenic.com/wiki/Tutorial>`_ or `here
-<http://www.math.wisc.edu/~jeanluc/bitbucket_instructions.php>`_). In
-this page, I focus on what is needed to use and develop FluidDyn.
+There are a lot of tutorials and documentations about Mercurial (for example
+`the official Mercurial tutorial
+<http://mercurial.selenic.com/wiki/Tutorial>`_). In this page, I focus on what
+is needed to use and develop FluidDyn.
+
+`Heptapod <https://heptapod.net/>`_ is a friendly fork of GitLab Community
+Edition supporting Mercurial.
 
 Installation
 ------------
@@ -48,14 +49,6 @@ conda-forge``), one just needs to run::
   conda-app install mercurial
 
 **Open a new terminal** and the Mercurial command ``hg`` should be available.
-
-With pip2
-^^^^^^^^^
-
-To install Mercurial with few important external extensions, I usually do **on
-Linux**::
-
-  pip2 install mercurial hg-git hg-evolve -U --user
 
 .. note ::
 
@@ -101,6 +94,11 @@ for more advanced users. Note that `evolve
 <https://www.mercurial-scm.org/doc/evolution/>`_ and `topic
 <https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_
 comes from the package `hg-evolve <https://pypi.org/project/hg-evolve>`_.
+
+.. note ::
+
+  For development of FluidDyn packages, the evolve and topic extensions have to
+  be installed and activated!
 
 Get help
 --------
@@ -156,7 +154,7 @@ with another commit with::
 
   hg commit --amend
 
-To push the state of your working repository to your Bitbucket repository::
+To push the state of your working repository to your repository on the web::
 
   hg push
 
@@ -204,62 +202,52 @@ Create a new repository in the given directory by doing::
 
   hg init
 
+Merge-Request based workflow with hg-evolve
+-------------------------------------------
 
-Pull-request based workflow with hg-evolve
-------------------------------------------
+We now use a Merge-Request (MR) based workflow for the development of FluidDyn
+packages.
 
-We now use a PR based workflow for the development of FluidDyn packages with
-main publishing repositories (for example
-https://foss.heptapod.net/fluiddyn/fluidsim) and development non-publishing
-repositories (for example https://bitbucket.org/paugier/fluidsim).
+.. note ::
 
-The new commits are pushed in the development repositories and developers have
-to create Pull Requests (PR) to get things merged in the main repositories.
+  GitLab's "merge requests" are equivalent to GitHub's "pull requests".
 
-The first thing to do to start to develop something in one of the FluidDyn
-repository is to create your own repository on Bitbucket. Go to the page of the
-main repository of the package (for example for fluidsim,
-https://foss.heptapod.net/fluiddyn/fluidsim). Create your own repository on
-Bitbucket by clicking on Fork. Then from the page of your repository, click on
-Clone, copy the given command line and run it from the directory where you want
-to have the root directory of the repository.
+.. note ::
 
-.. tip ::
+  In contrast to the standard workflow in Github, Gitlab and Bitbucket, you
+  don't need to fork the repository to create Merge Requests.
 
-  FluidDyn developers can add in ``.hg/hgrc`` in their local repositories
-  something like (replace ``paugier`` by your Bitbucket login)::
+Instead, you need to become a "developer" of the project, i.e. to have the
+permission to push commits in a topic in a main repository (for example
+https://foss.heptapod.net/fluiddyn/fluidsim). To acquire the "developer" role,
+please send a message in an issue or create a dedicated issue.
 
-    [paths]
-    default = ssh://hg@bitbucket.org/paugier/fluidsim
-    fluiddyn = ssh://hg@foss.heptapod.net/fluiddyn/fluidsim
+Topics are used in Mercurial for "lightweight branches" (like Git branches).
+You should read `this tutorial
+<https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_
+is you don't know well Mercurial topics.
 
-  and in ``~/.hgrc``::
+The new commits gathered in a topic can be pushed in the main repository and
+developers have to create Merge Requests to get things merged in the targeted
+branch (which is usually default for FluidDyn packages). Let's present an
+example. A FluidDyn developer can do (here, we use ssh but you can also use
+https)::
 
-    [alias]
-    start_new_work = !hg pull && hg pull fluiddyn && hg up -r $(hg identify --id fluiddyn) && hg sum
+  hg clone ssh://hg@foss.heptapod.net/fluiddyn/fluidsim
+  hg topic fix_something
+  hg commit -m "Fix a bug related to ..."
+  hg push
 
-  Then, one can run ``hg start_new_work`` to be sure to start a new development
-  from the right commit.
-
-Then, you can modify and add things. Create changesets using ``hg clone``, push
-them in your repository in Bitbucket. Once you have something coherent, create
-a PR on the Bitbucket website.
-
-It's strongly adviced to enable the Bitbucket Pipelines for the development
-repositories (for paugier/fluidsim, here
-https://bitbucket.org/paugier/fluidsim/admin/addon/admin/pipelines/settings),
-so that we know if the tests pass or fail.
+Mercurial is going to print an URL to create the associated MR. Once created,
+the MR should then be reviewed by a "maintainer". The maintainer can tell you
+how to modify your MR and s-he can also directly modify the MR.
 
 We strongly advice to install and activate the `evolve
-<https://www.mercurial-scm.org/doc/evolution/>`_ and `absorb
+<https://www.mercurial-scm.org/doc/evolution/>`_, rebase and `absorb
 <https://gregoryszorc.com/blog/2018/11/05/absorbing-commit-changes-in-mercurial-4.8/>`_
-extensions locally (see the example of ``.hgrc`` above) and to activate the
-experimental support of evolve in Bitbucket (here
-https://bitbucket.org/account/admin/features/). This gives a very nice user
-experience for the PRs, with the ability to modify a PR with ``hg absorb`` and
-safe history editing. NOTE that you have to use ssh pushes (because there is `a
-bug for https pushes
-<https://bitbucket.org/site/master/issues/17123/mercurial-obsolescence-markers-seem-to-be>`_)!
+extensions locally (see the example of ``.hgrc`` above). This gives a very nice
+user experience for the MRs, with the ability to modify a MR with ``hg absorb``
+and safe history editing.
 
 .. tip ::
 
@@ -275,14 +263,14 @@ bug for https pushes
 
   and the PR is updated!
 
-.. note ::
+.. tip ::
 
-  Advanced users can also take advantage of the `topic extension
-  <https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_,
-  which is especially useful when one has to work on different PRs for the same
-  repository "at the same time" (lightweight branching with multiple heads,
-  better than bookmarks).
+  If you are asked to "rebase" your MR, it should work with the following commands::
 
+    hg pull
+    hg up name_of_my_topic
+    hg rebase
+    hg push
 
 Working with hggit and Github
 -----------------------------
@@ -333,15 +321,13 @@ Do not forget to place the bookmark ``master`` as wanted.
   like::
 
     [paths]
-    default = ssh://hg@bitbucket.org/paugier/fluidimage
-    fluiddyn = ssh://hg@foss.heptapod.net/fluiddyn/fluidimage
+    default = ssh://hg@foss.heptapod.net/fluiddyn/fluidimage
     github = git+ssh://git@github.com/fluiddyn/fluidimage
 
   And in ``~/.hgrc``::
 
     [alias]
     update_master_github = !hg pull fluiddyn && hg up -r $(hg identify --id fluiddyn) && hg book master && hg book -i && hg push github -B master
-
 
 A quite complicated example with hg-git
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -364,7 +350,6 @@ Let's say that we are in a situation for which it does not work::
   hg git-cleanup
   hg pull
   hg push -B fix/a_bug --force
-
 
 Delete a bookmark in a remote repository (close a remote Git branch)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

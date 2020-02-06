@@ -33,7 +33,7 @@ you can also read this short tutorial:
 .. toctree::
    :maxdepth: 1
 
-   mercurial_bitbucket
+   mercurial_heptapod
 
 fluiddevops: a tool to handle the FluidDyn repositories
 -------------------------------------------------------
