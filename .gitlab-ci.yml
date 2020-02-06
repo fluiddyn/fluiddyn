@@ -1,0 +1,5 @@
+tests:
+  image: fluiddyn/python3-stable
+  script:
+    - pip install -U tox --user
+    - tox -e py36,codecov
