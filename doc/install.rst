@@ -45,10 +45,10 @@ Install in development mode
 
 Get the source by cloning the repository (as explained in :ref:`advicedev`)::
 
-  hg clone https://bitbucket.org/fluiddyn/fluiddyn
+  hg clone https://foss.heptapod.net/fluiddyn/fluiddyn
 
-or by manually downloading the package from `the Bitbucket page
-<https://bitbucket.org/fluiddyn/fluiddyn>`__ or from `the PyPI page
+or by manually downloading the package from `the Heptapod page
+<https://foss.heptapod.net/fluiddyn/fluiddyn>`__ or from `the PyPI page
 <https://pypi.python.org/pypi/fluiddyn>`__.
 
 The development mode is often very convenient. From the root directory

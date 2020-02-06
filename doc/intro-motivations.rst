@@ -16,7 +16,7 @@ presenting the FluidDyn project and the fluiddyn package
 
 If you have any questions, comments or suggestions, please do not hesitate to
 `fill an issue in the main repository
-<https://bitbucket.org/fluiddyn/fluiddyn/issues>`_ or simply discuss with us on
+<https://foss.heptapod.net/fluiddyn/fluiddyn/issues>`_ or simply discuss with us on
 our `chat rooms <https://fluiddyn.slack.com>`_.
 
 How FluidDyn started

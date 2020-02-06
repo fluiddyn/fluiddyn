@@ -97,7 +97,7 @@ On Unix, one may want to avoid using a binary built by Microsoft so we can use
 Another GNUer solution is `Emacs <https://www.gnu.org/software/emacs/>`_, but
 it should be setup correctly (for example with `Flycheck
 <http://flycheck.readthedocs.org>`_, see `my Emacs configuration
-<https://bitbucket.org/fluiddyn/fluid_emacs.d>`_).
+<https://foss.heptapod.net/fluiddyn/fluid_emacs.d>`_).
 
 
 The style is important

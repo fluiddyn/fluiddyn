@@ -8,13 +8,12 @@ Advice for FluidDyn developers
   <https://riot.im/app/#/room/#fluiddyn-dev:matrix.org>`_.
 
 - Use a text editor with flake8 enabled (see for example `our emacs setup
-  <https://bitbucket.org/fluiddyn/fluid_emacs.d>`_).
+  <https://foss.heptapod.net/fluiddyn/fluid_emacs.d>`_).
 
 - Use the Python code formatter `black <https://github.com/ambv/black>`_ with the
   command ``make black``.
 
 - Run the unittests before committing.
-
 
 Mercurial
 ---------
@@ -25,11 +24,11 @@ have to modify the code of the FluidDyn packages.  So I would advice to work
 the development mode of the Python installer.
 
 For FluidDyn, we use the revision control software Mercurial and the main
-repository is hosted `here <https://bitbucket.org/fluiddyn/fluiddyn>`_ in
-Bitbucket. We advice to fork this repository (click on "Fork") and to clone
-your newly created repository to get the code on your computer (click on
-"Clone" and run the command that will be given). If you are new with Mercurial
-and Bitbucket, you can also read this short tutorial:
+repository is hosted here: https://foss.heptapod.net/fluiddyn/fluiddyn. We
+advice to fork this repository (click on "Fork") and to clone your newly
+created repository to get the code on your computer (click on "Clone" and run
+the command that will be given). If you are new with Mercurial and Heptapod,
+you can also read this short tutorial:
 
 .. toctree::
    :maxdepth: 1

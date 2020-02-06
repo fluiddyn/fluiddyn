@@ -4,7 +4,7 @@
 
 |release| |pyversions| |docs| |coverage| |travis| |appveyor|
 
-.. |logo| image:: https://bitbucket.org/fluiddyn/fluiddyn/raw/default/doc/logo.svg
+.. |logo| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.svg
    :alt: FluidDyn project and fluiddyn package
 
 .. |release| image:: https://img.shields.io/pypi/v/fluiddyn.svg
@@ -43,7 +43,7 @@ dynamics. The Python package fluiddyn contains:
 * **simplified interfaces to calculate**: FFT, spherical harmonics
 
 and much more. It is used as a library in `the other specialized packages of
-the FluidDyn project <https://bitbucket.org/fluiddyn>`_ (in particular in
+the FluidDyn project <https://foss.heptapod.net/fluiddyn>`_ (in particular in
 `fluidfft <http://fluidfft.readthedocs.io>`_, `fluidsim
 <http://fluidsim.readthedocs.io>`_, `fluidlab
 <http://fluidlab.readthedocs.io>`_ and `fluidimage
@@ -64,12 +64,12 @@ The simplest way to install fluiddyn is by using pip::
 Add ``--user`` flag if you are installing without setting up a virtual
 environment.
 
-You can also get the source code from `Bitbucket
-<https://bitbucket.org/fluiddyn/fluiddyn>`_ or from `the Python Package Index
-<https://pypi.python.org/pypi/fluiddyn/>`_.  It is recommended to `install
-numpy <http://scipy.org/install.html>`_ before installing fluiddyn.  The
-development mode is often useful if you intend to modify fluiddyn. From the
-root directory::
+You can also get the source code from
+https://foss.heptapod.net/fluiddyn/fluiddyn or from `the Python Package Index
+<https://pypi.python.org/pypi/fluiddyn/>`_. It is recommended to `install numpy
+<http://scipy.org/install.html>`_ before installing fluiddyn. The development
+mode is often useful if you intend to modify fluiddyn. From the root
+directory::
 
   python setup.py develop
 

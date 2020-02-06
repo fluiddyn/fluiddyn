@@ -118,7 +118,7 @@ Simple workflow
 
 To make a copy of an existing repository::
 
-  hg clone https://bitbucket.org/fluiddyn/fluiddyn
+  hg clone https://foss.heptapod.net/fluiddyn/fluiddyn
 
 To get a summary of the working directory state::
 
@@ -210,7 +210,7 @@ Pull-request based workflow with hg-evolve
 
 We now use a PR based workflow for the development of FluidDyn packages with
 main publishing repositories (for example
-https://bitbucket.org/fluiddyn/fluidsim) and development non-publishing
+https://foss.heptapod.net/fluiddyn/fluidsim) and development non-publishing
 repositories (for example https://bitbucket.org/paugier/fluidsim).
 
 The new commits are pushed in the development repositories and developers have
@@ -219,7 +219,7 @@ to create Pull Requests (PR) to get things merged in the main repositories.
 The first thing to do to start to develop something in one of the FluidDyn
 repository is to create your own repository on Bitbucket. Go to the page of the
 main repository of the package (for example for fluidsim,
-https://bitbucket.org/fluiddyn/fluidsim). Create your own repository on
+https://foss.heptapod.net/fluiddyn/fluidsim). Create your own repository on
 Bitbucket by clicking on Fork. Then from the page of your repository, click on
 Clone, copy the given command line and run it from the directory where you want
 to have the root directory of the repository.
@@ -231,7 +231,7 @@ to have the root directory of the repository.
 
     [paths]
     default = ssh://hg@bitbucket.org/paugier/fluidsim
-    fluiddyn = ssh://hg@bitbucket.org/fluiddyn/fluidsim
+    fluiddyn = ssh://hg@foss.heptapod.net/fluiddyn/fluidsim
 
   and in ``~/.hgrc``::
 
@@ -334,7 +334,7 @@ Do not forget to place the bookmark ``master`` as wanted.
 
     [paths]
     default = ssh://hg@bitbucket.org/paugier/fluidimage
-    fluiddyn = ssh://hg@bitbucket.org/fluiddyn/fluidimage
+    fluiddyn = ssh://hg@foss.heptapod.net/fluiddyn/fluidimage
     github = git+ssh://git@github.com/fluiddyn/fluidimage
 
   And in ``~/.hgrc``::

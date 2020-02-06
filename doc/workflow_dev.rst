@@ -9,7 +9,7 @@ and run ``hg pull -u`` as a routine. Instead you can use `fluiddevops
 get started::
 
   pip install fluiddevops
-  wget https://bitbucket.org/fluiddyn/fluiddevops/raw/default/examples/mirror.cfg
+  wget https://foss.heptapod.net/fluiddyn/fluiddevops/raw/branch/default/examples/mirror.cfg
 
 The package ``fluiddevops`` provides the console utility ``fluidmirror`` which
 can perform clone, pull, push with multiple repositories::
@@ -47,8 +47,8 @@ How it works
 You would have a configuration file ``mirror.cfg`` which looks like this::
 
   [defaults]
-  pull_base = https://bitbucket.org/fluiddyn
-  push_base = ssh://hg@bitbucket.org/fluiddyn
+  pull_base = https://foss.heptapod.net/fluiddyn
+  push_base = ssh://hg@foss.heptapod.net/fluiddyn
   ssh = ssh -oStrictHostKeyChecking=no
 
   [repo:fluiddyn]
@@ -75,29 +75,29 @@ See how the configuration is interpreted::
 
   $ fluidmirror list
   repo: fluiddyn
-  pull: https://bitbucket.org/fluiddyn/fluiddyn
-  push: ssh://hg@bitbucket.org/fluiddyn/fluiddyn
+  pull: https://foss.heptapod.net/fluiddyn/fluiddyn
+  push: ssh://hg@foss.heptapod.net/fluiddyn/fluiddyn
 
   repo: fluidsim
-  pull: https://bitbucket.org/fluiddyn/fluidsim
-  push: ssh://hg@bitbucket.org/fluiddyn/fluidsim
+  pull: https://foss.heptapod.net/fluiddyn/fluidsim
+  push: ssh://hg@foss.heptapod.net/fluiddyn/fluidsim
 
   repo: fluidlab
-  pull: https://bitbucket.org/fluiddyn/fluidlab
-  push: ssh://hg@bitbucket.org/fluiddyn/fluidlab
+  pull: https://foss.heptapod.net/fluiddyn/fluidlab
+  push: ssh://hg@foss.heptapod.net/fluiddyn/fluidlab
 
   repo: fluidimage
-  pull: https://bitbucket.org/fluiddyn/fluidimage
-  push: ssh://hg@bitbucket.org/fluiddyn/fluidimage
+  pull: https://foss.heptapod.net/fluiddyn/fluidimage
+  push: ssh://hg@foss.heptapod.net/fluiddyn/fluidimage
 
   repo: fluidfft
-  pull: https://bitbucket.org/fluiddyn/fluidfft
-  push: ssh://hg@bitbucket.org/fluiddyn/fluidfft
+  pull: https://foss.heptapod.net/fluiddyn/fluidfft
+  push: ssh://hg@foss.heptapod.net/fluiddyn/fluidfft
 
 The ``defaults`` section describes the base URLs to pull from and push to. For
 example, for the repo ``fluiddyn`` the pull URL will be
 ``join(pull_base,repo)`` which would be
-``https://bitbucket.org/fluiddyn/fluiddyn``.
+``https://foss.heptapod.net/fluiddyn/fluiddyn``.
 
 
 Customizing

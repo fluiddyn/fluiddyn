@@ -31,7 +31,7 @@ have this page, so it may be useful to others.
 
     See http://fluiddyn.readthedocs.io/en/latest/mercurial_bitbucket.html
 
-  * Setup emacs, for example with https://bitbucket.org/fluiddyn/fluid_emacs.d
+  * Setup emacs, for example with https://foss.heptapod.net/fluiddyn/fluid_emacs.d
 
 - Setup Bash (``.bashrc`` and ``.bash_aliases``)
 
@@ -119,7 +119,7 @@ have this page, so it may be useful to others.
 
 - Setup ``~/.pythranrc``::
 
-    wget https://bitbucket.org/fluiddyn/fluiddyn/raw/default/doc/simple.pythranrc -O ~/.pythranrc
+    wget https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/simple.pythranrc -O ~/.pythranrc
 
   Note that with this setup, Pythran needs clang and openblas (which have been
   install previously).

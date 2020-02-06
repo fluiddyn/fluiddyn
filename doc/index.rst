@@ -110,9 +110,9 @@ More
 Links
 -----
 
-- `Forge of the FluidDyn project on Bitbucket <https://bitbucket.org/fluiddyn>`_
-- `Forge of the fluiddyn package on Bitbucket
-  <https://bitbucket.org/fluiddyn/fluiddyn>`_
+- `Forge of the FluidDyn project on Heptapod <https://foss.heptapod.net/fluiddyn>`_
+- `Forge of the fluiddyn package on Heptapod
+  <https://foss.heptapod.net/fluiddyn/fluiddyn>`_
 - `FluidDyn in PyPI <https://pypi.org/project/fluiddyn/>`_
 - `FluidDyn project blog <https://fluiddyn.bitbucket.io/>`_
 - FluidDyn user chat room in
