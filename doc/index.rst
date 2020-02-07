@@ -4,6 +4,12 @@
 FluidDyn documentation
 ======================
 
+.. warning ::
+
+   Our repositories in Bitbucket.org will soon be deleted! Our new home:
+   https://foss.heptapod.net/fluiddyn (`more details
+   <https://fluiddyn.readthedocs.io/en/latest/advice_developers.html>`_).
+
 .. raw:: html
 
     <h1 align="center">
