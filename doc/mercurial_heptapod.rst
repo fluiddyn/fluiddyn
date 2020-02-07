@@ -340,19 +340,19 @@ usefull::
 
 Do not forget to place the bookmark ``master`` as wanted.
 
-.. warning ::
+Github mirror for FluidDyn maintainers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  For fluiddyn core developers, we can add in the file ``.hg/hgrc`` something
-  like::
+For fluiddyn maintainers, we can add in the file ``.hg/hgrc`` something like::
 
-    [paths]
-    default = ssh://hg@foss.heptapod.net/fluiddyn/fluidimage
-    github = git+ssh://git@github.com/fluiddyn/fluidimage
+  [paths]
+  default = ssh://hg@foss.heptapod.net/fluiddyn/fluidimage
+  github = git+ssh://git@github.com/fluiddyn/fluidimage
 
-  And in ``~/.hgrc``::
+And in ``~/.hgrc``::
 
-    [alias]
-    update_master_github = !hg pull fluiddyn && hg up -r $(hg identify --id fluiddyn) && hg book master && hg book -i && hg push github -B master
+  [alias]
+  update_github = !hg pull && hg up default && hg book master && hg push github -B master && hg book master -d
 
 A quite complicated example with hg-git
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
