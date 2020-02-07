@@ -5,5 +5,7 @@ variables:
 tests:
   image: fluiddyn/python3-stable
   script:
+    - echo "SKIP_SHTNS $SKIP_SHTNS"
+    - echo "GITLAB_CI $GITLAB_CI"
     - pip install -U tox --user
     - tox -e py36,codecov
