@@ -7,28 +7,38 @@ Advice for FluidDyn developers
   `FluidDyn developer chat room
   <https://riot.im/app/#/room/#fluiddyn-dev:matrix.org>`_.
 
-- Use a text editor with flake8 enabled (see for example `our emacs setup
-  <https://foss.heptapod.net/fluiddyn/fluid_emacs.d>`_).
+- Use a good Python editor with at least flake8 enabled.
 
 - Use the Python code formatter `black <https://github.com/ambv/black>`_ with the
   command ``make black``.
 
 - Run the unittests before committing.
 
-Mercurial
----------
+Hosted on Heptapod by Octobus and Clever Cloud!
+-----------------------------------------------
 
-Fluiddyn has been designed to be used by scientists-developers. Thus, you may
-have to modify the code of the FluidDyn packages.  So I would advice to work
-"as a developer", i.e. to get the source code and to use revision control and
-the development mode of the Python installer.
+For FluidDyn, we use the revision control software Mercurial and our
+main repositories are hosted here: https://foss.heptapod.net/fluiddyn.
 
-For FluidDyn, we use the revision control software Mercurial and the main
-repository is hosted here: https://foss.heptapod.net/fluiddyn/fluiddyn. We
-advice to fork this repository (click on "Fork") and to clone your newly
-created repository to get the code on your computer (click on "Clone" and run
-the command that will be given). If you are new with Mercurial and Heptapod,
-you can also read this short tutorial:
+`Heptapod <https://heptapod.net/>`_ is a friendly fork of GitLab Community
+Edition supporting Mercurial. https://foss.heptapod.net is a public instance
+for Free and Open-Source Software (more information `here
+<https://foss.heptapod.net/heptapod/foss.heptapod.net>`_).
+
+Thanks to `Octobus <https://octobus.net/>`_ and `Clever Cloud
+<https://www.clever-cloud.com>`_ for providing this service!
+
+.. raw:: html
+
+   <h1 align="center">
+     <a href="https://foss.heptapod.net/heptapod/foss.heptapod.net">
+       <img width="500" alt="Octobus + Clever Cloud"
+            src="https://foss.heptapod.net/heptapod/slides/2020-FOSDEM/raw/branch/default/octobus+clever.png"
+            >
+     </a>
+   </h1>
+
+If you are new with Mercurial and Heptapod, you can read this short tutorial:
 
 .. toctree::
    :maxdepth: 1
