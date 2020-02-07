@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from numpy.testing import assert_allclose
 
@@ -12,10 +13,13 @@ except ImportError:
 else:
     use_shtns = True
 
+GITLAB_CI = os.getenv("GITLAB_CI")
+
 
 class TestSphericalHarmo(unittest.TestCase):
     """Test ``sphericalharmo`` module."""
 
+    @unittest.skipIf(GITLAB_CI, "Bug with the CI on Heptapod (2020/02/07)")
     @unittest.skipUnless(use_shtns, "SHTns not installed or can not be imported.")
     def test_sht_random(self):
         """Test forward and inverse SHT on a random array."""
