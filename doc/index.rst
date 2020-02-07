@@ -4,6 +4,13 @@
 FluidDyn documentation
 ======================
 
+.. raw:: html
+
+    <h1 align="center">
+      <img width="400" alt="FluidDyn logo"
+      src="https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.png">
+    </h1>
+
 The FluidDyn project aims at promoting the use of open-source Python software
 in research in fluid dynamics.  The project provides some Python packages
 specialized for different tasks, in particular
@@ -28,7 +35,6 @@ This documentation presents the FluidDyn project and the package of the same
 name, which is the base package on which the other packages depend on. For the
 specific documentations of these specialized packages, follow the links above.
 
-
 The FluidDyn project
 --------------------
 
@@ -37,7 +43,6 @@ The FluidDyn project
 
    intro-motivations
    advice_on_Python
-
 
 Metapaper and citation
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -59,7 +64,6 @@ cite `our metapaper presenting the FluidDyn project and the fluiddyn package
     journal = {Journal of Open Research Software}
     }
 
-
 User Guide of the fluiddyn package
 ----------------------------------
 
@@ -69,7 +73,6 @@ User Guide of the fluiddyn package
    install
    ipynb/overview
    tutorials
-
 
 Modules Reference
 -----------------
@@ -94,7 +97,6 @@ Fluiddyn also provides a small package for documentation:
 
    fluiddoc
 
-
 More
 ----
 
@@ -105,7 +107,6 @@ More
    advice_developers
    to_do
    authors
-
 
 Links
 -----
@@ -122,7 +123,6 @@ Links
 - `FluidDyn on Twitter <https://twitter.com/pyfluiddyn>`_
 - `FluidDyn on Youtube
   <https://www.youtube.com/channel/UCPhRtVq1v4HtcecEdEOcXBw>`_
-
 
 Indices and tables
 ==================

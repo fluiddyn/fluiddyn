@@ -4,7 +4,7 @@
 
 |release| |pyversions| |docs| |coverage| |travis| |appveyor|
 
-.. |logo| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.svg
+.. |logo| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.png
    :alt: FluidDyn project and fluiddyn package
 
 .. |release| image:: https://img.shields.io/pypi/v/fluiddyn.svg
@@ -18,8 +18,8 @@
    :target: http://fluiddyn.readthedocs.org
    :alt: Documentation status
 
-.. |coverage| image:: https://codecov.io/bb/fluiddyn/fluiddyn/branch/default/graph/badge.svg
-   :target: https://codecov.io/bb/fluiddyn/fluiddyn/branch/default/
+.. |coverage| image:: https://codecov.io/gh/fluiddyn/fluiddyn/branch/default/graph/badge.svg
+   :target: https://codecov.io/gh/fluiddyn/fluiddyn/branch/default/
    :alt: Code coverage
 
 .. |travis| image:: https://travis-ci.org/fluiddyn/fluiddyn.svg?branch=master
