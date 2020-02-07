@@ -18,6 +18,7 @@ IPYNB_DIR = $(abspath ipynb)
 IPYTHON_NOTEBOOKS = $(wildcard ipynb/*.ipynb)
 IPYTHON_NOTEBOOKS_RST = $(IPYTHON_NOTEBOOKS:.ipynb=.rst)
 IPYTHON_NOTEBOOKS_DIR = $(IPYTHON_NOTEBOOKS:.ipynb=_files)
+IPYTHON_NOTEBOOKS_NBCONVERT = $(IPYTHON_NOTEBOOKS:.ipynb=.nbconvert.ipynb)
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext
 
@@ -52,6 +53,7 @@ clean:
 	rm -rf $(BUILDDIR)/*
 	rm -rf $(IPYTHON_NOTEBOOKS_DIR)
 	rm -f $(IPYTHON_NOTEBOOKS_RST)
+	rm -f $(IPYTHON_NOTEBOOKS_NBCONVERT)
 
 cleanall: clean
 	rm -rf generated html.zip
