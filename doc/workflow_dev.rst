@@ -37,13 +37,14 @@ Let us clone all the FluidDyn repos!::
 
   fluidmirror clone
 
-Pull all recent commits and update, for daily use (since cloning is done only once)::
+Pull all recent commits and update, for daily use (since cloning is done only
+once)::
 
   fluidmirror pull
 
-
 How it works
 ------------
+
 You would have a configuration file ``mirror.cfg`` which looks like this::
 
   [defaults]
@@ -99,9 +100,9 @@ example, for the repo ``fluiddyn`` the pull URL will be
 ``join(pull_base,repo)`` which would be
 ``https://foss.heptapod.net/fluiddyn/fluiddyn``.
 
-
 Customizing
 -----------
+
 You can add more sections to or customize the configuration as you prefer.
 
 Any non-empty value added under a ``repo:`` section would override the

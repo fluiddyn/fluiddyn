@@ -243,7 +243,7 @@ To activate a topic already created::
 
   hg up the_name_of_the_topic
 
-To deactivate the topic and come back the tip of the default branch::
+To deactivate the topic and come back to the tip of the default branch::
 
   hg up default
 
