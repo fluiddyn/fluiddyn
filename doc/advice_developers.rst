@@ -1,24 +1,14 @@
 .. _advicedev:
 
-Advice for FluidDyn developers
-==============================
+FluidDyn development
+====================
 
-- Discussions on the development of the FluidDyn packages take place in the
-  `FluidDyn developer chat room
-  <https://riot.im/app/#/room/#fluiddyn-dev:matrix.org>`_.
+Discussions on the development of the FluidDyn packages take place in the
+`FluidDyn developer chat room
+<https://riot.im/app/#/room/#fluiddyn-dev:matrix.org>`_.
 
-- Use a good Python editor with at least flake8 enabled.
-
-- Use the Python code formatter `black <https://github.com/ambv/black>`_ with the
-  command ``make black``.
-
-- Run the unittests before committing.
-
-Hosted on Heptapod by Octobus and Clever Cloud!
------------------------------------------------
-
-For FluidDyn, we use the revision control software Mercurial and our
-main repositories are hosted here: https://foss.heptapod.net/fluiddyn.
+For FluidDyn, we use the revision control software Mercurial and our main
+repositories are hosted here: https://foss.heptapod.net/fluiddyn.
 
 `Heptapod <https://heptapod.net/>`_ is a friendly fork of GitLab Community
 Edition supporting Mercurial. https://foss.heptapod.net is a public instance
@@ -38,15 +28,39 @@ Thanks to `Octobus <https://octobus.net/>`_ and `Clever Cloud
      </a>
    </h1>
 
-If you are new with Mercurial and Heptapod, you can read this short tutorial:
+If you are new with Mercurial and Heptapod, you should read this short
+tutorial:
 
 .. toctree::
    :maxdepth: 1
 
    mercurial_heptapod
 
-fluiddevops: a tool to handle the FluidDyn repositories
--------------------------------------------------------
+.. warning ::
+
+   We wrote a specific Mercurial extension for FluidDyn development called
+   `hg-fluiddyn <https://foss.heptapod.net/fluiddyn/hg-fluiddyn>`_. All
+   FluidDyn contributors / developers / maintainers should install and activate
+   it! We explain `here
+   <https://fluiddyn.readthedocs.io/en/latest/mercurial_heptapod.html>`__ how
+   to do that.
+
+Few important coding tips
+-------------------------
+
+- Always use a good Python editor! Indentation has to be handle automatically
+  for you (you should never count the spaces) and you have to have tips from
+  flake8. We use and recommend FOSS editors like Spyder, Visual Studio Code,
+  Vim or Emacs. For the two last solutions, a good configuration is mandatory.
+
+- Use the Python code formatter `black <https://github.com/ambv/black>`_ with
+  the command ``make black``.
+
+- It is usually a good practice to run the unittests before committing (see the
+  Makefile of each repositories).
+
+fluiddevops: a tool to handle the FluidDyn repositories (will be depreciated)
+-----------------------------------------------------------------------------
 
 We present a tool to handle the different FluidDyn repositories.
 

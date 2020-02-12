@@ -74,6 +74,8 @@ An example of configuration file::
   hgext.extdiff =
   # only to use Mercurial with GitHub and Gitlab
   hggit =
+  # specific extension for FluidDyn dev
+  hgfluiddyn =
   # more advanced extensions (really useful for FluidDyn dev)
   churn =
   shelve =
@@ -95,10 +97,26 @@ for more advanced users. Note that `evolve
 <https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_
 comes from the package `hg-evolve <https://pypi.org/project/hg-evolve>`_.
 
-.. note ::
+.. warning ::
+
+   We wrote a specific Mercurial extension for FluidDyn development called
+   `hg-fluiddyn <https://foss.heptapod.net/fluiddyn/hg-fluiddyn>`_. All
+   FluidDyn contributors / developers / maintainers should install and activate
+   it!
+
+   With Mercurial installed with ``conda-app`` (as explained above), just run::
+
+     conda activate _env_mercurial
+     pip install hg-fluiddyn
+
+   and activate the extension with the line ``hgfluiddyn =`` in the file
+   ``~/.hgrc``.
+
+.. warning ::
 
   For development of FluidDyn packages, the evolve and topic extensions have to
-  be installed and activated!
+  be installed and activated! If they are not activated, the hg-fluiddyn
+  extension will warn you!
 
 Get help
 --------
@@ -226,18 +244,19 @@ create a dedicated issue.
 .. _issue: https://foss.heptapod.net/fluiddyn/fluiddyn/issues/6
 
 Topics are used in Mercurial for "lightweight branches" (like Git branches). If
-you are unfamiliar with Mercurial topics, you should read `this tutorial
-<https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_.
-The principle is that you first create a topic (with ``hg topic``). Once a
+you are unfamiliar with Mercurial topics, you can read `this tutorial
+<https://www.mercurial-scm.org/doc/evolution/tutorials/topic-tutorial.html>`_,
+but what follows should be sufficient for FluidDyn development. The principle
+is that you first create a topic (with ``hg topic name_of_my_topic``). Once a
 topic is activated, the changesets created belong to this topic. The new
-changesets gathered in a topic can be pushed in the main repository. Even after
-having been pushed to the main repository, they stay in the ``draft`` phase
-(which means they can be modified, as opposed to ``public`` changesets. Run
-``hg help phases`` for more info).
+changesets gathered in a topic can be pushed into the main repository. Even
+after having been pushed into the main repository, they stay in the ``draft``
+phase (which means they can be modified, as opposed to ``public`` changesets.
+Run ``hg help phases`` for more info).
 
 To list the topics::
 
-  hg topic
+  hg topics
 
 To activate a topic already created::
 
