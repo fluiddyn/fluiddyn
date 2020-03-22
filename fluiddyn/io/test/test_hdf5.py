@@ -36,7 +36,7 @@ class TestHdf5(unittest.TestCase):
         with H5File(path, "w") as f:
             f.save_dict("d", d)
 
-        with H5File(path) as f:
+        with H5File(path, "r") as f:
             d1 = f.load_dict("d")
 
         self.assertEqual(d, d1)
@@ -48,7 +48,7 @@ class TestHdf5(unittest.TestCase):
         with H5File(name, "w") as f:
             f.save_dict_of_ndarrays(d)
 
-        with H5File(name) as f:
+        with H5File(name, "r") as f:
             d1 = f.load()
 
             for k, v in d.items():
