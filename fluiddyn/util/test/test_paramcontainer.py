@@ -2,6 +2,9 @@ import json
 import os
 import unittest
 from shutil import rmtree
+from pathlib import Path
+
+import numpy as np
 
 from ...io.redirect_stdout import stdout_redirected
 from ..paramcontainer import ParamContainer, tidy_container
@@ -107,6 +110,24 @@ class TestContainer(unittest.TestCase):
         """Test JSON rendering (used in Jupyter)."""
         data, metadata = self.params._repr_json_()
         json.dumps(data)
+
+    def test_as_code(self):
+        def create_default_params():
+            p = ParamContainer(tag="params")
+            p._set_attribs(dict(a=0, b=2))
+            p._set_child("c0", dict(a0="foo", a1=Path.home(), a2=np.arange(4)))
+            return p
+
+        p0 = create_default_params()
+        p0.c0.a0 = "bar"
+        code = p0._as_code()
+        p1 = create_default_params()
+
+        assert p1.c0.a0 == "foo"
+        exec(code, {"params": p1})
+        assert p1.c0.a0 == "bar"
+
+        p1._print_as_code()
 
 
 if __name__ == "__main__":

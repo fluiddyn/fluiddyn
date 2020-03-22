@@ -45,12 +45,19 @@ except ImportError:
 def _as_str(value):
     if isinstance(value, Path):
         return str(value)
-
-    elif not isinstance(value, str):
+    elif isinstance(value, str):
+        return value
+    else:
         return repr(value)
 
+
+def _as_code(value):
+    if isinstance(value, Path):
+        return f'Path("{str(value)}")'
+    elif isinstance(value, str):
+        return f'"{value}"'
     else:
-        return value
+        return repr(value)
 
 
 def _as_value(value):
@@ -433,6 +440,41 @@ class ParamContainer:
 
     def __repr__(self):
         return super().__repr__() + "\n\n" + self._make_xml_text()
+
+    def _print_as_code(self):
+        print(self._as_code())
+
+    def _as_code(self):
+        code = "\n".join(self.__make_lines_code())
+        imports = None
+
+        if " array(" in code:
+            imports = "from numpy import array\n"
+
+        if " Path(" in code:
+            imports += "from pathlib import Path\n"
+
+        if imports is not None:
+            code = imports + "\n" + code
+
+        return code
+
+    def __make_lines_code(self):
+        lines = []
+        tag = self._tag
+
+        self._key_attribs.sort()
+        for key in self._key_attribs:
+            attr = getattr(self, key)
+            lines.append(f"{tag}.{key} = {_as_code(attr)}")
+
+        for key in self._tag_children:
+            child = getattr(self, key)
+            lines_child = child.__make_lines_code()
+            if lines_child:
+                lines.extend(f"{tag}.{line}" for line in lines_child)
+
+        return lines
 
     def _repr_json_(self):
         data = self._make_dict_tree()
