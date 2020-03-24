@@ -13,7 +13,7 @@ import numpy as np
 
 from .. import util
 from ...io.redirect_stdout import stdout_redirected
-from ..terminal_colors import print_fail, print_warning
+from ..terminal_colors import print_fail, print_warning, cprint, cstring
 from ..userconfig import load_user_conf_files
 
 
@@ -64,6 +64,22 @@ class TestUtil(unittest.TestCase):
             util.print_size_in_Mo(np.arange(4), string="test")
             print_fail("")
             print_warning("")
+            cprint("bar", color="RED")
+            cprint.header("header")
+            cprint.light_blue("light_blue")
+            cprint.light_green("light_green")
+            cprint.light_gray("light_gray")
+            cprint.warning("warning")
+            cprint.fail("fail")
+            cprint.black("black")
+            cprint.red("bar", bold=True)
+            cprint.green("green")
+            cprint.yellow("yellow")
+            cprint.blue("blue")
+            cprint.magenta("magenta")
+            cprint.cyan("cyan")
+            cprint.white("white")
+            cstring("foo", color="GREEN")
 
         with util.print_options():
             pass

@@ -3,14 +3,24 @@
 
 Defines string variables useful to print in color in a terminal.
 
+Provides:
+
+.. autoclass:: CPrint
+   :members:
+   :undoc-members:
+
 """
 
+import sys
 
-HEADER = "\033[95m"
-OKBLUE = "\033[94m"
-OKGREEN = "\033[92m"
-WARNING = "\033[93m"
 FAIL = "\033[91m"
+# OKGREEN and OKBLUE kept for background compatibility
+OKGREEN = LIGHTGREEN = "\033[92m"
+WARNING = "\033[93m"
+OKBLUE = LIGHTBLUE = "\033[94m"
+HEADER = "\033[95m"
+LIGHTCYAN = "\033[96m"
+WHITE = "\033[97m"
 
 BLACK = "\033[30m"
 RED = "\033[31m"
@@ -19,7 +29,7 @@ YELLOW = "\033[33m"
 BLUE = "\033[34m"
 MAGENTA = "\033[35m"
 CYAN = "\033[36m"
-WHITE = "\033[37m"
+LIGHTGRAY = "\033[37m"
 
 ENDC = "\033[0m"
 BOLD = "\033[1m"
@@ -69,9 +79,9 @@ def cstring(*args, **kwargs):
     ----------
     args : iterable of str
     bold : bool
-    color : str, {'HEADER', 'OKBLUE', 'OKGREEN', 'WARNING', 'FAIL', 'ENDC',
-                  'BOLD', 'UNDERLINE' 'BLACK', 'RED', 'GREEN', 'YELLOW', 'BLUE',
-                  'MAGENTA', 'CYAN', 'WHITE'}
+    color : str, {'HEADER', 'LIGHTBLUE', 'LIGHTGREEN', 'WARNING', 'FAIL',
+                  'ENDC', 'BOLD', 'UNDERLINE' 'BLACK', 'RED', 'GREEN',
+                  'YELLOW', 'BLUE', 'MAGENTA', 'CYAN', 'WHITE'}
         Terminal color to use.
 
     """
@@ -80,20 +90,106 @@ def cstring(*args, **kwargs):
     return cstr
 
 
-def cprint(*args, **kwargs):
-    """Print with a specified terminal font color.
+class CPrint:
+    """Print colored text
 
-    Parameters
-    ----------
-    args : iterable
-        To be passed into print_function.
-    bold : bool
-    color : str, {'HEADER', 'OKBLUE', 'OKGREEN', 'WARNING', 'FAIL', 'ENDC',
-                  'BOLD', 'UNDERLINE' 'BLACK', 'RED', 'GREEN', 'YELLOW', 'BLUE',
-                  'MAGENTA', 'CYAN', 'WHITE'}
-
-        Terminal color to use.
+    >>> cprint = CPrint()
+    >>> cprint("vorticity", color="RED")
+    >>> cprint.red("divergence")
 
     """
-    args, kwargs = _colorize(*args, **kwargs)
-    print(*args, **kwargs)
+
+    def __call__(
+        self,
+        *args,
+        color=None,
+        bold=False,
+        sep=" ",
+        end="\n",
+        file=sys.stdout,
+        flush=False,
+    ):
+        """Print with a specified terminal font color.
+
+        Parameters
+        ----------
+        args : iterable
+            To be passed into print_function.
+        bold : bool
+        color : str, {'HEADER', 'LIGHTBLUE', 'LIGHTGREEN', 'WARNING', 'FAIL',
+                    'ENDC', 'BOLD', 'UNDERLINE' 'BLACK', 'RED', 'GREEN',
+                    'YELLOW', 'BLUE', 'MAGENTA', 'CYAN', 'WHITE'}
+
+            Terminal color to use.
+
+        """
+
+        args, kwargs = _colorize(
+            *args,
+            color=color,
+            bold=bold,
+            sep=sep,
+            end=end,
+            file=file,
+            flush=flush,
+        )
+        print(*args, **kwargs)
+
+    def header(self, *args, **kwargs):
+        kwargs["color"] = "HEADER"
+        self.__call__(*args, **kwargs)
+
+    def light_blue(self, *args, **kwargs):
+        kwargs["color"] = "LIGHTBLUE"
+        self.__call__(*args, **kwargs)
+
+    def light_green(self, *args, **kwargs):
+        kwargs["color"] = "LIGHTGREEN"
+        self.__call__(*args, **kwargs)
+
+    def light_gray(self, *args, **kwargs):
+        kwargs["color"] = "LIGHTGRAY"
+        self.__call__(*args, **kwargs)
+
+    def warning(self, *args, **kwargs):
+        kwargs["color"] = "WARNING"
+        self.__call__(*args, **kwargs)
+
+    def fail(self, *args, **kwargs):
+        kwargs["color"] = "FAIL"
+        self.__call__(*args, **kwargs)
+
+    def black(self, *args, **kwargs):
+        kwargs["color"] = "BLACK"
+        self.__call__(*args, **kwargs)
+
+    def red(self, *args, **kwargs):
+        kwargs["color"] = "RED"
+        self.__call__(*args, **kwargs)
+
+    def green(self, *args, **kwargs):
+        kwargs["color"] = "GREEN"
+        self.__call__(*args, **kwargs)
+
+    def yellow(self, *args, **kwargs):
+        kwargs["color"] = "YELLOW"
+        self.__call__(*args, **kwargs)
+
+    def blue(self, *args, **kwargs):
+        kwargs["color"] = "BLUE"
+        self.__call__(*args, **kwargs)
+
+    def magenta(self, *args, **kwargs):
+        kwargs["color"] = "MAGENTA"
+        self.__call__(*args, **kwargs)
+
+    def cyan(self, *args, **kwargs):
+        kwargs["color"] = "CYAN"
+        self.__call__(*args, **kwargs)
+
+    def white(self, *args, **kwargs):
+        kwargs["color"] = "WHITE"
+        self.__call__(*args, **kwargs)
+
+
+cprint = CPrint()

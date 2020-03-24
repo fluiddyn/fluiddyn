@@ -342,6 +342,7 @@ class ParamContainer:
 
         self.__dict__[tag] = self.__class__(tag=tag, attribs=attribs, parent=self)
         self._tag_children.append(tag)
+        return getattr(self, tag)
 
     def _set_as_child(self, child, change_parent=True):
         """Associate a ParamContainer as a child."""
