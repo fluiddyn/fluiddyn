@@ -1,4 +1,10 @@
 
+0.3.2 (?)
+---------
+
+- Improve API for ``ParamContainer``
+- new API for ``terminal_colors``
+
 0.3.1 (2019-02-14)
 ------------------
 
