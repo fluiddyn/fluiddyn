@@ -1,9 +1,10 @@
 
-0.3.2 (?)
----------
+0.3.2 (2020-03-31)
+------------------
 
 - Improve API for ``ParamContainer``
-- new API for ``terminal_colors``
+- New API for ``terminal_colors``
+- Update clusters LEGI
 
 0.3.1 (2019-02-14)
 ------------------
