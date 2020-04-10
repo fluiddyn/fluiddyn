@@ -274,6 +274,9 @@ class BasePyFFT(BaseFFT):
                 "ImportError {0}. Instead fftpack can be used (?)", err
             )
 
+        if isinstance(shapeX, int):
+            shapeX = [shapeX]
+
         shapeK = list(shapeX)
         shapeK[-1] = shapeK[-1] // 2 + 1
         shapeK = tuple(shapeK)
@@ -652,58 +655,6 @@ class FFTW1D(BasePyFFT):
 
 class FFTW1DReal2Complex(BasePyFFT):
     """ A class to use fftw 1D """
-
-    def __init__(self, arg, axis=-1):
-        try:
-            import pyfftw
-        except ImportError as err:
-            raise ImportError("ImportError. Instead fftpack?", err)
-
-        if isinstance(arg, int):
-            n = arg
-            shapeX = (n,)
-            shapeK = (n // 2 + 1,)
-        else:
-            n = arg[axis]
-            shapeX = arg
-            shapeK = list(copy(arg))
-            shapeK[axis] = n // 2 + 1
-            shapeK = tuple(shapeK)
-
-        if n % 2 != 0:
-            raise ValueError("n should be even")
-
-        self.shapeX = shapeX
-        self.shapeK = shapeK
-        self.arrayX = pyfftw.empty_aligned(shapeX, "float64")
-        self.arrayK = pyfftw.empty_aligned(shapeK, "complex128")
-        self.fftplan = pyfftw.FFTW(
-            input_array=self.arrayX,
-            output_array=self.arrayK,
-            axes=(axis,),
-            direction="FFTW_FORWARD",
-            threads=nthreads,
-        )
-        self.ifftplan = pyfftw.FFTW(
-            input_array=self.arrayK,
-            output_array=self.arrayX,
-            axes=(axis,),
-            direction="FFTW_BACKWARD",
-            threads=nthreads,
-        )
-
-        self.coef_norm = n
-        self.inv_coef_norm = 1.0 / n
-
-    def fft(self, ff):
-        self.arrayX[:] = ff
-        self.fftplan(normalise_idft=False)
-        return self.arrayK / self.coef_norm
-
-    def ifft(self, ff_fft):
-        self.arrayK[:] = ff_fft
-        self.ifftplan(normalise_idft=False)
-        return self.arrayX.copy()
 
     def sum_wavenumbers(self, ff_fft):
         if self.shapeX[0] % 2 == 0:
