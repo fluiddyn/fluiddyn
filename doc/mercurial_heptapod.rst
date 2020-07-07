@@ -316,6 +316,26 @@ and safe history editing.
     hg rebase
     hg push
 
+Documenting the merge-request with towncrier
+--------------------------------------------
+
+Notable changes are announced in the `changes page <changes.html>`__ during a
+release. A news fragment is required to ensure to describe the MR. To do that,
+install towncrier_ (as of today, July 2020, the git master version is required)
+and create a new fragment::
+
+    pip install https://github.com/twisted/towncrier/archive/master.zip
+    towncrier create <MERGE_REQUEST>.<TYPE>
+
+where ``<MERGE_REQUEST>`` should be the merge-request number and ``<TYPE>``
+should be one of ``added``, ``changed``, ``deprecated``, ``removed``, ``fixed``
+or ``security``. Once created, the contents have to be edited in manually,
+committed and pushed along with the MR.  Read more about `creating news
+fragments`_.
+
+.. _towncrier: https://github.com/twisted/towncrier#readme
+.. _creating news fragments: newsfragments/README.html
+
 Working with hggit and Github
 -----------------------------
 
@@ -328,7 +348,7 @@ or just::
   hg clone https://github.com/serge-sans-paille/pythran.git
 
 Git branches are represented as Mercurial bookmarks so such commands can be
-usefull::
+useful::
 
   hg log --graph
 

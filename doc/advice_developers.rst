@@ -35,6 +35,7 @@ tutorial:
    :maxdepth: 1
 
    mercurial_heptapod
+   workflow_release
 
 .. warning ::
 

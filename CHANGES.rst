@@ -1,19 +1,44 @@
+Changes
+=======
 
-0.3.2 (2020-03-31)
-------------------
+All notable changes to this project will be documented in this file.
+
+The format is based on `Keep a
+Changelog <https://keepachangelog.com/en/1.0.0/>`__, and this project
+adheres to `Semantic
+Versioning <https://semver.org/spec/v2.0.0.html>`__.
+
+.. Type of changes
+.. ---------------
+.. Added      Added for new features.
+.. Changed    Changed for changes in existing functionality.
+.. Deprecated Deprecated for soon-to-be removed features.
+.. Removed    Removed for now removed features.
+.. Fixed      Fixed for any bug fixes.
+.. Security   Security in case of vulnerabilities.
+
+Unreleased_
+-----------
+
+.. towncrier release notes start
+
+.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.3...branch%2Fdefault
+
+0.3.2_ (2020-03-31)
+-------------------
 
 - Improve API for ``ParamContainer``
 - New API for ``terminal_colors``
 - Update clusters LEGI
 
-0.3.1 (2019-02-14)
-------------------
+0.3.1_ (2019-02-14)
+-------------------
 
 - Compatibility sphinx >= 1.8
 - Improve cluster Slurm
 
-0.3.0 (2019-01-27)
-------------------
+0.3.0_ (2019-01-27)
+-------------------
 
 - Python>=3.6 only
 - Native implementation for ``stdout_redirected``
@@ -134,14 +159,20 @@
 
 - Tiny package for readthedocs.
 
-0.0.9
------
+0.0.9_
+------
 
 - New parameter container (API slightly changed).
 
-0.0.8
------
+0.0.8_
+------
 
 - The fluiddyn package now only contains base files for the FluidDyn
   project. Other packages (fluidsim, fluidlab, ...) provide other
   files.
+
+.. _0.3.2: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.1...0.3.2
+.. _0.3.1: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.0...0.3.1
+.. _0.3.0: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.2.5...0.3.0
+.. _0.0.9: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.0.8a1...0.0.9a1
+.. _0.0.8: https://foss.heptapod.net/fluiddyn/fluiddyn/-/tags/0.0.8a1

@@ -1,0 +1,1 @@
+Remove buggy ``__init__, fft, ifft`` methods from :class:`fluiddyn.calcul.easypyfft.FFTW1DReal2Complex` and fallback to parent :class:`fluiddyn.calcul.easypyfft.BasePyFFT`

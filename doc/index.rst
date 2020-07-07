@@ -41,11 +41,9 @@ This documentation presents the FluidDyn project and the package of the same
 name, which is the base package on which the other packages depend on. For the
 specific documentations of these specialized packages, follow the links above.
 
-The FluidDyn project
---------------------
-
 .. toctree::
    :maxdepth: 1
+   :caption: The FluidDyn project
 
    intro-motivations
    advice_on_Python
@@ -70,11 +68,9 @@ cite `our metapaper presenting the FluidDyn project and the fluiddyn package
     journal = {Journal of Open Research Software}
     }
 
-User Guide of the fluiddyn package
-----------------------------------
-
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
+   :caption: User Guide of the fluiddyn package
 
    install
    ipynb/overview
@@ -103,11 +99,9 @@ Fluiddyn also provides a small package for documentation:
 
    fluiddoc
 
-More
-----
-
 .. toctree::
    :maxdepth: 1
+   :caption: More
 
    changes
    advice_developers

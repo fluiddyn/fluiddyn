@@ -1,0 +1,5 @@
+Changelog automation
+
+- Keep a changelog style for changes
+- Use ``towncrier`` for changelog generation
+- See docs for more info on how to `create newsfragments <https://fluiddyn.readthedocs.io/en/latest/mercurial_heptapod.html#documenting-the-merge-request-with-towncrier>`__ and `make releases <https://fluiddyn.readthedocs.io/en/latest/workflow_release.html>`__

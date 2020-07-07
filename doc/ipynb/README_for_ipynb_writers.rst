@@ -16,7 +16,7 @@ executed.
   ipynb_to_rst('ipynb/executed', executed=True)
 
 
-It is therefor important not to commit the executed versions of the notebooks.
+It is therefore important not to commit the executed versions of the notebooks.
 
 The command ``fluidnbstripout ipynb`` (or Make nbstripout) has to be used before
 any commit when notebooks have been executed manually.
