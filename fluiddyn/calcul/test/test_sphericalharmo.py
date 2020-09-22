@@ -13,13 +13,10 @@ except ImportError:
 else:
     use_shtns = True
 
-SKIP_SHTNS = os.getenv("SKIP_SHTNS")
-
 
 class TestSphericalHarmo(unittest.TestCase):
     """Test ``sphericalharmo`` module."""
 
-    @unittest.skipIf(SKIP_SHTNS, "Bug with the CI on Heptapod (2020/02/07)")
     @unittest.skipUnless(use_shtns, "SHTns not installed or can not be imported.")
     def test_sht_random(self):
         """Test forward and inverse SHT on a random array."""

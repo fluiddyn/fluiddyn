@@ -1,9 +1,8 @@
 variables:
   CODECOV_TOKEN: 202255eb-62eb-4b29-b065-0f832265e84f
-  SKIP_SHTNS: 1
 
 tests:
-  image: fluiddyn/python3-stable:20200918
+  image: fluiddyn/python3-stable:heptapod
   script:
     - pip install -U tox --user
     - tox -e py36,codecov
