@@ -198,7 +198,7 @@ class EasySHT:
             print(
                 "ImportError shtns.\n\n"
                 "To install shtns, you can run the following:\n"
-                "    hg clone https://bitbucket.org/nschaeff/shtns\n"
+                "    git clone https://gricad-gitlab.univ-grenoble-alpes.fr/schaeffn/shtns\n"
                 "    cd shtns\n"
                 "    ./configure --prefix=$VIRTUAL_ENV --enable-python\n"
                 "    make\n"

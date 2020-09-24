@@ -232,8 +232,8 @@ packages.
 
 .. note ::
 
-  In contrast to the standard workflow in Github, Gitlab and Bitbucket, you
-  don't need to fork the repository to create Merge Requests.
+  In contrast to the standard workflow in Github and Gitlab, you don't need to
+  fork the repository to create Merge Requests.
 
 Instead, you need to become a "developer" of the project. The developers have
 the permission to push changesets (i.e. "commits") in a topic in the main
