@@ -67,7 +67,7 @@ cite `our metapaper presenting the FluidDyn project and the fluiddyn package
    :caption: User Guide of the fluiddyn package
 
    install
-   ipynb/overview
+   ipynb/overview.executed
    tutorials
 
 Modules Reference

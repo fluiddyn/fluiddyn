@@ -14,9 +14,8 @@ doc/_build/*
 doc/**generated/*
 doc/**.zip
 doc/ipynb/*_files/*.png
-doc/ipynb/**/tuto*.rst
-doc/ipynb/overview.rst
 doc/ipynb/tmp_*
+doc/ipynb/*.executed.ipynb
 
 *.ipynb_checkpoints*
 *Untitled*.ipynb

@@ -1,12 +1,15 @@
 """Handle ipython notebooks (:mod:`fluiddoc.ipynb_maker`)
 =========================================================
 
+.. autofunction:: execute_notebooks
+
 .. autofunction:: ipynb_to_rst
 
 """
 
 import os
 import subprocess
+from pathlib import Path
 from datetime import datetime
 from glob import glob
 
@@ -18,6 +21,23 @@ def modification_date(filename):
 
 def call_bash(commands):
     subprocess.call(["/bin/bash", "-c", commands])
+
+
+def execute_notebooks(path_dir):
+    """Execute notebooks in a directory"""
+    paths_ipynb = Path(path_dir).glob("*.ipynb")
+    paths_ipynb = [
+        path for path in paths_ipynb if not path.name.endswith(".executed.ipynb")
+    ]
+    for path in paths_ipynb:
+        path_executed = path.with_suffix(".executed.ipynb")
+        if not os.path.exists(path_executed) or modification_date(
+            path
+        ) > modification_date(path_executed):
+            call_bash(
+                "jupyter-nbconvert --ExecutePreprocessor.timeout=200 "
+                + f"--to notebook --execute {path} --output={path_executed.name}"
+            )
 
 
 def ipynb_to_rst(path="ipynb", executed=None):

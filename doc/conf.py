@@ -13,12 +13,13 @@
 
 import sys
 import os
+from pathlib import Path
 
 import fluiddyn as fld
 
 # this package also comes from fluiddyn
 from fluiddoc import mock_modules
-from fluiddoc.ipynb_maker import ipynb_to_rst
+from fluiddoc.ipynb_maker import execute_notebooks
 
 mock_modules(
     (
@@ -31,8 +32,8 @@ mock_modules(
     )
 )
 
-ipynb_to_rst()
-ipynb_to_rst("ipynb/executed", executed=True)
+execute_notebooks("ipynb")
+nbsphinx_execute = "never"
 
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -59,6 +60,7 @@ extensions = [
     "numpydoc",
     "fluiddoc.mathmacro",
     "sphinxemoji.sphinxemoji",
+    "nbsphinx",
 ]
 
 sphinxemoji_style = "twemoji"
@@ -102,6 +104,14 @@ release = fld.__version__
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = ["_build"]
+paths_notebooks = Path("ipynb").glob("*.ipynb")
+exclude_patterns.extend(
+    [
+        f"ipynb/{path.name}"
+        for path in paths_notebooks
+        if not path.name.endswith(".executed.ipynb")
+    ]
+)
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
