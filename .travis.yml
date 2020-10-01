@@ -33,14 +33,13 @@ addons:
         - libopenmpi-dev
         - openmpi-bin
         - libopenblas-dev
-          # - liblapack-dev  # for NumPy from source for PyPY
+          # - liblapack-dev  # for NumPy from source for PyPy
           # - gfortran       # for SciPy from source
 
 install:
-    - pip install -U pip setuptools wheel six colorlog
+    - pip install -U pip setuptools wheel colorlog
     - pip install -U tox-travis coverage pytest
-    - pip install -U fluiddevops numpy # cython  # Cython to build pyfftw from source for PyPy
-      # - pip install -U scipy h5py  # for PyPy
+    - pip install -U fluiddevops
     - pip install -U pyfftw
 
 before_script:
@@ -50,7 +49,7 @@ before_script:
 
 script:
     - set -o pipefail
-    - tox -vv | fluidicat --every 1 --wait 300
+    - tox -vv -e py37 | fluidicat --every 1 --wait 300
 
 notifications:
   email: false
