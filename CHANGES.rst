@@ -24,6 +24,11 @@ Unreleased_
 
 .. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.3...branch%2Fdefault
 
+0.3.3_ (2020-10-01)
+-------------------
+
+- `execute_notebooks` fluiddoc/ipynb_maker.py
+
 0.3.2_ (2020-03-31)
 -------------------
 
@@ -171,6 +176,7 @@ Unreleased_
   project. Other packages (fluidsim, fluidlab, ...) provide other
   files.
 
+.. _0.3.3: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.2...0.3.3
 .. _0.3.2: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.1...0.3.2
 .. _0.3.1: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.0...0.3.1
 .. _0.3.0: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.2.5...0.3.0
