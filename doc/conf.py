@@ -13,13 +13,11 @@
 
 import sys
 import os
-from pathlib import Path
 
 import fluiddyn as fld
 
 # this package also comes from fluiddyn
 from fluiddoc import mock_modules
-from fluiddoc.ipynb_maker import execute_notebooks
 
 mock_modules(
     (
@@ -32,9 +30,12 @@ mock_modules(
     )
 )
 
-execute_notebooks("ipynb")
-nbsphinx_execute = "never"
-
+#  ipynb_to_rst()
+#  ipynb_to_rst("ipynb/executed", executed=True)
+jupyter_execute_notebooks = "cache"
+jupyter_cache = "./_build/jupyter_cache"
+os.makedirs(jupyter_cache, exist_ok=True)
+execution_excludepatterns = ["ipynb/executed/*"]
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -60,17 +61,29 @@ extensions = [
     "numpydoc",
     "fluiddoc.mathmacro",
     "sphinxemoji.sphinxemoji",
-    "nbsphinx",
+    "myst_nb",
+    "sphinx_copybutton",
 ]
 
 sphinxemoji_style = "twemoji"
+
+copybutton_selector = ",".join(
+    [
+        f"div.highlight-{css_class} div.highlight pre"
+        for css_class in ("python", "ipython3", "default")
+    ]
+)
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = ".rst"
-
+# source_suffix = ".rst"
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".ipynb": "myst-nb",
+    ".myst": "myst-nb",
+}
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
@@ -104,14 +117,6 @@ release = fld.__version__
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = ["_build"]
-paths_notebooks = Path("ipynb").glob("*.ipynb")
-exclude_patterns.extend(
-    [
-        f"ipynb/{path.name}"
-        for path in paths_notebooks
-        if not path.name.endswith(".executed.ipynb")
-    ]
-)
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
