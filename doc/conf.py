@@ -30,8 +30,6 @@ mock_modules(
     )
 )
 
-#  ipynb_to_rst()
-#  ipynb_to_rst("ipynb/executed", executed=True)
 jupyter_execute_notebooks = "cache"
 jupyter_cache = "./_build/jupyter_cache"
 os.makedirs(jupyter_cache, exist_ok=True)

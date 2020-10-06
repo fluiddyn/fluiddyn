@@ -6,10 +6,10 @@ These notebooks should show how some features of fluiddyn can be used.
 .. toctree::
    :maxdepth: 2
 
-   ipynb/tuto_paramscontainer.executed
-   ipynb/tuto_serieofarrays.executed
+   ipynb/tuto_paramscontainer
+   ipynb/tuto_serieofarrays
    ipynb/executed/tuto_query
-   ipynb/tuto_timer.executed
+   ipynb/tuto_timer
 
 Fluiddyn notebook writers, please read this:
 
