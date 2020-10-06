@@ -22,7 +22,7 @@
    :target: https://codecov.io/gh/fluiddyn/fluiddyn/branch/default/
    :alt: Code coverage
 
-.. |travis| image:: https://travis-ci.org/fluiddyn/fluiddyn.svg?branch=master
+.. |travis| image:: https://travis-ci.org/fluiddyn/fluiddyn.svg?branch=branch%2Fdefault
    :target: https://travis-ci.org/fluiddyn/fluiddyn
    :alt: Travis CI status
 
