@@ -35,7 +35,7 @@ before_script:
 
 script:
     - set -o pipefail
-    - tox -vv -e py37 | fluidicat --every 1 --wait 300
+    - tox -vv | fluidicat --every 1 --wait 300
 
 notifications:
   email: false
