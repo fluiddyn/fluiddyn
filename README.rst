@@ -4,7 +4,7 @@
 
 |release| |pyversions| |docs| |coverage| |heptapod_ci| |travis| |appveyor|
 
-.. |logo| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.png
+.. |logo| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.svg
    :alt: FluidDyn project and fluiddyn package
 
 .. |release| image:: https://img.shields.io/pypi/v/fluiddyn.svg
@@ -35,7 +35,7 @@
    :alt: AppVeyor status
 
 .. |binder| image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/fluiddyn/fluiddyn/master?urlpath=lab/tree/doc/ipynb
+   :target: https://mybinder.org/v2/gh/fluiddyn/fluiddyn/branch%2Fdefault?urlpath=lab/tree/doc/ipynb
    :alt: Binder notebook
 
 FluidDyn project is an ecosystem of packages for research and teaching in fluid
@@ -63,19 +63,15 @@ Installation
 ------------
 The simplest way to install fluiddyn is by using pip::
 
-  pip install fluiddyn [--user]
-
-Add ``--user`` flag if you are installing without setting up a virtual
-environment.
+  pip install fluiddyn
 
 You can also get the source code from
 https://foss.heptapod.net/fluiddyn/fluiddyn or from `the Python Package Index
-<https://pypi.python.org/pypi/fluiddyn/>`_. It is recommended to `install numpy
-<http://scipy.org/install.html>`_ before installing fluiddyn. The development
+<https://pypi.python.org/pypi/fluiddyn/>`_. The development
 mode is often useful if you intend to modify fluiddyn. From the root
 directory::
 
-  python setup.py develop
+  pip install -e .[dev]
 
 
 Requirements
@@ -98,13 +94,10 @@ etc. can be found `here
 Tests
 -----
 
-From the root directory::
+With an editable installation, you can run the tests with::
 
-  make tests
+  pytest
 
-Or, from the root directory or any of the "test" directories::
-
-  python -m unittest discover
 
 Metapaper and citation
 ----------------------
