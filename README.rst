@@ -2,7 +2,7 @@
 |logo|
 ======
 
-|release| |pyversions| |docs| |coverage| |heptapod_ci| |travis| |appveyor|
+|release| |pyversions| |docs| |coverage| |heptapod_ci| |travis|
 
 .. |logo| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.svg
    :alt: FluidDyn project and fluiddyn package
@@ -18,8 +18,8 @@
    :target: http://fluiddyn.readthedocs.org
    :alt: Documentation status
 
-.. |coverage| image:: https://codecov.io/gh/fluiddyn/fluiddyn/branch/default/graph/badge.svg
-   :target: https://codecov.io/gh/fluiddyn/fluiddyn/branch/default/
+.. |coverage| image:: https://codecov.io/gh/fluiddyn/fluiddyn/branch/branch%2Fdefault/graph/badge.svg
+   :target: https://codecov.io/gh/fluiddyn/fluiddyn/branch/branch%2Fdefault
    :alt: Code coverage
 
 .. |heptapod_ci| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/badges/branch/default/pipeline.svg
