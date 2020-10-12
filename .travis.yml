@@ -1,46 +1,32 @@
-sudo: false
+dist: focal
 language: python
 
 python:
-  - 3.6
-    # - pypy3  # No pypy3 in Xenial and pypy3.5-5.8.0 is too old (https://bitbucket.org/pypy/pypy/issues/2747)
+  - 3.7
 
 env:
-  - TOXENV=py,codecov-travis
-
-matrix:
-  include:
-    - python: 3.7
-      env: TOXENV=py,codecov-travis
-      dist: xenial     # required for Python 3.7 (travis-ci/travis-ci#9069)
-      sudo: required   # required for Python 3.7 (travis-ci/travis-ci#9069)
+  - TOXENV=py37,codecov-travis
 
 before_cache:
   - |
-      coverage erase
-      rm -f $HOME/.cache/pip/log/debug.log
+    coverage erase
+    rm -f $HOME/.cache/pip/log/debug.log
 
 cache:
-    directories:
-        - $HOME/.cache/pip
-        - $TRAVIS_BUILD_DIR/.tox
+  directories:
+    - $HOME/.cache/pip
+    - $TRAVIS_BUILD_DIR/.tox
 
 addons:
     apt:
       packages:
-        - libfftw3-dev
-        - libhdf5-dev
         - libopenmpi-dev
         - openmpi-bin
-        - libopenblas-dev
-          # - liblapack-dev  # for NumPy from source for PyPy
-          # - gfortran       # for SciPy from source
 
 install:
-    - pip install -U pip setuptools wheel colorlog
+    - pip install -U pip setuptools colorlog
     - pip install -U tox-travis coverage pytest
     - pip install -U fluiddevops
-    - pip install -U pyfftw
 
 before_script:
     - |
