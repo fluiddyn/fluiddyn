@@ -39,4 +39,4 @@ script:
 
 notifications:
   email: false
-  irc: "chat.freenode.net#fluiddyn"
+  irc: "chat.freenode.net#fluiddyn-tasks"
