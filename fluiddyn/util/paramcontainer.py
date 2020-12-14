@@ -206,7 +206,7 @@ class ParamContainer:
             self._set_internal_attr("_tag", tag)
         else:
             raise ValueError(
-                "To create an empty ParamContainer, " "a tag has to be provided."
+                "To create an empty ParamContainer, a tag has to be provided."
             )
 
         if attribs is not None:
@@ -637,7 +637,7 @@ class ParamContainer:
             except AttributeError:
                 pass
 
-            if isinstance(v, np.ndarray) and v.dtype.kind in ("S", "U"):
+            if isinstance(v, np.ndarray) and v.dtype.kind in ("S", "U", "O"):
                 attrs[k] = list(v.astype(np.unicode))
 
         tag = hdf5_object.name.split("/")[-1]

@@ -140,12 +140,12 @@ def save_variables_h5(path, variables, names=None):
        b = 'str'
        c = np.ones(2)
 
-       save_variables_h5('myfile.py', locals(), ('a', 'b', 'c'))
+       save_variables_h5('myfile.h5', locals(), ('a', 'b', 'c'))
 
     or from a dictionary::
 
        d = {'a': 1, 'b': 'str', 'c': np.ones(2)}
-       save_variables_h5('myfile.py', d)
+       save_variables_h5('myfile.h5', d)
 
     """
     if names is not None:
@@ -154,9 +154,9 @@ def save_variables_h5(path, variables, names=None):
         for name in names:
             variables[name] = variables_all[name]
 
-    with h5py.File(path, "w") as f:
+    with h5py.File(path, "w") as file:
         for key, value in variables.items():
-            f.create_dataset(key, data=value)
+            file.create_dataset(key, data=value)
 
 
 def load_variables_h5(path):
@@ -173,9 +173,12 @@ def load_variables_h5(path):
 
     variables = {}
 
-    with h5py.File(path, "r") as f:
-        for key, dataset in f.items():
-            variables[key] = dataset[()]
+    with h5py.File(path, "r") as file:
+        for key, dataset in file.items():
+            value = dataset[()]
+            if isinstance(value, bytes):
+                value = value.decode()
+            variables[key] = value
 
     return variables
 
