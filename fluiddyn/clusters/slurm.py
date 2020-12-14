@@ -275,6 +275,8 @@ scontrol release"""
         txt += f"#SBATCH -e {logfile}.%J.stderr\n"
         txt += f"#SBATCH -o {logfile}.%J.stdout\n\n"
 
+        txt += "\n".join(self.commands_setting_env) + "\n\n"
+
         txt += 'echo "hostname: "$HOSTNAME\n\n'
         txt += self._log_job(
             nb_mpi_processes,
@@ -283,8 +285,6 @@ scontrol release"""
             command,
             "SLURM_JOB.md",
         )
-
-        txt += "\n".join(self.commands_setting_env) + "\n\n"
 
         if omp_num_threads is not None:
             txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"
