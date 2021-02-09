@@ -7,7 +7,7 @@ import numpy as np
 from ...util.mpi import nb_proc, printby0
 
 try:
-    import scipy.fftpack as fftp
+    import scipy.fft as fftp
 except ImportError:
     pass
 
@@ -17,7 +17,7 @@ else:
     nthreads = 1
 
 
-def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
+def fftw_grid_size(nk, bases=(2, 3, 5, 7, 11, 13), debug=False):
     """Find the closest multiple of prime powers greater than or equal to nk
     using Mixed Integer Linear Programming (MILP). Useful while setting the
     grid-size to be compatible with FFTW.
@@ -40,7 +40,7 @@ def fftw_grid_size(nk, bases=[2, 3, 5, 7, 11, 13], debug=False):
     """
     if {2, 3, 5} == set(bases):
         if debug:
-            print("Using scipy.fftpack.next_fast_len")
+            print("Using scipy.fft.next_fast_len")
         return fftp.next_fast_len(nk)
 
     elif {2, 3, 5, 7, 11, 13} == set(bases):
@@ -246,9 +246,7 @@ class BasePyFFT(BaseFFT):
         try:
             import pyfftw
         except ImportError as err:
-            raise ImportError(
-                "ImportError {0}. Instead fftpack can be used (?)", err
-            )
+            raise ImportError(f"{err}. Instead scipy.fft may be used?")
 
         if isinstance(shapeX, int):
             shapeX = [shapeX]
@@ -589,7 +587,7 @@ class FFTW1D(BasePyFFT):
         try:
             import pyfftw
         except ImportError as err:
-            raise ImportError("ImportError. Instead fftpack?", err)
+            raise ImportError(f"{err}. Instead scipy.fft may be used?")
 
         if n % 2 != 0:
             raise ValueError("n should be even")
