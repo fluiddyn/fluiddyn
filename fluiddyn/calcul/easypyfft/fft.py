@@ -1,34 +1,10 @@
-"""Fast Fourier transforms (:mod:`fluiddyn.calcul.easypyfft`)
-=============================================================
-
-.. autofunction:: fftw_grid_size
-
-Provides classes for performing fft in 1, 2, and 3 dimensions:
-
-.. autoclass:: FFTP2D
-   :members:
-
-.. autoclass:: FFTW2DReal2Complex
-   :members:
-
-.. autoclass:: FFTW3DReal2Complex
-   :members:
-
-.. autoclass:: FFTW1D
-   :members:
-
-.. autoclass:: FFTW1DReal2Complex
-   :members:
-
-"""
-
 import os
 from copy import copy
 from time import time
 
 import numpy as np
 
-from ..util.mpi import nb_proc, printby0
+from ...util.mpi import nb_proc, printby0
 
 try:
     import scipy.fftpack as fftp
