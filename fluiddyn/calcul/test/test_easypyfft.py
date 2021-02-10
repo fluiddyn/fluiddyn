@@ -56,8 +56,8 @@ class TestFFTW1DReal2Complex(unittest.TestCase):
         back_fft = op.fft(func)
         back = op.ifft(back_fft)
 
-        self.assertTrue(np.allclose(func_fft, back_fft))
-        self.assertTrue(np.allclose(func, back))
+        np.testing.assert_allclose(func_fft, back_fft)
+        np.testing.assert_allclose(func, back)
 
         energyX = op.compute_energy_from_spatial(func)
         energyK = op.compute_energy_from_Fourier(func_fft)
@@ -109,8 +109,8 @@ class TestFFTW2DReal2Complex(unittest.TestCase):
         energyKback = op.compute_energy_from_Fourier(back_fft)
         back = op.ifft2d(back_fft)
 
-        self.assertTrue(np.allclose(func_fft, back_fft))
-        self.assertTrue(np.allclose(func, back))
+        np.testing.assert_allclose(func_fft, back_fft)
+        np.testing.assert_allclose(func, back)
 
         self.assertAlmostEqual(energyX, energyK)
         self.assertAlmostEqual(energyK, energyKback)
