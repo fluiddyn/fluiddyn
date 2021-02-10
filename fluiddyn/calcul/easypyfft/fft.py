@@ -121,20 +121,20 @@ class BaseFFT:
 
         assert np.allclose(nrj, nrj_fft), (nrj, nrj_fft, nb_proc * nrj_fft - nrj)
 
-        arr2_fft = np.zeros(self.shapeK, dtype=np.complex128)
+        arr2_fft = self.create_arrayK()
         self.fft_as_arg(arr, arr2_fft)
         nrj2_fft = self.compute_energy_from_Fourier(arr2_fft)
         assert np.allclose(nrj, nrj2_fft)
 
-        arr2 = np.empty(self.shapeX)
+        arr2 = self.create_arrayX()
         self.ifft_as_arg(arr_fft, arr2)
         nrj2 = self.compute_energy_from_spatial(arr2)
         assert np.allclose(nrj, nrj2)
 
     def run_benchs(self, nb_time_execute=10):
 
-        arr = np.zeros(self.shapeX)
-        arr_fft = np.zeros(self.shapeK, dtype=np.complex128)
+        arr = self.create_arrayX()
+        arr_fft = self.create_arrayK()
 
         times = []
         for i in range(nb_time_execute):
@@ -180,6 +180,22 @@ class BaseFFT:
 
     get_shapeX_loc = get_shapeX_seq
 
+    def create_arrayX(self, value=None):
+        """Return a constant array in real space."""
+        shapeX = self.shapeX
+        field = self.empty_aligned(shapeX)
+        if value is not None:
+            field.fill(value)
+        return field
+
+    def create_arrayK(self, value=None):
+        """Return a constant array in real space."""
+        shapeK = self.shapeK
+        field = self.empty_aligned(shapeK, dtype=np.complex128)
+        if value is not None:
+            field.fill(value)
+        return field
+
 
 class FFTP2D(BaseFFT):
     """ A class to use fftp """
@@ -197,6 +213,10 @@ class FFTP2D(BaseFFT):
 
         self.fft2d = self.fft
         self.ifft2d = self.ifft
+
+        # NOTE: Done to match the API of pyfftw classes.
+        # The arrays may not be "aligned".
+        self.empty_aligned = np.empty
 
     def fft(self, ff):
         if not (isinstance(ff[0, 0], float)):
@@ -335,22 +355,6 @@ class BasePyFFT(BaseFFT):
 
     def get_is_transposed(self):
         return False
-
-    def create_arrayX(self, value=None):
-        """Return a constant array in real space."""
-        shapeX = self.shapeX
-        field = self.empty_aligned(shapeX)
-        if value is not None:
-            field.fill(value)
-        return field
-
-    def create_arrayK(self, value=None):
-        """Return a constant array in real space."""
-        shapeK = self.shapeK
-        field = self.empty_aligned(shapeK, dtype=np.complex128)
-        if value is not None:
-            field.fill(value)
-        return field
 
 
 class FFTW2DReal2Complex(BasePyFFT):
