@@ -198,9 +198,22 @@ class BaseFFT:
 
 
 class FFTP2D(BaseFFT):
-    """ A class to use fftp """
+    """ A class to use pocketfft library packaged in ``scipy.fft``.
 
-    def __init__(self, nx, ny):
+    Parameters
+    ----------
+    nx: int
+        Size of physical array along x-axis. Must be even.
+
+    ny: int
+        Size of physical array along y-axis. Must be even.
+
+    workers: int (optional, default: maximum number of threads in the system overriden by OMP_NUM_THREADS)
+        Number of threads to split FFT computation into.
+
+    """
+
+    def __init__(self, nx, ny, workers=-1):
         if nx % 2 != 0 or ny % 2 != 0:
             raise ValueError("nx and ny should be even")
 
@@ -218,10 +231,14 @@ class FFTP2D(BaseFFT):
         # The arrays may not be "aligned".
         self.empty_aligned = np.empty
 
+        self.workers = os.getenv("OMP_NUM_THREADS", workers)
+
     def fft(self, ff):
         if not (isinstance(ff[0, 0], float)):
             print("Warning: not array of floats")
-        big_ff_fft = fftp.fft2(ff, norm="forward")
+
+        big_ff_fft = fftp.fft2(ff, norm="forward", workers=self.workers)
+
         small_ff_fft = big_ff_fft[:, 0 : self.nkx]
         return small_ff_fft
 
@@ -240,7 +257,8 @@ class FFTP2D(BaseFFT):
         ].conj()
 
         # print('big_ff_fft final\n', big_ff_fft)
-        result_ifft = fftp.ifft2(big_ff_fft, norm="forward")
+        result_ifft = fftp.ifft2(big_ff_fft, norm="forward", workers=self.workers)
+
         if np.max(np.imag(result_ifft)) > 10 ** (-8):
             print(
                 "ifft2: imaginary part of ifft not equal to zero,",
