@@ -231,10 +231,13 @@ class FFTP2D(BaseFFT):
         # print('small_ff_fft\n', small_ff_fft)
         big_ff_fft = np.empty(self.shapeX, dtype=np.complex128)
         big_ff_fft[:, 0 : self.nkx] = small_ff_fft
-        for iky in range(self.ny):
-            big_ff_fft[iky, self.nkx :] = small_ff_fft[
-                -iky, self.nkx - 2 : 0 : -1
-            ].conj()
+
+        # for iky in range(self.ny):
+        #     big_ff_fft[iky, self.nkx :] = small_ff_fft[ -iky, self.nkx - 2 : 0 : -1 ].conj()
+        big_ff_fft[0, self.nkx :] = small_ff_fft[0, self.nkx - 2 : 0 : -1].conj()
+        big_ff_fft[1 : self.ny, self.nkx :] = small_ff_fft[
+            self.ny : 0 : -1, self.nkx - 2 : 0 : -1
+        ].conj()
 
         # print('big_ff_fft final\n', big_ff_fft)
         result_ifft = fftp.ifft2(big_ff_fft, norm="forward")
