@@ -221,7 +221,7 @@ class FFTP2D(BaseFFT):
     def fft(self, ff):
         if not (isinstance(ff[0, 0], float)):
             print("Warning: not array of floats")
-        big_ff_fft = fftp.fft2(ff) / self.coef_norm
+        big_ff_fft = fftp.fft2(ff, norm="forward")
         small_ff_fft = big_ff_fft[:, 0 : self.nkx]
         return small_ff_fft
 
@@ -237,7 +237,7 @@ class FFTP2D(BaseFFT):
             ].conj()
 
         # print('big_ff_fft final\n', big_ff_fft)
-        result_ifft = fftp.ifft2(big_ff_fft * self.coef_norm)
+        result_ifft = fftp.ifft2(big_ff_fft, norm="forward")
         if np.max(np.imag(result_ifft)) > 10 ** (-8):
             print(
                 "ifft2: imaginary part of ifft not equal to zero,",
