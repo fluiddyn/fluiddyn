@@ -110,6 +110,9 @@ def fftw_grid_size(nk, bases=(2, 3, 5, 7, 11, 13), debug=False):
 
 
 class BaseFFT:
+    _dtypeX = np.float64
+    _dtypeK = np.complex128
+
     def run_tests(self):
         arr = np.random.rand(*self.shapeX)
         arr_fft = self.fft(arr)
@@ -183,7 +186,7 @@ class BaseFFT:
     def create_arrayX(self, value=None):
         """Return a constant array in real space."""
         shapeX = self.shapeX
-        field = self.empty_aligned(shapeX)
+        field = self.empty_aligned(shapeX, dtype=self._dtypeX)
         if value is not None:
             field.fill(value)
         return field
@@ -191,14 +194,14 @@ class BaseFFT:
     def create_arrayK(self, value=None):
         """Return a constant array in real space."""
         shapeK = self.shapeK
-        field = self.empty_aligned(shapeK, dtype=np.complex128)
+        field = self.empty_aligned(shapeK, dtype=self._dtypeK)
         if value is not None:
             field.fill(value)
         return field
 
 
 class FFTP2D(BaseFFT):
-    """ A class to use pocketfft library packaged in ``scipy.fft``.
+    """A class to use pocketfft library packaged in ``scipy.fft``.
 
     Parameters
     ----------
@@ -231,6 +234,9 @@ class FFTP2D(BaseFFT):
         # The arrays may not be "aligned".
         self.empty_aligned = np.empty
 
+        # Work array
+        self._arrayK_big = np.empty(self.shapeX, dtype=self._dtypeK)
+
         self.workers = os.getenv("OMP_NUM_THREADS", workers)
 
     def fft(self, ff):
@@ -245,8 +251,8 @@ class FFTP2D(BaseFFT):
     def ifft(self, small_ff_fft, ARG_IS_COMPLEX=False):
         if not (isinstance(small_ff_fft[0, 0], complex)):
             print("Warning: not array of complexes")
-        # print('small_ff_fft\n', small_ff_fft)
-        big_ff_fft = np.empty(self.shapeX, dtype=np.complex128)
+
+        big_ff_fft = self._arrayK_big
         big_ff_fft[:, 0 : self.nkx] = small_ff_fft
 
         # for iky in range(self.ny):
@@ -282,56 +288,16 @@ class FFTP2D(BaseFFT):
         return np.mean(abs(ff) ** 2) / 2
 
 
-class BasePyFFT(BaseFFT):
-    def __init__(self, shapeX):
-        try:
-            import pyfftw
-        except ImportError as err:
-            raise ImportError(f"{err}. Instead scipy.fft may be used?")
-
-        if isinstance(shapeX, int):
-            shapeX = [shapeX]
-
-        shapeK = list(shapeX)
-        shapeK[-1] = shapeK[-1] // 2 + 1
-        shapeK = tuple(shapeK)
-
-        self.shapeX = shapeX
-        self.shapeK = self.shapeK_seq = self.shapeK_loc = shapeK
-
-        self.empty_aligned = pyfftw.empty_aligned
-        self.arrayX = pyfftw.empty_aligned(shapeX, np.float64)
-        self.arrayK = pyfftw.empty_aligned(shapeK, np.complex128)
-
-        axes = tuple(range(len(shapeX)))
-
-        self.fftplan = pyfftw.FFTW(
-            input_array=self.arrayX,
-            output_array=self.arrayK,
-            axes=axes,
-            direction="FFTW_FORWARD",
-            threads=nthreads,
-        )
-        self.ifftplan = pyfftw.FFTW(
-            input_array=self.arrayK,
-            output_array=self.arrayX,
-            axes=axes,
-            direction="FFTW_BACKWARD",
-            threads=nthreads,
-        )
-
-        self.coef_norm = np.prod(shapeX)
-        self.inv_coef_norm = 1.0 / self.coef_norm
-
+class BaseFFTW(BaseFFT):
     def fft(self, fieldX):
-        fieldK = self.empty_aligned(self.shapeK, np.complex128)
+        fieldK = self.empty_aligned(self.shapeK, self._dtypeK)
         self.fftplan(
             input_array=fieldX, output_array=fieldK, normalise_idft=False
         )
-        return fieldK / self.coef_norm
+        return fieldK * self.inv_coef_norm
 
     def ifft(self, fieldK):
-        fieldX = self.empty_aligned(self.shapeX, np.float64)
+        fieldX = self.empty_aligned(self.shapeX, self._dtypeX)
         # This copy is needed because FFTW_DESTROY_INPUT is used.
         # See pyfftw.readthedocs.io/en/latest/source/pyfftw/pyfftw.html
         self.arrayK[:] = fieldK
@@ -376,6 +342,51 @@ class BasePyFFT(BaseFFT):
 
     def get_is_transposed(self):
         return False
+
+
+class BasePyFFT(BaseFFTW):
+    def __init__(self, shapeX):
+        try:
+            import pyfftw
+        except ImportError as err:
+            raise ImportError(f"{err}. Instead scipy.fft may be used?")
+
+        if isinstance(shapeX, int):
+            shapeX = [shapeX]
+
+        shapeK = list(shapeX)
+        if self._dtypeX == self._dtypeK:
+            shapeK = tuple(shapeX)
+        else:
+            shapeK[-1] = shapeK[-1] // 2 + 1
+            shapeK = tuple(shapeK)
+
+        self.shapeX = shapeX
+        self.shapeK = self.shapeK_seq = self.shapeK_loc = shapeK
+
+        self.empty_aligned = pyfftw.empty_aligned
+        self.arrayX = pyfftw.empty_aligned(shapeX, self._dtypeX)
+        self.arrayK = pyfftw.empty_aligned(shapeK, self._dtypeK)
+
+        axes = tuple(range(len(shapeX)))
+
+        self.fftplan = pyfftw.FFTW(
+            input_array=self.arrayX,
+            output_array=self.arrayK,
+            axes=axes,
+            direction="FFTW_FORWARD",
+            threads=nthreads,
+        )
+        self.ifftplan = pyfftw.FFTW(
+            input_array=self.arrayK,
+            output_array=self.arrayX,
+            axes=axes,
+            direction="FFTW_BACKWARD",
+            threads=nthreads,
+        )
+
+        self.coef_norm = np.prod(shapeX)
+        self.inv_coef_norm = 1.0 / self.coef_norm
 
 
 class FFTW2DReal2Complex(BasePyFFT):
@@ -608,38 +619,15 @@ def compute_k_adim_seq_3d(nk, axis):
 class FFTW1D(BasePyFFT):
     """ A class to use fftw 1D """
 
-    def __init__(self, n):
-        try:
-            import pyfftw
-        except ImportError as err:
-            raise ImportError(f"{err}. Instead scipy.fft may be used?")
+    _dtypeX = np.complex128
+    _dtypeK = np.complex128
 
+    def __init__(self, n):
         if n % 2 != 0:
             raise ValueError("n should be even")
 
         shapeX = (n,)
-        shapeK = (n,)
-        self.shapeX = shapeX
-        self.shapeK = self.shapeK_seq = self.shapeK_loc = shapeK
-        self.arrayX = pyfftw.empty_aligned(shapeX, "complex128")
-        self.arrayK = pyfftw.empty_aligned(shapeK, "complex128")
-        self.fftplan = pyfftw.FFTW(
-            input_array=self.arrayX,
-            output_array=self.arrayK,
-            axes=(-1,),
-            direction="FFTW_FORWARD",
-            threads=nthreads,
-        )
-        self.ifftplan = pyfftw.FFTW(
-            input_array=self.arrayK,
-            output_array=self.arrayX,
-            axes=(-1,),
-            direction="FFTW_BACKWARD",
-            threads=nthreads,
-        )
-
-        self.coef_norm = n
-        self.inv_coef_norm = 1.0 / n
+        super().__init__(shapeX)
 
     def fft(self, ff):
         self.arrayX[:] = ff
