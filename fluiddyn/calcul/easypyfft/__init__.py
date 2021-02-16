@@ -29,3 +29,6 @@ from .fft import (
     FFTW1D,
     FFTW1DReal2Complex,
 )
+from .dct import (
+    FFTW1DReal2RealCosine,
+)

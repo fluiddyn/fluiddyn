@@ -328,15 +328,6 @@ class BaseFFTW(BaseFFT):
             input_array=fieldK, output_array=fieldX, normalise_idft=False
         )
 
-    def compute_energy_from_Fourier(self, ff_fft):
-        result = self.sum_wavenumbers(abs(ff_fft) ** 2) / 2
-        return result
-
-    compute_energy_from_K = compute_energy_from_Fourier
-
-    def compute_energy_from_spatial(self, ff):
-        return np.mean(abs(ff) ** 2) / 2
-
     def project_fft_on_realX(self, ff_fft):
         return self.fft(self.ifft(ff_fft))
 
@@ -387,6 +378,15 @@ class BasePyFFT(BaseFFTW):
 
         self.coef_norm = np.prod(shapeX)
         self.inv_coef_norm = 1.0 / self.coef_norm
+
+    def compute_energy_from_Fourier(self, ff_fft):
+        result = self.sum_wavenumbers(abs(ff_fft) ** 2) / 2
+        return result
+
+    compute_energy_from_K = compute_energy_from_Fourier
+
+    def compute_energy_from_spatial(self, ff):
+        return np.mean(abs(ff) ** 2) / 2
 
 
 class FFTW2DReal2Complex(BasePyFFT):
