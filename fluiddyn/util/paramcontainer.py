@@ -638,7 +638,7 @@ class ParamContainer:
                 pass
 
             if isinstance(v, np.ndarray) and v.dtype.kind in ("S", "U", "O"):
-                attrs[k] = list(v.astype(np.unicode))
+                attrs[k] = list(v.astype(np.compat.unicode))
 
         tag = hdf5_object.name.split("/")[-1]
 
