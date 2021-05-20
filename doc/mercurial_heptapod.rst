@@ -106,8 +106,7 @@ comes from the package `hg-evolve <https://pypi.org/project/hg-evolve>`_.
 
    With Mercurial installed with ``conda-app`` (as explained above), just run::
 
-     conda activate _env_mercurial
-     pip install hg-fluiddyn
+    conda run -n _env_mercurial pip install hg-fluiddyn
 
    and activate the extension with the line ``hgfluiddyn =`` in the file
    ``~/.hgrc``.
