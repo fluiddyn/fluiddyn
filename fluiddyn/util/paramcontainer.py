@@ -688,6 +688,10 @@ class ParamContainer:
             except AttributeError:
                 pass
 
+    def _pop_attrib(self, name):
+        self._key_attribs.remove(name)
+        return self.__dict__.pop(name)
+
 
 def tidy_container(cont):
     """Modify the names in a ParamContainer and its organization.
