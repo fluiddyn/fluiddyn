@@ -13,6 +13,7 @@ import os
 import subprocess
 from subprocess import PIPE
 import sys
+from warnings import warn
 
 from .local import ClusterLocal
 
@@ -31,13 +32,13 @@ scontrol hold
 scontrol release
 scontrol show <jobid>
 scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
-    name_cluster = ""
-    nb_cores_per_node = 32
-    default_project = None
-    cmd_run = "srun"
-    cmd_run_interactive = None
-    cmd_launch = "sbatch"
-    max_walltime = "23:59:59"
+    name_cluster = ""  #: Name of cluster used in :meth:`check_name_cluster`
+    nb_cores_per_node = 32  #: Number of cores per node
+    default_project = None  #: Default project allocation
+    cmd_run = "srun"  #: Command to launch executable
+    cmd_run_interactive = None  #: Interactive command to launch exectuable
+    cmd_launch = "sbatch"  #: Command to submit job script
+    max_walltime = "23:59:59"  #: Maximum walltime allowed per job
 
     def __init__(self):
         self.check_slurm()
@@ -58,7 +59,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
             )
 
     def check_name_cluster(self, env="HOSTNAME"):
-        """Check if self.name_cluster matches the environment variable."""
+        """Check if :attr:`name_cluster` matches the environment variable."""
 
         if self.name_cluster not in os.getenv(env):
             raise ValueError(
@@ -89,6 +90,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         interactive=False,
         signal_num=12,
         signal_time=300,
+        flexible_walltime=False,
         **kwargs,
     ):
         """Submit a command.
@@ -110,17 +112,17 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         project : string
             Sets the allocation to run the job under
         nb_mpi_processes : integer
-            Number of MPI processes. Defaults to a `nb_cores_per_node * nb_nodes`.
+            Number of MPI processes. Defaults to `nb_cores_per_node * nb_nodes`.
         omp_num_threads : integer
             Number of OpenMP threads
         nb_runs : integer
-            Number of times to submit jobs (launch once using `command` and
-            resume thereafter with `path_resume` script / command).
+            Number of times to submit jobs (launch once using ``command`` and
+            resume thereafter with ``path_resume`` script / command).
         path_launching_script: string
             Path of the SLURM jobscript
         path_resume : string
             Path of the script to resume a job, which takes one
-            argument - the `path_run` parsed from the output.
+            argument - the ``path_run`` parsed from the output.
         retain_script : boolean
             Retail or delete script after launching job
         jobid : integer
@@ -134,14 +136,17 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         ask : boolean
             Ask for user input to submit the jobscript or not
         bash : boolean
-            Submit jobscript via `call_bash` function
+            Submit jobscript via :func:`fluiddyn.io.query.call_bash` function
         email : string
             In case of failure notify to the specified email address
         interactive : boolean
-            Use `cmd_run_interactive` instead of `cmd_run` inside the jobscript
+            Use :attr:`cmd_run_interactive` instead of :attr:`cmd_run` inside the jobscript
         signal_num : int or False
         signal_time : int
-            Send the signal `signal_num` `signal_time` seconds before the end of the job.
+            Send the signal ``signal_num`` `signal_time`` seconds before the end of the job.
+        flexible_walltime : bool
+            Allow walltime to vary between ``walltime`` parameter and :attr:`max_walltime`.
+            Note that if ``signal_num`` is provided ``flexible_walltime`` will be forced to be `False`
         """
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
             nb_nodes, nb_cores_per_node, nb_mpi_processes
@@ -161,6 +166,14 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
 
         if requeue:
             launching_command += " --requeue"
+
+        if flexible_walltime and signal_num:
+            warn(
+                f"Parameter flexible_walltime={flexible_walltime} is not "
+                f"possible when signal_num={signal_num} is set. Forcing "
+                "flexible_walltime = False"
+            )
+            flexible_walltime = False
 
         if is_resume_script:
             dependencies = input("Enter jobid dependencies :").split()
@@ -243,6 +256,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         is_resume_script = kwargs["is_resume_script"]
         signal_num = kwargs["signal_num"]
         signal_time = kwargs["signal_time"]
+        flexible_walltime = kwargs["flexible_walltime"]
 
         logfile = f"SLURM.{name_run}"
         logfile_stdout = logfile + ".${SLURM_JOBID}.stdout"
@@ -253,10 +267,10 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         if project is not None:
             txt += f"#SBATCH -A {project}\n\n"
 
-        if signal_num:
-            time = walltime
-        else:
+        if flexible_walltime:
             time = self.max_walltime
+        else:
+            time = walltime
 
         txt += f"#SBATCH --time={time}\n"
         txt += f"#SBATCH --time-min={walltime}\n"
@@ -320,8 +334,24 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         return txt
 
     def launch_more_dependant_jobs(
-        self, job_id, nb_jobs_added, path_launcher=None
+        self, job_id, nb_jobs_added, path_launcher=None, job_status="afterok"
     ):
+        """Launch dependant jobs using ``sbatch --dependency=...`` command.
+
+        .. seealso:: https://slurm.schedmd.com/sbatch.html
+
+        Parameters
+        ----------
+        job_id: int
+            First running job id to depend on.
+        nb_jobs_added: int
+            Total number of dependent jobs to be added.
+        path_launcher: str
+            Path to launcher script
+        job_status: str
+            Job status of preceding job. Typical values are `afterok, afternotok, afterany`.
+
+        """
 
         if path_launcher is None:
             process = subprocess.run(
@@ -354,7 +384,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
                 end="",
             )
             process = subprocess.run(
-                f"sbatch --dependency=afterok:{job_id} {path_launcher}".split(),
+                f"sbatch --dependency={job_status}:{job_id} {path_launcher}".split(),
                 text=True,
                 stdout=PIPE,
                 stderr=PIPE,
