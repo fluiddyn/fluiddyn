@@ -28,7 +28,9 @@ sbatch
 squeue -u $USER
 scancel
 scontrol hold
-scontrol release"""
+scontrol release
+scontrol show <jobid>
+scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
     name_cluster = ""
     nb_cores_per_node = 32
     default_project = None
