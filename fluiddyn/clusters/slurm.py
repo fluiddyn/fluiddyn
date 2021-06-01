@@ -145,8 +145,17 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         signal_time : int
             Send the signal ``signal_num`` `signal_time`` seconds before the end of the job.
         flexible_walltime : bool
-            Allow walltime to vary between ``walltime`` parameter and :attr:`max_walltime`.
-            Note that if ``signal_num`` is provided ``flexible_walltime`` will be forced to be `False`
+            If true, submit a job as::
+
+                sbatch --time-min=<walltime> --time=<max_walltime> ...
+
+            where ``walltime`` is a parameter of this method and
+            :attr:`max_walltime` is a class attribute. This would allow SLURM
+            to provide an optimum walltime in the range requested.
+
+            Note that if ``signal_num`` is provided ``flexible_walltime`` is
+            not practical and will be forced to be `False`.
+
         """
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
             nb_nodes, nb_cores_per_node, nb_mpi_processes
