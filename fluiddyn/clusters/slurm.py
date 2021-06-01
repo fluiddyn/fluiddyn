@@ -10,8 +10,10 @@ Provides:
 """
 
 import os
+import subprocess
+from subprocess import PIPE
+import sys
 
-from . import subprocess
 from .local import ClusterLocal
 
 
@@ -43,7 +45,7 @@ scontrol release"""
     def check_slurm(self):
         """Check if this script is run on a frontal with slurm installed."""
         try:
-            subprocess.check_call(["sbatch", "--version"], stdout=subprocess.PIPE)
+            subprocess.check_call(["sbatch", "--version"], stdout=PIPE)
             slurm_installed = True
         except OSError:
             slurm_installed = False
@@ -314,3 +316,39 @@ scontrol release"""
 
         txt += "\n" + "\n".join(self.commands_unsetting_env)
         return txt
+
+    def launch_more_dependant_jobs(self, job_id, nb_jobs_added, path_launcher=None):
+
+        if path_launcher is None:
+            process = subprocess.run(
+                f"scontrol show job {job_id}".split(), text=True, stdout=PIPE, stderr=PIPE
+            )
+            print(process.stdout, process.stderr, sep="\n")
+            if process.returncode:
+                print("exit because previous command failed")
+                sys.exit(process.returncode)
+            path_launcher = None
+            work_dir = None
+            for line in process.stdout.split("\n"):
+                line = line.strip()
+                if line.startswith("Command="):
+                    path_launcher = line[len("Command=") :].strip()
+                if line.startswith("WorkDir="):
+                    work_dir = line[len("WorkDir=") :].strip()
+
+        assert path_launcher is not None
+
+        if path_launcher.startswith("./"):
+            path_launcher = work_dir + path_launcher[1:]
+
+        for _ in range(nb_jobs_added):
+            process = subprocess.run(
+                f"sbatch --dependency=afterok:{job_id} {path_launcher}".split(),
+                text=True,
+                stdout=PIPE,
+                stderr=PIPE,
+            )
+            if process.returncode:
+                print("exit because previous command failed")
+                sys.exit(process.returncode)
+            job_id = process.stdout.split()[-1].strip()
