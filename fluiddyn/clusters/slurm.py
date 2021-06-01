@@ -317,14 +317,19 @@ scontrol release"""
         txt += "\n" + "\n".join(self.commands_unsetting_env)
         return txt
 
-    def launch_more_dependant_jobs(self, job_id, nb_jobs_added, path_launcher=None):
+    def launch_more_dependant_jobs(
+        self, job_id, nb_jobs_added, path_launcher=None
+    ):
 
         if path_launcher is None:
             process = subprocess.run(
-                f"scontrol show job {job_id}".split(), text=True, stdout=PIPE, stderr=PIPE
+                f"scontrol show job {job_id}".split(),
+                text=True,
+                stdout=PIPE,
+                stderr=PIPE,
             )
-            print(process.stdout, process.stderr, sep="\n")
             if process.returncode:
+                print(process.stdout, process.stderr, sep="\n")
                 print("exit because previous command failed")
                 sys.exit(process.returncode)
             path_launcher = None
@@ -341,7 +346,11 @@ scontrol release"""
         if path_launcher.startswith("./"):
             path_launcher = work_dir + path_launcher[1:]
 
-        for _ in range(nb_jobs_added):
+        for i in range(nb_jobs_added):
+            print(
+                f"submitting job {i+1}/{nb_jobs_added} dependent of job {job_id}",
+                end="",
+            )
             process = subprocess.run(
                 f"sbatch --dependency=afterok:{job_id} {path_launcher}".split(),
                 text=True,
@@ -349,6 +358,9 @@ scontrol release"""
                 stderr=PIPE,
             )
             if process.returncode:
-                print("exit because previous command failed")
+                print("\nexit because previous command failed")
                 sys.exit(process.returncode)
             job_id = process.stdout.split()[-1].strip()
+            print(f" (job_id: {job_id})")
+
+        print(f"Succesfully submitted {nb_jobs_added} chained jobs")
