@@ -73,6 +73,7 @@ oarsub -C $JOB_ID"""
         ask=True,
         submit=True,
         run_with_exec=True,
+        resource_conditions=None,
     ):
 
         path = os.path.expanduser(path)
@@ -97,6 +98,7 @@ oarsub -C $JOB_ID"""
             ask=ask,
             submit=submit,
             run_with_exec=run_with_exec,
+            resource_conditions=resource_conditions,
         )
 
     def submit_command(
@@ -115,6 +117,7 @@ oarsub -C $JOB_ID"""
         ask=True,
         submit=True,
         run_with_exec=True,
+        resource_conditions=None,
     ):
 
         self.check_oar()
@@ -143,6 +146,7 @@ oarsub -C $JOB_ID"""
             omp_num_threads=omp_num_threads,
             network_address=network_address,
             run_with_exec=run_with_exec,
+            resource_conditions=resource_conditions,
         )
 
         with open(path_launching_script, "w") as f:
@@ -187,6 +191,7 @@ oarsub -C $JOB_ID"""
         omp_num_threads=None,
         network_address=None,
         run_with_exec=True,
+        resource_conditions=None,
     ):
 
         txt = f"#!/bin/bash\n\n#OAR -n {name_run}\n"
@@ -194,9 +199,19 @@ oarsub -C $JOB_ID"""
         txt += "#OAR -l "
 
         if self.has_to_add_name_cluster and network_address is None:
-            txt += "{cluster='" + self.name_cluster + "'}"
+            conditions = f"cluster='{self.name_cluster}'"
         elif network_address is not None:
-            txt += "{network_address='" + network_address + "'}"
+            conditions = f"network_address='{network_address}"
+        else:
+            conditions = ""
+
+        if resource_conditions is not None:
+            if conditions:
+                conditions += " AND "
+            conditions += resource_conditions
+
+        if conditions:
+            txt += "{" + conditions + "}"
 
         txt += "/nodes={}/core={},walltime={}\n\n".format(
             nb_nodes, nb_cores_per_node, walltime
