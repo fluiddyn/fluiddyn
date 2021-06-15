@@ -207,7 +207,7 @@ oarsub -C $JOB_ID"""
 
         if resource_conditions is not None:
             if conditions:
-                conditions += " AND "
+                conditions += " and "
             conditions += resource_conditions
 
         if conditions:
