@@ -399,6 +399,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
                 stderr=PIPE,
             )
             if process.returncode:
+                print(process.stdout, process.stderr, sep="\n")
                 print("\nexit because previous command failed")
                 sys.exit(process.returncode)
             job_id = process.stdout.split()[-1].strip()
