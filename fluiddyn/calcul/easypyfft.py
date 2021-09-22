@@ -23,7 +23,6 @@ Provides classes for performing fft in 1, 2, and 3 dimensions:
 """
 
 import os
-from copy import copy
 from time import time
 
 import numpy as np

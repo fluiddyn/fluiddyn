@@ -16,12 +16,14 @@ try:
 except ImportError:
     pass
 
-try:
-    from cv2 import imread as _imread_opencv, IMREAD_ANYDEPTH
+from fluiddyn.util.opencv import cv2, error_import_cv2
 
-    use_opencv = True
-except ImportError:
-    use_opencv = False
+use_opencv = not bool(error_import_cv2)
+
+if use_opencv:
+    _imread_opencv = cv2.imread
+    IMREAD_ANYDEPTH = cv2.IMREAD_ANYDEPTH
+else:
     try:
         from imageio import imread as _imread
     except ImportError:

@@ -14,6 +14,14 @@ except ImportError:
     pulp_import_error = True
 
 
+try:
+    import pyfftw
+
+    fftw_import_error = False
+except ImportError:
+    fftw_import_error = True
+
+
 class TestFFTWGrid(unittest.TestCase):
     def tearDown(self):
         lpfile = "FFTWGridSizeOptimizationModel.lp"
@@ -31,6 +39,7 @@ class TestFFTWGrid(unittest.TestCase):
         self.assertEqual(n, 1024)
 
 
+@unittest.skipIf(fftw_import_error, "pyfftw ImportError")
 class TestFFTW1D(unittest.TestCase):
     def test_fft(self):
         op = easypyfft.FFTW1D(4)
@@ -39,6 +48,7 @@ class TestFFTW1D(unittest.TestCase):
         op.fft(func)
 
 
+@unittest.skipIf(fftw_import_error, "pyfftw ImportError")
 class TestFFTW1DReal2Complex(unittest.TestCase):
     def test_fft(self):
         """Should be able to..."""
@@ -80,6 +90,7 @@ class TestFFTW1DReal2Complex(unittest.TestCase):
         self.compute_and_check(func_fft, op)
 
 
+@unittest.skipIf(fftw_import_error, "pyfftw ImportError")
 class TestFFTW2DReal2Complex(unittest.TestCase):
     cls = easypyfft.FFTW2DReal2Complex
 
@@ -136,6 +147,7 @@ class TestFFTP2D(TestFFTW2DReal2Complex):
     cls = easypyfft.FFTP2D
 
 
+@unittest.skipIf(fftw_import_error, "pyfftw ImportError")
 class TestFFTW3DReal2Complex(unittest.TestCase):
     def test_fft(self):
         """Test easypyfft.FFTW3DReal2Complex"""

@@ -610,7 +610,7 @@ class EasySHT:
         # print('radius', self.radius)
         return gradf_lon, gradf_lat
 
-    def spat3d_from_sh3d(self, f_lm_3d, f3d=None, dtype=np.float):
+    def spat3d_from_sh3d(self, f_lm_3d, f3d=None, dtype=np.float64):
         nvert = f_lm_3d.shape[0]
         if f3d is None:
             f3d = np.empty([nvert, self.nlat, self.nlon], dtype)
@@ -619,7 +619,7 @@ class EasySHT:
             f3d[iz] = f2D
         return f3d
 
-    def sh3d_from_spat3d(self, f3d, f_lm3d=None, dtype=np.complex):
+    def sh3d_from_spat3d(self, f3d, f_lm3d=None, dtype=np.complex128):
         nvert = f3d.shape[0]
         if f_lm3d is None:
             f_lm3d = np.empty([nvert, self.nlm], dtype)

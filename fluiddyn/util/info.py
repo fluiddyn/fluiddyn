@@ -12,7 +12,6 @@ Examples
 >>> fluidinfo -s  # save all information into sys_info.xml
 >>> fluidinfo -o /tmp  # save all information into /tmp/sys_info.xml
 
-
 .. todo::
     Use a YAML package to print.
 
@@ -38,7 +37,12 @@ import psutil
 # linux_distribution is deprecated and no longer exists in Python 3.8
 try:
     # for 3.8, we use the package distro
-    from distro import linux_distribution
+    import distro
+
+    def linux_distribution():
+        return (distro.name(), distro.version(), distro.codename())
+
+
 except ImportError:
     # for < 3.8, it should work without distro
     from platform import linux_distribution as _linux_dist

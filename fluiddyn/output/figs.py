@@ -190,7 +190,7 @@ class Figure(matplotlib.figure.Figure):
             title += " " + name_file
 
         self.clf()
-        self.canvas.set_window_title(title)
+        self.canvas.manager.set_window_title(title)
 
         if size_axe is not None:
             self.add_axes(size_axe)

@@ -15,7 +15,15 @@ from ..redirect_stdout import stdout_redirected
 input_dir = os.path.join(os.path.dirname(__file__), "ns3d_files")
 input_files = glob(os.path.join(input_dir, "*"))
 
+try:
+    import pyfftw
 
+    fftw_import_error = False
+except ImportError:
+    fftw_import_error = True
+
+
+@unittest.skipIf(fftw_import_error, "pyfftw ImportError")
 class TestNS3D(unittest.TestCase):
     """Test fluiddyn.io.ns3d module."""
 
