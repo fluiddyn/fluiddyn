@@ -16,20 +16,6 @@ import os
 
 import fluiddyn as fld
 
-# this package also comes from fluiddyn
-from fluiddoc import mock_modules
-
-mock_modules(
-    (
-        "nbstripout",
-        "scipy",
-        "scipy.fftpack",
-        "scipy.interpolate",
-        "skimage",
-        "skimage.io",
-    )
-)
-
 jupyter_execute_notebooks = "cache"
 jupyter_cache = "./_build/jupyter_cache"
 os.makedirs(jupyter_cache, exist_ok=True)
