@@ -61,10 +61,7 @@ keys_image = [
 
 
 class DigiflowImage:
-    """A digiflow image (.dfi, "image" containing 3 scalar fields).
-
-
-    """
+    """A digiflow image (.dfi, "image" containing 3 scalar fields)."""
 
     def __init__(self, path_file=None):
 
@@ -273,9 +270,7 @@ class DigiflowImage:
 
 
 class DigiflowMovie:
-    """A digiflow movie (.dfm, "movies", set of images).
-
-    """
+    """A digiflow movie (.dfm, "movies", set of images)."""
 
     def __init__(self, path_file=None):
         if path_file is not None:

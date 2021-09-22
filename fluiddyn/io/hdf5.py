@@ -22,18 +22,14 @@ class H5File(h5py.File):
     """HDF5 file."""
 
     def save_dict(self, keydict, dicttosave):
-        """Save the dictionnary `dicttosave` in the file.
-
-        """
+        """Save the dictionnary `dicttosave` in the file."""
         group_params = self.create_group(keydict)
         if len(dicttosave) > 0:
             for k, v in list(dicttosave.items()):
                 group_params.create_dataset(k, data=v)
 
     def load_dict(self, keydict):
-        """Load a group as a dictionnary.
-
-        """
+        """Load a group as a dictionnary."""
         group_params = self[keydict]
         params = {}
         for k, v_in_file in list(group_params.items()):

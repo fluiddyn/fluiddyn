@@ -14,7 +14,7 @@ from ..image import imread, imread_h5, imsave, imsave_h5, use_opencv
 
 
 def err_msg(_format, _type, path):
-    """Assertion error message. """
+    """Assertion error message."""
     return "while testing format={}, data type={} saved as {}.".format(
         _format, _type, path
     )

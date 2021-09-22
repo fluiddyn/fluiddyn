@@ -347,7 +347,7 @@ class EasySHT:
         )
 
     def idx_lm(self, l, m):
-        """ idx_lm(self, l,m)"""
+        """idx_lm(self, l,m)"""
         if l >= 0 and 0 <= m <= l:
             return self.sh.idx(int(l), int(m))
 
@@ -419,9 +419,7 @@ class EasySHT:
         return field_lm
 
     def spat_from_sh(self, field_lm, field=None):
-        """Inverse spherical harmonic transform.
-
-        """
+        """Inverse spherical harmonic transform."""
         if field_lm.dtype != np.dtype("complex"):
             field_lm = np.array(field_lm, complex)
         if field is None:
@@ -688,13 +686,13 @@ class EasySHT:
         return array_desh
 
     def spectrum_from_sh(self, field_lm, key_field):
-        """ compute spectrum from field_lm"""
+        """compute spectrum from field_lm"""
         array_desh = self._array_desh_from_sh(field_lm, key_field)
         spectrum = self._spectrum_from_array_desh(array_desh)
         return spectrum
 
     def cospectrum_from_2fieldssh(self, f_lm, g_lm):
-        """ compute cospectrum(l) from f_lm(ilm) and g_lm(ilm)"""
+        """compute cospectrum(l) from f_lm(ilm) and g_lm(ilm)"""
         cospectrum = np.zeros(self.lmax + 1)
 
         array_desh = f_lm.conjugate() * g_lm + f_lm * g_lm.conjugate()
@@ -706,7 +704,7 @@ class EasySHT:
         return cospectrum
 
     def cospectrum_from_2vectorssh(self, f_lon_lm, f_lat_lm, g_lon_lm, g_lat_lm):
-        """ compute cospectrum(l)..."""
+        """compute cospectrum(l)..."""
         cospectrum = np.zeros(self.lmax + 1)
 
         array_desh = (
@@ -724,7 +722,7 @@ class EasySHT:
 
     def cospectrum_from_2fieldssh2(self, f_lm, g_lm):
 
-        """ compute cospectrum(l)..."""
+        """compute cospectrum(l)..."""
         cospectrum = np.zeros(self.lmax + 1)
 
         array_desh = f_lm.conjugate() * g_lm + f_lm * g_lm.conjugate()
@@ -742,7 +740,7 @@ class EasySHT:
         return cospectrum
 
     def cospectrum_from_2divrotsh(self, hdiva_lm, hrota_lm, hdivb_lm, hrotb_lm):
-        """ compute cospectrum(l)..."""
+        """compute cospectrum(l)..."""
         cospectrum = np.zeros(self.lmax + 1)
 
         array_desh = (

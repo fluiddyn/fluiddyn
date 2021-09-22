@@ -694,9 +694,7 @@ class ParamContainer:
 
 
 def tidy_container(cont):
-    """Modify the names in a ParamContainer and its organization.
-
-    """
+    """Modify the names in a ParamContainer and its organization."""
     newtag = convert_capword_to_lowercaseunderscore(cont._tag)
     cont._set_internal_attr("_tag", newtag)
 

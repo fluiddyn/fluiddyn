@@ -206,7 +206,7 @@ class BaseFFT:
 
 
 class FFTP2D(BaseFFT):
-    """ A class to use fftp """
+    """A class to use fftp"""
 
     def __init__(self, nx, ny):
         if nx % 2 != 0 or ny % 2 != 0:
@@ -380,7 +380,7 @@ class BasePyFFT(BaseFFT):
 
 
 class FFTW2DReal2Complex(BasePyFFT):
-    """ A class to use fftw """
+    """A class to use fftw"""
 
     def __init__(self, nx, ny):
         shapeX = (ny, nx)
@@ -462,7 +462,7 @@ class FFTW2DReal2Complex(BasePyFFT):
 
 
 class FFTW3DReal2Complex(BasePyFFT):
-    """ A class to use fftw """
+    """A class to use fftw"""
 
     def __init__(self, nx, ny, nz):
         shapeX = (nz, ny, nx)
@@ -607,7 +607,7 @@ def compute_k_adim_seq_3d(nk, axis):
 
 
 class FFTW1D(BasePyFFT):
-    """ A class to use fftw 1D """
+    """A class to use fftw 1D"""
 
     def __init__(self, n):
         try:
@@ -654,7 +654,7 @@ class FFTW1D(BasePyFFT):
 
 
 class FFTW1DReal2Complex(BasePyFFT):
-    """ A class to use fftw 1D """
+    """A class to use fftw 1D"""
 
     def sum_wavenumbers(self, ff_fft):
         if self.shapeX[0] % 2 == 0:

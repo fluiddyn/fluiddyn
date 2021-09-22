@@ -297,9 +297,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             self.set_index_slices(*index_slices)
 
     def set_index_slices_from_str(self, str_slices):
-        """Set index_slices from a string.
-
-        """
+        """Set index_slices from a string."""
         slices = compute_slices(str_slices)
         index_slices = []
         for slice_ in slices:
