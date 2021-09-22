@@ -4,13 +4,17 @@ Convenience module to import OpenCV
 
 """
 
-# to avoid using Qt libs included in opencv
-try:
-    from qtpy import QtWidgets
-except (RuntimeError, ImportError):
-    pass
-else:
-    QtWidgets.QApplication([])
+import os
+
+if not os.environ.get("FLUIDDYN_NO_QTPY_INIT_BEFORE_OPENCV_IMPORT", False):
+    # to avoid using Qt libs included in opencv
+    try:
+        from qtpy import QtWidgets
+    except (RuntimeError, ImportError):
+        pass
+    else:
+        QtWidgets.QApplication([])
+
 
 try:
     import cv2

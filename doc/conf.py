@@ -14,6 +14,8 @@
 import sys
 import os
 
+os.environ["FLUIDDYN_NO_QTPY_INIT_BEFORE_OPENCV_IMPORT"] = "1"
+
 import fluiddyn as fld
 
 jupyter_execute_notebooks = "cache"
