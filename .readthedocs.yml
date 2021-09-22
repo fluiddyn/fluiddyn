@@ -9,7 +9,7 @@ sphinx:
   configuration: doc/conf.py
 
 python:
-  version: 3.9
+  version: 3.8
   system_packages: true
   install:
     - method: pip
