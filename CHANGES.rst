@@ -22,7 +22,15 @@ Unreleased_
 
 .. towncrier release notes start
 
-.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.3...branch%2Fdefault
+.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.4...branch%2Fdefault
+
+0.3.4_ (2021-09-22)
+-------------------
+
+- General maintenance
+- Various improvements for clusters SLURM and OAR
+- New module :mod:`fluiddyn.util.opencv`: fix incompatibility between `cv2` and
+  Qt wheels
 
 0.3.3_ (2020-10-01)
 -------------------
@@ -176,6 +184,7 @@ Unreleased_
   project. Other packages (fluidsim, fluidlab, ...) provide other
   files.
 
+.. _0.3.4: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.3...0.3.4
 .. _0.3.3: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.2...0.3.3
 .. _0.3.2: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.1...0.3.2
 .. _0.3.1: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.0...0.3.1
