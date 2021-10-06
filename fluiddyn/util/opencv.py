@@ -5,15 +5,34 @@ Convenience module to import OpenCV
 """
 
 import os
+import sys
+from pathlib import Path
+import subprocess
 
-if not os.environ.get("FLUIDDYN_NO_QTPY_INIT_BEFORE_OPENCV_IMPORT", False):
+is_conda = (Path(sys.prefix) / "conda-meta").exists()
+
+if not is_conda and not os.environ.get(
+    "FLUIDDYN_NO_QTPY_INIT_BEFORE_OPENCV_IMPORT", False
+):
     # to avoid using Qt libs included in opencv
     try:
-        from qtpy import QtWidgets
-    except (RuntimeError, ImportError):
+        subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                "from qtpy import QtWidgets; QtWidgets.QApplication([])",
+            ],
+            check=True,
+        )
+    except subprocess.CalledProcessError:
         pass
     else:
-        QtWidgets.QApplication([])
+        try:
+            from qtpy import QtWidgets
+        except (RuntimeError, ImportError):
+            pass
+        else:
+            QtWidgets.QApplication([])
 
 
 try:
