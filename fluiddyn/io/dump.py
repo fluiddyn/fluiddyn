@@ -59,7 +59,7 @@ def dump_nc_object(obj, level=0, print_variables=False):
             if len(value.attrs) != 0:
                 print(indent1 + indentp1 + "attrs:", dict(value.attrs))
             if print_variables:
-                print(indent1 + indentp1 + repr(value[:]))
+                print(indent1 + indentp1 + repr(value[()]))
 
     if len(obj.groups) > 0:
         print(indentp1 + "groups:")
@@ -105,7 +105,7 @@ def dump_h5_object(obj, level=0, print_variables=False):
             if len(value.attrs) != 0:
                 print(indent1 + indentp1 + "attrs:", dict(value.attrs))
             if print_variables:
-                print(indent1 + indentp1 + repr(value[:]))
+                print(indent1 + indentp1 + repr(value[()]))
 
     if len(groups) > 0:
         print(indentp1 + "groups:")
