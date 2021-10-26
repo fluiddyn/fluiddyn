@@ -86,7 +86,7 @@ qrls"""
         name_run : string
             Name of the run to be displayed in PBS queue
         nb_nodes : integer
-            Sets number of MPI processes = nb_nodes * nb_cores_per_node
+            Number of nodes
         nb_cores_per_node : integer
             Defaults to a maximum is fixed for a cluster, as set by self.nb_cores_per_node.
             Set as 1 for a serial job. Set as 0 to spread jobs across nodes
@@ -98,7 +98,8 @@ qrls"""
         queue: string
             Sets the cluster queue to run the job on
         nb_mpi_processes : integer
-            Number of MPI processes. Defaults to a `nb_cores_per_node * nb_nodes`.
+            Number of MPI processes. Defaults to None (no MPI).
+            If ``"auto"``, computed as `nb_cores_per_node * nb_nodes`.
         omp_num_threads : integer
             Number of OpenMP threads
         nb_runs : integer
@@ -229,8 +230,9 @@ qrls"""
         txt += f"#PBS -o {logfile}.%J.stdout\n\n"
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
+        nb_cores = nb_nodes * nb_cores_per_node
         txt += self._log_job(
-            nb_mpi_processes,
+            nb_cores,
             path_launching_script,
             logfile_stdout,
             command,
@@ -251,7 +253,7 @@ qrls"""
 
         cmd = self.cmd_run
 
-        if nb_mpi_processes > 1:
+        if nb_mpi_processes is not None and nb_mpi_processes > 1:
             txt += f"{cmd} -n {nb_mpi_processes} "
 
         if is_resume_script:

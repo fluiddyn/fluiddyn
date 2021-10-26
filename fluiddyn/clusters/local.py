@@ -100,13 +100,14 @@ class ClusterLocal(Cluster):
         name_run : string
             Name of the run to be displayed in SLURM queue
         nb_nodes : integer
-            Sets number of MPI processes = nb_nodes * nb_cores_per_node
+            Number of nodes
         nb_cores_per_node : integer
             Defaults to a maximum is fixed for a cluster, as set by self.nb_cores_per_node.
         walltime : string
             Minimum walltime for the job
-        nb_mpi_processes : integer
-            Number of MPI processes. Defaults to a `nb_cores_per_node * nb_nodes`.
+        nb_mpi_processes : None, integer or ``"auto"``
+            Number of MPI processes. Defaults to None (no MPI).
+            If ``"auto"``, computed as `nb_cores_per_node * nb_nodes`.
         omp_num_threads : integer
             Number of OpenMP threads
         ask : boolean
@@ -134,24 +135,6 @@ class ClusterLocal(Cluster):
 
         if not retain_script:
             os.remove(path_launching_script)
-
-    def _parse_cores_procs(self, nb_nodes, nb_cores_per_node, nb_mpi_processes):
-        """Parse number of cores per node and MPI processes when these are
-        None.
-
-        """
-        if nb_cores_per_node is None:
-            nb_cores_per_node = self.nb_cores_per_node
-        elif nb_cores_per_node > self.nb_cores_per_node:
-            raise ValueError("Too many cores...")
-
-        if nb_mpi_processes is None:
-            if nb_cores_per_node == 0:
-                nb_mpi_processes = 1
-            else:
-                nb_mpi_processes = nb_cores_per_node * nb_nodes
-
-        return nb_cores_per_node, nb_mpi_processes
 
     def _make_path_launching_script(
         self, prefix="launcher", path_launching_script=None
@@ -230,7 +213,7 @@ class ClusterLocal(Cluster):
             txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"
 
         cmd = command
-        if nb_mpi_processes > 1:
+        if nb_mpi_processes is not None and nb_mpi_processes > 1:
             cmd = f"{self.cmd_run} -n {nb_mpi_processes} {cmd}"
 
         walltime_seconds = timestamp_to_seconds(walltime)
@@ -248,7 +231,7 @@ class ClusterLocal(Cluster):
 
     def _log_job(
         self,
-        nb_mpi_processes,
+        nb_cores,
         path_launching_script,
         logfile_stdout,
         command,
@@ -256,13 +239,9 @@ class ClusterLocal(Cluster):
     ):
         """Generate a shell command to log the job into a markdown file."""
         return (
-            "\n" + r'printf "\n# np={} `date` PID $$ {} {}\n{}" >> {}' + "\n"
-        ).format(
-            nb_mpi_processes,
-            path_launching_script,
-            logfile_stdout,
-            command,
-            logfile_job,
+            "\n" + fr'printf "\n# np={nb_cores} `date` PID $$ '
+            fr'{path_launching_script} {logfile_stdout}\n{command}" >> {logfile_job}'
+            + "\n"
         )
 
     def _write_txt_launching_script(self, txt, path_launching_script):

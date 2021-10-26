@@ -62,7 +62,7 @@ oarsub -C $JOB_ID"""
         path,
         name_run="fluiddyn",
         nb_nodes=1,
-        nb_cores_per_node=1,
+        nb_cores_per_node=None,
         walltime="24:00:00",
         project=None,
         nb_mpi_processes=None,
@@ -74,6 +74,7 @@ oarsub -C $JOB_ID"""
         submit=True,
         run_with_exec=True,
         resource_conditions=None,
+        use_oar_envsh=None,
     ):
 
         path = os.path.expanduser(path)
@@ -99,6 +100,7 @@ oarsub -C $JOB_ID"""
             submit=submit,
             run_with_exec=run_with_exec,
             resource_conditions=resource_conditions,
+            use_oar_envsh=use_oar_envsh,
         )
 
     def submit_command(
@@ -106,7 +108,7 @@ oarsub -C $JOB_ID"""
         command,
         name_run="fluiddyn",
         nb_nodes=1,
-        nb_cores_per_node=1,
+        nb_cores_per_node=None,
         walltime="24:00:00",
         project=None,
         nb_mpi_processes=None,
@@ -118,15 +120,14 @@ oarsub -C $JOB_ID"""
         submit=True,
         run_with_exec=True,
         resource_conditions=None,
+        use_oar_envsh=None,
     ):
 
         self.check_oar()
 
-        if nb_cores_per_node is None and nb_mpi_processes is not None:
-            nb_cores_per_node = nb_mpi_processes
-
-        if nb_cores_per_node > self.nb_cores_per_node:
-            raise ValueError("Too many cores...")
+        nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
+            nb_nodes, nb_cores_per_node, nb_mpi_processes
+        )
 
         str_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         path_launching_script = "oar_launcher_" + str_time
@@ -147,6 +148,7 @@ oarsub -C $JOB_ID"""
             network_address=network_address,
             run_with_exec=run_with_exec,
             resource_conditions=resource_conditions,
+            use_oar_envsh=use_oar_envsh,
         )
 
         with open(path_launching_script, "w") as f:
@@ -192,6 +194,7 @@ oarsub -C $JOB_ID"""
         network_address=None,
         run_with_exec=True,
         resource_conditions=None,
+        use_oar_envsh=None,
     ):
 
         txt = f"#!/bin/bash\n\n#OAR -n {name_run}\n"
@@ -224,7 +227,10 @@ oarsub -C $JOB_ID"""
         if omp_num_threads is not None:
             txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"
 
-        if nb_mpi_processes is not None and nb_nodes > 1:
+        if use_oar_envsh is None:
+            use_oar_envsh = nb_mpi_processes is not None and nb_nodes > 1
+
+        if use_oar_envsh:
             txt += (
                 "# Shell with environment variables forwarded\n"
                 "export OMPI_MCA_plm_rsh_agent=oar-envsh\n\n"
