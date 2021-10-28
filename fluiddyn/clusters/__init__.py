@@ -36,6 +36,27 @@ class Cluster:
         """Print a short documentation about the commands available in the cluster"""
         print(cls._doc_commands)
 
+    def _parse_cores_procs(self, nb_nodes, nb_cores_per_node, nb_mpi_processes):
+        """Parse number of cores per node and MPI processes when these are
+        None.
+
+        """
+        if not isinstance(nb_nodes, int) and nb_nodes > 0:
+            raise ValueError("nb_nodes has to be a positive integer")
+
+        if nb_cores_per_node is None:
+            if nb_mpi_processes is not None:
+                nb_cores_per_node = nb_mpi_processes // nb_nodes
+            else:
+                nb_cores_per_node = self.nb_cores_per_node
+        elif nb_cores_per_node > self.nb_cores_per_node:
+            raise ValueError("Too many cores...")
+
+        if nb_mpi_processes == "auto":
+            nb_mpi_processes = nb_cores_per_node * nb_nodes
+
+        return nb_cores_per_node, nb_mpi_processes
+
 
 def check_oar():
     """check if this script is run on a frontal with oar installed"""
