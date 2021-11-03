@@ -22,7 +22,14 @@ Unreleased_
 
 .. towncrier release notes start
 
-.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.4...branch%2Fdefault
+.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.0...branch%2Fdefault
+
+0.4.0_
+------
+
+- clusters: fix inconsistency between different clusters
+  (`#62 <https://foss.heptapod.net/fluiddyn/fluiddyn/-/merge_requests/62>`__)
+- paramcontainer: avoid an ``eval`` call + fix bug ``_parent`` + better get_item/set_item
 
 0.3.4_ (2021-09-22)
 -------------------
@@ -184,6 +191,7 @@ Unreleased_
   project. Other packages (fluidsim, fluidlab, ...) provide other
   files.
 
+.. _0.4.0: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.4...0.4.0
 .. _0.3.4: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.3...0.3.4
 .. _0.3.3: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.2...0.3.3
 .. _0.3.2: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.1...0.3.2
