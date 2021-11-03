@@ -62,7 +62,10 @@ def _as_code(value):
 
 def _as_value(value):
     if value.startswith("array("):
-        return eval(value, {"array": np.array})
+        # -1 to remove the last ")"
+        code = value.strip()[len("array("):-1]
+        obj = literal_eval(code)
+        return np.array(obj)
 
     if "\t" in value:
         return value
