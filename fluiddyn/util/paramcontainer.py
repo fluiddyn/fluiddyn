@@ -523,7 +523,9 @@ class ParamContainer:
                     tag += "_" + str(childxml.attrib.pop(k))
                     childxml.tag = tag
 
-            self._set_internal_attr(tag, self.__class__(elemxml=childxml))
+            self._set_internal_attr(
+                tag, self.__class__(elemxml=childxml, parent=self)
+            )
             self._tag_children.append(tag)
 
     def _save_as_xml(self, path_file=None, comment=None, find_new_name=False):
@@ -672,7 +674,9 @@ class ParamContainer:
                 self._set_attrib(tag, value)
 
             elif isinstance(hdf5_object[tag], h5py.Group):
-                self.__dict__[tag] = self.__class__(hdf5_object=hdf5_object[tag])
+                self.__dict__[tag] = self.__class__(
+                    hdf5_object=hdf5_object[tag], parent=self
+                )
                 self._tag_children.append(tag)
 
     def _modif_from_other_params(self, params):
