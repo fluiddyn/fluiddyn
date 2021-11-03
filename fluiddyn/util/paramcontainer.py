@@ -250,9 +250,16 @@ class ParamContainer:
             )
 
     def __setitem__(self, key, value):
-        self.__setattr__(key, value)
+        if "." in key:
+            first_part, second_part = key.split(".", 1)
+            self[first_part].__setitem__(second_part, value)
+        else:
+            self.__setattr__(key, value)
 
     def __getitem__(self, key):
+        if "." in key:
+            first_part, second_part = key.split(".", 1)
+            return self.__getitem__(first_part)[second_part]
         return self.__getattribute__(key)
 
     def _set_internal_attr(self, key, value):

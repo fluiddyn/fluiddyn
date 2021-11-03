@@ -129,6 +129,30 @@ class TestContainer(unittest.TestCase):
 
         p1._print_as_code()
 
+    def test_get_set_item(self):
+
+        params = ParamContainer(tag="params")
+        params._set_attrib("a0", 1)
+        params._set_child("child0", {"a0": 2})
+        params.child0._set_child("cc")
+
+        assert params["a0"] == 1
+        assert params["child0"] is params.child0
+        assert params["child0.a0"] == 2
+        assert params["child0.cc"] is params.child0.cc
+
+        params["child0.a0"] = 3
+        assert params["child0.a0"] == 3
+
+        with self.assertRaises(AttributeError):
+            params["child0.a1"]
+
+        with self.assertRaises(AttributeError):
+            params["child0.a1"] = 3
+
+        with self.assertRaises(AttributeError):
+            params["child0.cc"] = 2
+
 
 if __name__ == "__main__":
     unittest.main()
