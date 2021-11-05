@@ -24,8 +24,8 @@ Unreleased_
 
 .. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.0...branch%2Fdefault
 
-0.4.0_
-------
+0.4.0_ (2021-11-05)
+-------------------
 
 - clusters: fix inconsistency between different clusters
   (`#62 <https://foss.heptapod.net/fluiddyn/fluiddyn/-/merge_requests/62>`__)
