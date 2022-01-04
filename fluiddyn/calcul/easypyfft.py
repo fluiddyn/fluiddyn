@@ -309,9 +309,7 @@ class BasePyFFT(BaseFFT):
 
     def fft(self, fieldX):
         fieldK = self.empty_aligned(self.shapeK, np.complex128)
-        self.fftplan(
-            input_array=fieldX, output_array=fieldK, normalise_idft=False
-        )
+        self.fftplan(input_array=fieldX, output_array=fieldK)
         return fieldK / self.coef_norm
 
     def ifft(self, fieldK):
@@ -325,9 +323,7 @@ class BasePyFFT(BaseFFT):
         return fieldX
 
     def fft_as_arg(self, fieldX, fieldK):
-        self.fftplan(
-            input_array=fieldX, output_array=fieldK, normalise_idft=False
-        )
+        self.fftplan(input_array=fieldX, output_array=fieldK)
         fieldK *= self.inv_coef_norm
 
     def ifft_as_arg(self, fieldK, fieldX):
