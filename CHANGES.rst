@@ -22,7 +22,12 @@ Unreleased_
 
 .. towncrier release notes start
 
-.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.0...branch%2Fdefault
+.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.1...branch%2Fdefault
+
+0.4.1_ (2022-01-05)
+-------------------
+
+- Fix to avoid a bug in pyfftw 0.13.0
 
 0.4.0_ (2021-11-05)
 -------------------
@@ -191,6 +196,7 @@ Unreleased_
   project. Other packages (fluidsim, fluidlab, ...) provide other
   files.
 
+.. _0.4.1: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.0...0.4.1
 .. _0.4.0: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.4...0.4.0
 .. _0.3.4: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.3...0.3.4
 .. _0.3.3: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.2...0.3.3
