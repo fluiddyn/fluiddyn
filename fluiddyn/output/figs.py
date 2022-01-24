@@ -144,11 +144,10 @@ def show(block=None):
 class Figure(matplotlib.figure.Figure):
     """One figure.
 
-    Improvement (?) of `matplotlib.figure.Figure`
+    Improvement (?) of ``matplotlib.figure.Figure``
 
     Parameters
     ----------
-    (for the __init__ method)
 
     size_axe : list, optional
         Size of the axe.

@@ -9,14 +9,15 @@ Provides:
 .. autosummary::
    :toctree:
 
+   local
    oar
    slurm
    pbs
-   local
    legi
    ciment
    cines
    snic
+   idris
 
 .. autoclass:: Cluster
    :members:
