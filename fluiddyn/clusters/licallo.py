@@ -23,12 +23,13 @@ class Licallo(ClusterSlurm):
 
         self.commands_setting_env = [
             "#SBATCH -p x40",
-            "OPT=$HOME/opt",
+            "OPT=$HOME/opt",            
             "module purge",
-            "module load intel-gnu8-runtime/19.1.2.254 phdf5/1.12.0 impi/2019.8.254 fftw3/3.3.8",
-            "export LANG=C",
-            "export LC_LANG=C",
-            "cd ${SLURM_SUBMIT_DIR}",
+            "module load intel-gnu8-runtime/19.1.2.254 impi phdf5 fftw3",     
+            "unset I_MPI_PMI_LIBRARY",
+            "CC=mpicc",
+            "CXX=mpicpc",
+            "export FLUIDSIM_PATH=/scratch/$USER",
         ]
 
 
