@@ -39,6 +39,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
     cmd_run_interactive = None  #: Interactive command to launch exectuable
     cmd_launch = "sbatch"  #: Command to submit job script
     max_walltime = "23:59:59"  #: Maximum walltime allowed per job
+    partition = None
 
     def __init__(self):
         self.check_slurm()
@@ -91,6 +92,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         signal_num=12,
         signal_time=300,
         flexible_walltime=False,
+        partition=None,
         **kwargs,
     ):
         """Submit a command.
@@ -156,6 +158,8 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
 
             Note that if ``signal_num`` is provided ``flexible_walltime`` is
             not practical and will be forced to be `False`.
+        partition: str
+            Request a specific partition for the resource allocation. Default None.
 
         """
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
@@ -267,6 +271,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         signal_num = kwargs["signal_num"]
         signal_time = kwargs["signal_time"]
         flexible_walltime = kwargs["flexible_walltime"]
+        partition = kwargs["partition"] or self.partition
 
         logfile = f"SLURM.{name_run}"
         logfile_stdout = logfile + ".${SLURM_JOBID}.stdout"
@@ -303,6 +308,9 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
 
         txt += f"#SBATCH -e {logfile}.%J.stderr\n"
         txt += f"#SBATCH -o {logfile}.%J.stdout\n\n"
+
+        if partition is not None:
+            txt += f"#SBATCH -p {partition}\n"
 
         txt += "\n".join(self.commands_setting_env) + "\n\n"
 
