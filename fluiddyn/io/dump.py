@@ -30,7 +30,7 @@ def dump(path, print_variables=False):
 def dump_nc_file(path, print_variables=False):
     import h5netcdf
 
-    with h5netcdf.File(path) as obj:
+    with h5netcdf.File(path, "r") as obj:
         dump_nc_object(obj, level=0, print_variables=print_variables)
 
 
