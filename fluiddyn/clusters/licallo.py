@@ -15,7 +15,7 @@ from fluiddyn.clusters.slurm import ClusterSlurm
 class Licallo(ClusterSlurm):
     nb_cores_per_node = 40
     max_walltime = "23:59:59"
-    cmd_run = "time srun --mpi=pmix -K1 --resv-ports"
+    cmd_run = "time srun --mpi=pmi2 -K1 --resv-ports"
     partition = "x40"
 
     def __init__(self):
@@ -26,6 +26,5 @@ class Licallo(ClusterSlurm):
             "OPT=$HOME/opt",
             "module purge",
             "module load intel-gnu8-runtime/19.1.2.254 impi phdf5 fftw3",
-            "unset I_MPI_PMI_LIBRARY",
             "export FLUIDSIM_PATH=/scratch/$USER",
         ]
