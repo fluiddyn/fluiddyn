@@ -22,7 +22,13 @@ Unreleased_
 
 .. towncrier release notes start
 
-.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.1...branch%2Fdefault
+.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.0...branch%2Fdefault
+
+0.5.0_ (2022-02-04)
+-------------------
+
+- Add 2 SLURM clusters (:class:`fluiddyn.clusters.idris.JeanZay` and
+  :class:`fluiddyn.clusters.licallo.Licallo`).
 
 0.4.1_ (2022-01-05)
 -------------------
@@ -196,6 +202,7 @@ Unreleased_
   project. Other packages (fluidsim, fluidlab, ...) provide other
   files.
 
+.. _0.5.0: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.1...0.5.0
 .. _0.4.1: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.0...0.4.1
 .. _0.4.0: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.4...0.4.0
 .. _0.3.4: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.3...0.3.4

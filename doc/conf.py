@@ -22,6 +22,7 @@ jupyter_execute_notebooks = "cache"
 jupyter_cache = "./_build/jupyter_cache"
 os.makedirs(jupyter_cache, exist_ok=True)
 execution_excludepatterns = ["ipynb/executed/*"]
+nb_merge_streams = True
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
