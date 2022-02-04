@@ -40,6 +40,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
     cmd_launch = "sbatch"  #: Command to submit job script
     max_walltime = "23:59:59"  #: Maximum walltime allowed per job
     partition = None
+    dependency = None
 
     def __init__(self):
         self.check_slurm()
@@ -93,6 +94,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         signal_time=300,
         flexible_walltime=False,
         partition=None,
+        dependency=None,
         **kwargs,
     ):
         """Submit a command.
@@ -160,6 +162,10 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
             not practical and will be forced to be `False`.
         partition: str
             Request a specific partition for the resource allocation. Default None.
+        dependency: str
+            Job dependencies are used to defer the start of a job until the
+            specified dependencies have been satisfied. They are specified with
+            the --dependency option to sbatch
 
         """
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
@@ -272,6 +278,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         signal_time = kwargs["signal_time"]
         flexible_walltime = kwargs["flexible_walltime"]
         partition = kwargs["partition"] or self.partition
+        dependency = kwargs["dependency"]
 
         logfile = f"SLURM.{name_run}"
         logfile_stdout = logfile + ".${SLURM_JOBID}.stdout"
@@ -311,6 +318,9 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
 
         if partition is not None:
             txt += f"#SBATCH -p {partition}\n"
+
+        if dependency is not None:
+            txt += f"#SBATCH --dependency={dependency}\n"
 
         txt += "\n".join(self.commands_setting_env) + "\n\n"
 
