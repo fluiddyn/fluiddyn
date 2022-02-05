@@ -39,11 +39,11 @@ class TestImage(unittest.TestCase):
         cls.paths_h5 = {"gray8": "test_gray.h5", "color8": "test_color.h5"}
 
         cls.images = {
-            "gray8": im(2 ** 8 - 1, np.uint8),
-            "gray16": im(2 ** 16 - 1, np.int32),
-            "gray8f": im(2 ** 8 - 1, np.float16),
-            "gray16f": im(2 ** 16 - 1, np.float32),
-            "color8": im(2 ** 8 - 1, np.uint8, (10, 10, 3)),
+            "gray8": im(2**8 - 1, np.uint8),
+            "gray16": im(2**16 - 1, np.int32),
+            "gray8f": im(2**8 - 1, np.float16),
+            "gray16f": im(2**16 - 1, np.float32),
+            "color8": im(2**8 - 1, np.uint8, (10, 10, 3)),
         }
 
     @classmethod

@@ -283,9 +283,9 @@ class EasySHT:
         self.l_idx = self.sh.l
         self.l2_idx = self.l_idx * (self.l_idx + 1)
         # laplacian:=l(l+1)/r^2 and laplacian^2
-        self.K2 = self.l2_idx / self.radius ** 2
-        self.K4 = self.K2 ** 2
-        self.K8 = self.K4 ** 2
+        self.K2 = self.l2_idx / self.radius**2
+        self.K4 = self.K2**2
+        self.K8 = self.K4**2
 
         self.K2_not0 = self.K2[:]
         COND = self.l2_idx == 0
@@ -674,7 +674,7 @@ class EasySHT:
             array_desh = self.create_array_sh(0.0, float)
             COND = self.l2_idx > 0
             array_desh[COND] = (
-                self.radius ** 2
+                self.radius**2
                 / self.l2_idx[COND]
                 * abs(field_lm[COND]) ** 2
                 / 2
@@ -732,7 +732,7 @@ class EasySHT:
         array_desh2 = self.create_array_sh(0.0, float)
         COND = self.l2_idx > 0
         array_desh2[COND] = (
-            self.radius ** 2 / self.l2_idx[COND] * array_desh[COND]
+            self.radius**2 / self.l2_idx[COND] * array_desh[COND]
         )
 
         for ilm in range(self.nlm):
@@ -752,7 +752,7 @@ class EasySHT:
         array_desh2 = self.create_array_sh(0.0, float)
         COND = self.l2_idx > 0
         array_desh2[COND] = (
-            self.radius ** 2 / self.l2_idx[COND] * array_desh[COND]
+            self.radius**2 / self.l2_idx[COND] * array_desh[COND]
         )
 
         for ilm in range(self.nlm):

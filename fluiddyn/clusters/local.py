@@ -239,8 +239,8 @@ class ClusterLocal(Cluster):
     ):
         """Generate a shell command to log the job into a markdown file."""
         return (
-            "\n" + fr'printf "\n# np={nb_cores} `date` PID $$ '
-            fr'{path_launching_script} {logfile_stdout}\n{command}" >> {logfile_job}'
+            "\n" + rf'printf "\n# np={nb_cores} `date` PID $$ '
+            rf'{path_launching_script} {logfile_stdout}\n{command}" >> {logfile_job}'
             + "\n"
         )
 

@@ -39,7 +39,7 @@ class TestMultiTIFF(unittest.TestCase):
         cls.nb_files = 2
 
         for ifile in range(cls.nb_files):
-            arrays = [im(2 ** 8 - 1, np.int8) for i in range(cls.n_frames)]
+            arrays = [im(2**8 - 1, np.int8) for i in range(cls.n_frames)]
             imsave(f"test_multitiff{ifile}.tif", arrays, as_int=True)
 
     @classmethod

@@ -189,7 +189,7 @@ if __name__ == "__main__":
     gf = ndimage.gaussian_filter1d(f, sigma=1, order=1, mode="wrap") / dx
 
     # Second derivatives:
-    dxdx = dx ** 2
+    dxdx = dx**2
     ddf = np.diff(f, 2) / dxdx
     ccf = np.convolve(f, [1, -2, 1]) / dxdx
     ggf = ndimage.gaussian_filter1d(f, sigma=1, order=2, mode="wrap") / dxdx

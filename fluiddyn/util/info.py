@@ -42,7 +42,6 @@ try:
     def linux_distribution():
         return (distro.name(), distro.version(), distro.codename())
 
-
 except ImportError:
     # for < 3.8, it should work without distro
     from platform import linux_distribution as _linux_dist

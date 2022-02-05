@@ -33,7 +33,6 @@ try:
             context, text, disambig, _encoding
         )
 
-
 except AttributeError:
 
     def _translate(context, text, disambig):

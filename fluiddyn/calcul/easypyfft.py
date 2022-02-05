@@ -188,7 +188,7 @@ class BaseFFT:
         return self.__class__.__name__.lower()
 
     def compute_energy_from_X(self, fieldX):
-        return np.mean(fieldX ** 2 / 2.0)
+        return np.mean(fieldX**2 / 2.0)
 
     def get_local_size_X(self):
         return np.prod(self.shapeX)
