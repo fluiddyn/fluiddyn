@@ -39,8 +39,9 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
     cmd_run_interactive = None  #: Interactive command to launch exectuable
     cmd_launch = "sbatch"  #: Command to submit job script
     max_walltime = "23:59:59"  #: Maximum walltime allowed per job
-    partition = None
-    dependency = None
+    partition = None  #: Partition on the cluster 
+    dependency = None  #: Dependency option
+    mem = None  #: Minimum amount of real memory allocation for the job
 
     def __init__(self):
         self.check_slurm()
@@ -95,6 +96,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         flexible_walltime=False,
         partition=None,
         dependency=None,
+        mem=None,
         **kwargs,
     ):
         """Submit a command.
@@ -166,6 +168,8 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
             Job dependencies are used to defer the start of a job until the
             specified dependencies have been satisfied. They are specified with
             the --dependency option to sbatch
+        mem: str
+            Minimum amount of real memory allocation for the job
 
         """
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
@@ -279,6 +283,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         flexible_walltime = kwargs["flexible_walltime"]
         partition = kwargs["partition"] or self.partition
         dependency = kwargs["dependency"]
+        mem = kwargs["mem"]
 
         logfile = f"SLURM.{name_run}"
         logfile_stdout = logfile + ".${SLURM_JOBID}.stdout"
@@ -321,6 +326,9 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
 
         if dependency is not None:
             txt += f"#SBATCH --dependency={dependency}\n"
+
+        if mem is not None:
+            txt += f"#SBATCH --mem={mem}\n"
 
         txt += "\n".join(self.commands_setting_env) + "\n\n"
 
