@@ -64,8 +64,16 @@ def _as_value(value):
     if value.startswith("array("):
         # -1 to remove the last ")"
         code = value.strip()[len("array(") : -1]
+        dtype = None
+        if "dtype=" in code:
+            code, code_dtype = code.split("dtype=")
+            code = code.strip()[:-1]
+            try:
+                dtype = np.dtype(code_dtype)
+            except TypeError:
+                pass
         obj = literal_eval(code)
-        return np.array(obj)
+        return np.array(obj, dtype=dtype)
 
     if "\t" in value:
         return value
