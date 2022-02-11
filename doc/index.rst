@@ -99,6 +99,7 @@ Fluiddyn also provides a small package for documentation:
 
    changes
    advice_developers
+   code-of-conduct
    to_do
    authors
 
