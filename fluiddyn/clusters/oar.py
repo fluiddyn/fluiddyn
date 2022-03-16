@@ -68,6 +68,7 @@ oarsub -C $JOB_ID"""
         nb_mpi_processes=None,
         omp_num_threads=None,
         idempotent=False,
+        anterior=None,
         delay_signal_walltime=300,
         network_address=None,
         ask=True,
@@ -94,6 +95,7 @@ oarsub -C $JOB_ID"""
             nb_mpi_processes=nb_mpi_processes,
             omp_num_threads=omp_num_threads,
             idempotent=idempotent,
+            anterior=anterior,
             delay_signal_walltime=delay_signal_walltime,
             network_address=network_address,
             ask=ask,
@@ -114,6 +116,7 @@ oarsub -C $JOB_ID"""
         nb_mpi_processes=None,
         omp_num_threads=None,
         idempotent=False,
+        anterior=None,
         delay_signal_walltime=300,
         network_address=None,
         ask=True,
@@ -168,6 +171,9 @@ oarsub -C $JOB_ID"""
 
         if idempotent:
             launching_command += " -t idempotent"
+
+        if anterior is not None:
+            launching_command += f" --anterior {anterior}"
 
         launching_command += " -S ./" + path_launching_script
 
