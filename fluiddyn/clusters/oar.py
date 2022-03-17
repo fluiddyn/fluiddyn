@@ -7,6 +7,9 @@ Provides:
 .. autoclass:: ClusterOAR
    :members:
 
+.. autofunction:: get_job_id
+
+.. autofunction:: count_number_jobs
 """
 
 
@@ -19,6 +22,24 @@ import time
 
 from . import Cluster, subprocess
 from ..io.query import call_bash, run_asking_agreement
+
+
+def get_job_id(name_job):
+    """Get the job id from the name job
+
+    Typical output of `oarstat -u`
+
+    Job id    S User     Duration   System message
+    --------- - -------- ---------- ------------------------------------------------
+    644829    F augier3p    0:05:08 R=4,W=0:10:0,J=B,N=fluidsim-restart_nx160_Rb20_N20,T=idempotent (Karma=0.038,quota_ok)
+    """
+    output = getoutput("oarstat -u")
+    if name_job not in output:
+        return
+    for line in output.split("\n"):
+        if name_job not in line:
+            continue
+        return line.split(maxsplit=1)[0].strip()
 
 
 def count_number_jobs(name_job):
