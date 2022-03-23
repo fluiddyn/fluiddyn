@@ -37,9 +37,37 @@ def get_job_id(name_job):
     if name_job not in output:
         return
     for line in output.split("\n"):
-        if name_job not in line:
-            continue
-        return line.split(maxsplit=1)[0].strip()
+        if name_job in line:
+            break
+    return line.split(maxsplit=1)[0].strip()
+
+
+def get_job_info(name_or_id):
+    output = getoutput("oarstat -u")
+
+    if not isinstance(name_or_id, str):
+        name_or_id = str(name_or_id)
+
+    if name_or_id not in output:
+        return
+
+    for line in output.split("\n"):
+        if name_or_id in line:
+            break
+
+    keys = ["id", "status", "user", "duration", "message", "karma"]
+    info = {k: w for k, w in zip(keys, line.split())}
+
+    possible_status = {"F": "failing", "W": "waiting", "R": "running"}
+    info["status"] = possible_status.get(info["status"], "?")
+
+    keys_message = {"R": "nb_procs", "W": "walltime", "N": "name", "T": "type"}
+    for param in info["message"].split(","):
+        key, value = param.split("=")
+        if key in keys_message:
+            info[keys_message[key]] = value
+
+    return info
 
 
 def count_number_jobs(name_job):
