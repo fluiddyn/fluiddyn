@@ -92,6 +92,7 @@ def check_slurm():
 help_docs = {
     "slurm": """sbatch
 squeue -u $USER
+squeue --format="%.12i %.9P %.25j %.8u %.8T %.10M %.6D %R" -u $USER
 scancel
 scontrol hold <job_list>
 scontrol release <job_list>

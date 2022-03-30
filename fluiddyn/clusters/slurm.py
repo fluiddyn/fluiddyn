@@ -27,6 +27,7 @@ Useful commands
 
 sbatch
 squeue -u $USER
+squeue --format="%.12i %.9P %.25j %.8u %.8T %.10M %.6D %R" -u $USER
 scancel
 scontrol hold
 scontrol release
@@ -39,7 +40,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
     cmd_run_interactive = None  #: Interactive command to launch exectuable
     cmd_launch = "sbatch"  #: Command to submit job script
     max_walltime = "23:59:59"  #: Maximum walltime allowed per job
-    partition = None  #: Partition on the cluster 
+    partition = None  #: Partition on the cluster
     dependency = None  #: Dependency option
     mem = None  #: Minimum amount of real memory allocation for the job
 
@@ -433,4 +434,4 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
             job_id = process.stdout.split()[-1].strip()
             print(f" (job_id: {job_id})")
 
-        print(f"Succesfully submitted {nb_jobs_added} chained jobs")
+        print(f"Successfully submitted {nb_jobs_added} chained jobs")
