@@ -39,7 +39,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
     cmd_run_interactive = None  #: Interactive command to launch exectuable
     cmd_launch = "sbatch"  #: Command to submit job script
     max_walltime = "23:59:59"  #: Maximum walltime allowed per job
-    partition = None  #: Partition on the cluster 
+    partition = None  #: Partition on the cluster
     dependency = None  #: Dependency option
     mem = None  #: Minimum amount of real memory allocation for the job
 
