@@ -16,7 +16,7 @@ class Azzurra(ClusterSlurm):
     nb_cores_per_node = 40
     max_walltime = "23:59:59"
     cmd_run = "time srun --mpi=pmi2 -K1 --resv-ports"
-    partition = "x40"
+    partition = "cpucourt"
 
     def __init__(self):
         super().__init__()
