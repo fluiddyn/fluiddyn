@@ -17,6 +17,7 @@ class Azzurra(ClusterSlurm):
     max_walltime = "23:59:59"
     cmd_run = "time srun --mpi=pmi2 -K1 --resv-ports"
     partition = "cpucourt"
+    account = "turbulence"
 
     def __init__(self):
         super().__init__()

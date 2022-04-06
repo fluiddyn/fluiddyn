@@ -43,6 +43,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
     partition = None  #: Partition on the cluster
     dependency = None  #: Dependency option
     mem = None  #: Minimum amount of real memory allocation for the job
+    account = None  #: Name of the project for jobs' submission (mandatory on some clusters)
 
     def __init__(self):
         self.check_slurm()
@@ -98,6 +99,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         partition=None,
         dependency=None,
         mem=None,
+        account=None,
         **kwargs,
     ):
         """Submit a command.
@@ -171,6 +173,8 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
             the --dependency option to sbatch
         mem: str
             Minimum amount of real memory allocation for the job
+        account: str
+            Name of the project to which hours are allocated
 
         """
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
@@ -285,6 +289,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         partition = kwargs["partition"] or self.partition
         dependency = kwargs["dependency"]
         mem = kwargs["mem"]
+        account = kwargs["account"]
 
         logfile = f"SLURM.{name_run}"
         logfile_stdout = logfile + ".${SLURM_JOBID}.stdout"
@@ -330,6 +335,9 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
 
         if mem is not None:
             txt += f"#SBATCH --mem={mem}\n"
+
+        if account is not None:
+            txt += f"#SBATCH --account={account}\n"
 
         txt += "\n".join(self.commands_setting_env) + "\n\n"
 
