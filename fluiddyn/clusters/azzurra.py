@@ -15,7 +15,7 @@ from fluiddyn.clusters.slurm import ClusterSlurm
 class Azzurra(ClusterSlurm):
     nb_cores_per_node = 40
     max_walltime = "23:59:59"
-    cmd_run = "time srun --mpi=pmi2 -K1 --resv-ports"
+    cmd_run = "time mpirun"
     partition = "cpucourt"
     account = "turbulence"
 
