@@ -101,7 +101,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         dependency=None,
         mem=None,
         account=None,
-        exclusive=False,
+        exclusive=exclusive,
         **kwargs,
     ):
         """Submit a command.
@@ -294,7 +294,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         dependency = kwargs["dependency"]
         mem = kwargs["mem"]
         account = kwargs["account"]
-        exclusive = kwargs["exclusive"]
+        exclusive = kwargs["exclusive"] or self.exclusive
 
         logfile = f"SLURM.{name_run}"
         logfile_stdout = logfile + ".${SLURM_JOBID}.stdout"
@@ -344,7 +344,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         if account is not None:
             txt += f"#SBATCH --account={account}\n"
 
-        if exclusive:
+        if exclusive == True:
             txt += f"#SBATCH --exclusive\n"
 
         txt += "\n".join(self.commands_setting_env) + "\n\n"
