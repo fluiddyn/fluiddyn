@@ -18,6 +18,7 @@ class Azzurra(ClusterSlurm):
     cmd_run = "time mpirun"
     partition = "cpucourt"
     account = "turbulence"
+    exclusive = True
 
     def __init__(self):
         super().__init__()
