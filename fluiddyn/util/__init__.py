@@ -34,6 +34,7 @@ from .util import (
     import_class,
     is_run_from_jupyter,
     modification_date,
+    has_to_be_made,
 )
 
 __all__ = [
@@ -47,4 +48,5 @@ __all__ = [
     "import_class",
     "is_run_from_jupyter",
     "modification_date",
+    "has_to_be_made",
 ]

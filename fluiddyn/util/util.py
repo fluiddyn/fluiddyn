@@ -322,3 +322,23 @@ def config_logging(level="info", name="fluiddyn", file=None, color=False):
     # hack to solve a "bug" in ipython notebook:
     # http://stackoverflow.com/questions/31403679/python-logging-module-duplicated-console-output-ipython-notebook-qtconsole
     logger.propagate = False
+
+
+def has_to_be_made(path_out, sources, source_dir=None):
+
+    if isinstance(sources, (str, Path)):
+        sources = [sources]
+
+    if source_dir is None:
+        source_dir = Path.cwd()
+
+    sources = [source_dir / source for source in sources]
+
+    for source in sources:
+        if not source.exists():
+            raise ValueError(f"{source} does not exist.")
+
+    return not path_out.exists() or (
+        max(modification_date(source) for source in sources)
+        > modification_date(path_out)
+    )

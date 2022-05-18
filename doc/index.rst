@@ -102,6 +102,7 @@ Fluiddyn also provides a small package for documentation:
    code-of-conduct
    to_do
    authors
+   miscellaneous
 
 Links
 -----

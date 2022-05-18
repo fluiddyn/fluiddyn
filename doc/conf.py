@@ -50,6 +50,7 @@ extensions = [
     "sphinxemoji.sphinxemoji",
     "myst_nb",
     "sphinx_copybutton",
+    "sphinxcontrib.mermaid",
 ]
 
 sphinxemoji_style = "twemoji"
@@ -68,6 +69,7 @@ templates_path = ["_templates"]
 # source_suffix = ".rst"
 source_suffix = {
     ".rst": "restructuredtext",
+    ".md": "myst-nb",
     ".ipynb": "myst-nb",
     ".myst": "myst-nb",
 }
