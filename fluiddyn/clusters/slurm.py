@@ -78,6 +78,9 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         name_run="fluiddyn",
         nb_nodes=1,
         nb_cores_per_node=None,
+        nb_tasks=None,
+        nb_tasks_per_node=None,
+        nb_cpus_per_task=None,
         walltime="23:59:58",
         project=None,
         nb_mpi_processes=None,
@@ -118,6 +121,12 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
             Defaults to a maximum is fixed for a cluster, as set by self.nb_cores_per_node.
             Set as 1 for a serial job. Set as 0 to spread jobs across nodes
             (starts job faster, maybe slower).
+        nb_tasks : integer
+            Number of tasks. If not specified, computed as `nb_nodes * nb_cores_per_node`.
+        nb_tasks_per_node : integer
+            Number of tasks per node. If not specified, computed as `nb_cores_per_node`.
+        nb_cpus_per_task : integer
+            Number of cpus requested per task. Only set if the --cpus-per-task option is specified.
         walltime : string
             Minimum walltime for the job
         project : string
@@ -280,6 +289,9 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         project = kwargs["project"]
         nb_nodes = kwargs["nb_nodes"]
         nb_cores_per_node = kwargs["nb_cores_per_node"]
+        nb_tasks = kwargs["nb_tasks"]
+        nb_tasks_per_node = kwargs["nb_tasks_per_node"]
+        nb_cpus_per_task = kwargs["nb_cpus_per_task"]
         walltime = kwargs["walltime"]
         nb_mpi_processes = kwargs["nb_mpi_processes"]
         omp_num_threads = kwargs["omp_num_threads"]
@@ -316,11 +328,20 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
             txt += f"#SBATCH --signal={signal_num}@{signal_time}\n"
 
         txt += f"#SBATCH --nodes={nb_nodes}\n"
-        if nb_cores_per_node > 0:
-            txt += f"#SBATCH --ntasks-per-node={nb_cores_per_node}\n"
+        if nb_tasks_per_node is not None:
+            txt += f"#SBATCH --ntasks-per-node={nb_tasks_per_node}\n"
+        else:
+            if nb_cores_per_node > 0:
+                txt += f"#SBATCH --ntasks-per-node={nb_cores_per_node}\n"
 
         nb_cores = nb_nodes * nb_cores_per_node
-        txt += f"#SBATCH --ntasks={nb_cores}\n\n"
+        if nb_tasks is not None:
+            txt += f"#SBATCH --ntasks={nb_tasks}\n\n"
+        else:
+            txt += f"#SBATCH --ntasks={nb_cores}\n\n"
+
+        if nb_cpus_per_task is not None:
+            txt += f"#SBATCH --cpus-per-task={nb_cpus_per_task}\n"
 
         if hasattr(self, "constraint"):
             txt += "#SBATCH --constraint=" + self.constraint + "\n"
