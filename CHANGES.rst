@@ -24,6 +24,13 @@ Unreleased_
 
 .. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.0...branch%2Fdefault
 
+0.5.1_ (2022-09-27)
+-------------------
+
+- Fluiddyn code of conduct
+- Few SLURM improvements
+- :func:`fluiddyn.util.has_to_be_made`.
+
 0.5.0_ (2022-02-04)
 -------------------
 
@@ -202,6 +209,7 @@ Unreleased_
   project. Other packages (fluidsim, fluidlab, ...) provide other
   files.
 
+.. _0.5.1: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.0...0.5.1
 .. _0.5.0: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.1...0.5.0
 .. _0.4.1: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.0...0.4.1
 .. _0.4.0: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.3.4...0.4.0

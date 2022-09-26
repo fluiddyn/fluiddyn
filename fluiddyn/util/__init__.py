@@ -21,6 +21,17 @@ Utilities
    mail
    xmltotext
 
+.. autofunction:: time_as_str
+.. autofunction:: config_logging
+.. autofunction:: is_run_from_ipython
+.. autofunction:: is_run_from_jupyter
+.. autofunction:: get_memory_usage
+.. autofunction:: print_memory_usage
+.. autofunction:: create_object_from_file
+.. autofunction:: import_class
+.. autofunction:: modification_date
+.. autofunction:: has_to_be_made
+
 """
 
 from .util import (

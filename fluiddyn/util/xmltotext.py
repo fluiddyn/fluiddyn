@@ -1,5 +1,4 @@
-"""Formatted xml text from xml element (:mod:`fluiddyn.util.xmltotext`)
-
+"""Formatted xml text from xml element
 
 """
 

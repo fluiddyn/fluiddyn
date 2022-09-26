@@ -179,6 +179,7 @@ def is_run_from_ipython():
 
 
 def is_run_from_jupyter():
+    """Check whether the code is run from Jupyter."""
     try:
         from IPython import get_ipython
 
@@ -325,6 +326,7 @@ def config_logging(level="info", name="fluiddyn", file=None, color=False):
 
 
 def has_to_be_made(path_out, sources, source_dir=None):
+    """Check if a file has to be (re)produce from its sources"""
 
     if isinstance(sources, (str, Path)):
         sources = [sources]
