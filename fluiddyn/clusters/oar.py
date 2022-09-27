@@ -9,6 +9,8 @@ Provides:
 
 .. autofunction:: get_job_id
 
+.. autofunction:: get_job_info
+
 .. autofunction:: count_number_jobs
 """
 
@@ -27,11 +29,14 @@ from ..io.query import call_bash, run_asking_agreement
 def get_job_id(name_job):
     """Get the job id from the name job
 
-    Typical output of `oarstat -u`
+    Typical output of ``oarstat -u``
 
-    Job id    S User     Duration   System message
-    --------- - -------- ---------- ------------------------------------------------
-    644829    F augier3p    0:05:08 R=4,W=0:10:0,J=B,N=fluidsim-restart_nx160_Rb20_N20,T=idempotent (Karma=0.038,quota_ok)
+    ::
+
+      Job id    S User     Duration   System message
+      --------- - -------- ---------- ------------------------------------------------
+      644829    F augier3p    0:05:08 R=4,W=0:10:0,J=B,N=fluidsim-restart_nx160_Rb20_N20,T=idempotent (Karma=0.038,quota_ok)
+
     """
     output = getoutput("oarstat -u")
     if name_job not in output:
@@ -43,6 +48,7 @@ def get_job_id(name_job):
 
 
 def get_job_info(name_or_id):
+    """Get some information about a job"""
     output = getoutput("oarstat -u")
 
     if not isinstance(name_or_id, str):
@@ -71,6 +77,7 @@ def get_job_info(name_or_id):
 
 
 def count_number_jobs(name_job):
+    """Get the number of jobs returned by ``oarstat -u``"""
     output = getoutput("oarstat -u")
     return sum(True for line in output.split("\n") if name_job in line)
 

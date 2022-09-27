@@ -22,14 +22,17 @@ Unreleased_
 
 .. towncrier release notes start
 
-.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.0...branch%2Fdefault
+.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.1...branch%2Fdefault
 
 0.5.1_ (2022-09-27)
 -------------------
 
-- Fluiddyn code of conduct
-- Few SLURM improvements
-- :func:`fluiddyn.util.has_to_be_made`.
+- Fluiddyn `code of conduct <https://fluiddyn.readthedocs.io/en/latest/code-of-conduct.html>`__
+- New cluster :mod:`fluiddyn.clusters.azzurra`
+- More options in :mod:`fluiddyn.clusters.oar` and :mod:`fluiddyn.clusters.slurm`
+- New functions :func:`fluiddyn.clusters.oar.get_job_id` and
+  :func:`fluiddyn.clusters.oar.get_job_info`
+- New function :func:`fluiddyn.util.has_to_be_made`.
 
 0.5.0_ (2022-02-04)
 -------------------

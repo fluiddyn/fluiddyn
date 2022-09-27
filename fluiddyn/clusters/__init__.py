@@ -18,6 +18,7 @@ Provides:
    cines
    snic
    idris
+   azzurra
 
 .. autoclass:: Cluster
    :members:
