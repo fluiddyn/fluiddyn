@@ -286,7 +286,7 @@ def get_info_hardware():
     """Create a dictionary for CPU information."""
 
     def _cpu_freq():
-        """psutil can return `None` sometimes, esp. in Travis."""
+        """psutil can return `None` sometimes, esp. in CI."""
         func = "psutil.cpu_freq: "
         try:
             hz = psutil.cpu_freq()

@@ -2,7 +2,7 @@
 |logo|
 ======
 
-|release| |pyversions| |docs| |coverage| |heptapod_ci| |travis|
+|release| |pyversions| |docs| |coverage| |heptapod_ci|
 
 .. |logo| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.svg
    :alt: FluidDyn project and fluiddyn package
@@ -25,10 +25,6 @@
 .. |heptapod_ci| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/badges/branch/default/pipeline.svg
    :target: https://foss.heptapod.net/fluiddyn/fluiddyn/-/pipelines
    :alt: Heptapod CI
-
-.. |travis| image:: https://travis-ci.org/fluiddyn/fluiddyn.svg?branch=branch%2Fdefault
-   :target: https://travis-ci.org/fluiddyn/fluiddyn
-   :alt: Travis CI status
 
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/rxafwwpmxymki2u1/branch/default?svg=true
    :target: https://ci.appveyor.com/project/fluiddyn/fluiddyn
