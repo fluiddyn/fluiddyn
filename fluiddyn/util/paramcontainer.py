@@ -13,6 +13,7 @@ Provides:
 
 import os
 import re
+import math
 from ast import literal_eval
 from copy import deepcopy
 from io import open
@@ -95,6 +96,8 @@ def sanitize_for_json(d: Dict[str, Any]) -> Dict[str, Any]:
 
     def is_not_allowed(value):
         allowed_types = (str, int, float, bool)
+        if isinstance(value, float) and math.isnan(value):
+            return True
         return not (value is None or isinstance(value, allowed_types))
 
     for key, value in d.items():
@@ -458,7 +461,14 @@ class ParamContainer:
         print(self._make_xml_text())
 
     def __repr__(self):
-        return super().__repr__() + "\n\n" + self._make_xml_text()
+        return self._make_xml_text()
+
+    def _repr_html_(self):
+        return (
+            '<textarea style="border:none; min-width:500px; max-width:100%;'
+            f'min-height:100px;height:100%;width:100%;">{self._make_xml_text()}'
+            "</textarea>"
+        )
 
     def _print_as_code(self):
         print(self._as_code())
