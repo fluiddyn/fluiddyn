@@ -371,7 +371,7 @@ def reset_col_width(widths):
     widths_array = np.array(widths)
     widths_sum = widths_array.sum()
     if widths_sum > _COL_MAX:
-        too_long = np.greater(widths_array, _COL_WIDTH, dtype=int)
+        too_long = np.greater(widths_array, _COL_WIDTH)
         nb_too_long = np.count_nonzero(too_long)
         widths_too_long = widths_array[too_long].sum()
 
