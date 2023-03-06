@@ -353,14 +353,18 @@ class ParamContainer:
         self._key_attribs.sort()
         return self._key_attribs
 
-    def _set_child(self, tag, attribs=None):
+    def _set_child(self, tag, attribs=None, doc=None):
         """Add a child (of the same class) to the container."""
         if tag in self.__dict__:
             raise ValueError(f'The tag "{tag}" is already used.')
 
         self.__dict__[tag] = self.__class__(tag=tag, attribs=attribs, parent=self)
         self._tag_children.append(tag)
-        return getattr(self, tag)
+
+        child = getattr(self, tag)
+        if doc is not None:
+            child._set_doc(doc)
+        return child
 
     def _set_as_child(self, child, change_parent=True):
         """Associate a ParamContainer as a child."""
