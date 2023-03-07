@@ -18,11 +18,13 @@ os.environ["FLUIDDYN_NO_QTPY_INIT_BEFORE_OPENCV_IMPORT"] = "1"
 
 import fluiddyn as fld
 
-jupyter_execute_notebooks = "cache"
-jupyter_cache = "./_build/jupyter_cache"
-os.makedirs(jupyter_cache, exist_ok=True)
-execution_excludepatterns = ["ipynb/executed/*"]
+nb_execution_mode = "cache"
+nb_execution_cache_path = "./_build/nb_execution_cache_path"
+os.makedirs(nb_execution_cache_path, exist_ok=True)
+nb_execution_excludepatterns = ["ipynb/executed/*"]
 nb_merge_streams = True
+
+myst_heading_anchors = 2
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

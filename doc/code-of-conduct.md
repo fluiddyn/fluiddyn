@@ -79,7 +79,7 @@ forgive as long as you earn their trust.
 
 Adapted from the Rust Code of Conduct.
 
-## [Fluiddyn moderation team](#fluiddyn-moderation-team)
+## Fluiddyn moderation team
 
 - [Ashwin Vishnu Mohanan](https://fluid.quest/pages/contact.html)
 
