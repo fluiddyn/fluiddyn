@@ -16,6 +16,9 @@ Provides:
 .. autoclass:: Calcul2
    :members:
 
+.. autoclass:: Calcul6
+   :members:
+
 """
 import time
 from subprocess import check_output
@@ -41,7 +44,7 @@ class Calcul(ClusterOAR):
     name_cluster = "calcul7-8"
     has_to_add_name_cluster = False
     nb_cores_per_node = 20
-    frontends = ["nrj1sv223", "nrj1sv224", "meige4sv14"]
+    frontends = ["nrj1sv223", "nrj1sv224", "meige4sv14", "cl1f001"]
 
 
 class Calcul7(Calcul):
@@ -58,3 +61,9 @@ class Calcul8(Calcul):
 class Calcul2(Calcul):
     name_cluster = "calcul2"
     has_to_add_name_cluster = True
+
+
+class Calcul6(Calcul):
+    name_cluster = "calcul6"
+    has_to_add_name_cluster = True
+    nb_cores_per_node = 32
