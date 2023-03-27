@@ -22,7 +22,12 @@ Unreleased_
 
 .. towncrier release notes start
 
-.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.1...branch%2Fdefault
+.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.2...branch%2Fdefault
+
+0.5.2_ (2022-03-07)
+-------------------
+
+- New argument `doc` for :func:`fluiddyn.util.paramcontainer.ParamContainer._set_child`.
 
 0.5.1_ (2022-09-27)
 -------------------
@@ -212,6 +217,7 @@ Unreleased_
   project. Other packages (fluidsim, fluidlab, ...) provide other
   files.
 
+.. _0.5.2: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.1...0.5.2
 .. _0.5.1: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.0...0.5.1
 .. _0.5.0: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.1...0.5.0
 .. _0.4.1: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.0...0.4.1
