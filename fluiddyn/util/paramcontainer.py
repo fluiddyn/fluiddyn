@@ -411,7 +411,23 @@ class ParamContainer:
         return d
 
     def __eq__(self, other):
-        return self._make_dict() == other._make_dict()
+        param_1 = self._make_dict()
+        param_2 = other._make_dict()
+        if param_1["tag"] != param_2["tag"]:
+            return False
+        if set(param_1["key_attribs"]) != set(param_2["key_attribs"]):
+            return False
+        attribs_1 = {k: v for k, v in zip(param_1["key_attribs"], param_1["attribs"])}
+        attribs_2 = {k: v for k, v in zip(param_2["key_attribs"], param_2["attribs"])}
+        if attribs_1 != attribs_2:
+            return False
+        if set(param_1["tag_children"]) != set(param_2["tag_children"]):
+            return False
+        children_1 = {k: v for k, v in zip(param_1["tag_children"], param_1["children"])}
+        children_2 = {k: v for k, v in zip(param_2["tag_children"], param_2["children"])}
+        if children_1 != children_2:
+            return False
+        return True
 
     def __sub__(self, other):
         """Subtract and return an ParamContainer to understand differences."""
