@@ -153,6 +153,19 @@ class TestContainer(unittest.TestCase):
         with self.assertRaises(AttributeError):
             params["child0.cc"] = 2
 
+    def test_unordered_comparison(self):
+        p0 = ParamContainer("p", attribs={k: k for k in "ab"})
+        p1 = ParamContainer("p", attribs={k: k for k in "ba"})
+
+        assert p0 == p1
+        p0._set_child("x")
+        p0._set_child("y")
+
+        p1._set_child("y")
+        p1._set_child("x")
+
+        assert p0 == p1
+
 
 if __name__ == "__main__":
     unittest.main()
