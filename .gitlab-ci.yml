@@ -12,7 +12,7 @@ validate_style:
   before_script:
     - pip install black --user
   script:
-    - black -l 82 --diff --check fluiddyn/**/*.py
+    - black --diff --check fluiddyn fluiddoc
   allow_failure: true
 
 run_tests:
