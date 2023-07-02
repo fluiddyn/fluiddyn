@@ -30,6 +30,16 @@ nb_merge_streams = True
 sys.path.insert(0, os.path.abspath("../scripts"))
 sys.path.insert(0, os.path.abspath("./"))
 
+_mastodon = "https://hachyderm.io/@fluiddyn"
+
+rst_prolog = f"""
+
+.. raw:: html
+
+    <a rel="me" href="{_mastodon}"></a>
+
+"""
+
 # -- General configuration ----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -162,7 +172,14 @@ html_context = {
             '<i class="fa fa-bug fa-fw"></i> Issue tracker',
             f"https://foss.heptapod.net/fluiddyn/{project.lower()}/-/issues",
         ),
-        #  ('<i class="fa fa-rss fa-fw"></i> Blog', 'https://...'),
+        (
+            '🐘 Mastodon',
+            _mastodon
+        ),
+        (
+            '<i class="fa fa-rss fa-fw"></i> Blog',
+            'https://fluiddyn.netlify.app/'
+        ),
         (
             '<i class="fa fa-comments fa-fw"></i> Chat',
             "https://matrix.to/#/#fluiddyn-users:matrix.org",
