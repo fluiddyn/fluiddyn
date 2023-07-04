@@ -12,7 +12,7 @@ clean_pyc:
 clean: clean_pyc
 
 black:
-	black -l 82 fluiddyn fluiddoc
+	black fluiddyn fluiddoc
 
 isort:
 	isort -rc --atomic -tc fluiddyn fluiddoc

@@ -54,7 +54,7 @@ Few important coding tips
   flake8. We use and recommend FOSS editors like Spyder, Visual Studio Code,
   Vim or Emacs. For the two last solutions, a good configuration is mandatory.
 
-- Use the Python code formatter `black <https://github.com/ambv/black>`_ with
+- Use the Python code formatter `black <https://github.com/psf/black>`_ with
   the command ``make black``.
 
 - It is usually a good practice to run the unittests before committing (see the

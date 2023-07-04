@@ -43,3 +43,6 @@ showcontent = true
 directory = "security"
 name = "Security"
 showcontent = true
+
+[tool.black]
+line-length = 82

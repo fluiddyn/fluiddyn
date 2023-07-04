@@ -1,8 +1,24 @@
 variables:
   CODECOV_TOKEN: 202255eb-62eb-4b29-b065-0f832265e84f
 
-tests:
-  image: fluiddyn/python3-stable:heptapod
+image: fluiddyn/python3-stable:heptapod
+
+stages:
+  - lint
+  - test
+
+validate_style:
+  stage: lint
+  before_script:
+    - pip install black --user
   script:
+    - black --diff --check fluiddyn fluiddoc
+  allow_failure: true
+
+run_tests:
+  stage: test
+  before_script:
     - pip install -U pip tox --user
+  script:
     - tox -e py36,codecov
+  needs: []
