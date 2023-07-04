@@ -76,6 +76,7 @@ run_tests:
     when: always
     paths:
       - pytest_result.xml
+      - .coverage/index.html
     reports:
       junit: pytest_result.xml
 
