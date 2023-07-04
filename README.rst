@@ -49,7 +49,7 @@ the FluidDyn project <https://foss.heptapod.net/fluiddyn>`_ (in particular in
 <http://fluidlab.readthedocs.io>`_ and `fluidimage
 <http://fluidimage.readthedocs.io>`_).
 
-**Documentation**: https://fluiddyn.readthedocs.io
+**Documentation**: `Read the Docs <https://fluiddyn.readthedocs.io>`_, `Heptapod Pages <https://fluiddyn.pages.heptapod.net/fluiddyn>`_
 
 Getting started
 ---------------
