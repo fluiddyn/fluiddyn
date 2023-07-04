@@ -53,8 +53,6 @@ validate_style:
 
 validate_imports:
   stage: lint
-  before_script:
-    - pip install isort --user
   script:
     - isort --verbose --trailing-comma --atomic --check-only --only-modified --diff fluiddyn fluiddoc
   allow_failure: true
