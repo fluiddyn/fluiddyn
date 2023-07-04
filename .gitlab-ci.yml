@@ -56,7 +56,7 @@ validate_imports:
   before_script:
     - pip install isort --user
   script:
-    - isort --verbose --only-modified --diff --check-only fluiddyn fluiddoc
+    - isort --verbose --trailing-comma --atomic --check-only --only-modified --diff fluiddyn fluiddoc
   allow_failure: true
 
 build_docs:
