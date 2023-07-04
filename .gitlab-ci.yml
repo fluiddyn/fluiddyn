@@ -36,3 +36,17 @@ run_tests:
   script:
     - tox -e py36,codecov
   needs: []
+
+pages:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "branch/default"'
+  script:
+    - mkdir public
+    - cp -vr doc/_build/html/* public/
+  dependencies:
+    - build_docs
+  needs: ["build_docs"]
+  artifacts:
+    paths:
+      - public
