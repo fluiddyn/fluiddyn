@@ -25,7 +25,7 @@ tests_mpi:
 
 tests_coverage:
 	mkdir -p .coverage
-	coverage run -p -m pytest
+	coverage run -p -m pytest --junitxml=pytest_result.xml
 	mpirun -np 2 --oversubscribe coverage run -p -m unittest discover fluiddyn.util.test -p test_mpi.py
 
 report_coverage:

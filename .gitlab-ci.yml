@@ -72,6 +72,12 @@ run_tests:
   needs:
     - job: "CI image"
       optional: true
+  artifacts:
+    when: always
+    paths:
+      - pytest_result.xml
+    reports:
+      junit: pytest_result.xml
 
 pages:
   stage: deploy
