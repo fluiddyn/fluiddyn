@@ -15,6 +15,7 @@ import os
 import sys
 import time
 from math import ceil, log10
+from packaging import version
 
 from .image import _image_from_array
 from .query import query_yes_no
@@ -77,12 +78,15 @@ def imsave(path, arrays, as_int=False):
         Convert to integer or not.
 
     """
-    if PIL.__version__ < "3.4.0":
+
+    pil_version = version.parse(PIL.__version__)
+
+    if pil_version < version.parse("3.4.0"):
         raise ImportError("imsave for multiframe TIFF not supported.")
 
     im_list = [_image_from_array(a, as_int) for a in arrays]
 
-    if PIL.__version__ < "4.2.0":
+    if pil_version < version.parse("4.2.0"):
         from warnings import warn
 
         warn(
@@ -309,7 +313,6 @@ def count_number_images(path_files):
 
 
 def get_approximate_number_images(path_files):
-
     # can be much faster than count_number_images
     path = path_files[0]
     with Image.open(path) as image:
