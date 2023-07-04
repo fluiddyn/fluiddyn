@@ -39,7 +39,6 @@ def _code_byte_order_from_str(byteorder=None):
 
 
 class BinFile(_io.FileIO):
-
     dcodetypes = {
         "s": "s",
         "B": "B",
@@ -118,7 +117,6 @@ class BinFile(_io.FileIO):
     def write_as(
         self, to_be_saved, codetype="s", byteorder=None, buffersize=1000
     ):
-
         if codetype == "s":
             if not isinstance(to_be_saved, bytes):
                 to_be_saved = to_be_saved.encode()

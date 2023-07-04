@@ -28,7 +28,6 @@ class NS3DFile:
     """Fields in a NS3D binary file."""
 
     def __init__(self, path_file=None):
-
         if path_file is not None:
             self.path_file = path_file
             self.byteorder = self._get_byte_order()
@@ -92,7 +91,6 @@ class NS3DFieldFile(NS3DFile):
         return field
 
     def read_xy(self, ifield=0, iz=0):
-
         nb_pts_one_field = self.nx * self.ny * self.nz
 
         with BinFile(self.path_file, byteorder=self.byteorder) as f:
@@ -107,7 +105,6 @@ class NS3DFieldFile(NS3DFile):
         return field.reshape([self.ny, self.nx])
 
     def save_with_byteorder_changed(self):
-
         if self.byteorder.startswith("little"):
             newbyteorder = "big"
         elif self.byteorder.startswith("big"):
@@ -200,7 +197,6 @@ class NS3DFieldFile(NS3DFile):
         print("New file saved:\n" + new_path)
 
     def _compute_field_new_resol(self, field, op, op_new):
-
         nz_new, ny_new, nx_new = op_new.shapeK
 
         nx_min = min(self.nx, nx_new)
@@ -256,7 +252,6 @@ class NS3DForcingInfoFile(NS3DFile):
             self.vec_ind_field = f.readt(self.nb_Delta_t, "uint32")
 
     def save_with_byteorder_changed(self):
-
         if self.byteorder.startswith("little"):
             newbyteorder = "big"
         elif self.byteorder.startswith("big"):
@@ -304,7 +299,6 @@ class NS3DForcingSpectralFile:
         self.nb_fields = f_info.nb_fields
 
     def read_one_forcing_field(self, iforcing):
-
         if iforcing < 0 or iforcing > self.nb_fields - 1:
             raise ValueError("iforcing should be >=0 and <self.nb_fields-1.")
 
@@ -315,7 +309,6 @@ class NS3DForcingSpectralFile:
         return tdata
 
     def save_with_byteorder_changed(self):
-
         if self.byteorder.startswith("little"):
             newbyteorder = "big"
         elif self.byteorder.startswith("big"):
@@ -326,7 +319,6 @@ class NS3DForcingSpectralFile:
         new_path = self.path_file + "_" + newbyteorder + "-endian"
 
         with BinFile(new_path, "w", byteorder=newbyteorder) as f:
-
             for iforcing in range(self.nb_fields):
                 tdata = self.read_one_forcing_field(iforcing)
                 f.write_as(tdata, "float64")
@@ -335,7 +327,6 @@ class NS3DForcingSpectralFile:
 
 
 if __name__ == "__main__":
-
     path_dir = (
         "/home/users/augier3pi/useful/project/14LADHYX/NS3D_results_froggy/"
         "ns3d_exp_HYPER_288x288x96_L=30x30x10_"

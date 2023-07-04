@@ -29,7 +29,6 @@ def is_comment_line(line):
 def modif_blocks(code_lines):
     lines_new = []
     for line in code_lines:
-
         if not any(line.strip().startswith(s) for s in block_definers + ("end",)):
             lines_new.append(line)
             continue
@@ -86,7 +85,6 @@ def modif_remove_3dots(code_lines):
 
 
 def create_py_code(path_file):
-
     code = modif_code(path_file)
 
     code_lines = code.split("\n")
@@ -106,7 +104,6 @@ def create_py_code(path_file):
 
 
 def treat_matlab_directory(path_dir):
-
     path_cleaner = path_dir + "_py"
 
     if not os.path.exists(path_cleaner):
@@ -137,7 +134,6 @@ def treat_matlab_directory(path_dir):
 
 
 if __name__ == "__main__":
-
     path_dir = "diablo_mat"
 
     treat_matlab_directory(path_dir)

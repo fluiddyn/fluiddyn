@@ -18,7 +18,6 @@ def is_comment_line(line):
 
 
 def modif_identation(code_lines):
-
     ident_level = 0
     lines_new = []
 
@@ -136,7 +135,6 @@ def modif_split_comments_from_code(code_lines):
 def modif_spaces_around_operators(code_lines):
     lines_new = []
     for line in code_lines:
-
         if is_comment_line(line) or "=" not in line or "for " in line:
             lines_new.append(line)
             continue
@@ -165,7 +163,6 @@ def modif_spaces_around_operators(code_lines):
 def modif_space_after_comma(code_lines):
     lines_new = []
     for line in code_lines:
-
         if is_comment_line(line):
             lines_new.append(line)
             continue
@@ -186,7 +183,6 @@ def modif_space_after_comma(code_lines):
 
 
 def modif_code(path_file):
-
     with open(path_file) as f:
         code_lines = f.readlines()
 
@@ -207,7 +203,6 @@ def modif_code(path_file):
 
 
 def treat_matlab_directory(path_dir):
-
     path_cleaner = path_dir + "_cleaner"
 
     if not os.path.exists(path_cleaner):
@@ -236,7 +231,6 @@ def treat_matlab_directory(path_dir):
 
 
 if __name__ == "__main__":
-
     path_dir = "diablo_mat"
 
     treat_matlab_directory(path_dir)

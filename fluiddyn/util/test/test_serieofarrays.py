@@ -29,7 +29,6 @@ class TestSeriesOfArrays(unittest.TestCase):
         rmtree(cls.work_dir)
 
     def test0(self):
-
         serie = SerieOfArraysFromFiles(self.work_dir, "1:1+3, :")
         serie.get_path_arrays()
         serie.get_name_path_arrays()

@@ -166,7 +166,6 @@ class TimerIrregular(Timer):
 
 
 if __name__ == "__main__":
-
     tstart = time.time()
 
     timer = Timer(2)

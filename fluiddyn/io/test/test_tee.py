@@ -30,7 +30,6 @@ class TestUtil(unittest.TestCase):
         rmtree(cls._work_dir)
 
     def test_tee(self):
-
         mf = MultiFile([sys.stdout])
         with stdout_redirected():
             mf.write("")

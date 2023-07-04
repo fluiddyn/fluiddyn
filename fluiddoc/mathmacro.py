@@ -162,7 +162,6 @@ def new_math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 
 
 def setup(app):
-
     app.add_role("math", new_math_role, override=True)
     app.add_directive("math", NewMathDirective, override=True)
 

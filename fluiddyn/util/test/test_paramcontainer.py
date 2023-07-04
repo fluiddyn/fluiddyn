@@ -130,7 +130,6 @@ class TestContainer(unittest.TestCase):
         p1._print_as_code()
 
     def test_get_set_item(self):
-
         params = ParamContainer(tag="params")
         params._set_attrib("a0", 1)
         params._set_child("child0", {"a0": 2})

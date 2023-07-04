@@ -31,7 +31,6 @@ class Logger:
         email_delay=2 * 3600,
         email_server="localhost",
     ):
-
         if email_delay is None:
             email_delay = 2 * 3600
 

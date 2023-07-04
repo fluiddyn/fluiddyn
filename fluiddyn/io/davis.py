@@ -47,7 +47,6 @@ We need the package pypng to handle png 'I;16'. Please install it correctly with
 
 
 def readimages(path):
-
     if not _readim_ok:
         _import_error_readim()
 
@@ -130,7 +129,6 @@ def convertim7(args):
 
 
 def convert_1file(path, path_new_dir):
-
     name = os.path.split(path)[1]
     print("treat file " + name)
     name = os.path.splitext(name)[0]

@@ -71,7 +71,6 @@ class FunctionLinInterp:
         return self.func(x)
 
     def plot(self):
-
         fig = plt.figure()
 
         size_axe = [0.13, 0.16, 0.84, 0.76]
@@ -177,7 +176,6 @@ def smooth(x, window_len=11, window="hanning"):
 
 
 if __name__ == "__main__":
-
     # Data:
     x = np.linspace(0, 2 * np.pi, 100)
     f = np.sin(x) + 0.02 * (np.random.rand(100) - 0.5)

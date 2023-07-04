@@ -56,7 +56,6 @@ def read_sqb(name, nb_files=1):
 
 class SetOfFiles:
     def __init__(self, name):
-
         self.d = d = read_seq(name)
 
         self.name = d["sequence_name"]

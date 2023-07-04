@@ -196,7 +196,6 @@ class ParamContainer:
         doc="",
         parent=None,
     ):
-
         self._set_internal_attr("_key_attribs", list())
         self._set_internal_attr("_tag_children", list())
         self._set_internal_attr("_parent", parent)
@@ -648,7 +647,6 @@ class ParamContainer:
             self._load_from_hdf5_object(f)
 
     def _load_from_hdf5_object(self, hdf5_object):
-
         attrs = dict(hdf5_object.attrs)
 
         for k, v in list(attrs.items()):

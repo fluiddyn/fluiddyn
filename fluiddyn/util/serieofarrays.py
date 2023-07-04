@@ -178,7 +178,6 @@ class SerieOfArraysFromFiles(SerieOfArrays):
     """
 
     def __init__(self, path, index_slices=None, str_slices=None):
-
         super().__init__(path)
 
         self.base_name = "".join(
@@ -650,7 +649,6 @@ class SeriesOfArrays:
         ind_stop=None,
         ind_step=1,
     ):
-
         serie0 = serie
         indslices_from_indserie0 = indslices_from_indserie
 

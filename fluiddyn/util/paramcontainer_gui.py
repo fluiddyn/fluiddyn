@@ -48,7 +48,6 @@ class QtParamContainer:
     def __init__(
         self, params, top=False, module_run_from_xml="fluidimage.run_from_xml"
     ):
-
         self.params = deepcopy(params)
         self.module_run_from_xml = module_run_from_xml
         full_tag_dot = params._make_full_tag()

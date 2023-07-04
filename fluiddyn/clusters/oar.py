@@ -133,7 +133,6 @@ oarsub -C $JOB_ID"""
         resource_conditions=None,
         use_oar_envsh=None,
     ):
-
         path = os.path.expanduser(path)
         if not os.path.exists(path.split(" ")[0]):
             raise ValueError("The script does not exists! path:\n" + path)
@@ -181,7 +180,6 @@ oarsub -C $JOB_ID"""
         resource_conditions=None,
         use_oar_envsh=None,
     ):
-
         self.check_oar()
 
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
@@ -258,7 +256,6 @@ oarsub -C $JOB_ID"""
         resource_conditions=None,
         use_oar_envsh=None,
     ):
-
         txt = f"#!/bin/bash\n\n#OAR -n {name_run}\n"
 
         txt += "#OAR -l "

@@ -61,7 +61,6 @@ class Figures:
         fontsize=18,
         fontsize_pad=9,
     ):
-
         self.hastosave = hastosave
 
         if path_save is None:
@@ -166,7 +165,6 @@ class Figure(matplotlib.figure.Figure):
     def __init__(
         self, size_axe=None, name_file=None, figures=None, **kwargs  # *args,
     ):
-
         # Ugly workaround to be able to use the function plt.figure
         fig = plt.figure(**kwargs)
         for k, v in fig.__dict__.items():
@@ -215,7 +213,6 @@ class Figure(matplotlib.figure.Figure):
             hastosave = self.hastosave
 
         if hastosave:
-
             if name_file is None:
                 try:
                     name_file = self.name_file

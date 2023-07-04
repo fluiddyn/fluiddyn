@@ -44,7 +44,6 @@ class TestTxt(unittest.TestCase):
         rmtree(self._work_dir)
 
     def test_txt(self):
-
         t = quantities_from_txt_file(self.path_in)
 
         for i, l_example in enumerate(t_example):

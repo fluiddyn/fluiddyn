@@ -120,7 +120,6 @@ def save_quantities_in_txt_file(name_file, args, erase=False):
 
 
 if __name__ == "__main__":
-
     t = quantities_from_txt_file("files.py")
     print(t)
 

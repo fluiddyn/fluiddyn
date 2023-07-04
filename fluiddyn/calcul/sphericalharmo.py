@@ -190,7 +190,6 @@ class EasySHT:
         nl_order=2,
         radius=radius_earth,
     ):
-
         # to get a clear ImportError
         try:
             import shtns
@@ -721,7 +720,6 @@ class EasySHT:
         return cospectrum
 
     def cospectrum_from_2fieldssh2(self, f_lm, g_lm):
-
         """compute cospectrum(l)..."""
         cospectrum = np.zeros(self.lmax + 1)
 

@@ -155,7 +155,6 @@ class BaseFFT:
         assert np.allclose(nrj, nrj2)
 
     def run_benchs(self, nb_time_execute=10):
-
         arr = np.zeros(self.shapeX)
         arr_fft = np.zeros(self.shapeK, dtype=np.complex128)
 
@@ -504,7 +503,6 @@ class FFTW3DReal2Complex(BasePyFFT):
         return self.fft2d(self.ifft2d(ff_fft))
 
     def build_invariant_arrayX_from_2d_indices12X(self, o2d, arr2d):
-
         nX0, nX1, nX2 = self.get_shapeX_seq()
         nX0loc, nX1loc, nX2loc = self.get_shapeX_loc()
 
@@ -529,7 +527,6 @@ class FFTW3DReal2Complex(BasePyFFT):
         return arr3d
 
     def build_invariant_arrayK_from_2d_indices12X(self, o2d, arr2d):
-
         nK0, nK1, nK2 = self.get_shapeK_seq()
         ret = np.zeros((nK0,) + o2d.shapeK_seq, dtype=np.complex128)
 

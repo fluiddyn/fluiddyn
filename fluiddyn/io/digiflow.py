@@ -64,7 +64,6 @@ class DigiflowImage:
     """A digiflow image (.dfi, "image" containing 3 scalar fields)."""
 
     def __init__(self, path_file=None):
-
         if path_file is not None:
             self.path_file = path_file
             self._load()
@@ -360,7 +359,6 @@ class DigiflowMovie:
         self.movie_header = d
 
     def __getitem__(self, arg):
-
         # itstart = 0
         # itstop = self.nb_frames-1
         # itstep = 1
@@ -448,7 +446,6 @@ class DigiflowMovie:
     #         return ret
 
     def load_contiguous_frames(self, iframe_start, nb_frames=1):
-
         if iframe_start + 1 > self.nb_frames:
             raise ValueError("A non-existing frame has been asked.")
 
@@ -550,7 +547,6 @@ class DigiflowMovie:
     def make_time_serie(
         self, i_start, i_stop, i_x, i_step=1, has_to_plot=True, cmap=None
     ):
-
         if i_stop > self.nb_frames - 1:
             i_stop = self.nb_frames - 1
 

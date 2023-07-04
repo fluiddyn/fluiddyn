@@ -126,7 +126,6 @@ def format_too_long_tagstart(text, lengthmax=79):
 
 
 if __name__ == "__main__":
-
     try:
         from lxml import etree
     except ImportError:

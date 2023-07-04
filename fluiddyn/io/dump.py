@@ -120,7 +120,6 @@ def dump_h5_object(obj, level=0, print_variables=False):
 
 
 def main():
-
     parser = argparse.ArgumentParser(
         prog="fluiddump",
         description=description,

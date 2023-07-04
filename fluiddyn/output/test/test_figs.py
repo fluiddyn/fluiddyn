@@ -35,7 +35,6 @@ class TestFigs(unittest.TestCase):
         gradient_colors(5)
 
     def test_save(self):
-
         fig = self.figures.new_figure(
             "figure0.png", fig_width_mm=40, fig_height_mm=40
         )

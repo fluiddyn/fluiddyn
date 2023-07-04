@@ -22,7 +22,6 @@ class Froggy(ClusterOAR):
     frontends = [""]
 
     def __init__(self):
-
         super().__init__()
 
         self.commands_setting_env = [

@@ -51,7 +51,6 @@ class TestUtil(unittest.TestCase):
         rmtree(cls._work_dir)
 
     def test_util(self):
-
         util.import_class("fluiddyn.output.figs", "Figures")
 
         util.time_as_str(decimal=1)

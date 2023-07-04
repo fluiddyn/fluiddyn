@@ -61,7 +61,6 @@ class TestFFTW1DReal2Complex(unittest.TestCase):
         self.compute_and_check(func_fft, op)
 
     def compute_and_check(self, func_fft, op):
-
         func = op.ifft(func_fft)
         back_fft = op.fft(func)
         back = op.ifft(back_fft)
@@ -110,7 +109,6 @@ class TestFFTW2DReal2Complex(unittest.TestCase):
         self.compute_and_check(func_fft, op)
 
     def compute_and_check(self, func_fft, op):
-
         energyK = op.compute_energy_from_Fourier(func_fft)
 
         func = op.ifft2d(func_fft)
@@ -181,7 +179,6 @@ class TestFFTW3DReal2Complex(unittest.TestCase):
         op.create_arrayK(1)
 
     def compute_and_check(self, func_fft, op):
-
         energyK = op.compute_energy_from_Fourier(func_fft)
 
         func = op.ifft(func_fft)

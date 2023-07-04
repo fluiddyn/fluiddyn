@@ -137,7 +137,6 @@ class SetOfVariables(np.ndarray):
 
 
 if __name__ == "__main__":
-
     # shape_var = (2, 2)
     # keys = ['a', 'b']
     # shape = (len(keys),) + shape_var

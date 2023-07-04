@@ -131,5 +131,4 @@ def send_email(
 
 
 if __name__ == "__main__":
-
     send_email("email test", "blablabla\n" * 3, "pierre.augier@legi.cnrs.fr")
