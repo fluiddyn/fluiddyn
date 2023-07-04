@@ -4,6 +4,7 @@ syntax: glob
 *.pyc
 *~
 *temp
+.venv
 
 *.swp
 *.swo
