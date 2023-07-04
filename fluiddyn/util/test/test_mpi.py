@@ -58,7 +58,9 @@ class TestMPI(unittest.TestCase):
         msg_expected = msg_write + " 0" if rank == 0 else ""
         self.assertEqual(msg_read, msg_expected)
 
-    @unittest.skipIf(nb_proc == 1, "Cannot test MPI functionality with nb_proc = 1")
+    @unittest.skipIf(
+        nb_proc == 1, "Cannot test MPI functionality with nb_proc = 1"
+    )
     def test_scatter_gather(self):
         """Test MPI Scatter and Gather functions for numpy objects."""
 
