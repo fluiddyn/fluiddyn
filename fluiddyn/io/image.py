@@ -25,7 +25,10 @@ if use_opencv:
     IMREAD_ANYDEPTH = cv2.IMREAD_ANYDEPTH
 else:
     try:
-        from imageio import imread as _imread
+        try:
+            from imageio.v2 import imread as _imread
+        except ImportError:
+            from imageio import imread as _imread
     except ImportError:
         # we use imread from matplotlib but there could be a problem with one
         # unittest.  If it is really a problem, install imageio.
