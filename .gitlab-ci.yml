@@ -51,6 +51,14 @@ validate_style:
     - black --diff --check fluiddyn fluiddoc
   allow_failure: true
 
+validate_imports:
+  stage: lint
+  before_script:
+    - pip install isort --user
+  script:
+    - isort --verbose --only-modified --diff --check-only fluiddyn fluiddoc
+  allow_failure: true
+
 build_docs:
   stage: build
   image: sphinxdoc/sphinx:5.3.0
