@@ -5,7 +5,9 @@ image: fluiddyn/python3-stable:heptapod
 
 stages:
   - lint
+  - build
   - test
+  - deploy
 
 validate_style:
   stage: lint
@@ -14,6 +16,18 @@ validate_style:
   script:
     - black --diff --check fluiddyn fluiddoc
   allow_failure: true
+
+build_docs:
+  stage: build
+  image: sphinxdoc/sphinx:5.3.0
+  before_script:
+    - pip install -e .[doc]
+  script:
+    - make -C doc
+  artifacts:
+    paths:
+      - doc/_build/html
+  needs: []
 
 run_tests:
   stage: test
