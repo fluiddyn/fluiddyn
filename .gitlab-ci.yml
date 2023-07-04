@@ -61,13 +61,17 @@ build_docs:
   artifacts:
     paths:
       - doc/_build/html
-  needs: []
+  needs:
+    - job: "CI image"
+      optional: true
 
 run_tests:
   stage: test
   script:
     - tox -e py38,codecov
-  needs: []
+  needs:
+    - job: "CI image"
+      optional: true
 
 pages:
   stage: deploy

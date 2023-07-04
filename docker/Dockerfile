@@ -17,4 +17,4 @@ RUN echo 'backend      : agg' > $HOME/.config/matplotlib/matplotlibrc
 RUN /usr/bin/python3 -m pip install hg-git hg-evolve
 RUN git config --global pull.rebase false
 
-RUN /usr/bin/python3 -m pip install pip tox black -U
+RUN /usr/bin/python3 -m pip install pip tox black isort -U
