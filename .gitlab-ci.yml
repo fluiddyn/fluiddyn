@@ -54,7 +54,7 @@ validate_style:
 validate_min_version:
   stage: lint
   script:
-    - vermin --no-parse-comments --lint --target=3.8 fluiddyn fluiddoc
+    - vermin --backport argparse --backport configparser --backport importlib --backport mock --backport typing --no-parse-comments --lint --target=3.8 fluiddyn fluiddoc
   allow_failure: true
 
 validate_imports:
