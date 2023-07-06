@@ -46,3 +46,9 @@ showcontent = true
 
 [tool.black]
 line-length = 82
+
+[tool.isort]
+profile = "black"
+line_length = 82
+include_trailing_comma = true
+atomic = true

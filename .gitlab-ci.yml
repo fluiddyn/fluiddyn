@@ -54,7 +54,7 @@ validate_style:
 validate_imports:
   stage: lint
   script:
-    - isort --verbose --trailing-comma --atomic --check-only --only-modified --diff fluiddyn fluiddoc
+    - isort . --verbose --check-only --only-modified --diff
   allow_failure: true
 
 build_docs:

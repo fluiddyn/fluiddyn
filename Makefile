@@ -11,11 +11,13 @@ clean_pyc:
 
 clean: clean_pyc
 
+format: black isort
+
 black:
-	black fluiddyn fluiddoc
+	black fluiddyn fluiddoc doc
 
 isort:
-	isort -rc --atomic -tc fluiddyn fluiddoc
+	isort .
 
 tests:
 	pytest
