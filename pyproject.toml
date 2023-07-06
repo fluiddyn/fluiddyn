@@ -26,6 +26,43 @@ documentation = "https://fluiddyn.readthedocs.io"
 twitter = "https://twitter.com/pyfluiddyn"
 conda-forge = "https://github.com/conda-forge/fluiddyn-feedstock"
 
+[project.optional-dependencies]
+doc = [
+    "jupyter",
+    "sphinx",
+    "sphinx_rtd_theme",
+    "numpydoc",
+    "sphinxemoji",
+    "myst-nb",
+    "sphinx-copybutton",
+    "pyqt5",
+    "towncrier",
+    "scipy",
+    "scikit-image",
+    "nbstripout",
+    "sphinxcontrib-mermaid",
+]
+fft = ["pyfftw >= 0.10.4"]
+mpi = ["mpi4py"]
+test = [
+    "coverage",
+    "pytest",
+    "pytest-cov",
+    "ipython",
+    "ipdb",
+    "scipy",
+    "pillow",
+    "imageio",
+    "fluiddyn[fft]",
+]
+dev = ["fluiddyn[doc, test, mpi]"]
+full = [
+    "fluiddyn[dev]",
+    "pulp",
+    "scikit-image",
+    "opencv-python",
+]
+
 [tool.setuptools]
 include-package-data = false
 
