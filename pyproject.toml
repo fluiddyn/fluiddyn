@@ -45,7 +45,7 @@ doc = [
 fft = ["pyfftw >= 0.10.4"]
 mpi = ["mpi4py"]
 test = [
-    "coverage",
+    "coverage[toml]",
     "pytest",
     "pytest-cov",
     "ipython",
