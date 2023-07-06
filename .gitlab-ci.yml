@@ -62,6 +62,19 @@ validate_imports:
     - isort . --verbose --check-only --only-modified --diff
   allow_failure: true
 
+validate_markdown:
+  stage: lint
+  image:
+    # docs: https://github.com/igorshubovych/markdownlint-cli
+    # dockerfile: https://github.com/igorshubovych/markdownlint-cli/blob/master/Dockerfile
+    name: ghcr.io/igorshubovych/markdownlint-cli:latest
+    entrypoint: [""]
+  before_script:
+    - markdownlint --version
+  script:
+    - ls -la *.md **/*.md && markdownlint *.md **/*.md
+  allow_failure: true
+
 build_docs:
   stage: build
   image: sphinxdoc/sphinx:5.3.0
