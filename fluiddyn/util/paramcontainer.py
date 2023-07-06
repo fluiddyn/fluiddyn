@@ -31,6 +31,7 @@ except ImportError:
 
 try:
     import h5py
+
     from fluiddyn.io.hdf5 import H5File
 except ImportError:
     from warnings import warn

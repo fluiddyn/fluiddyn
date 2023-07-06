@@ -18,14 +18,14 @@ Use the question mark in ipython to view a function's docstring::
 
 """
 
+from ._version import __version__
+from .util import constants
 from .util.util import (
     create_object_from_file,
-    time_as_str,
     get_memory_usage,
     ipydebug,
+    time_as_str,
 )
-from .util import constants
-from ._version import __version__
 
 __citation__ = """
 @article{fluiddyn,

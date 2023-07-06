@@ -3,8 +3,8 @@ import unittest
 
 import numpy as np
 
-from .. import easypyfft
 from ...io import stdout_redirected
+from .. import easypyfft
 
 try:
     import pulp

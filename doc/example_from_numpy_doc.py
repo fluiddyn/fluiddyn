@@ -11,6 +11,11 @@ a line by itself, preferably preceeded by a blank line.
 
 import os  # standard library imports first
 
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+from my_module import my_func, other_func
+
 # Do NOT import using *, e.g. from numpy import *
 #
 # Import the module using
@@ -24,15 +29,10 @@ import os  # standard library imports first
 # If you prefer the use of abbreviated module names, we suggest the
 # convention used by NumPy itself::
 
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 # These abbreviated names are not to be used in docstrings; users must
 # be able to paste and execute docstrings after importing only the
 # numpy module itself, unabbreviated.
-
-from my_module import my_func, other_func
 
 
 def foo(var1, var2, long_var_name="hi"):

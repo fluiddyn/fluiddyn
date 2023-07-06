@@ -64,7 +64,7 @@ class TestMPI(unittest.TestCase):
     def test_scatter_gather(self):
         """Test MPI Scatter and Gather functions for numpy objects."""
 
-        from ..mpi import comm, MPI
+        from ..mpi import MPI, comm
 
         N_loc = 4
         N = N_loc * nb_proc

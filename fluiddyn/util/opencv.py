@@ -5,9 +5,9 @@ Convenience module to import OpenCV
 """
 
 import os
+import subprocess
 import sys
 from pathlib import Path
-import subprocess
 
 is_conda = (Path(sys.prefix) / "conda-meta").exists()
 

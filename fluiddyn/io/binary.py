@@ -159,6 +159,7 @@ class BinFile(_io.FileIO):
 
 if __name__ == "__main__":
     import os
+
     import numpy as np
 
     path_test_file = os.path.expanduser("/tmp/test_file.bin")

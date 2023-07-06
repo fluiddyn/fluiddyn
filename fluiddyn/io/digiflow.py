@@ -571,9 +571,9 @@ class DigiflowMovie:
 if __name__ == "__main__":
 
     def plot_im(im):
-        import fluiddyn.figs as figs
-
         import matplotlib.pyplot as plt
+
+        import fluiddyn.figs as figs
 
         figures = figs.Figures(hastosave=False, for_beamer=False, fontsize=20)
         size_axe = [0.15, 0.12, 0.8, 0.76]

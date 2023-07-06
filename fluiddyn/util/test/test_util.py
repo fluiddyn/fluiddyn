@@ -11,9 +11,9 @@ from shutil import rmtree
 import h5py
 import numpy as np
 
-from .. import util
 from ...io.redirect_stdout import stdout_redirected
-from ..terminal_colors import print_fail, print_warning, cprint, cstring
+from .. import util
+from ..terminal_colors import cprint, cstring, print_fail, print_warning
 from ..userconfig import load_user_conf_files
 
 

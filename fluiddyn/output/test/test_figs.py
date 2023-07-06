@@ -2,8 +2,8 @@ import os
 import unittest
 from shutil import rmtree
 
-from .. import figs
 from ...io.redirect_stdout import stdout_redirected
+from .. import figs
 from ..figs import Figures, show
 from ..util import gradient_colors
 

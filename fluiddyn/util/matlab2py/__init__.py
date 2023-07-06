@@ -13,9 +13,8 @@ code produced is just more similar to Python than the original Matlab code.
 
 """
 
-import os
-
 import argparse
+import os
 
 
 def get_index_closing_parenthesis(line, ind_start):
@@ -37,7 +36,6 @@ def get_index_closing_parenthesis(line, ind_start):
 # this can not be put at the top of the file and has to be put after the
 # definition of get_index_closing_parenthesis
 from . import cleanmat, mat2wrongpy
-
 
 description = """
 

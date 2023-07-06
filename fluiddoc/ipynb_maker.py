@@ -9,9 +9,9 @@
 
 import os
 import subprocess
-from pathlib import Path
 from datetime import datetime
 from glob import glob
+from pathlib import Path
 
 
 def modification_date(filename):

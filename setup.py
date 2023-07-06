@@ -1,8 +1,8 @@
-from setuptools import setup, find_packages
-
 import os
-from runpy import run_path
 import sys
+from runpy import run_path
+
+from setuptools import find_packages, setup
 
 if sys.version_info[:2] < (3, 6):
     raise RuntimeError("Python version >= 3.6 required.")

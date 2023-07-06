@@ -15,6 +15,7 @@ import os
 import sys
 import time
 from math import ceil, log10
+
 from packaging import version
 
 from .image import _image_from_array

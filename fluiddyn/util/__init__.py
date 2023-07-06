@@ -36,16 +36,16 @@ Utilities
 
 from .util import (
     Params,
-    time_as_str,
     config_logging,
     create_object_from_file,
-    is_run_from_ipython,
     get_memory_usage,
-    print_memory_usage,
+    has_to_be_made,
     import_class,
+    is_run_from_ipython,
     is_run_from_jupyter,
     modification_date,
-    has_to_be_made,
+    print_memory_usage,
+    time_as_str,
 )
 
 __all__ = [

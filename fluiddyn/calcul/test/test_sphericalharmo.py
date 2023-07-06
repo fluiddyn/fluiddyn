@@ -1,10 +1,10 @@
-import unittest
 import os
+import unittest
 
 from numpy.testing import assert_allclose
 
-from .. import sphericalharmo
 from ...io import stdout_redirected
+from .. import sphericalharmo
 
 try:
     import shtns

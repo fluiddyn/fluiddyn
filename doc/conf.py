@@ -11,8 +11,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
 import os
+import sys
 
 os.environ["FLUIDDYN_NO_QTPY_INIT_BEFORE_OPENCV_IMPORT"] = "1"
 
@@ -172,14 +172,8 @@ html_context = {
             '<i class="fa fa-bug fa-fw"></i> Issue tracker',
             f"https://foss.heptapod.net/fluiddyn/{project.lower()}/-/issues",
         ),
-        (
-            '🐘 Mastodon',
-            _mastodon
-        ),
-        (
-            '<i class="fa fa-rss fa-fw"></i> Blog',
-            'https://fluiddyn.netlify.app/'
-        ),
+        ("🐘 Mastodon", _mastodon),
+        ('<i class="fa fa-rss fa-fw"></i> Blog', "https://fluiddyn.netlify.app/"),
         (
             '<i class="fa fa-comments fa-fw"></i> Chat',
             "https://matrix.to/#/#fluiddyn-users:matrix.org",

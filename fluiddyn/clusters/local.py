@@ -17,9 +17,9 @@ from socket import gethostname
 
 import psutil
 
-from . import Cluster, subprocess
 from ..io.query import call_bash, run_asking_agreement
 from ..util.timer import TimeStr, timestamp_to_seconds
+from . import Cluster, subprocess
 
 
 def is_python_script(path):

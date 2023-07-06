@@ -11,8 +11,8 @@ Provides:
 
 import os
 import subprocess
-from subprocess import PIPE
 import sys
+from subprocess import PIPE
 from warnings import warn
 
 from .local import ClusterLocal

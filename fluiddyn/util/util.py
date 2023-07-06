@@ -17,8 +17,8 @@ from importlib import import_module
 import numpy as np
 import psutil
 
-from . import mpi
 from ..io import HOME_DIR, Path
+from . import mpi
 
 
 def modification_date(path):

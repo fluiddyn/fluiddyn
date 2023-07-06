@@ -9,8 +9,8 @@ import subprocess
 import unittest
 from contextlib import contextmanager
 
-from .. import query
 from ...io.redirect_stdout import stdout_redirected
+from .. import query
 
 
 def do_nothing(*args, **kwargs):

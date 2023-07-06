@@ -7,8 +7,8 @@ import os
 import unittest
 from shutil import rmtree
 
-from .. import cines, slurm, snic
 from ...io import stdout_redirected
+from .. import cines, slurm, snic
 
 jobid = 123
 

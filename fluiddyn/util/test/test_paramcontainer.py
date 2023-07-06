@@ -1,8 +1,8 @@
 import json
 import os
 import unittest
-from shutil import rmtree
 from pathlib import Path
+from shutil import rmtree
 
 import numpy as np
 

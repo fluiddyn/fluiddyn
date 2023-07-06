@@ -7,8 +7,8 @@ import os
 import unittest
 from shutil import rmtree
 
-from .. import pbs
 from ...io import stdout_redirected
+from .. import pbs
 
 jobid = 123
 
