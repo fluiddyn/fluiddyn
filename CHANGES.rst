@@ -22,7 +22,9 @@ Unreleased_
 
 .. towncrier release notes start
 
-.. _Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.2...branch%2Fdefault
+_Unreleased: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.2...branch%2Fdefault
+
+- Python>=3.8 only
 
 0.5.2_ (2022-03-07)
 -------------------

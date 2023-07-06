@@ -32,7 +32,7 @@ class Occigen(ClusterSlurm):
             "module load openmpi/intel/2.0.2",
             "module load qt",
             "module load hdf5-seq",
-            "module load python/3.6.3",
+            "module load python/3.8",
             "unset PYTHONPATH",
             "source $HOME/mypy/bin/activate",
             (

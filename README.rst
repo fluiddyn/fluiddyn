@@ -74,7 +74,7 @@ Requirements
 ------------
 
 +------------------------+-------------------------------------------------------------------------------+
-| **Minimum**            | Python (>=3.6), ``numpy matplotlib h5py psutil``                              |
+| **Minimum**            | Python (>=3.8), ``numpy matplotlib h5py psutil``                              |
 +------------------------+-------------------------------------------------------------------------------+
 | **Full functionality** | ``h5py h5netcdf pillow imageio mpi4py scipy pyfftw`` (requires FFTW library), |
 |                        | SHTns                                                                         |

@@ -4,7 +4,7 @@ Installation
 Dependencies
 ------------
 
-- **Minimum** : Python (>=3.6), numpy, matplotlib, h5py, h5netcdf, psutil
+- **Minimum** : Python (>=3.8), numpy, matplotlib, h5py, h5netcdf, psutil
 
 - **Full functionality**: pillow, imageio, mpi4py, scipy, pyfftw (requires FFTW
   library)
