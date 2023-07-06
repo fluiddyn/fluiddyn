@@ -1,6 +1,51 @@
 [build-system]
-requires = ["setuptools>=49.5.0", "wheel"]
+requires = ["setuptools>=61.2"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "fluiddyn"
+description = "Framework for studying fluid dynamics."
+keywords = ["Fluid dynamics", "research"]
+license = {text = "CeCILL-B License"}
+authors = [{name = "Pierre Augier", email = "pierre.augier@legi.cnrs.fr"}]
+requires-python = ">= 3.8"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "h5py",
+    "h5netcdf",
+    "psutil >= 5.2.1",
+    "distro",
+    "qtpy",
+]
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://foss.heptapod.net/fluiddyn/fluiddyn"
+documentation = "https://fluiddyn.readthedocs.io"
+twitter = "https://twitter.com/pyfluiddyn"
+conda-forge = "https://github.com/conda-forge/fluiddyn-feedstock"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.coverage.run]
+source = ["./fluiddyn"]
+data_file = ".coverage/coverage"
+omit = ["*/test*.py"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "raise ValueError",
+    "if __name__ == '__main__':",
+]
+
+[tool.coverage.html]
+directory = ".coverage"
+
+[tool.coverage.xml]
+output = ".coverage/coverage.xml"
 
 [tool.towncrier]
 package = "fluiddyn"
@@ -52,3 +97,5 @@ profile = "black"
 line_length = 82
 include_trailing_comma = true
 atomic = true
+known_first_party = ["fluiddyn", "fluiddoc"]
+multi_line_output = 3

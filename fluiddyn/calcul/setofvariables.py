@@ -51,7 +51,7 @@ class SetOfVariables(np.ndarray):
         value=None,
         info=None,
         dtype=None,
-        **kargs
+        **kwargs,
     ):
         if input_array is not None:
             arr = input_array
@@ -85,7 +85,7 @@ class SetOfVariables(np.ndarray):
             if value is not None:
                 arr.fill(value)
 
-        obj = np.asarray(arr, dtype=dtype, **kargs).view(cls)
+        obj = np.asarray(arr, dtype=dtype, **kwargs).view(cls)
 
         obj.info = info
         obj.keys = tuple(keys)
