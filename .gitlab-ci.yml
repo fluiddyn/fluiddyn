@@ -2,7 +2,10 @@ variables:
   OMPI_ALLOW_RUN_AS_ROOT: "1"
   OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: "1"
 
-image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
+default:
+  image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
+  tags:
+    - container-registry-push
 
 stages:
   - image
@@ -15,8 +18,6 @@ stages:
 # it is quite unnecessary to run on every invocation.
 CI image:
   stage: image
-  tags:
-    - container-registry-push
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
     - if: '$CI_BUILD_IMAGES == "1"'
