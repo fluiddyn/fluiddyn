@@ -42,7 +42,10 @@ doc = [
     "nbstripout",
     "sphinxcontrib-mermaid",
 ]
-fft = ["pyfftw >= 0.10.4"]
+fft = [
+    "pyfftw >= 0.10.4",
+    "pulp",
+]
 mpi = ["mpi4py"]
 test = [
     "coverage[toml]",
@@ -56,9 +59,9 @@ test = [
     "fluiddyn[fft]",
 ]
 dev = ["fluiddyn[doc, test, mpi]"]
+sht = ["shtns"]
 full = [
-    "fluiddyn[dev]",
-    "pulp",
+    "fluiddyn[dev, sht]",
     "scikit-image",
     "opencv-python",
 ]

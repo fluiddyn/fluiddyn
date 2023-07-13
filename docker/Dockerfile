@@ -7,7 +7,7 @@ RUN apt-get update
 
 RUN apt-get install -y --no-install-recommends emacs vim rsync python3-pip
 RUN apt-get install -y --no-install-recommends mercurial git
-RUN apt-get install -y --no-install-recommends libopenmpi-dev
+RUN apt-get install -y --no-install-recommends libopenmpi-dev libfftw3-dev
 
 RUN rm -rf /var/lib/apt/lists/*
 

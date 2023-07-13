@@ -3,7 +3,10 @@ variables:
   OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: "1"
 
 default:
-  image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
+  # for standard MR:
+  # image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
+  # for MR modifying the Docker file:
+  image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
   tags:
     - container-registry-push
 
@@ -18,9 +21,10 @@ stages:
 # it is quite unnecessary to run on every invocation.
 CI image:
   stage: image
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-    - if: '$CI_BUILD_IMAGES == "1"'
+  # comment these rules for MR modifying the Docker file
+  # rules:
+  #   - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  #   - if: '$CI_BUILD_IMAGES == "1"'
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [ "" ]
