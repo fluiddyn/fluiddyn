@@ -4,9 +4,9 @@ variables:
 
 default:
   # for standard MR:
-  # image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
+  image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
   # for MR modifying the Docker file:
-  image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
+  # image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
   tags:
     - container-registry-push
 
@@ -22,9 +22,9 @@ stages:
 CI image:
   stage: image
   # comment these rules for MR modifying the Docker file
-  # rules:
-  #   - if: '$CI_PIPELINE_SOURCE == "schedule"'
-  #   - if: '$CI_BUILD_IMAGES == "1"'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_BUILD_IMAGES == "1"'
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [ "" ]
