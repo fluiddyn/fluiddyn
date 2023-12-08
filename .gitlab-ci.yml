@@ -13,8 +13,8 @@ default:
 stages:
   - image
   - lint
-  - build
   - test
+  - doc
   - deploy
 
 # Build an image for the above tasks; this should be a scheduled job, as
@@ -67,20 +67,6 @@ validate_imports:
     - isort . --verbose --check-only --only-modified --diff
   allow_failure: true
 
-build_docs:
-  stage: build
-  image: sphinxdoc/sphinx:5.3.0
-  before_script:
-    - pip install -e .[doc]
-  script:
-    - make -C doc
-  artifacts:
-    paths:
-      - doc/_build/html
-  needs:
-    - job: "CI image"
-      optional: true
-
 run_tests:
   stage: test
   script:
@@ -95,6 +81,20 @@ run_tests:
       - .coverage/index.html
     reports:
       junit: pytest_result.xml
+
+build_docs:
+  stage: doc
+  image: sphinxdoc/sphinx:5.3.0
+  before_script:
+    - pip install -e .[doc]
+  script:
+    - make -C doc
+  artifacts:
+    paths:
+      - doc/_build/html
+  needs:
+    - job: "CI image"
+      optional: true
 
 pages:
   stage: deploy
