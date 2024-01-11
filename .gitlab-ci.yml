@@ -4,9 +4,9 @@ variables:
 
 default:
   # for standard MR:
-  # image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
+  image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
   # for MR modifying the Docker file:
-  image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
+  # image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
   tags:
     - container-registry-push
 
@@ -70,25 +70,25 @@ validate_imports:
 test:run:
   stage: test
   script:
-    - tox -e py39,codecov
+    - nox -s test
   needs:
     - job: "image:build"
       optional: true
   artifacts:
     when: always
     paths:
-      - pytest_result.xml
+      - .coverage/as_junit.xml
       - .coverage/index.html
     reports:
-      junit: pytest_result.xml
+      junit: .coverage/as_junit.xml
 
 doc:build:
   stage: doc
   image: sphinxdoc/sphinx:5.3.0
   before_script:
-    - pip install -e .[doc]
+    - pdm install -G doc
   script:
-    - make -C doc
+    - pdm run make -C doc
   artifacts:
     paths:
       - doc/_build/html

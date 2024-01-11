@@ -32,10 +32,11 @@ fluiddyn.egg-info/*
 build/*
 dist/*.tar.gz
 dist*
-.tox/*
-.coverage/*
-.pytest_cache/*
-.mypy_cache/*
+.tox
+.coverage
+.pytest_cache
+.mypy_cache
+.nox
 
 *.so
 
