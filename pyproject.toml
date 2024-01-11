@@ -43,6 +43,50 @@ twitter = "https://twitter.com/pyfluiddyn"
 conda-forge = "https://github.com/conda-forge/fluiddyn-feedstock"
 
 [project.optional-dependencies]
+fft = [
+    "pyfftw >= 0.10.4",
+    "pulp",
+]
+mpi = ["mpi4py"]
+sht = ["shtns"]
+full = [
+    "fluiddyn[mpi, sht]",
+    "scikit-image",
+    "opencv-python",
+]
+
+[project.scripts]
+fluidcluster-help = "fluiddyn.clusters:print_help_scheduler"
+fluiddocset = "fluiddoc.fluiddocset:main"
+fluiddump = "fluiddyn.io.dump:main"
+fluidinfo = "fluiddyn.util.info:main"
+fluidmat2py = "fluiddyn.util.matlab2py:main"
+fluidnbstripout = "fluiddoc.fluidnbstripout:main"
+fluidconvertim7 = "fluiddyn.io.davis:main"
+
+
+[tool.pdm.dev-dependencies]
+
+dev = [
+    "pip",
+    "black",
+    "pylint",
+    "vermin",
+    "isort"
+]
+
+test = [
+    "coverage[toml]",
+    "pytest",
+    "pytest-cov",
+    "ipython",
+    "ipdb",
+    "scipy",
+    "pillow",
+    "imageio",
+    "fluiddyn[fft]",
+]
+
 doc = [
     "jupyter",
     "sphinx",
@@ -59,38 +103,6 @@ doc = [
     "nbstripout",
     "sphinxcontrib-mermaid",
 ]
-fft = [
-    "pyfftw >= 0.10.4",
-    "pulp",
-]
-mpi = ["mpi4py"]
-test = [
-    "coverage[toml]",
-    "pytest",
-    "pytest-cov",
-    "ipython",
-    "ipdb",
-    "scipy",
-    "pillow",
-    "imageio",
-    "fluiddyn[fft]",
-]
-dev = ["fluiddyn[doc, test, mpi]"]
-sht = ["shtns"]
-full = [
-    "fluiddyn[dev, sht]",
-    "scikit-image",
-    "opencv-python",
-]
-
-[project.scripts]
-fluidcluster-help = "fluiddyn.clusters:print_help_scheduler"
-fluiddocset = "fluiddoc.fluiddocset:main"
-fluiddump = "fluiddyn.io.dump:main"
-fluidinfo = "fluiddyn.util.info:main"
-fluidmat2py = "fluiddyn.util.matlab2py:main"
-fluidnbstripout = "fluiddoc.fluidnbstripout:main"
-fluidconvertim7 = "fluiddyn.io.davis:main"
 
 [tool.coverage.run]
 source = ["./fluiddyn"]

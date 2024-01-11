@@ -1,6 +1,3 @@
-variables:
-  OMPI_ALLOW_RUN_AS_ROOT: "1"
-  OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: "1"
 
 default:
   # for standard MR:
@@ -47,7 +44,9 @@ image:build:
       --dockerfile $CI_PROJECT_DIR/docker/Dockerfile
       --single-snapshot
       --cleanup
-      --destination registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
+      --destination registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
+
+# --destination registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
 
 validate_style:
   stage: lint
@@ -86,6 +85,7 @@ doc:build:
   stage: doc
   image: sphinxdoc/sphinx:5.3.0
   before_script:
+    - pip install pdm
     - pdm install -G doc
   script:
     - pdm run make -C doc
