@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=61.2"]
-build-backend = "setuptools.build_meta"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [project]
 name = "fluiddyn"
@@ -8,7 +8,7 @@ description = "Framework for studying fluid dynamics."
 keywords = ["Fluid dynamics", "research"]
 license = {text = "CeCILL-B License"}
 authors = [{name = "Pierre Augier", email = "pierre.augier@legi.cnrs.fr"}]
-requires-python = ">= 3.8"
+requires-python = ">= 3.9"
 dependencies = [
     "numpy",
     "matplotlib",
@@ -18,7 +18,23 @@ dependencies = [
     "distro",
     "qtpy",
 ]
-dynamic = ["version", "readme"]
+version = "0.5.1"
+readme = "README.rst"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Scientific/Engineering",
+]
 
 [project.urls]
 homepage = "https://foss.heptapod.net/fluiddyn/fluiddyn"
@@ -36,6 +52,7 @@ doc = [
     "myst-nb",
     "sphinx-copybutton",
     "pyqt5",
+    "pyqt5-qt5==5.15.2",
     "towncrier",
     "scipy",
     "scikit-image",
@@ -66,8 +83,14 @@ full = [
     "opencv-python",
 ]
 
-[tool.setuptools]
-include-package-data = false
+[project.scripts]
+fluidcluster-help = "fluiddyn.clusters:print_help_scheduler"
+fluiddocset = "fluiddoc.fluiddocset:main"
+fluiddump = "fluiddyn.io.dump:main"
+fluidinfo = "fluiddyn.util.info:main"
+fluidmat2py = "fluiddyn.util.matlab2py:main"
+fluidnbstripout = "fluiddoc.fluidnbstripout:main"
+fluidconvertim7 = "fluiddyn.io.davis:main"
 
 [tool.coverage.run]
 source = ["./fluiddyn"]

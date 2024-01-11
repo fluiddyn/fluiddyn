@@ -211,8 +211,14 @@ def get_info_numpy(only_print=False, verbosity=None):
             np_sys_info_dict = OrderedDict(
                 (k, np_sys_info.get_info(k)) for k in libs + libs_sys
             )
+
+            try:
+                get_build_info = np_build_info.get_info
+            except AttributeError:
+                get_build_info = np_build_info.CONFIG.get
+
             np_build_info_dict = OrderedDict(
-                (k, np_build_info.get_info(k)) for k in libs
+                (k, get_build_info(k)) for k in libs
             )
 
         rm_configtest()

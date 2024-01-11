@@ -161,3 +161,9 @@ def convert_1file(path, path_new_dir):
 
         png_img = png.from_array(image, "L;16")
         png_img.save(pathnew)
+
+
+def main():
+    """Convert .im7 files in a directory"""
+    args = parse_args()
+    convertim7(args)
