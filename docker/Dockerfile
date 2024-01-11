@@ -1,4 +1,4 @@
-FROM python:3.9-bullseye
+FROM python:3.9-bookworm
 LABEL Pierre Augier <pierre.augier@univ-grenoble-alpes.fr>
 
 COPY docker/hgrc $HOME/.hgrc
@@ -17,4 +17,4 @@ RUN echo 'backend      : agg' > $HOME/.config/matplotlib/matplotlibrc
 RUN /usr/bin/python3 -m pip install hg-git hg-evolve
 RUN git config --global pull.rebase false
 
-RUN /usr/bin/python3 -m pip install pip nox black isort vermin -U
+RUN /usr/bin/python3 -m pip install pip nox tox black isort vermin -U

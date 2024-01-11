@@ -4,9 +4,9 @@ variables:
 
 default:
   # for standard MR:
-  image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
+  # image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/default:stable
   # for MR modifying the Docker file:
-  # image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
+  image: registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
   tags:
     - container-registry-push
 
@@ -19,12 +19,12 @@ stages:
 
 # Build an image for the above tasks; this should be a scheduled job, as
 # it is quite unnecessary to run on every invocation.
-CI image:
+image:build:
   stage: image
   # comment these rules for MR modifying the Docker file
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-    - if: '$CI_BUILD_IMAGES == "1"'
+  # rules:
+  #   - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  #   - if: '$CI_BUILD_IMAGES == "1"'
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [ "" ]
@@ -58,7 +58,7 @@ validate_style:
 validate_min_version:
   stage: lint
   script:
-    - vermin --no-parse-comments --lint --target=3.8 --no-tips  fluiddyn fluiddoc
+    - vermin --no-parse-comments --lint --target=3.9 --no-tips  fluiddyn fluiddoc
   allow_failure: true
 
 validate_imports:
@@ -67,12 +67,12 @@ validate_imports:
     - isort . --verbose --check-only --only-modified --diff
   allow_failure: true
 
-run_tests:
+test:run:
   stage: test
   script:
-    - tox -e py38,codecov
+    - tox -e py39,codecov
   needs:
-    - job: "CI image"
+    - job: "image:build"
       optional: true
   artifacts:
     when: always
@@ -82,7 +82,7 @@ run_tests:
     reports:
       junit: pytest_result.xml
 
-build_docs:
+doc:build:
   stage: doc
   image: sphinxdoc/sphinx:5.3.0
   before_script:
@@ -93,7 +93,7 @@ build_docs:
     paths:
       - doc/_build/html
   needs:
-    - job: "CI image"
+    - job: "image:build"
       optional: true
 
 pages:
@@ -104,8 +104,8 @@ pages:
     - mkdir public
     - cp -vr doc/_build/html/* public/
   dependencies:
-    - build_docs
-  needs: ["build_docs"]
+    - doc:build
+  needs: ["doc:build"]
   artifacts:
     paths:
       - public
