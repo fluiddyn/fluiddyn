@@ -7,8 +7,7 @@ other third-party packages, C compiler, MPI and NumPy configuration.
 Examples
 --------
 >>> fluidinfo  # print package, Python, software and hardware info
->>> fluidinfo -v  # also print basic Numpy info
->>> fluidinfo -vv  # also print detailed Numpy info
+>>> fluidinfo -v  # also print Numpy info
 >>> fluidinfo -s  # save all information into sys_info.xml
 >>> fluidinfo -o /tmp  # save all information into /tmp/sys_info.xml
 
@@ -30,26 +29,14 @@ from importlib import import_module as _import
 from pathlib import Path
 
 import numpy as np
-import numpy.__config__ as np_build_info
-import numpy.distutils.system_info as np_sys_info
 import psutil
 
+import distro
+
+
 # linux_distribution is deprecated and no longer exists in Python 3.8
-try:
-    # for 3.8, we use the package distro
-    import distro
-
-    def linux_distribution():
-        return (distro.name(), distro.version(), distro.codename())
-
-except ImportError:
-    # for < 3.8, it should work without distro
-    from platform import linux_distribution as _linux_dist
-
-    def linux_distribution():
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            return _linux_dist()
+def linux_distribution():
+    return (distro.name(), distro.version(), distro.codename())
 
 
 with warnings.catch_warnings():
@@ -197,46 +184,23 @@ def get_info_software():
     return info_sw
 
 
-def get_info_numpy(only_print=False, verbosity=None):
-    """Print or create a dictionary for numpy and linalg library information."""
-    libs = ["lapack_opt", "blas_opt"]
-    libs_sys = ["fftw"]
+def get_info_numpy():
+    """Create a dictionary for numpy and linalg library information."""
+    try:
+        return np.show_config("dicts")
+    except TypeError:
+        return {}
 
-    def rm_configtest():
-        if os.path.exists("_configtest.o.d"):
-            os.remove("_configtest.o.d")
 
-    def np_get_info():
-        with stdout_redirected():
-            np_sys_info_dict = OrderedDict(
-                (k, np_sys_info.get_info(k)) for k in libs + libs_sys
-            )
+def print_info_numpy(verbosity=None):
+    """Print information about Numpy"""
+    info_numpy = get_info_numpy()
+    if info_numpy:
+        _print_dict(info_numpy)
+        return
 
-            try:
-                get_build_info = np_build_info.get_info
-            except AttributeError:
-                get_build_info = np_build_info.CONFIG.get
-
-            np_build_info_dict = OrderedDict(
-                (k, get_build_info(k)) for k in libs
-            )
-
-        rm_configtest()
-        return np_sys_info_dict, np_build_info_dict
-
-    if only_print:
-        if verbosity == 1:
-            np_sys_info_dict, np_build_info_dict = np_get_info()
-
-            _print_dict(np_sys_info_dict, subheading="system")
-            _print_dict(np_build_info_dict, subheading="\nbuild")
-        elif verbosity == 2:
-            np_sys_info.show_all(argv=[])
-            np.show_config()
-            rm_configtest()
-    else:
-        np_sys_info_dict, np_build_info_dict = np_get_info()
-        return np_sys_info_dict, np_build_info_dict
+    # Numpy <1.25
+    np.show_config()
 
 
 def get_info_h5py():
@@ -320,8 +284,8 @@ def get_info_hardware():
                 ret.append(h)
             return ret
 
+    from .numpy_distutils_cpuinfo import cpu
     try:
-        from numpy.distutils.cpuinfo import cpu
 
         # Keys are specific to Linux distributions only
         info_hw = filter_modify_dict(
@@ -348,8 +312,8 @@ def get_info_hardware():
         info_hw["cpu_MHz_actual"] = []
         for d in cpu.info:
             info_hw["cpu_MHz_actual"].append(float(d["cpu MHz"]))
-    except KeyError as e:
-        print("KeyError with", e)
+    except KeyError as error:
+        print("KeyError with", error)
         info_hw = OrderedDict()
 
     hz_current, hz_min, hz_max = _cpu_freq()
@@ -502,7 +466,7 @@ def print_sys_info(verbosity=None):
     _print_dict(info_py, "Python")
     if verbosity is not None:
         _print_heading("\nNumPy", case=None)
-        get_info_numpy(True, verbosity)
+        print_info_numpy()
         info_h5py = get_info_h5py()
         _print_dict(info_h5py, "h5py", case=None)
 
@@ -530,12 +494,8 @@ def save_sys_info(path_dir=".", filename="sys_info.xml"):
     for pkg in pkgs_third_party:
         sys_info.python._set_child(pkg, pkgs_third_party[pkg])
 
-    sys_info.python.numpy._set_child("system")
-    sys_info.python.numpy._set_child("build")
-    for k, v in info_np[0].items():
-        sys_info.python.numpy.system._set_child(k, v)
-    for k, v in info_np[1].items():
-        sys_info.python.numpy.build._set_child(k, v)
+    for k, v in info_np.items():
+        sys_info.python.numpy._set_child(k, v)
 
     sys_info.python.h5py._set_child("config", info_h5py)
     path = os.path.join(path_dir, filename)
