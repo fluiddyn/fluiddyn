@@ -5,7 +5,7 @@
 groups = ["default", "dev", "doc", "fft", "full", "mpi", "sht", "test"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:2abc1612da02dfdbbd087b78845b8edefdbfacff2a90d6ec9a6b9800ffd7fdf3"
+content_hash = "sha256:9ebfcc3177d03ee0052db1881cd93ad497e17249b5a9abf0ef71c84db9130f97"
 
 [[package]]
 name = "alabaster"
@@ -1282,7 +1282,7 @@ files = [
 
 [[package]]
 name = "jupyter-server"
-version = "2.12.3"
+version = "2.12.4"
 requires_python = ">=3.8"
 summary = "The backend—i.e. core services, APIs, and REST endpoints—to Jupyter web applications."
 groups = ["doc"]
@@ -1308,8 +1308,8 @@ dependencies = [
     "websocket-client",
 ]
 files = [
-    {file = "jupyter_server-2.12.3-py3-none-any.whl", hash = "sha256:6f85310ea5e6068568a521f079fba99d8d17e4884dd1d602ab0f43b3115204a8"},
-    {file = "jupyter_server-2.12.3.tar.gz", hash = "sha256:a1d2d51e497b1a6256c48b6940b0dd49b2553981baf1690077c37792f1fa23a1"},
+    {file = "jupyter_server-2.12.4-py3-none-any.whl", hash = "sha256:a125ae18a60de568f78f55c84dd58759901a18ef279abf0418ac220653ca1320"},
+    {file = "jupyter_server-2.12.4.tar.gz", hash = "sha256:41f4a1e6b912cc24a7c6c694851b37d3d8412b180f43d72315fe422cb2b85cc2"},
 ]
 
 [[package]]
@@ -1756,7 +1756,7 @@ files = [
 
 [[package]]
 name = "nbconvert"
-version = "7.14.0"
+version = "7.14.1"
 requires_python = ">=3.8"
 summary = "Converting Jupyter Notebooks"
 groups = ["doc"]
@@ -1779,8 +1779,8 @@ dependencies = [
     "traitlets>=5.1",
 ]
 files = [
-    {file = "nbconvert-7.14.0-py3-none-any.whl", hash = "sha256:483dde47facdaa4875903d651305ad53cd76e2255ae3c61efe412a95f2d22a24"},
-    {file = "nbconvert-7.14.0.tar.gz", hash = "sha256:92b9a44b63e5a7fb4f6fa0ef41261e35c16925046ccd1c04a5c8099bf100476e"},
+    {file = "nbconvert-7.14.1-py3-none-any.whl", hash = "sha256:aa83e3dd27ea38d0c1d908e3ce9518d15fa908dd30521b6d5040bd23f33fffb0"},
+    {file = "nbconvert-7.14.1.tar.gz", hash = "sha256:20cba10e0448dc76b3bebfe1adf923663e3b98338daf77b97b42511ef5a88618"},
 ]
 
 [[package]]
@@ -2827,6 +2827,17 @@ groups = ["doc"]
 files = [
     {file = "Send2Trash-1.8.2-py3-none-any.whl", hash = "sha256:a384719d99c07ce1eefd6905d2decb6f8b7ed054025bb0e618919f945de4f679"},
     {file = "Send2Trash-1.8.2.tar.gz", hash = "sha256:c132d59fa44b9ca2b1699af5c86f57ce9f4c5eb56629d5d55fbb7a35f84e2312"},
+]
+
+[[package]]
+name = "setuptools"
+version = "69.0.3"
+requires_python = ">=3.8"
+summary = "Easily download, build, install, upgrade, and uninstall Python packages"
+groups = ["doc"]
+files = [
+    {file = "setuptools-69.0.3-py3-none-any.whl", hash = "sha256:385eb4edd9c9d5c17540511303e39a147ce2fc04bc55289c322b9e5904fe2c05"},
+    {file = "setuptools-69.0.3.tar.gz", hash = "sha256:be1af57fc409f93647f2e8e4573a142ed38724b8cdd389706a867bb4efcf1e78"},
 ]
 
 [[package]]

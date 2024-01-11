@@ -21,7 +21,6 @@ import re
 import sys
 import types
 import warnings
-
 from subprocess import getstatusoutput
 
 

@@ -28,10 +28,9 @@ from configparser import ConfigParser
 from importlib import import_module as _import
 from pathlib import Path
 
+import distro
 import numpy as np
 import psutil
-
-import distro
 
 
 # linux_distribution is deprecated and no longer exists in Python 3.8
@@ -285,8 +284,8 @@ def get_info_hardware():
             return ret
 
     from .numpy_distutils_cpuinfo import cpu
-    try:
 
+    try:
         # Keys are specific to Linux distributions only
         info_hw = filter_modify_dict(
             cpu.info[0],

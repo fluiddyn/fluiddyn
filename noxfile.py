@@ -1,5 +1,4 @@
 import os
-
 from pathlib import Path
 from shutil import rmtree
 
@@ -21,3 +20,11 @@ def test(session):
 
     command = "mpirun -np 2 --oversubscribe coverage run -p -m unittest discover fluiddyn.util.test -p test_mpi.py"
     session.run(*command.split(), external=True)
+
+
+@nox.session
+def doc(session):
+    session.run_always("pdm", "install", "-G", "doc", external=True)
+    session.chdir("doc")
+    session.run("make", "cleanall", external=True)
+    session.run("make", external=True)

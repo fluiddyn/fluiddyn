@@ -24,7 +24,7 @@ excludes people in socially marginalized groups.
 - Private harassment is also unacceptable. No matter who you are, if you feel
 you have been or are being harassed or made uncomfortable by a community
 member, please use the abuse report functionality or contact any of the
-[Fluiddyn moderation team](#fluiddyn-moderation-team) immediately. Whether
+[Fluiddyn moderation team](fluiddyn-moderation-team) immediately. Whether
 you're a regular contributor or a newcomer, we care about making this community
 a safe place for you and we've got your back.
 
@@ -35,7 +35,7 @@ behavior is not welcome.
 
 These are the policies for upholding our community's standards of conduct. If
 you feel that a thread needs moderation, please contact the [Fluiddyn
-moderation team](#fluiddyn-moderation-team).
+moderation team](fluiddyn-moderation-team).
 
 - Remarks that violate the Fluiddyn standards of conduct, including hateful, hurtful, oppressive, or exclusionary remarks, are not allowed. (Cursing is allowed, but never targeting another user, and never in a hateful manner.)
 
@@ -79,7 +79,9 @@ forgive as long as you earn their trust.
 
 Adapted from the Rust Code of Conduct.
 
-## [Fluiddyn moderation team](#fluiddyn-moderation-team)
+(fluiddyn-moderation-team)=
+
+## [Fluiddyn moderation team]
 
 - [Ashwin Vishnu Mohanan](https://fluid.quest/pages/contact.html)
 

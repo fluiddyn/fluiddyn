@@ -157,7 +157,7 @@ install scientific packages without conda, using pip.
 
 But without conda, one needs to get the non-python dependencies with the
 system package management tool, for example apt for Debian/Ubuntu, as
-shown [here](setup_ubuntu1804.md)
+shown [here](setup_ubuntu1804.rst)
 
 [conda-forge]: https://conda-forge.org/
 [miniforge]: https://github.com/conda-forge/miniforge
