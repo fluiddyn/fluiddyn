@@ -22,6 +22,10 @@ def test(session):
     command = "mpirun -np 2 --oversubscribe coverage run -p -m unittest discover fluiddyn.util.test -p test_mpi.py"
     session.run(*command.split(), external=True)
 
+    session.run("coverage", "combine")
+    session.run("coverage", "report")
+    session.run("coverage", "xml")
+
 
 @nox.session
 def doc(session):
