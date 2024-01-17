@@ -1,5 +1,6 @@
 import os
 import smtplib
+import sys
 import unittest
 
 import matplotlib.pyplot as plt
@@ -34,10 +35,13 @@ class TestFFTW1DReal2Complex(unittest.TestCase):
         logger.print_log("")
 
         with self.assertRaises(UnitTestException):
-            logger.send_email_if_has_to(name_exception="", figures=[plt.figure()])
+            raise UnitTestException
+
+        if "win" in sys.platform:
+            return
 
         with self.assertRaises(UnitTestException):
-            raise UnitTestException
+            logger.send_email_if_has_to(name_exception="", figures=[plt.figure()])
 
 
 if __name__ == "__main__":

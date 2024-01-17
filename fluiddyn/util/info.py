@@ -54,9 +54,12 @@ def safe_check_output(cmd, first_row_only=True):
     else:
         cmd = f'bash -c "{cmd}; exit 0"'
 
-    output = subprocess.check_output(
-        shlex.split(cmd), stderr=subprocess.STDOUT
-    ).decode("utf-8")
+    try:
+        output = subprocess.check_output(
+            shlex.split(cmd), stderr=subprocess.STDOUT
+        ).decode("utf-8")
+    except subprocess.CalledProcessError as error:
+        output = error.output
 
     if first_row_only and output != "":
         return output.splitlines()[0]
