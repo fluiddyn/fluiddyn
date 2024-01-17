@@ -96,6 +96,7 @@ doc = [
     "myst-nb",
     "sphinx-copybutton",
     "pyqt5",
+    "pyqt5-qt5==5.15.2",
     "towncrier",
     "scipy",
     "scikit-image",
