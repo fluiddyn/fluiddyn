@@ -2,7 +2,7 @@
 |logo|
 ======
 
-|release| |pyversions| |docs| |coverage| |heptapod_ci|
+|release| |pyversions| |docs| |coverage| |heptapod_ci| |github_actions|
 
 .. |logo| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.svg
    :alt: FluidDyn project and fluiddyn package
@@ -26,13 +26,9 @@
    :target: https://foss.heptapod.net/fluiddyn/fluiddyn/-/pipelines
    :alt: Heptapod CI
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/rxafwwpmxymki2u1/branch/default?svg=true
-   :target: https://ci.appveyor.com/project/fluiddyn/fluiddyn
-   :alt: AppVeyor status
-
-.. |binder| image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/fluiddyn/fluiddyn/branch%2Fdefault?urlpath=lab/tree/doc/ipynb
-   :alt: Binder notebook
+.. |github_actions| image:: https://github.com/fluiddyn/fluidsim/actions/workflows/ci-linux.yml/badge.svg?branch=branch/default
+   :target: https://github.com/fluiddyn/fluiddyn/actions/
+   :alt: Github Actions
 
 FluidDyn project is an ecosystem of packages for research and teaching in fluid
 dynamics. The Python package fluiddyn contains:
@@ -50,10 +46,6 @@ the FluidDyn project <https://foss.heptapod.net/fluiddyn>`_ (in particular in
 <http://fluidimage.readthedocs.io>`_).
 
 **Documentation**: `Read the Docs <https://fluiddyn.readthedocs.io>`_, `Heptapod Pages <https://fluiddyn.pages.heptapod.net/fluiddyn>`_
-
-Getting started
----------------
-To try fluiddyn without installation: |binder|
 
 Installation
 ------------
@@ -74,7 +66,7 @@ Requirements
 ------------
 
 +------------------------+-------------------------------------------------------------------------------+
-| **Minimum**            | Python (>=3.8), ``numpy matplotlib h5py psutil``                              |
+| **Minimum**            | Python (>=3.9), ``numpy matplotlib h5py psutil``                              |
 +------------------------+-------------------------------------------------------------------------------+
 | **Full functionality** | ``h5py h5netcdf pillow imageio mpi4py scipy pyfftw`` (requires FFTW library), |
 |                        | SHTns                                                                         |

@@ -25,14 +25,9 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-% towncrier release notes start
-
-\_Unreleased: <https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.2...branch%2Fdefault>
-
-
 ## [0.5.3] (unreleased)
 
-- Compatibility with Python 3.12 and requires Python >=3.8
+- Compatibility with Python 3.12 and requires Python >=3.9
 
 ## [0.5.2] (2022-03-07)
 
@@ -205,3 +200,5 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 [0.5.0]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.4.1...0.5.0
 [0.5.1]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.0...0.5.1
 [0.5.2]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.1...0.5.2
+[0.5.3]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.2...0.5.3
+[Unreleased]: <https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.3...branch%2Fdefault>
