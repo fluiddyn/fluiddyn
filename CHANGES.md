@@ -25,11 +25,11 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [0.5.3] (unreleased)
+## [0.5.3] (2024-01-17)
 
 - Compatibility with Python 3.12 and requires Python >=3.9
 
-## [0.5.2] (2022-03-07)
+## [0.5.2] (2023-03-07)
 
 - New argument `doc` for {func}`fluiddyn.util.paramcontainer.ParamContainer._set_child`.
 
