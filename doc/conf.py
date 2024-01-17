@@ -350,3 +350,18 @@ autodoc_default_options = {"show-inheritance": None}
 autodoc_member_order = "bysource"
 
 todo_include_todos = True
+
+myst_enable_extensions = [
+    "amsmath",
+    # "attrs_inline",
+    "colon_fence",
+    # "deflist",
+    "dollarmath",
+    # "fieldlist",
+    # "linkify",
+    # "replacements",
+    # "smartquotes",
+    # "strikethrough",
+    "substitution",
+    # "tasklist",
+]

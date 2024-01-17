@@ -1,26 +1,21 @@
-Introduction and motivations
-============================
+# Introduction and motivations
 
 The FluidDyn project first emerges from the work of Pierre Augier, a researcher
 in fluid dynamics strongly interesting by programming and open-source. Then,
-:doc:`other people <authors>` worked on this collaborative project. However,
+{doc}`other people <authors>` worked on this collaborative project. However,
 for this introduction, it is simpler for me (Pierre) to use I instead of we.
 These are my ideas and it is clearer that people can use and develop FluidDyn
 packages without sharing them.
 
-For a better and less personal presentation, one can read `our metapaper
-presenting the FluidDyn project and the fluiddyn package
-<http://www.legi.grenoble-inp.fr/people/Pierre.Augier/docs/fluiddyn_metapaper.pdf>`_
-(accepted by the `Journal of Open Research Software (JORS)
-<https://openresearchsoftware.metajnl.com/>`_).
+For a better and less personal presentation, one can read [our metapaper
+presenting the FluidDyn project and the fluiddyn package](http://www.legi.grenoble-inp.fr/people/Pierre.Augier/docs/fluiddyn_metapaper.pdf)
+(accepted by the [Journal of Open Research Software (JORS)](https://openresearchsoftware.metajnl.com/)).
 
 If you have any questions, comments or suggestions, please do not hesitate to
-`fill an issue in the main repository
-<https://foss.heptapod.net/fluiddyn/fluiddyn/issues>`_ or simply discuss with us on
-our `chat rooms <https://fluiddyn.slack.com>`_.
+[fill an issue in the main repository](https://foss.heptapod.net/fluiddyn/fluiddyn/issues) or simply discuss with us on
+our [chat rooms](https://fluiddyn.slack.com).
 
-How FluidDyn started
-^^^^^^^^^^^^^^^^^^^^
+## How FluidDyn started
 
 Now, I am a CNRS researcher at LEGI (UGA, CNRS, in Grenoble) but I started to
 work on FluidDyn when I was at KTH (Stockholm) and DAMTP (Cambridge).
@@ -28,27 +23,25 @@ work on FluidDyn when I was at KTH (Stockholm) and DAMTP (Cambridge).
 I did my PhD on stratified turbulence and instabilities at LadHyx (Paris).
 During my PhD years, I worked mainly with Bash, Fortran and Matlab. Some days
 after my PhD defense in 2011, I was introduced by a couple of geek friends to a
-funny programming language |:snake:| which could replace Matlab for what we did
+funny programming language 🐍 which could replace Matlab for what we did
 with it.
 
 I started to work with Python and to like it a lot. Python for sciences wasn't
 what it is today but it was in many aspects much nicer than the infernal trio
-Bash / Fortran / Matlab |:slight_smile:| (let's stress that Bash and
-Fortran are great tools!).
+Bash / Fortran / Matlab 😊 (let's stress that Bash and Fortran are great tools!).
 
 By using Python (and reading/watching stuffs), I started to learn a lot about
 programming, computers, software engineering and open-source. I also saw how
 other scientific communities were using Python and scientific open-source
 projects much more than in fluid dynamics, for example astrophysics (with in
-particular `Astropy <http://www.astropy.org/>`_).
+particular [Astropy](http://www.astropy.org/)).
 
 So I started to work on packages specialized for different aspects of my
 research (fluidlab, fluidimage, fluidfft, fluidsim, ...). We also needed one
 base package (called fluiddyn) to gather code useful for the specialized
 packages.
 
-Design Goals
-^^^^^^^^^^^^
+## Design Goals
 
 I work on the project FluidDyn first to have good tools for my research, where
 I mainly do laboratory experiments, image analysis and numerical simulations.
@@ -95,18 +88,13 @@ opportunity for science and fluid dynamics. FluidDyn is a tool to test this
 hypothesis and to increase equality, freedom and efficiency in fluid dynamics
 with open-source methods.
 
-Open-source
-^^^^^^^^^^^
+## Open-source
 
 FluidDyn is an open-source project. The package fluidyn is distributed under
-the CeCILL-B_ License, a BSD compatible french license done in particular by
-the `CNRS <http://www.cnrs.fr/>`_.
+the [CeCILL-B] License, a BSD compatible french license done in particular by
+the [CNRS](http://www.cnrs.fr/).
 
-.. _CeCILL-B: http://www.cecill.info/index.en.html
-
-
-Python programming language
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+## Python programming language
 
 FluidDyn is mostly a set of Python packages. They are written mostly in Python
 with also small bits of Cython, C and C++. Since it is still necessary to
@@ -138,55 +126,44 @@ list of some reasons for using this language in research.
 - **Large and professional community.**
 
 - **Easy to optimise**, in particular with profiling tools (cProfile,
-  pstats) and Python "compilers" like `Cython <http://cython.org/>`_ and
-  `Pythran <http://pythonhosted.org/pythran/>`_.
+  pstats) and Python "compilers" like [Cython](http://cython.org/) and
+  [Pythran](http://pythonhosted.org/pythran/).
 
 - **Easily extended with modules written in C, C++ or Fortran.**
 
-- **Easy to implement tests** (`unittest
-  <https://docs.python.org/3.4/library/unittest.html#module-unittest>`_).
+- **Easy to implement tests** ([unittest](https://docs.python.org/3.4/library/unittest.html#module-unittest)).
 
 - **Many scientific libraries and software**:
 
-  * `SciPy <http://www.scipy.org/>`_: fundamental library for scientific
+  - [SciPy](http://www.scipy.org/): fundamental library for scientific
     computing,
-
-  * NumPy: base N-dimensional array package,
-
-  * Matplotlib: comprehensive 2D Plotting,
-
-  * IPython: enhanced Interactive Console,
-
-  * Sympy: symbolic mathematics,
-
-  * Pandas: data structures & analysis,
-
-  * h5py: pythonic interface to the HDF5 binary data format.
-
-  * mpi4py: MPI for Python.
-
+  - NumPy: base N-dimensional array package,
+  - Matplotlib: comprehensive 2D Plotting,
+  - IPython: enhanced Interactive Console,
+  - Sympy: symbolic mathematics,
+  - Pandas: data structures & analysis,
+  - h5py: pythonic interface to the HDF5 binary data format.
+  - mpi4py: MPI for Python.
 
 If you use Matlab, these comparisons can be interesting:
 
-- http://www.pyzo.org/python_vs_matlab.html.
+- <http://www.pyzo.org/python_vs_matlab.html>.
+- <http://phillipmfeldman.org/Python/Advantages_of_Python_Over_Matlab.html>
 
-- http://phillipmfeldman.org/Python/Advantages_of_Python_Over_Matlab.html
-
-Documented and tested
-^^^^^^^^^^^^^^^^^^^^^
+## Documented and tested
 
 The FluidDyn project is a framework for developing research codes. It should
 show good practices and clean examples. It has also to be quite stable and
 sure. Therefore, a lot of effort is put in having unit tests and a quite good
 documentation with examples and tutorials.
 
-Why specialized in fluids?
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+## Why specialized in fluids?
 
 Many tasks that can be done using FluidDyn are not specific to fluid dynamics
 research. But it is simpler to write a more specific software so FluidDyn is
 first thought to be used specifically for fluid dynamics.
 
 There are other specific Python packages for other subjects, like astronomy
-(`Astropy <http://www.astropy.org/>`_) and biology (`Biopython
-<http://biopython.org>`_).
+([Astropy](http://www.astropy.org/)) and biology ([Biopython](http://biopython.org)).
+
+[cecill-b]: http://www.cecill.info/index.en.html

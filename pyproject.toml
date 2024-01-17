@@ -4,6 +4,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "fluiddyn"
+version = "0.5.1"
 description = "Framework for studying fluid dynamics."
 keywords = ["Fluid dynamics", "research"]
 license = {text = "CeCILL-B License"}
@@ -18,7 +19,6 @@ dependencies = [
     "distro",
     "qtpy",
 ]
-version = "0.5.1"
 readme = "README.rst"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -27,7 +27,6 @@ classifiers = [
     "License :: OSI Approved :: BSD License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -97,7 +96,6 @@ doc = [
     "myst-nb",
     "sphinx-copybutton",
     "pyqt5",
-    "pyqt5-qt5==5.15.2",
     "towncrier",
     "scipy",
     "scikit-image",

@@ -40,7 +40,6 @@ def linux_distribution():
 
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=ImportWarning)
-    from ..io.redirect_stdout import stdout_redirected
     from .paramcontainer import ParamContainer
     from .terminal_colors import cprint
 
