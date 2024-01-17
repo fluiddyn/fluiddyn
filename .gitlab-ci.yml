@@ -13,6 +13,9 @@ stages:
   - test
   - doc
   - deploy
+  - build
+  - release
+
 
 # Build an image for the above tasks; this should be a scheduled job, as
 # it is quite unnecessary to run on every invocation.
@@ -107,3 +110,38 @@ pages:
   artifacts:
     paths:
       - public
+
+
+build:package:
+  stage: build
+  before_script:
+    - pdm config cache_dir ${PDM_CACHE_DIR}
+  script:
+    - pdm build || pdm lock --group :all --refresh
+  needs: []
+  artifacts:
+    when: always
+    paths:
+      - pdm.lock
+      - dist
+    expire_in: 24 hrs
+  cache:
+    when: always
+    key: pdmcache-$CI_COMMIT_BRANCH
+    paths:
+      - ${PDM_CACHE_DIR}
+
+
+# manually set PDM_PUBLISH_PASSWORD in web interface to your pypi API token
+release:package:
+  stage: release
+  rules:
+    - if: '$CI_MERGE_REQUEST_ID'
+      when: never
+    - if: '$CI_COMMIT_TAG'
+      when: on_success
+  variables:
+    PDM_PUBLISH_USERNAME: __token__
+  script:
+    - pdm publish --no-build
+  needs: [ "build:package" ]
