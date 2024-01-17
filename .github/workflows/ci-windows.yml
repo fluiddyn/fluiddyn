@@ -23,4 +23,4 @@ jobs:
     - name: Tests
       run: |
         pixi run install-editable
-        pytest fluiddyn
+        pixi run pytest fluiddyn

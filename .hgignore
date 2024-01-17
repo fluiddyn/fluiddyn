@@ -5,6 +5,7 @@ syntax: glob
 *~
 *temp
 .venv
+.pixi
 
 *.swp
 *.swo
