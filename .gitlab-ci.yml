@@ -58,7 +58,7 @@ validate_style:
 validate_min_version:
   stage: lint
   script:
-    - vermin --no-parse-comments --lint --target=3.8 --no-tips  fluiddyn fluiddoc
+    - vermin --no-parse-comments --lint --target=3.9 --no-tips  fluiddyn fluiddoc
   allow_failure: true
 
 validate_imports:

@@ -15,10 +15,9 @@ import argparse
 import os
 import shutil
 import sys
+from importlib import resources
 from shlex import split
 from subprocess import call
-
-from importlib import resources
 
 from fluiddyn.io import Path
 
