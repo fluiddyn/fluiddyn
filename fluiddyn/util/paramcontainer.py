@@ -54,7 +54,7 @@ def _as_str(value):
 
 def _as_code(value):
     if isinstance(value, Path):
-        return f'Path("{str(value)}")'
+        return f'Path(r"{str(value)}")'
     elif isinstance(value, str):
         return f'"{value}"'
     else:
