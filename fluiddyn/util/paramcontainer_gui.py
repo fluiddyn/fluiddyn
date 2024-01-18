@@ -11,13 +11,13 @@ Provides:
 
 import os
 import subprocess
-import sys
 from copy import deepcopy
 
+# try to be able to import without Qt implementation
 try:
     from matplotlib.backends.qt_compat import QtCore, QtWidgets
 except ImportError:
-    if "sphinx" not in sys.modules:
+    if "GITLAB_CI" not in os.environ:
         raise
 else:
     try:
