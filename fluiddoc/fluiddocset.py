@@ -14,17 +14,18 @@ docsets.  Read more about generating docsets `here
 import argparse
 import os
 import shutil
+import sys
 from shlex import split
 from subprocess import call
 
-from pkg_resources import resource_filename
+from importlib import resources
 
-from fluiddyn.io import Path, stdout_redirected
+from fluiddyn.io import Path
 
 try:
     from doc2dash.__main__ import main as doc2dash
 except ModuleNotFoundError:
-    print("Install doc2dash to use this tool.")
+    doc2dash = False
 
 try:
     from click.testing import CliRunner
@@ -33,8 +34,7 @@ except ModuleNotFoundError:
 
 
 def check_sphinx_build(pkg_name, verbose, theme, regenerate=True):
-    """Check if Sphinx docs has been built. If not build and return path to
-    generated html.
+    """Check if Sphinx docs has been built. Return path to generated html.
 
     Parameters
     ----------
@@ -43,10 +43,16 @@ def check_sphinx_build(pkg_name, verbose, theme, regenerate=True):
 
     Returns
     -------
-    str
+    str, str
 
     """
-    doc_src = Path(resource_filename(pkg_name, "/")).parent / "doc"
+
+    path_package = Path(resources.files(pkg_name))
+    path_root = path_package.parent
+    if path_root.name == "src":
+        path_root = path_root.parent
+
+    doc_src = path_root / "doc"
     doc_build = doc_src / "_build" / "html"
     if not doc_build.exists() or regenerate:
         print("Generating Sphinx documentation ...")
@@ -80,6 +86,13 @@ def doc_to_docsets(pkg_name, verbose, archive, theme):
         To make an archive or install locally.
 
     """
+    if not doc2dash:
+        print(
+            "Cannot produce docsets: first install "
+            "https://github.com/hynek/doc2dash to use this tool."
+        )
+        sys.exit(1)
+
     if archive:
         doc_dest = os.getcwd()
     else:
@@ -101,6 +114,7 @@ def doc_to_docsets(pkg_name, verbose, archive, theme):
     cmd += str(doc_build)
     print(cmd)
     cmd = split(cmd)
+
     # FIXME: with stdout_redirected(not verbose):
     result = runner.invoke(doc2dash, args=cmd[1:])
 
