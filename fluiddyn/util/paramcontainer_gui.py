@@ -13,30 +13,37 @@ import os
 import subprocess
 from copy import deepcopy
 
-from matplotlib.backends.qt_compat import QtCore, QtWidgets
+# try to be able to import without Qt implementation
+try:
+    from matplotlib.backends.qt_compat import QtCore, QtWidgets
+except ImportError:
+    if "GITLAB_CI" not in os.environ:
+        raise
+else:
+    try:
+        _fromUtf8 = QtCore.QString.fromUtf8
+    except AttributeError:
+
+        def _fromUtf8(s):
+            return s
+
+    try:
+        _encoding = QtWidgets.QApplication.UnicodeUTF8
+
+    except AttributeError:
+
+        def _translate(context, text, disambig):
+            return QtWidgets.QApplication.translate(context, text, disambig)
+
+    else:
+
+        def _translate(context, text, disambig):
+            return QtWidgets.QApplication.translate(
+                context, text, disambig, _encoding
+            )
+
 
 from fluiddyn.util import time_as_str
-
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-
-    def _fromUtf8(s):
-        return s
-
-
-try:
-    _encoding = QtWidgets.QApplication.UnicodeUTF8
-
-    def _translate(context, text, disambig):
-        return QtWidgets.QApplication.translate(
-            context, text, disambig, _encoding
-        )
-
-except AttributeError:
-
-    def _translate(context, text, disambig):
-        return QtWidgets.QApplication.translate(context, text, disambig)
 
 
 class QtParamContainer:
