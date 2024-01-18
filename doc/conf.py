@@ -351,6 +351,10 @@ autodoc_member_order = "bysource"
 
 todo_include_todos = True
 
+nb_execution_raise_on_error = True
+nb_execution_show_tb = True
+nb_merge_streams = True
+
 myst_enable_extensions = [
     "amsmath",
     # "attrs_inline",
