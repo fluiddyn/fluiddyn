@@ -365,3 +365,5 @@ myst_enable_extensions = [
     "substitution",
     # "tasklist",
 ]
+
+suppress_warnings = ["mystnb.unknown_mime_type"]

@@ -20,7 +20,7 @@ IPYTHON_NOTEBOOKS = $(wildcard ipynb/*.ipynb)
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext
 
 html:
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
+	$(SPHINXBUILD) -W -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished.\nfile://"$(shell pwd)"/_build/html/index.html"
 
