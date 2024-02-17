@@ -108,6 +108,12 @@ doc = [
     "sphinxcontrib-mermaid",
 ]
 
+[tool.pdm.scripts]
+black = "black fluiddyn fluiddoc doc"
+isort = "isort -rc --atomic -tc fluiddyn fluiddoc doc/examples"
+black_check = "black --check fluiddyn fluiddoc doc"
+
+
 [tool.coverage.run]
 source = ["./fluiddyn"]
 data_file = ".coverage/coverage"
