@@ -7,23 +7,22 @@ Changelog](https://keepachangelog.com/en/1.0.0/), and this project
 adheres to [Semantic
 Versioning](https://semver.org/spec/v2.0.0.html).
 
-% Type of changes
-
-% ---------------
+% Type of changes:
 
 % Added      Added for new features.
-
 % Changed    Changed for changes in existing functionality.
-
 % Deprecated Deprecated for soon-to-be removed features.
-
 % Removed    Removed for now removed features.
-
 % Fixed      Fixed for any bug fixes.
-
 % Security   Security in case of vulnerabilities.
 
-## [Unreleased]
+See also the
+[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.3...branch%2Fdefault).
+
+## [0.5.4] (2023-02-17)
+
+- Fix `util/serieofarrays.py` for multiprocessing on Windows
+- Less verbose check about Qt
 
 ## [0.5.3] (2024-01-17)
 
@@ -201,4 +200,4 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 [0.5.1]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.0...0.5.1
 [0.5.2]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.1...0.5.2
 [0.5.3]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.2...0.5.3
-[Unreleased]: <https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.3...branch%2Fdefault>
+[0.5.4]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.3...0.5.4
