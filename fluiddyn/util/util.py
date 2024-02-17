@@ -4,7 +4,6 @@ Toolkit (:mod:`fluiddyn.util.util`)
 
 """
 
-
 import contextlib
 import datetime
 import glob

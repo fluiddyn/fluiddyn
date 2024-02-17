@@ -4,7 +4,6 @@ Daemons (:mod:`fluiddyn.util.daemons`)
 
 """
 
-
 from multiprocessing import Process, Value
 from threading import Thread
 

@@ -14,7 +14,6 @@ Provides:
 .. autofunction:: count_number_jobs
 """
 
-
 import datetime
 import os
 import stat

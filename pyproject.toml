@@ -110,7 +110,7 @@ doc = [
 
 [tool.pdm.scripts]
 black = "black fluiddyn fluiddoc doc"
-isort = "isort -rc --atomic -tc fluiddyn fluiddoc doc/examples"
+isort = "isort --atomic --tc fluiddyn fluiddoc doc/examples"
 black_check = "black --check fluiddyn fluiddoc doc"
 
 

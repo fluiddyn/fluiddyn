@@ -7,7 +7,6 @@ and np.savetxt...
 
 """
 
-
 import os
 
 import numpy as np

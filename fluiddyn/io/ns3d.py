@@ -11,7 +11,6 @@ Provides the classes :class:`NS3DFieldFile`.
 
 """
 
-
 import sys
 
 import numpy as np

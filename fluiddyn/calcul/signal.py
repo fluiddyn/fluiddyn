@@ -4,7 +4,6 @@ Simple operations on signals (:mod:`fluiddyn.calcul.signal`)
 
 """
 
-
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import ndimage

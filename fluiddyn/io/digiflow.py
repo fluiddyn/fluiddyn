@@ -14,7 +14,6 @@ Provides the classes :class:`DigiflowImage` and :class:`DigiflowMovie`.
 
 """
 
-
 import matplotlib.pyplot as plt
 import numpy as np
 
