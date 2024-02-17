@@ -13,7 +13,6 @@ This module requires the C library shtns. To install it, run something like::
 
 """
 
-
 import sys
 from time import time
 
@@ -673,10 +672,7 @@ class EasySHT:
             array_desh = self.create_array_sh(0.0, float)
             COND = self.l2_idx > 0
             array_desh[COND] = (
-                self.radius**2
-                / self.l2_idx[COND]
-                * abs(field_lm[COND]) ** 2
-                / 2
+                self.radius**2 / self.l2_idx[COND] * abs(field_lm[COND]) ** 2 / 2
             )
         else:
             raise ValueError("key_field is not correct")
@@ -729,9 +725,7 @@ class EasySHT:
 
         array_desh2 = self.create_array_sh(0.0, float)
         COND = self.l2_idx > 0
-        array_desh2[COND] = (
-            self.radius**2 / self.l2_idx[COND] * array_desh[COND]
-        )
+        array_desh2[COND] = self.radius**2 / self.l2_idx[COND] * array_desh[COND]
 
         for ilm in range(self.nlm):
             cospectrum[self.l_idx[ilm]] += array_desh2[ilm]
@@ -749,9 +743,7 @@ class EasySHT:
 
         array_desh2 = self.create_array_sh(0.0, float)
         COND = self.l2_idx > 0
-        array_desh2[COND] = (
-            self.radius**2 / self.l2_idx[COND] * array_desh[COND]
-        )
+        array_desh2[COND] = self.radius**2 / self.l2_idx[COND] * array_desh[COND]
 
         for ilm in range(self.nlm):
             cospectrum[self.l_idx[ilm]] += array_desh2[ilm]

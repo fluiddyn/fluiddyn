@@ -26,7 +26,6 @@ files.
 
 """
 
-
 import os
 from ast import literal_eval
 from glob import glob

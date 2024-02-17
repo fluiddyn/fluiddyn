@@ -3,7 +3,6 @@
 
 """
 
-
 import os
 
 from . import get_index_closing_parenthesis

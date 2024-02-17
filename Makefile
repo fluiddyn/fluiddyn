@@ -14,10 +14,10 @@ clean: clean_pyc
 format: black isort
 
 black:
-	black fluiddyn fluiddoc doc
+	pdm black
 
 isort:
-	isort .
+	pdm isort
 
 tests:
 	pytest

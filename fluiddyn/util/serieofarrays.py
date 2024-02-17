@@ -38,9 +38,9 @@ API:
 import itertools
 import os
 from copy import copy, deepcopy
+from functools import partial
 from glob import escape, glob
 from math import ceil, log10
-from functools import partial
 
 from fluiddyn.io import Path
 from fluiddyn.io.image import extensions_movies, imread

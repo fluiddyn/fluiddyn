@@ -11,7 +11,6 @@ Many more simple transformations can be implemented, for example:
 
 """
 
-
 import os
 
 from . import cleanmat

@@ -10,6 +10,7 @@ Provides:
 High Performance Computing (HPC) centre.
 
 """
+
 from sys import version_info as version
 
 from fluiddyn.clusters.oar import ClusterOAR

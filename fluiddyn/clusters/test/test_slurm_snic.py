@@ -3,6 +3,7 @@ Test SLURM and SNIC clusters
 ============================
 
 """
+
 import os
 import unittest
 from shutil import rmtree

@@ -52,11 +52,11 @@ image:build:
       --cleanup
       --destination registry.heptapod.net:443/fluiddyn/fluiddyn/ci/$CI_COMMIT_HG_BRANCH:stable
 
+
 validate_style:
   stage: lint
   script:
     - black --diff --check fluiddyn fluiddoc
-  allow_failure: true
 
 validate_min_version:
   stage: lint
@@ -68,7 +68,7 @@ validate_imports:
   stage: lint
   script:
     - isort . --verbose --check-only --only-modified --diff
-  allow_failure: true
+
 
 test:run:
   stage: test

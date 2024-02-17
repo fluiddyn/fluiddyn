@@ -11,7 +11,6 @@ IO for HDF5 files (:mod:`fluiddyn.io.hdf5`)
 
 """
 
-
 import numbers
 
 import h5py
