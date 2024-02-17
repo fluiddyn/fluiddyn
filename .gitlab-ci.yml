@@ -16,6 +16,9 @@ stages:
   - build
   - release
 
+variables:
+  PDM_CACHE_DIR: ${CI_PROJECT_DIR}/.pdm-cache
+
 
 # Build an image for the above tasks; this should be a scheduled job, as
 # it is quite unnecessary to run on every invocation.
