@@ -40,6 +40,7 @@ import os
 from copy import copy, deepcopy
 from glob import escape, glob
 from math import ceil, log10
+from functools import partial
 
 from fluiddyn.io import Path
 from fluiddyn.io.image import extensions_movies, imread
@@ -256,9 +257,9 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 names = []
             else:
                 self._nb_arrays_file = {}
-                self._nb_arrays_file[
-                    paths[0]
-                ] = self.nb_arrays_in_one_file = get_nb_arrays_in_file(paths[0])
+                self._nb_arrays_file[paths[0]] = self.nb_arrays_in_one_file = (
+                    get_nb_arrays_in_file(paths[0])
+                )
 
                 self._format_index = (
                     "[{"
@@ -623,6 +624,25 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return len(self.get_name_files())
 
 
+def indslices_from_indserie_for_partial(str_ranges, i):
+    indslices = []
+    for str_range in str_ranges:
+        indslice = []
+        indslices.append(indslice)
+        for ii, s in enumerate(str_range.split(":")):
+            if s == "":
+                if ii == 0:
+                    indslice.append(0)
+                elif ii == 1:
+                    indslice.append(None)
+                elif ii > 2:
+                    raise ValueError
+
+            else:
+                indslice.append(eval(s, {"i": i}))
+    return indslices
+
+
 class SeriesOfArrays:
     """Series of arrays.
 
@@ -667,24 +687,9 @@ class SeriesOfArrays:
 
         if isinstance(indslices_from_indserie, str):
             str_ranges = indslices_from_indserie.split(",")
-
-            def indslices_from_indserie(i):
-                indslices = []
-                for str_range in str_ranges:
-                    indslice = []
-                    indslices.append(indslice)
-                    for ii, s in enumerate(str_range.split(":")):
-                        if s == "":
-                            if ii == 0:
-                                indslice.append(0)
-                            elif ii == 1:
-                                indslice.append(None)
-                            elif ii > 2:
-                                raise ValueError
-
-                        else:
-                            indslice.append(eval(s, {"i": i}))
-                return indslices
+            indslices_from_indserie = partial(
+                indslices_from_indserie_for_partial, str_ranges
+            )
 
         if indslices_from_indserie(0) == indslices_from_indserie(1):
             raise ValueError(

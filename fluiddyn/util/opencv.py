@@ -23,6 +23,7 @@ if not is_conda and not os.environ.get(
                 "from qtpy import QtWidgets; QtWidgets.QApplication([])",
             ],
             check=True,
+            capture_output=True,
         )
     except subprocess.CalledProcessError:
         pass
