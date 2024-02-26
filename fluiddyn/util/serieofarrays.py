@@ -1,24 +1,8 @@
 """
-Serie of arrays (:mod:`fluidsim.util.serieofarrays`)
-====================================================
+Serie of arrays
+===============
 
-Provides classes to iterate over files.
-
-Example::
-
-  serie = SerieOfArraysFromFiles(path)
-
-  def indslices_from_indserie(iserie):
-      indslices = copy(serie._index_slices_all_files)
-      indslices[0] = [iserie, iserie+1, 1]
-      return indslices
-
-  series = SeriesOfArrays(serie, indslices_from_indserie)
-
-  for serie in series:
-      print([name for name in serie])
-
-API:
+Provides classes to iterate over numbered files in a directory:
 
 .. autoclass:: SerieOfArrays
    :members:
@@ -32,7 +16,6 @@ API:
    :members:
    :private-members:
 
-
 """
 
 import itertools
@@ -42,10 +25,10 @@ from functools import partial
 from glob import escape, glob
 from math import ceil, log10
 
+from simpleeval import simple_eval
+
 from fluiddyn.io import Path
 from fluiddyn.io.image import extensions_movies, imread
-
-# import re
 
 try:
     import pims
@@ -65,14 +48,14 @@ def compute_slices(str_slice):
 
     for part in parts:
         try:
-            index = eval(part)
+            index = simple_eval(part)
         except SyntaxError:
             parts_slice = []
             for p in part.split(":"):
                 if p.strip() == "":
                     parts_slice.append(None)
                 else:
-                    parts_slice.append(eval(p))
+                    parts_slice.append(simple_eval(p))
 
             slices.append(slice(*parts_slice))
         else:
@@ -639,7 +622,7 @@ def indslices_from_indserie_for_partial(str_ranges, i):
                     raise ValueError
 
             else:
-                indslice.append(eval(s, {"i": i}))
+                indslice.append(simple_eval(s, names={"i": i}))
     return indslices
 
 

@@ -5,7 +5,7 @@
 groups = ["default", "dev", "doc", "fft", "full", "mpi", "sht", "test"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:9ebfcc3177d03ee0052db1881cd93ad497e17249b5a9abf0ef71c84db9130f97"
+content_hash = "sha256:5982e42aa93130aeb7299db7fbaeb9a356a5c24033520c91dd4b95520a497cc6"
 
 [[package]]
 name = "alabaster"
@@ -2903,6 +2903,16 @@ dependencies = [
 ]
 files = [
     {file = "shtns-3.6.2.tar.gz", hash = "sha256:e42ec178d4b9fb4f0daa081c3fdcf6f970d974829b98bb6569a51be5b9a9c805"},
+]
+
+[[package]]
+name = "simpleeval"
+version = "0.9.13"
+summary = "A simple, safe single expression evaluator library."
+groups = ["default"]
+files = [
+    {file = "simpleeval-0.9.13-py2.py3-none-any.whl", hash = "sha256:22a2701a5006e4188d125d34accf2405c2c37c93f6b346f2484b6422415ae54a"},
+    {file = "simpleeval-0.9.13.tar.gz", hash = "sha256:4a30f9cc01825fe4c719c785e3762623e350c4840d5e6855c2a8496baaa65fac"},
 ]
 
 [[package]]
