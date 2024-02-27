@@ -12,7 +12,7 @@ def create_image(path):
     im.close()
 
 
-shape2d = (6, 2)
+shape2d = (8, 2)
 shape1d = (8,)
 
 
@@ -33,6 +33,13 @@ def path_dir_images_1d(tmp_path_factory):
     return tmp_path
 
 
+def _check_get_indices_from_index(serie):
+    tuple_indices = tuple(serie.iter_indices())
+    for idx in range(len(serie)):
+        indices = serie.get_indices_from_index(idx)
+        assert indices == tuple_indices[idx]
+
+
 def test_serie_2d(path_dir_images_2d):
     path_dir = path_dir_images_2d
 
@@ -40,12 +47,21 @@ def test_serie_2d(path_dir_images_2d):
     serie.get_path_arrays()
     serie.get_name_path_arrays()
     serie.check_all_arrays_exist()
+    _check_get_indices_from_index(serie)
 
     serie = SerieOfArraysFromFiles(path_dir, "1:1+3:2, 1")
     assert len(serie.get_name_files()) == 2
 
+    _check_get_indices_from_index(serie)
 
-def test_series_2d(path_dir_images_2d):
+    indices = serie.get_indices_from_index(1)
+    name = serie.compute_name_from_indices(*indices)
+    assert name == "file3_1.png"
+
+    serie.get_array_from_index(0)
+
+
+def test_series_2d_pair_i0(path_dir_images_2d):
     path_dir = path_dir_images_2d
     series = SeriesOfArrays(
         path_dir, "i:i+3:2, 1", ind_start=0, ind_stop=None, ind_step=2
@@ -55,8 +71,8 @@ def test_series_2d(path_dir_images_2d):
         path_dir, "i:i+3:2, 1", ind_start=0, ind_stop=8, ind_step=2
     )
 
-    assert len(series) == 3
-    assert series.ind_stop == 5
+    assert len(series) == 4
+    assert series.ind_stop == 7
     series.get_next_serie()
     series.get_name_all_files()
     series.get_name_all_arrays()
@@ -71,6 +87,8 @@ def test_series_2d(path_dir_images_2d):
     serie.get_path_all_files()
     serie.get_path_files()
 
+    _check_get_indices_from_index(serie)
+
     for path in serie.iter_path_files():
         pass
 
@@ -80,6 +98,22 @@ def test_series_2d(path_dir_images_2d):
     serie.set_index_slices(0, 1)
 
 
+def test_series_2d_pair_i1(path_dir_images_2d):
+    path_dir = path_dir_images_2d
+    series = SeriesOfArrays(path_dir, "i, :")
+
+    assert len(series) == 8
+    assert series.ind_stop == 8
+    series.get_next_serie()
+    series.get_name_all_files()
+    series.get_name_all_arrays()
+
+    serie = series.get_serie_from_index(0)
+    serie.get_arrays()
+    serie.get_array_from_index(0)
+    _check_get_indices_from_index(serie)
+
+
 def test_serie_1d(path_dir_images_1d):
     path_dir = path_dir_images_1d
 
@@ -87,7 +121,7 @@ def test_serie_1d(path_dir_images_1d):
     serie.get_path_arrays()
     serie.get_name_path_arrays()
     serie.check_all_arrays_exist()
-
+    _check_get_indices_from_index(serie)
     assert len(serie) == shape1d[0]
 
 
