@@ -92,10 +92,10 @@ def test_series_2d_pair_i0(path_dir_images_2d):
     for path in serie.iter_path_files():
         pass
 
-    serie.get_index_slices_all_files()
-    serie.get_index_slices()
+    serie.get_slicing_tuples_all_files()
+    serie.get_slicing_tuples()
     serie.get_nb_files()
-    serie.set_index_slices(0, 1)
+    serie.set_slicing_tuples(0, 1)
 
 
 def test_series_2d_pair_i1(path_dir_images_2d):
