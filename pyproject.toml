@@ -186,3 +186,6 @@ atomic = true
 known_first_party = ["fluiddyn", "fluiddoc"]
 multi_line_output = 3
 skip_glob = [".pixi/*"]
+
+[tool.pytest]
+pdbcls = "IPython.terminal.debugger:TerminalPdb"

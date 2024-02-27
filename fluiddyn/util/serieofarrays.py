@@ -21,7 +21,6 @@ Provides classes to iterate over numbered files in a directory:
 import itertools
 import os
 from copy import copy, deepcopy
-from functools import partial
 from glob import escape, glob
 from math import ceil, log10
 
@@ -39,6 +38,9 @@ except ImportError:
 def get_nb_arrays_in_file(fname):
     with pims.open(fname) as images:
         return images.len()
+
+
+MAX_SEARCH_INDEX_START = 100000
 
 
 def compute_slices(str_slices):
@@ -272,12 +274,19 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 tuple([min(tmp[i_ind]), max(tmp[i_ind]) + 1, 1])
             )
 
+        self._slicing_input = slicing
         if isinstance(slicing, str):
             self.set_slicing_tuples_from_str(slicing)
         elif slicing is None:
             self._slicing_tuples = copy(self._slicing_tuples_all_files)
         else:
             self.set_slicing_tuples(*slicing)
+
+    def __repr__(self):
+        result = f"{type(self).__name__}('{self.path_dir}'"
+        if self._slicing_input is not None:
+            result += ", {self._slicing_input}"
+        return result + f", slicing_tuples={self._slicing_tuples})"
 
     def set_slicing_tuples_from_str(self, str_slices):
         """Set slicing_tuples from a string."""
@@ -685,7 +694,35 @@ class SeriesOfArrays:
         else:
             raise ValueError("serie should be a str or a SerieOfArraysFromFiles.")
 
-        if slicing_tuples_from_indserie is None:
+        if slicing_tuples_from_indserie == "pairs":
+            if serie.nb_indices == 1:
+                indices0, = serie.get_tuples_indices()
+                slicing0, = serie.get_slicing_tuples()
+                slicing_tuples_from_indserie = (
+                    f"i+{slicing0[0]}:i+{slicing0[0]+2}"
+                )
+            elif serie.nb_indices == 2:
+                indices0, indices1 = serie.get_tuples_indices()
+                slicing0, slicing1 = serie.get_slicing_tuples()
+                print(f"{serie.get_tuples_indices() = }")
+                if len(indices1) == 2:
+                    slicing_tuples_from_indserie = (
+                        f"i+{slicing0[0]}, {slicing1[0]}:{slicing1[1]}"
+                    )
+                elif len(indices0) == 2:
+                    slicing_tuples_from_indserie = (
+                        f"{slicing0[0]}:{slicing0[1]}, i+{slicing1[0]}"
+                    )
+                    print(slicing_tuples_from_indserie)
+                else:
+                    raise ValueError(
+                        f"Do not know how to form pairs with serie {serie}"
+                    )
+
+        elif slicing_tuples_from_indserie == "all1by1":
+            raise NotImplementedError
+
+        elif slicing_tuples_from_indserie is None:
             slicing_tuples_from_indserie = "i:i+1"
             for i in range(serie.nb_indices - 1):
                 slicing_tuples_from_indserie += ",:"
@@ -707,11 +744,15 @@ class SeriesOfArrays:
             ind_start = 0
             while not self.check_all_arrays_serie_exist(ind_start):
                 ind_start += 1
+                if ind_start > MAX_SEARCH_INDEX_START:
+                    raise RuntimeError(
+                        "Maximum iteration reached for search of ind_start."
+                    )
 
         if ind_stop is None:
             iserie = ind_start
             while self.check_all_arrays_serie_exist(iserie):
-                iserie += ind_step
+                iserie += 1
             iserie -= 1
         else:
             if len(range(ind_start, ind_stop, ind_step)) == 0:
@@ -751,6 +792,10 @@ class SeriesOfArrays:
                 f"slicing_tuples_from_indserie='{slicing_tuples_from_indserie_input}', "
                 f"{ind_start=}, {ind_stop=}, {ind_step=}."
             )
+
+    def __repr__(self):
+        result = f"{type(self).__name__}('{self.serie}'"
+        return result + ")"
 
     def check_all_arrays_serie_exist(self, index_serie):
         self.serie.set_slicing_tuples(

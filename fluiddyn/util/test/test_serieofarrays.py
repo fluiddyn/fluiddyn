@@ -12,24 +12,42 @@ def create_image(path):
     im.close()
 
 
-shape2d = (8, 2)
 shape1d = (8,)
-
-
-@pytest.fixture(scope="session")
-def path_dir_images_2d(tmp_path_factory):
-    tmp_path = tmp_path_factory.mktemp("dir_images_2d")
-    for i in range(shape2d[0]):
-        for j in range(shape2d[1]):
-            create_image(tmp_path / f"file{i}_{j}.png")
-    return tmp_path
+shape2d = (8, 2)
 
 
 @pytest.fixture(scope="session")
 def path_dir_images_1d(tmp_path_factory):
     tmp_path = tmp_path_factory.mktemp("dir_images_1d")
-    for i in range(shape1d[0]):
-        create_image(tmp_path / f"file{i}.png")
+    for idx in range(shape1d[0]):
+        create_image(tmp_path / f"file{idx}.png")
+    return tmp_path
+
+
+@pytest.fixture(scope="session")
+def path_dir_images_2d(tmp_path_factory):
+    tmp_path = tmp_path_factory.mktemp("dir_images_2d")
+    for idx in range(shape2d[0]):
+        for j in range(shape2d[1]):
+            create_image(tmp_path / f"file{idx}_{j}.png")
+    return tmp_path
+
+
+@pytest.fixture(scope="session")
+def path_dir_images_2d_jet(tmp_path_factory):
+    tmp_path = tmp_path_factory.mktemp("dir_images_2d_jet")
+    for idx in range(60, 62):
+        for letter in "ab":
+            create_image(tmp_path / f"c{idx:03d}{letter}.png")
+    return tmp_path
+
+
+@pytest.fixture(scope="session")
+def path_dir_images_2d_pairs_first_index(tmp_path_factory):
+    tmp_path = tmp_path_factory.mktemp("dir_images_2d_pairs_first_index")
+    for i0 in (1, 2):
+        for i1 in range(1, 9):
+            create_image(tmp_path / f"c_{i0}_{i1}.png")
     return tmp_path
 
 
@@ -38,6 +56,37 @@ def _check_get_indices_from_index(serie):
     for idx in range(len(serie)):
         indices = serie.get_indices_from_index(idx)
         assert indices == tuple_indices[idx]
+
+
+def test_serie_1d(path_dir_images_1d):
+    path_dir = path_dir_images_1d
+
+    serie = SerieOfArraysFromFiles(path_dir, ":")
+    serie.get_path_arrays()
+    serie.get_name_path_arrays()
+    serie.check_all_arrays_exist()
+    repr(serie)
+    _check_get_indices_from_index(serie)
+    assert len(serie) == shape1d[0]
+
+
+def test_series_1d(path_dir_images_1d):
+    path_dir = path_dir_images_1d
+
+    series = SeriesOfArrays(
+        path_dir, "i:i+3", ind_start=0, ind_stop=None, ind_step=2
+    )
+
+    assert len(series) == 3
+    assert series.ind_stop == 6
+    series.get_next_serie()
+    series.get_name_all_files()
+    series.get_name_all_arrays()
+    repr(series)
+
+    series = SeriesOfArrays(path_dir, "pairs")
+    assert len(series) == 7
+    assert series.ind_stop == 7
 
 
 def test_serie_2d(path_dir_images_2d):
@@ -114,26 +163,22 @@ def test_series_2d_pair_i1(path_dir_images_2d):
     _check_get_indices_from_index(serie)
 
 
-def test_serie_1d(path_dir_images_1d):
-    path_dir = path_dir_images_1d
+def test_series_jet(path_dir_images_2d_jet):
 
-    serie = SerieOfArraysFromFiles(path_dir, ":")
-    serie.get_path_arrays()
-    serie.get_name_path_arrays()
-    serie.check_all_arrays_exist()
-    _check_get_indices_from_index(serie)
-    assert len(serie) == shape1d[0]
+    path_dir = path_dir_images_2d_jet
+    series = SeriesOfArrays(path_dir, "pairs")
+    assert len(series) == 2
+    serie = series.get_serie_from_index(0)
+    assert len(serie) == 2
+
+    # series = SeriesOfArrays(path_dir, "all1by1")
 
 
-def test_series_1d(path_dir_images_1d):
-    path_dir = path_dir_images_1d
+def test_series_pairs_first_index(path_dir_images_2d_pairs_first_index):
 
-    series = SeriesOfArrays(
-        path_dir, "i:i+3:2", ind_start=0, ind_stop=None, ind_step=2
-    )
+    path_dir = path_dir_images_2d_pairs_first_index
 
-    assert len(series) == 3
-    assert series.ind_stop == 6
-    series.get_next_serie()
-    series.get_name_all_files()
-    series.get_name_all_arrays()
+    series = SeriesOfArrays(path_dir, "pairs")
+    assert len(series) == 8
+    serie = series.get_serie_from_index(0)
+    assert len(serie) == 2
