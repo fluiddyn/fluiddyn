@@ -625,23 +625,28 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return len(self.get_name_files())
 
 
-def indslices_from_indserie_for_partial(str_ranges, i):
-    indslices = []
-    for str_range in str_ranges:
-        indslice = []
-        indslices.append(indslice)
-        for ii, s in enumerate(str_range.split(":")):
-            if s.strip() == "":
-                if ii == 0:
-                    indslice.append(0)
-                elif ii == 1:
-                    indslice.append(None)
-                elif ii > 2:
-                    raise ValueError
+class SlicingTuplesFromIndexSerie:
+    def __init__(self, str_slices):
+        self.str_ranges = [s.strip() for s in str_slices.split(",")]
 
-            else:
-                indslice.append(simple_eval(s, names={"i": i}))
-    return indslices
+    def __call__(self, index):
+        slicing_tuples = []
+        for str_range in self.str_ranges:
+            indslice = []
+            slicing_tuples.append(indslice)
+            for ii, s in enumerate(str_range.split(":")):
+                if s.strip() == "":
+                    if ii == 0:
+                        indslice.append(0)
+                    elif ii == 1:
+                        indslice.append(None)
+                    elif ii > 2:
+                        raise ValueError
+
+                else:
+                    print(f"{s = }")
+                    indslice.append(simple_eval(s, names={"i": index}))
+        return slicing_tuples
 
 
 class SeriesOfArrays:
@@ -655,7 +660,7 @@ class SeriesOfArrays:
 
     serie: SerieOfArrays or str
 
-    indslices_from_indserie: str or function
+    slicing_tuples_from_indserie: str or function
 
       The function has to take an integer and to return an iterable of
       "slicing tuples" used to compute a file name.
@@ -665,13 +670,13 @@ class SeriesOfArrays:
     def __init__(
         self,
         serie,
-        indslices_from_indserie,
+        slicing_tuples_from_indserie,
         ind_start=0,
         ind_stop=None,
         ind_step=1,
     ):
         serie0 = serie
-        indslices_from_indserie0 = indslices_from_indserie
+        slicing_tuples_from_indserie0 = slicing_tuples_from_indserie
 
         if isinstance(serie, (str, Path)):
             serie = str(serie)
@@ -681,31 +686,32 @@ class SeriesOfArrays:
         else:
             raise ValueError("serie should be a str or a SerieOfArraysFromFiles.")
 
-        if indslices_from_indserie is None:
-            indslices_from_indserie = "i:i+1"
+        if slicing_tuples_from_indserie is None:
+            slicing_tuples_from_indserie = "i:i+1"
             for i in range(serie.nb_indices - 1):
-                indslices_from_indserie += ",:"
+                slicing_tuples_from_indserie += ",:"
 
-        if isinstance(indslices_from_indserie, str):
-            str_ranges = indslices_from_indserie.split(",")
-            indslices_from_indserie = partial(
-                indslices_from_indserie_for_partial, str_ranges
+        if isinstance(slicing_tuples_from_indserie, str):
+            slicing_tuples_from_indserie = SlicingTuplesFromIndexSerie(
+                slicing_tuples_from_indserie
             )
 
-        if indslices_from_indserie(0) == indslices_from_indserie(1):
+        if slicing_tuples_from_indserie(0) == slicing_tuples_from_indserie(1):
             raise ValueError(
-                "It seems that the function indslices_from_indserie "
+                "It seems that the function slicing_tuples_from_indserie "
                 "does not depend on the index."
             )
 
-        self.indslices_from_indserie = indslices_from_indserie
+        self.slicing_tuples_from_indserie = slicing_tuples_from_indserie
 
         if ind_stop is None:
             iserie = ind_start - ind_step
             cond = True
             while cond:
                 iserie += ind_step
-                serie.set_slicing_tuples(*self.indslices_from_indserie(iserie))
+                serie.set_slicing_tuples(
+                    *self.slicing_tuples_from_indserie(iserie)
+                )
                 cond = serie.check_all_arrays_exist()
             iserie -= 1
         else:
@@ -713,7 +719,9 @@ class SeriesOfArrays:
                 raise ValueError("len(range(ind_start, ind_stop, ind_step)) == 0")
 
             for iserie in range(ind_start, ind_stop, ind_step):
-                serie.set_slicing_tuples(*self.indslices_from_indserie(iserie))
+                serie.set_slicing_tuples(
+                    *self.slicing_tuples_from_indserie(iserie)
+                )
                 if not serie.check_all_arrays_exist():
                     break
 
@@ -725,7 +733,7 @@ class SeriesOfArrays:
         self.ind_stop = ind_stop
         self.ind_step = ind_step
 
-        serie.set_slicing_tuples(*self.indslices_from_indserie(self.iserie))
+        serie.set_slicing_tuples(*self.slicing_tuples_from_indserie(self.iserie))
         _print_warning = False
         if not serie.check_all_arrays_exist():
             _print_warning = True
@@ -743,7 +751,7 @@ class SeriesOfArrays:
 
         if _print_warning:
             print(
-                f"serie='{serie0}',\nindslices_from_indserie={indslices_from_indserie0}, "
+                f"serie='{serie0}',\nslicing_tuples_from_indserie={slicing_tuples_from_indserie0}, "
                 f"{ind_start=}, {ind_stop=}, {ind_step=}."
             )
 
@@ -756,7 +764,9 @@ class SeriesOfArrays:
             )
 
         for iserie in index_series:
-            self.serie.set_slicing_tuples(*self.indslices_from_indserie(iserie))
+            self.serie.set_slicing_tuples(
+                *self.slicing_tuples_from_indserie(iserie)
+            )
             yield self.serie
 
     def items(self):
@@ -768,7 +778,9 @@ class SeriesOfArrays:
             )
 
         for iserie in index_series:
-            self.serie.set_slicing_tuples(*self.indslices_from_indserie(iserie))
+            self.serie.set_slicing_tuples(
+                *self.slicing_tuples_from_indserie(iserie)
+            )
             yield iserie, self.serie
 
     def __len__(self):
@@ -789,14 +801,14 @@ class SeriesOfArrays:
         """Get the next serie."""
         if self.iserie < self.ind_stop:
             self.serie.set_slicing_tuples(
-                *self.indslices_from_indserie(self.iserie)
+                *self.slicing_tuples_from_indserie(self.iserie)
             )
             self.iserie += 1
             return self.serie
 
     def get_serie_from_index(self, index):
         """Get a serie from an index."""
-        self.serie.set_slicing_tuples(*self.indslices_from_indserie(index))
+        self.serie.set_slicing_tuples(*self.slicing_tuples_from_indserie(index))
         return self.serie
 
     def get_name_all_files(self):
