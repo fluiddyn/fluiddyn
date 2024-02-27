@@ -41,10 +41,10 @@ def get_nb_arrays_in_file(fname):
         return images.len()
 
 
-def compute_slices(str_slice):
+def compute_slices(str_slices):
     """Return a tuple of slices"""
     slices = []
-    parts = str_slice.split(",")
+    parts = str_slices.split(",")
 
     for part in parts:
         try:
@@ -161,7 +161,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
     """
 
-    def __init__(self, path, slicing_tuples=None):
+    def __init__(self, path, slicing=None):
         super().__init__(path)
 
         self.base_name = "".join(
@@ -272,12 +272,12 @@ class SerieOfArraysFromFiles(SerieOfArrays):
                 tuple([min(tmp[i_ind]), max(tmp[i_ind]) + 1, 1])
             )
 
-        if isinstance(slicing_tuples, str):
-            self.set_slicing_tuples_from_str(slicing_tuples)
-        elif slicing_tuples is None:
+        if isinstance(slicing, str):
+            self.set_slicing_tuples_from_str(slicing)
+        elif slicing is None:
             self._slicing_tuples = copy(self._slicing_tuples_all_files)
         else:
-            self.set_slicing_tuples(*slicing_tuples)
+            self.set_slicing_tuples(*slicing)
 
     def set_slicing_tuples_from_str(self, str_slices):
         """Set slicing_tuples from a string."""
@@ -644,7 +644,6 @@ class SlicingTuplesFromIndexSerie:
                         raise ValueError
 
                 else:
-                    print(f"{s = }")
                     indslice.append(simple_eval(s, names={"i": index}))
         return slicing_tuples
 
@@ -671,12 +670,12 @@ class SeriesOfArrays:
         self,
         serie,
         slicing_tuples_from_indserie,
-        ind_start=0,
+        ind_start="first",
         ind_stop=None,
         ind_step=1,
     ):
-        serie0 = serie
-        slicing_tuples_from_indserie0 = slicing_tuples_from_indserie
+        serie_input = serie
+        slicing_tuples_from_indserie_input = slicing_tuples_from_indserie
 
         if isinstance(serie, (str, Path)):
             serie = str(serie)
@@ -704,25 +703,22 @@ class SeriesOfArrays:
 
         self.slicing_tuples_from_indserie = slicing_tuples_from_indserie
 
+        if ind_start == "first":
+            ind_start = 0
+            while not self.check_all_arrays_serie_exist(ind_start):
+                ind_start += 1
+
         if ind_stop is None:
-            iserie = ind_start - ind_step
-            cond = True
-            while cond:
+            iserie = ind_start
+            while self.check_all_arrays_serie_exist(iserie):
                 iserie += ind_step
-                serie.set_slicing_tuples(
-                    *self.slicing_tuples_from_indserie(iserie)
-                )
-                cond = serie.check_all_arrays_exist()
             iserie -= 1
         else:
             if len(range(ind_start, ind_stop, ind_step)) == 0:
                 raise ValueError("len(range(ind_start, ind_stop, ind_step)) == 0")
 
             for iserie in range(ind_start, ind_stop, ind_step):
-                serie.set_slicing_tuples(
-                    *self.slicing_tuples_from_indserie(iserie)
-                )
-                if not serie.check_all_arrays_exist():
+                if not self.check_all_arrays_serie_exist(iserie):
                     break
 
         ind_stop = iserie + 1
@@ -751,9 +747,16 @@ class SeriesOfArrays:
 
         if _print_warning:
             print(
-                f"serie='{serie0}',\nslicing_tuples_from_indserie={slicing_tuples_from_indserie0}, "
+                f"serie='{serie_input}',\n"
+                f"slicing_tuples_from_indserie='{slicing_tuples_from_indserie_input}', "
                 f"{ind_start=}, {ind_stop=}, {ind_step=}."
             )
+
+    def check_all_arrays_serie_exist(self, index_serie):
+        self.serie.set_slicing_tuples(
+            *self.slicing_tuples_from_indserie(index_serie)
+        )
+        return self.serie.check_all_arrays_exist()
 
     def __iter__(self):
         if hasattr(self, "index_series"):
