@@ -189,6 +189,14 @@ def test_series_jet(path_dir_images_2d_jet):
     check_all1by1(path_dir, 4)
 
 
+def test_series_jet_bug(path_dir_images_2d_jet):
+    path_dir = path_dir_images_2d_jet
+    series = SeriesOfArrays(path_dir, ":,i")
+    assert len(series) == 2
+    serie = series.get_serie_from_index(0)
+    assert len(serie) == 2
+
+
 def test_series_pairs_first_index(path_dir_images_2d_pairs_first_index):
 
     path_dir = path_dir_images_2d_pairs_first_index

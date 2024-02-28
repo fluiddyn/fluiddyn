@@ -635,23 +635,23 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
 
 class SlicingTuplesFromIndexSerie:
-    def __init__(self, str_slices):
+    def __init__(self, str_slices, serie):
         self.str_ranges = [s.strip() for s in str_slices.split(",")]
+        self.starts = [s[0] for s in serie.get_slicing_tuples()]
 
     def __call__(self, index):
         slicing_tuples = []
-        for str_range in self.str_ranges:
+        for idim, str_range in enumerate(self.str_ranges):
             indslice = []
             slicing_tuples.append(indslice)
             for ii, s in enumerate(str_range.split(":")):
                 if s.strip() == "":
                     if ii == 0:
-                        indslice.append(0)
+                        indslice.append(self.starts[idim])
                     elif ii == 1:
                         indslice.append(None)
                     elif ii > 2:
                         raise ValueError
-
                 else:
                     indslice.append(simple_eval(s, names={"i": index}))
         return slicing_tuples
@@ -709,8 +709,8 @@ class SeriesOfArrays:
 
         if isinstance(serie, (str, Path)):
             serie = str(serie)
-            serie = SerieOfArraysFromFiles(serie)
-        if isinstance(serie, SerieOfArraysFromFiles):
+            self.serie = serie = SerieOfArraysFromFiles(serie)
+        elif isinstance(serie, SerieOfArraysFromFiles):
             self.serie = serie = deepcopy(serie)
         else:
             raise ValueError("serie should be a str or a SerieOfArraysFromFiles.")
@@ -756,7 +756,7 @@ class SeriesOfArrays:
 
         if isinstance(slicing_tuples_from_indserie, str):
             slicing_tuples_from_indserie = SlicingTuplesFromIndexSerie(
-                slicing_tuples_from_indserie
+                slicing_tuples_from_indserie, serie
             )
 
         if slicing_tuples_from_indserie(0) == slicing_tuples_from_indserie(1):
