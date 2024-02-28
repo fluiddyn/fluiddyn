@@ -58,6 +58,17 @@ def _check_get_indices_from_index(serie):
         assert indices == tuple_indices[idx]
 
 
+def check_all1by1(path_dir, size):
+    series = SeriesOfArrays(path_dir, "all1by1")
+    assert len(series) == size
+    serie = series.get_serie_from_index(0)
+
+    for index, serie in series.items():
+        assert len(serie) == 1
+
+    assert index == size - 1
+
+
 def test_serie_1d(path_dir_images_1d):
     path_dir = path_dir_images_1d
 
@@ -87,6 +98,8 @@ def test_series_1d(path_dir_images_1d):
     series = SeriesOfArrays(path_dir, "pairs")
     assert len(series) == 7
     assert series.ind_stop == 7
+
+    check_all1by1(path_dir, shape1d[0])
 
 
 def test_serie_2d(path_dir_images_2d):
@@ -146,6 +159,8 @@ def test_series_2d_pair_i0(path_dir_images_2d):
     serie.get_nb_files()
     serie.set_slicing_tuples(0, 1)
 
+    check_all1by1(path_dir, shape2d[0] * shape2d[1])
+
 
 def test_series_2d_pair_i1(path_dir_images_2d):
     path_dir = path_dir_images_2d
@@ -171,7 +186,7 @@ def test_series_jet(path_dir_images_2d_jet):
     serie = series.get_serie_from_index(0)
     assert len(serie) == 2
 
-    # series = SeriesOfArrays(path_dir, "all1by1")
+    check_all1by1(path_dir, 4)
 
 
 def test_series_pairs_first_index(path_dir_images_2d_pairs_first_index):
@@ -182,3 +197,5 @@ def test_series_pairs_first_index(path_dir_images_2d_pairs_first_index):
     assert len(series) == 8
     serie = series.get_serie_from_index(0)
     assert len(serie) == 2
+
+    check_all1by1(path_dir, 16)

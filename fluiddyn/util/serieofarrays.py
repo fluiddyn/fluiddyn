@@ -657,6 +657,27 @@ class SlicingTuplesFromIndexSerie:
         return slicing_tuples
 
 
+class OutOfRangeError(IndexError):
+    """Specific IndexError"""
+
+
+class SlicingTuplesFromIndexSerieAll1By1:
+    def __init__(self, serie):
+        slicing_tuples = serie._slicing_tuples
+        self.n0, self.n1 = [len(range(*_slice)) for _slice in slicing_tuples]
+        self.range0 = range(*slicing_tuples[0])
+        self.range1 = range(*slicing_tuples[1])
+
+    def __call__(self, index):
+        try:
+            i0 = self.range0[index // self.n1]
+        except IndexError as error:
+            raise OutOfRangeError from error
+
+        i1 = self.range1[index % self.n1]
+        return [(i0, i0 + 1), (i1, i1 + 1)]
+
+
 class SeriesOfArrays:
     """Series of arrays.
 
@@ -696,31 +717,37 @@ class SeriesOfArrays:
 
         if slicing_tuples_from_indserie == "pairs":
             if serie.nb_indices == 1:
-                indices0, = serie.get_tuples_indices()
-                slicing0, = serie.get_slicing_tuples()
-                slicing_tuples_from_indserie = (
-                    f"i+{slicing0[0]}:i+{slicing0[0]+2}"
-                )
+                (s0,) = serie.get_slicing_tuples()
+                slicing_tuples_from_indserie = f"i+{s0[0]}:i+{s0[0]+2}"
             elif serie.nb_indices == 2:
                 indices0, indices1 = serie.get_tuples_indices()
-                slicing0, slicing1 = serie.get_slicing_tuples()
+                s0, s1 = serie.get_slicing_tuples()
                 print(f"{serie.get_tuples_indices() = }")
                 if len(indices1) == 2:
-                    slicing_tuples_from_indserie = (
-                        f"i+{slicing0[0]}, {slicing1[0]}:{slicing1[1]}"
-                    )
+                    slicing_tuples_from_indserie = f"i+{s0[0]}, {s1[0]}:{s1[1]}"
                 elif len(indices0) == 2:
-                    slicing_tuples_from_indserie = (
-                        f"{slicing0[0]}:{slicing0[1]}, i+{slicing1[0]}"
-                    )
-                    print(slicing_tuples_from_indserie)
+                    slicing_tuples_from_indserie = f"{s0[0]}:{s0[1]}, i+{s1[0]}"
                 else:
                     raise ValueError(
                         f"Do not know how to form pairs with serie {serie}"
                     )
+            else:
+                raise ValueError(
+                    "slicing_tuples_from_indserie=='pairs' and nb_indices>2"
+                )
 
         elif slicing_tuples_from_indserie == "all1by1":
-            raise NotImplementedError
+            if serie.nb_indices == 1:
+                (s0,) = serie.get_slicing_tuples()
+                slicing_tuples_from_indserie = f"i+{s0[0]}:i+{s0[0]+1}"
+            elif serie.nb_indices == 2:
+                slicing_tuples_from_indserie = SlicingTuplesFromIndexSerieAll1By1(
+                    serie
+                )
+            else:
+                raise ValueError(
+                    "slicing_tuples_from_indserie=='all1by1' and nb_indices>2"
+                )
 
         elif slicing_tuples_from_indserie is None:
             slicing_tuples_from_indserie = "i:i+1"
@@ -798,9 +825,11 @@ class SeriesOfArrays:
         return result + ")"
 
     def check_all_arrays_serie_exist(self, index_serie):
-        self.serie.set_slicing_tuples(
-            *self.slicing_tuples_from_indserie(index_serie)
-        )
+        try:
+            slicing_tuples = self.slicing_tuples_from_indserie(index_serie)
+        except OutOfRangeError:
+            return False
+        self.serie.set_slicing_tuples(*slicing_tuples)
         return self.serie.check_all_arrays_exist()
 
     def __iter__(self):
