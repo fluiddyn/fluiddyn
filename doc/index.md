@@ -60,7 +60,7 @@ journal = {Journal of Open Research Software}
 :maxdepth: 2
 
 install
-ipynb/overview
+tutorials/overview
 tutorials
 ```
 
