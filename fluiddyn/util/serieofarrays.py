@@ -20,7 +20,9 @@ Provides classes to iterate over numbered files in a directory:
 
 import itertools
 import os
+import warnings
 from copy import copy, deepcopy
+from functools import wraps
 from glob import escape, glob
 from math import ceil, log10
 
@@ -632,6 +634,30 @@ class SerieOfArraysFromFiles(SerieOfArrays):
     def get_nb_files(self):
         """Get the number of files of the serie."""
         return len(self.get_name_files())
+
+
+def add_depreciated_function(cls, name):
+    """Add a depreciated function like get_index_slices"""
+    assert "index_slices" in name
+    new_name = name.replace("index_slices", "slicing_tuples")
+    message = f"Call to deprecated function {name}. Use {new_name} instead."
+    new_func = getattr(cls, new_name)
+
+    @wraps(new_func)
+    def _new_func(*args, **kwargs):
+        warnings.warn(message, category=DeprecationWarning, stacklevel=2)
+        return new_func(*args, **kwargs)
+
+    setattr(cls, name, _new_func)
+
+
+for name in [
+    "get_index_slices",
+    "get_index_slices_all_files",
+    "set_index_slices",
+    "set_index_slices_from_str",
+]:
+    add_depreciated_function(SerieOfArraysFromFiles, name)
 
 
 class SlicingTuplesFromIndexSerie:
