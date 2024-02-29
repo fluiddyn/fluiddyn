@@ -26,6 +26,7 @@ pulp = ">=2.8.0"
 tomli = ">=2.0.1"
 imageio = ">=2.33.1"
 ipython = ">=8.20.0"
+simpleeval = ">=0.9.13"
 
 [host-dependencies]
 python = ">=3.9"
