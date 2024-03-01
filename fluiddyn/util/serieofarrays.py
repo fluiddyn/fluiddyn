@@ -748,7 +748,6 @@ class SeriesOfArrays:
             elif serie.nb_indices == 2:
                 indices0, indices1 = serie.get_tuples_indices()
                 s0, s1 = serie.get_slicing_tuples()
-                print(f"{serie.get_tuples_indices() = }")
                 if len(indices1) == 2:
                     slicing_tuples_from_indserie = f"i+{s0[0]}, {s1[0]}:{s1[1]}"
                 elif len(indices0) == 2:
@@ -847,8 +846,7 @@ class SeriesOfArrays:
             )
 
     def __repr__(self):
-        result = f"{type(self).__name__}('{self.serie}'"
-        return result + ")"
+        return f"{type(self).__name__}({self.serie})"
 
     def check_all_arrays_serie_exist(self, index_serie):
         try:
