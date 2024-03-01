@@ -290,6 +290,12 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             result += ", {self._slicing_input}"
         return result + f", slicing_tuples={self._slicing_tuples})"
 
+    def get_separator_base_index(self):
+        return self._separator_base_index
+
+    def get_index_separators(self):
+        return self._index_separators
+
     def set_slicing_tuples_from_str(self, str_slices):
         """Set slicing_tuples from a string."""
         slices = compute_slices(str_slices)
@@ -443,12 +449,12 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
     def iter_name_files(self):
         """Iterator on the file names."""
-        names = []
+        names = set()
         for name in self.iter_name_arrays():
             if name.endswith("]"):
                 name = name.split("[")[0]
                 if name not in names:
-                    names.append(name)
+                    names.add(name)
                     yield name
             else:
                 yield name
@@ -470,7 +476,30 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         for name in self.iter_name_arrays():
             yield self.get_array_from_name(name)
 
-    def _compute_strindices_from_indices(self, *indices):
+    def get_tuple_array_name_from_index(self, index: int = 0):
+        """Get an array and its name"""
+        indices = self.get_indices_from_index(index)
+        name = self.compute_name_from_indices(*indices)
+        return self.get_array_from_name(name), name
+
+    def get_str_for_name_from_idim_idx(self, idim, idx):
+        if self._from_movies and idim == self.nb_indices - 1:
+            return str(idx)
+
+        if self._index_types[idim] == "digit":
+            code_format = "{:0" + str(self._index_lens[idim]) + "d}"
+            str_index = code_format.format(idx)
+        elif self._index_types[idim] == "alpha":
+            if idx > 25:
+                raise ValueError('"alpha" index larger than 25.')
+
+            str_index = chr(ord("a") + idx)
+        else:
+            raise ValueError('The type should be "digit" or "alpha".')
+
+        return str_index
+
+    def compute_str_indices_from_indices(self, *indices):
         """Compute the string corresponding to the indices.
 
         Parameters
@@ -487,19 +516,11 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             raise ValueError("nb_indices != self.nb_indices")
 
         str_indices = ""
-        for i in range(nb_indices):
-            if self._index_types[i] == "digit":
-                code_format = "{:0" + str(self._index_lens[i]) + "d}"
-                str_index = code_format.format(indices[i])
-            elif self._index_types[i] == "alpha":
-                if indices[i] > 25:
-                    raise ValueError('"alpha" index larger than 25.')
-
-                str_index = chr(ord("a") + indices[i])
-            else:
-                raise Exception('The type should be "digit" or "alpha".')
-
-            str_indices += str_index + self._index_separators[i]
+        for idim in range(nb_indices):
+            str_indices += (
+                self.get_str_for_name_from_idim_idx(idim, indices[idim])
+                + self._index_separators[idim]
+            )
         return str_indices
 
     def compute_name_from_indices(self, *indices):
@@ -513,7 +534,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         name = (
             self.base_name
             + self._separator_base_index
-            + self._compute_strindices_from_indices(*indices)
+            + self.compute_str_indices_from_indices(*indices)
         )
         if self.extension_file != "":
             name += "." + self.extension_file
@@ -554,7 +575,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             elif self._index_types[i_ind] == "alpha":
                 test_type = str.isalpha
             else:
-                raise Exception('The type should be "digit" or "alpha".')
+                raise ValueError('The type should be "digit" or "alpha".')
 
             index = "".join(itertools.takewhile(test_type, remains))
             remains = remains[len(index) :]
@@ -725,7 +746,7 @@ class SeriesOfArrays:
     def __init__(
         self,
         serie,
-        slicing_tuples_from_indserie,
+        slicing_tuples_from_indserie=None,
         ind_start="first",
         ind_stop=None,
         ind_step=1,
@@ -857,28 +878,24 @@ class SeriesOfArrays:
         return self.serie.check_all_arrays_exist()
 
     def __iter__(self):
-        if hasattr(self, "index_series"):
-            index_series = self.index_series
-        else:
-            index_series = list(
-                range(self.ind_start, self.ind_stop, self.ind_step)
+        if not hasattr(self, "index_series"):
+            self.index_series = range(
+                self.ind_start, self.ind_stop, self.ind_step
             )
 
-        for iserie in index_series:
+        for iserie in self.index_series:
             self.serie.set_slicing_tuples(
                 *self.slicing_tuples_from_indserie(iserie)
             )
             yield self.serie
 
     def items(self):
-        if hasattr(self, "index_series"):
-            index_series = self.index_series
-        else:
-            index_series = list(
-                range(self.ind_start, self.ind_stop, self.ind_step)
+        if not hasattr(self, "index_series"):
+            self.index_series = range(
+                self.ind_start, self.ind_stop, self.ind_step
             )
 
-        for iserie in index_series:
+        for iserie in self.index_series:
             self.serie.set_slicing_tuples(
                 *self.slicing_tuples_from_indserie(iserie)
             )

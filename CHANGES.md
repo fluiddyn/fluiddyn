@@ -29,6 +29,11 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 - {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_slicing_tuples_all_files`
 - {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.set_slicing_tuples`
 - {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.set_slicing_tuples_from_str`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_separator_base_index`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_index_separators`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_tuple_array_name_from_index`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_str_for_name_from_idim_idx`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.compute_str_indices_from_indices`
 
 ### Changed
 

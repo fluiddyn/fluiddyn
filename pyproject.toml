@@ -131,6 +131,7 @@ omit = ["*/test*.py"]
 show_missing = true
 exclude_lines = [
     "raise ValueError",
+    "raise RuntimeError",
     "if __name__ == '__main__':",
 ]
 

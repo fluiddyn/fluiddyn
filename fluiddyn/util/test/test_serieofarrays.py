@@ -4,9 +4,11 @@ from PIL import Image
 
 from fluiddyn.util.serieofarrays import SerieOfArraysFromFiles, SeriesOfArrays
 
+shape_image = (8, 8)
+
 
 def create_image(path):
-    im = Image.fromarray(np.ones((8, 8), dtype=np.int32))
+    im = Image.fromarray(np.ones(shape_image, dtype=np.uint16))
     im.save(path)
     im.close()
 
@@ -78,6 +80,16 @@ def test_serie_1d(path_dir_images_1d):
     repr(serie)
     _check_get_indices_from_index(serie)
     assert len(serie) == shape1d[0]
+    assert serie.get_nb_arrays() == shape1d[0]
+
+    assert serie.get_separator_base_index() == ""
+    assert serie.get_index_separators() == [""]
+
+    arr, name = serie.get_tuple_array_name_from_index(1)
+    assert np.allclose(arr, np.ones(shape_image, dtype=np.uint16))
+    assert name == "file1.png"
+
+    assert serie.get_str_for_name_from_idim_idx(0, 1) == "1"
 
 
 def test_series_1d(path_dir_images_1d):
@@ -100,6 +112,15 @@ def test_series_1d(path_dir_images_1d):
 
     check_all1by1(path_dir, shape1d[0])
 
+    series = SeriesOfArrays(
+        series.serie, "i:i+3", ind_start=0, ind_stop=None, ind_step=2
+    )
+    assert len(series) == 3
+    assert series.ind_stop == 6
+
+    series = SeriesOfArrays(series.serie)
+    series.set_index_series(range(2))
+
 
 def test_serie_2d(path_dir_images_2d):
     path_dir = path_dir_images_2d
@@ -120,6 +141,15 @@ def test_serie_2d(path_dir_images_2d):
     assert name == "file3_1.png"
 
     serie.get_array_from_index(0)
+
+    assert serie.get_separator_base_index() == ""
+    assert serie.get_index_separators() == ["_", ""]
+
+    arr, name = serie.get_tuple_array_name_from_index(1)
+    assert np.allclose(arr, np.ones(shape_image, dtype=np.uint16))
+    assert name == "file3_1.png"
+
+    assert serie.get_str_for_name_from_idim_idx(0, 1) == "1"
 
 
 def test_series_2d_pair_i0(path_dir_images_2d):
@@ -159,6 +189,8 @@ def test_series_2d_pair_i0(path_dir_images_2d):
     serie.set_slicing_tuples(0, 1)
 
     check_all1by1(path_dir, shape2d[0] * shape2d[1])
+
+    series = SeriesOfArrays(series.serie)
 
 
 def test_series_2d_pair_i1(path_dir_images_2d):
