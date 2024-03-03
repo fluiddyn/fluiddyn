@@ -1,6 +1,6 @@
 
 develop:
-	pip install -v -e .[dev] | grep -v link
+	pdm install
 
 help:
 	@echo "targets: develop, clean_so and tests"

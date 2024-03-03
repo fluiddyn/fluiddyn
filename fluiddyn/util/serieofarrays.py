@@ -1,24 +1,8 @@
 """
-Serie of arrays (:mod:`fluidsim.util.serieofarrays`)
-====================================================
+Serie of arrays
+===============
 
-Provides classes to iterate over files.
-
-Example::
-
-  serie = SerieOfArraysFromFiles(path)
-
-  def indslices_from_indserie(iserie):
-      indslices = copy(serie._index_slices_all_files)
-      indslices[0] = [iserie, iserie+1, 1]
-      return indslices
-
-  series = SeriesOfArrays(serie, indslices_from_indserie)
-
-  for serie in series:
-      print([name for name in serie])
-
-API:
+Provides classes to iterate over numbered files in a directory:
 
 .. autoclass:: SerieOfArrays
    :members:
@@ -32,20 +16,20 @@ API:
    :members:
    :private-members:
 
-
 """
 
 import itertools
 import os
+import warnings
 from copy import copy, deepcopy
-from functools import partial
+from functools import wraps
 from glob import escape, glob
 from math import ceil, log10
 
+from simpleeval import simple_eval
+
 from fluiddyn.io import Path
 from fluiddyn.io.image import extensions_movies, imread
-
-# import re
 
 try:
     import pims
@@ -58,21 +42,24 @@ def get_nb_arrays_in_file(fname):
         return images.len()
 
 
-def compute_slices(str_slice):
+MAX_SEARCH_INDEX_START = 100000
+
+
+def compute_slices(str_slices):
     """Return a tuple of slices"""
     slices = []
-    parts = str_slice.split(",")
+    parts = str_slices.split(",")
 
     for part in parts:
         try:
-            index = eval(part)
+            index = simple_eval(part)
         except SyntaxError:
             parts_slice = []
             for p in part.split(":"):
                 if p.strip() == "":
                     parts_slice.append(None)
                 else:
-                    parts_slice.append(eval(p))
+                    parts_slice.append(simple_eval(p))
 
             slices.append(slice(*parts_slice))
         else:
@@ -151,7 +138,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
     path : str
         The path of the base directory or of a file example.
 
-    index_slices : None or iterable of iterables or str
+    slicing_tuples : None or iterable of iterables or str
 
         Iterable of slides (start, stop, step).
 
@@ -163,7 +150,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
     path_dir : str
         The path of the base directory.
 
-    index_slices : list of list
+    slicing_tuples : list of list
         Lists of slides "[start, stop, step]" (one for each index).
         This list can be changed to loop over different sets of files.
 
@@ -173,12 +160,12 @@ class SerieOfArraysFromFiles(SerieOfArrays):
     An instance of SerieOfArraysFromFiles is an iterable and provides
     other iterables.
 
-    Use the function :func:`set_index_slices` to specify the files
+    Use the function :func:`set_slicing_tuples` to specify the files
     over which iterate.
 
     """
 
-    def __init__(self, path, index_slices=None, str_slices=None):
+    def __init__(self, path, slicing=None):
         super().__init__(path)
 
         self.base_name = "".join(
@@ -215,9 +202,9 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             elif remains[0].isalpha():
                 test_type = str.isalpha
                 self._index_types.append("alpha")
-            index = "".join(itertools.takewhile(test_type, remains))
-            self._index_lens.append(len(index))
-            remains = remains[len(index) :]
+            str_index = "".join(itertools.takewhile(test_type, remains))
+            self._index_lens.append(len(str_index))
+            remains = remains[len(str_index) :]
             if len(remains) > 0:
                 if not str.isalnum(remains[0]):
                     self._index_separators.append(remains[0])
@@ -282,31 +269,44 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             self.compute_indices_from_name(name) for name in names
         ]
 
-        indices_indices = list(zip(*indices_all_files))
-        self._index_slices_all_files = []
+        self._slicing_tuples_all_files = []
+        tmp = list(zip(*indices_all_files))
         for i_ind in range(self.nb_indices):
-            self._index_slices_all_files.append(
-                [min(indices_indices[i_ind]), max(indices_indices[i_ind]) + 1, 1]
+            self._slicing_tuples_all_files.append(
+                tuple([min(tmp[i_ind]), max(tmp[i_ind]) + 1, 1])
             )
 
-        if isinstance(index_slices, str):
-            self.set_index_slices_from_str(index_slices)
-        elif index_slices is None:
-            self._index_slices = copy(self._index_slices_all_files)
+        self._slicing_input = slicing
+        if isinstance(slicing, str):
+            self.set_slicing_tuples_from_str(slicing)
+        elif slicing is None:
+            self._slicing_tuples = copy(self._slicing_tuples_all_files)
         else:
-            self.set_index_slices(*index_slices)
+            self.set_slicing_tuples(*slicing)
 
-    def set_index_slices_from_str(self, str_slices):
-        """Set index_slices from a string."""
+    def __repr__(self):
+        result = f"{type(self).__name__}('{self.path_dir}'"
+        if self._slicing_input is not None:
+            result += ", {self._slicing_input}"
+        return result + f", slicing_tuples={self._slicing_tuples})"
+
+    def get_separator_base_index(self):
+        return self._separator_base_index
+
+    def get_index_separators(self):
+        return self._index_separators
+
+    def set_slicing_tuples_from_str(self, str_slices):
+        """Set slicing_tuples from a string."""
         slices = compute_slices(str_slices)
-        index_slices = []
+        slicing_tuples = []
         for slice_ in slices:
             if isinstance(slice_, slice):
                 step = slice_.step or 1
-                index_slices.append((slice_.start, slice_.stop, step))
+                slicing_tuples.append((slice_.start, slice_.stop, step))
             else:
-                index_slices.append(slice_)
-        self.set_index_slices(*index_slices)
+                slicing_tuples.append(slice_)
+        self.set_slicing_tuples(*slicing_tuples)
 
     def get_arrays(self):
         """Get the arrays on the serie."""
@@ -338,6 +338,24 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         """
         return self.get_array_from_name(self.compute_name_from_indices(*indices))
 
+    def get_tuples_indices(self):
+        return [
+            tuple(range(*start_stop_step))
+            for start_stop_step in self._slicing_tuples
+        ]
+
+    def get_indices_from_index(self, index):
+        """Get indices from a flatten index"""
+        if self.nb_indices_name_file == 1:
+            return tuple([range(*self._slicing_tuples[0])[index]])
+        elif self.nb_indices_name_file == 2:
+            n0, n1 = [len(range(*_slice)) for _slice in self._slicing_tuples]
+            i0 = range(*self._slicing_tuples[0])[index // n1]
+            i1 = range(*self._slicing_tuples[1])[index % n1]
+            return tuple([i0, i1])
+        # inefficient
+        return tuple(self.iter_indices())[index]
+
     def get_array_from_index(self, index):
         """Get the ith array of the serie.
 
@@ -349,7 +367,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
           Index of the array, for example 0 to get the first array.
 
         """
-        indices = [t for t in self.iter_indices()][index]
+        indices = self.get_indices_from_index(index)
         return self.get_array_from_indices(*indices)
 
     def get_path_all_files(self):
@@ -422,8 +440,8 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         ``len(indices) == self.nb_indices``
 
         """
-        lists = [list(range(*s)) for s in self._index_slices]
-        for indices in itertools.product(*lists):
+        ranges = [range(*s) for s in self._slicing_tuples]
+        for indices in itertools.product(*ranges):
             yield indices
 
     def __len__(self):
@@ -431,12 +449,12 @@ class SerieOfArraysFromFiles(SerieOfArrays):
 
     def iter_name_files(self):
         """Iterator on the file names."""
-        names = []
+        names = set()
         for name in self.iter_name_arrays():
             if name.endswith("]"):
                 name = name.split("[")[0]
                 if name not in names:
-                    names.append(name)
+                    names.add(name)
                     yield name
             else:
                 yield name
@@ -458,7 +476,30 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         for name in self.iter_name_arrays():
             yield self.get_array_from_name(name)
 
-    def _compute_strindices_from_indices(self, *indices):
+    def get_tuple_array_name_from_index(self, index: int = 0):
+        """Get an array and its name"""
+        indices = self.get_indices_from_index(index)
+        name = self.compute_name_from_indices(*indices)
+        return self.get_array_from_name(name), name
+
+    def get_str_for_name_from_idim_idx(self, idim, idx):
+        if self._from_movies and idim == self.nb_indices - 1:
+            return str(idx)
+
+        if self._index_types[idim] == "digit":
+            code_format = "{:0" + str(self._index_lens[idim]) + "d}"
+            str_index = code_format.format(idx)
+        elif self._index_types[idim] == "alpha":
+            if idx > 25:
+                raise ValueError('"alpha" index larger than 25.')
+
+            str_index = chr(ord("a") + idx)
+        else:
+            raise ValueError('The type should be "digit" or "alpha".')
+
+        return str_index
+
+    def compute_str_indices_from_indices(self, *indices):
         """Compute the string corresponding to the indices.
 
         Parameters
@@ -475,19 +516,11 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             raise ValueError("nb_indices != self.nb_indices")
 
         str_indices = ""
-        for i in range(nb_indices):
-            if self._index_types[i] == "digit":
-                code_format = "{:0" + str(self._index_lens[i]) + "d}"
-                str_index = code_format.format(indices[i])
-            elif self._index_types[i] == "alpha":
-                if indices[i] > 25:
-                    raise ValueError('"alpha" index larger than 25.')
-
-                str_index = chr(ord("a") + indices[i])
-            else:
-                raise Exception('The type should be "digit" or "alpha".')
-
-            str_indices += str_index + self._index_separators[i]
+        for idim in range(nb_indices):
+            str_indices += (
+                self.get_str_for_name_from_idim_idx(idim, indices[idim])
+                + self._index_separators[idim]
+            )
         return str_indices
 
     def compute_name_from_indices(self, *indices):
@@ -501,7 +534,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         name = (
             self.base_name
             + self._separator_base_index
-            + self._compute_strindices_from_indices(*indices)
+            + self.compute_str_indices_from_indices(*indices)
         )
         if self.extension_file != "":
             name += "." + self.extension_file
@@ -542,7 +575,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             elif self._index_types[i_ind] == "alpha":
                 test_type = str.isalpha
             else:
-                raise Exception('The type should be "digit" or "alpha".')
+                raise ValueError('The type should be "digit" or "alpha".')
 
             index = "".join(itertools.takewhile(test_type, remains))
             remains = remains[len(index) :]
@@ -568,52 +601,52 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             path = os.path.join(self.path_dir, path)
         return os.path.exists(path)
 
-    def get_index_slices_all_files(self):
+    def get_slicing_tuples_all_files(self):
         """Get nb_indices "slices" (to get all the arrays in the directory).
 
         The "slices" are tuples of size 1 (``(start,)``), 2 (``(start, stop)``)
         or 3 (``(start, stop, step)``).
 
         """
-        return self._index_slices_all_files
+        return self._slicing_tuples_all_files
 
-    def get_index_slices(self):
+    def get_slicing_tuples(self):
         """Get nb_indices "slices" to get all the arrays of the serie.
 
         The "slices" are tuples of size 1 (``(start,)``), 2 (``(start, stop)``)
         or 3 (``(start, stop, step)``).
         """
-        return self._index_slices
+        return self._slicing_tuples
 
-    def set_index_slices(self, *index_slices):
-        """Set the (nb_indices) "slices".
+    def set_slicing_tuples(self, *slicing_tuples):
+        """Set the (nb_indices) "slicing tuples".
 
-        The "slices" are tuples of size 1 (``(start,)``), 2 (``(start, stop)``)
+        The "slicing tuples" are tuples of size 1 (``(start,)``), 2 (``(start, stop)``)
         or 3 (``(start, stop, step)``).
 
         """
-        index_slices = list(index_slices)
-        if len(index_slices) != self.nb_indices:
+        slicing_lists = list(slicing_tuples)
+        if len(slicing_lists) != self.nb_indices:
             raise ValueError(
-                "len(index_slices) != self.nb_indices\n"
+                "len(slicing_tuples) != self.nb_indices\n"
                 "filename_given = {}\n".format(self.filename_given)
                 + f"path_dir = {self.path_dir}"
             )
 
-        for i, islice in enumerate(index_slices):
+        for i, islice in enumerate(slicing_lists):
             if isinstance(islice, tuple):
-                index_slices[i] = list(islice)
+                slicing_lists[i] = list(islice)
             if isinstance(islice, int):
-                index_slices[i] = [islice, islice + 1]
+                slicing_lists[i] = [islice, islice + 1]
             elif len(islice) == 1:
-                index_slices[i] = [islice[0], islice[0] + 1]
+                slicing_lists[i] = [islice[0], islice[0] + 1]
 
-        for i, islice in enumerate(index_slices):
+        for i, islice in enumerate(slicing_lists):
             for ii, index in enumerate(islice):
                 if index is None:
-                    index_slices[i][ii] = self._index_slices_all_files[i][ii]
+                    slicing_lists[i][ii] = self._slicing_tuples_all_files[i][ii]
 
-        self._index_slices = index_slices
+        self._slicing_tuples = [tuple(slicing) for slicing in slicing_lists]
 
     def get_nb_arrays(self):
         """Get the number of arrays in the serie."""
@@ -624,23 +657,72 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return len(self.get_name_files())
 
 
-def indslices_from_indserie_for_partial(str_ranges, i):
-    indslices = []
-    for str_range in str_ranges:
-        indslice = []
-        indslices.append(indslice)
-        for ii, s in enumerate(str_range.split(":")):
-            if s == "":
-                if ii == 0:
-                    indslice.append(0)
-                elif ii == 1:
-                    indslice.append(None)
-                elif ii > 2:
-                    raise ValueError
+def add_depreciated_function(cls, name):
+    """Add a depreciated function like get_index_slices"""
+    assert "index_slices" in name
+    new_name = name.replace("index_slices", "slicing_tuples")
+    message = f"Call to deprecated function {name}. Use {new_name} instead."
+    new_func = getattr(cls, new_name)
 
-            else:
-                indslice.append(eval(s, {"i": i}))
-    return indslices
+    @wraps(new_func)
+    def _new_func(*args, **kwargs):
+        warnings.warn(message, category=DeprecationWarning, stacklevel=2)
+        return new_func(*args, **kwargs)
+
+    setattr(cls, name, _new_func)
+
+
+for name in [
+    "get_index_slices",
+    "get_index_slices_all_files",
+    "set_index_slices",
+    "set_index_slices_from_str",
+]:
+    add_depreciated_function(SerieOfArraysFromFiles, name)
+
+
+class SlicingTuplesFromIndexSerie:
+    def __init__(self, str_slices, serie):
+        self.str_ranges = [s.strip() for s in str_slices.split(",")]
+        self.starts = [s[0] for s in serie.get_slicing_tuples()]
+
+    def __call__(self, index):
+        slicing_tuples = []
+        for idim, str_range in enumerate(self.str_ranges):
+            indslice = []
+            slicing_tuples.append(indslice)
+            for ii, s in enumerate(str_range.split(":")):
+                if s.strip() == "":
+                    if ii == 0:
+                        indslice.append(self.starts[idim])
+                    elif ii == 1:
+                        indslice.append(None)
+                    elif ii > 2:
+                        raise ValueError
+                else:
+                    indslice.append(simple_eval(s, names={"i": index}))
+        return slicing_tuples
+
+
+class OutOfRangeError(IndexError):
+    """Specific IndexError"""
+
+
+class SlicingTuplesFromIndexSerieAll1By1:
+    def __init__(self, serie):
+        slicing_tuples = serie._slicing_tuples
+        self.n0, self.n1 = [len(range(*_slice)) for _slice in slicing_tuples]
+        self.range0 = range(*slicing_tuples[0])
+        self.range1 = range(*slicing_tuples[1])
+
+    def __call__(self, index):
+        try:
+            i0 = self.range0[index // self.n1]
+        except IndexError as error:
+            raise OutOfRangeError from error
+
+        i1 = self.range1[index % self.n1]
+        return [(i0, i0 + 1), (i1, i1 + 1)]
 
 
 class SeriesOfArrays:
@@ -654,66 +736,103 @@ class SeriesOfArrays:
 
     serie: SerieOfArrays or str
 
-    indslices_from_indserie: str or function
+    slicing_tuples_from_indserie: str or function
 
       The function has to take an integer and to return an iterable of
-      indices used to compute a file name.
+      "slicing tuples" used to compute a file name.
 
     """
 
     def __init__(
         self,
         serie,
-        indslices_from_indserie,
-        ind_start=0,
+        slicing_tuples_from_indserie=None,
+        ind_start="first",
         ind_stop=None,
         ind_step=1,
     ):
-        serie0 = serie
-        indslices_from_indserie0 = indslices_from_indserie
+        serie_input = serie
+        slicing_tuples_from_indserie_input = slicing_tuples_from_indserie
 
         if isinstance(serie, (str, Path)):
             serie = str(serie)
-            serie = SerieOfArraysFromFiles(serie)
-        if isinstance(serie, SerieOfArraysFromFiles):
+            self.serie = serie = SerieOfArraysFromFiles(serie)
+        elif isinstance(serie, SerieOfArraysFromFiles):
             self.serie = serie = deepcopy(serie)
         else:
             raise ValueError("serie should be a str or a SerieOfArraysFromFiles.")
 
-        if indslices_from_indserie is None:
-            indslices_from_indserie = "i:i+1"
-            for i in range(serie.nb_indices - 1):
-                indslices_from_indserie += ",:"
+        if slicing_tuples_from_indserie == "pairs":
+            if serie.nb_indices == 1:
+                (s0,) = serie.get_slicing_tuples()
+                slicing_tuples_from_indserie = f"i+{s0[0]}:i+{s0[0]+2}"
+            elif serie.nb_indices == 2:
+                indices0, indices1 = serie.get_tuples_indices()
+                s0, s1 = serie.get_slicing_tuples()
+                if len(indices1) == 2:
+                    slicing_tuples_from_indserie = f"i+{s0[0]}, {s1[0]}:{s1[1]}"
+                elif len(indices0) == 2:
+                    slicing_tuples_from_indserie = f"{s0[0]}:{s0[1]}, i+{s1[0]}"
+                else:
+                    raise ValueError(
+                        f"Do not know how to form pairs with serie {serie}"
+                    )
+            else:
+                raise ValueError(
+                    "slicing_tuples_from_indserie=='pairs' and nb_indices>2"
+                )
 
-        if isinstance(indslices_from_indserie, str):
-            str_ranges = indslices_from_indserie.split(",")
-            indslices_from_indserie = partial(
-                indslices_from_indserie_for_partial, str_ranges
+        elif slicing_tuples_from_indserie == "all1by1":
+            if serie.nb_indices == 1:
+                (s0,) = serie.get_slicing_tuples()
+                slicing_tuples_from_indserie = f"i+{s0[0]}:i+{s0[0]+1}"
+            elif serie.nb_indices == 2:
+                slicing_tuples_from_indserie = SlicingTuplesFromIndexSerieAll1By1(
+                    serie
+                )
+            else:
+                raise ValueError(
+                    "slicing_tuples_from_indserie=='all1by1' and nb_indices>2"
+                )
+
+        elif slicing_tuples_from_indserie is None:
+            slicing_tuples_from_indserie = "i:i+1"
+            for i in range(serie.nb_indices - 1):
+                slicing_tuples_from_indserie += ",:"
+
+        if isinstance(slicing_tuples_from_indserie, str):
+            slicing_tuples_from_indserie = SlicingTuplesFromIndexSerie(
+                slicing_tuples_from_indserie, serie
             )
 
-        if indslices_from_indserie(0) == indslices_from_indserie(1):
+        if slicing_tuples_from_indserie(0) == slicing_tuples_from_indserie(1):
             raise ValueError(
-                "It seems that the function indslices_from_indserie "
+                "It seems that the function slicing_tuples_from_indserie "
                 "does not depend on the index."
             )
 
-        self.indslices_from_indserie = indslices_from_indserie
+        self.slicing_tuples_from_indserie = slicing_tuples_from_indserie
+
+        if ind_start == "first":
+            ind_start = 0
+            while not self.check_all_arrays_serie_exist(ind_start):
+                ind_start += 1
+                if ind_start > MAX_SEARCH_INDEX_START:
+                    raise RuntimeError(
+                        "Maximum iteration reached for search of ind_start."
+                    )
 
         if ind_stop is None:
-            iserie = ind_start - ind_step
-            cond = True
-            while cond:
-                iserie += ind_step
-                serie.set_index_slices(*self.indslices_from_indserie(iserie))
-                cond = serie.check_all_arrays_exist()
+            iserie = ind_start
+            while self.check_all_arrays_serie_exist(iserie):
+                iserie += 1
             iserie -= 1
         else:
             if len(range(ind_start, ind_stop, ind_step)) == 0:
                 raise ValueError("len(range(ind_start, ind_stop, ind_step)) == 0")
 
             for iserie in range(ind_start, ind_stop, ind_step):
-                serie.set_index_slices(*self.indslices_from_indserie(iserie))
-                if not serie.check_all_arrays_exist():
+                if not self.check_all_arrays_serie_exist(iserie):
                     break
 
         ind_stop = iserie + 1
@@ -724,7 +843,7 @@ class SeriesOfArrays:
         self.ind_stop = ind_stop
         self.ind_step = ind_step
 
-        serie.set_index_slices(*self.indslices_from_indserie(self.iserie))
+        serie.set_slicing_tuples(*self.slicing_tuples_from_indserie(self.iserie))
         _print_warning = False
         if not serie.check_all_arrays_exist():
             _print_warning = True
@@ -742,36 +861,44 @@ class SeriesOfArrays:
 
         if _print_warning:
             print(
-                "serie={},\nindslices_from_indserie={}, ".format(
-                    serie0, indslices_from_indserie0
-                )
-                + "ind_start={}, ind_stop={}, ind_step={}.".format(
-                    ind_start, ind_stop, ind_step
-                )
+                f"serie='{serie_input}',\n"
+                f"slicing_tuples_from_indserie='{slicing_tuples_from_indserie_input}', "
+                f"{ind_start=}, {ind_stop=}, {ind_step=}."
             )
+
+    def __repr__(self):
+        return f"{type(self).__name__}({self.serie})"
+
+    def check_all_arrays_serie_exist(self, index_serie):
+        try:
+            slicing_tuples = self.slicing_tuples_from_indserie(index_serie)
+        except OutOfRangeError:
+            return False
+        self.serie.set_slicing_tuples(*slicing_tuples)
+        return self.serie.check_all_arrays_exist()
 
     def __iter__(self):
-        if hasattr(self, "index_series"):
-            index_series = self.index_series
-        else:
-            index_series = list(
-                range(self.ind_start, self.ind_stop, self.ind_step)
+        if not hasattr(self, "index_series"):
+            self.index_series = range(
+                self.ind_start, self.ind_stop, self.ind_step
             )
 
-        for iserie in index_series:
-            self.serie.set_index_slices(*self.indslices_from_indserie(iserie))
+        for iserie in self.index_series:
+            self.serie.set_slicing_tuples(
+                *self.slicing_tuples_from_indserie(iserie)
+            )
             yield self.serie
 
     def items(self):
-        if hasattr(self, "index_series"):
-            index_series = self.index_series
-        else:
-            index_series = list(
-                range(self.ind_start, self.ind_stop, self.ind_step)
+        if not hasattr(self, "index_series"):
+            self.index_series = range(
+                self.ind_start, self.ind_stop, self.ind_step
             )
 
-        for iserie in index_series:
-            self.serie.set_index_slices(*self.indslices_from_indserie(iserie))
+        for iserie in self.index_series:
+            self.serie.set_slicing_tuples(
+                *self.slicing_tuples_from_indserie(iserie)
+            )
             yield iserie, self.serie
 
     def __len__(self):
@@ -791,15 +918,15 @@ class SeriesOfArrays:
     def get_next_serie(self):
         """Get the next serie."""
         if self.iserie < self.ind_stop:
-            self.serie.set_index_slices(
-                *self.indslices_from_indserie(self.iserie)
+            self.serie.set_slicing_tuples(
+                *self.slicing_tuples_from_indserie(self.iserie)
             )
             self.iserie += 1
             return self.serie
 
     def get_serie_from_index(self, index):
         """Get a serie from an index."""
-        self.serie.set_index_slices(*self.indslices_from_indserie(index))
+        self.serie.set_slicing_tuples(*self.slicing_tuples_from_indserie(index))
         return self.serie
 
     def get_name_all_files(self):
@@ -821,52 +948,3 @@ class SeriesOfArrays:
                 if name not in names_all:
                     names_all.append(name)
         return names_all
-
-
-# if __name__ == "__main__":
-
-# path = (
-#     os.environ['HOME'] +
-#     '/Dev/Matlab/Demo/UVMAT_DEMO04_PIV_challenge_2005_CaseC/'
-#     'Images'
-#     '/c001a.png'
-# )
-
-# serie = SerieOfArraysFromFiles(path)
-
-# def indslices_from_indserie(iserie):
-#     indslices = copy(serie._index_slices_all_files)
-#     indslices[0] = [iserie, iserie+1]
-#     return indslices
-
-# series = SeriesOfArrays(serie, indslices_from_indserie)
-
-# for serie in series:
-#     print([name for name in serie])
-
-# print('\nOther test')
-
-# def indslices_from_indserie(iserie):
-#     indslices = copy(serie._index_slices_all_files)
-#     indslices[0] = [iserie, iserie+2, 1]
-#     indslices[1] = [1]
-#     return indslices
-
-# series = SeriesOfArrays(serie, indslices_from_indserie)
-
-# for serie in series:
-#     print([name for name in serie])
-
-# path = os.environ["HOME"] + "/Dev/howtopiv/samples/Karman"
-
-# serie = SerieOfArraysFromFiles(path, base_name="PIVlab_Karman")
-
-# def indslices_from_indserie(iserie):
-#     indslices = copy(serie._index_slices_all_files)
-#     indslices[0] = [iserie + 1, iserie + 2]
-#     return indslices
-
-# series = SeriesOfArrays(serie, indslices_from_indserie)
-
-# for serie in series:
-#     print([name for name in serie])

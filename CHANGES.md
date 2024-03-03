@@ -17,7 +17,35 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 % Security   Security in case of vulnerabilities.
 
 See also the
-[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.3...branch%2Fdefault).
+[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.4...branch%2Fdefault).
+
+## [0.6.0] (2023-03-??)
+
+Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better testing.
+
+### Added
+
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_slicing_tuples`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_slicing_tuples_all_files`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.set_slicing_tuples`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.set_slicing_tuples_from_str`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_separator_base_index`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_index_separators`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_tuple_array_name_from_index`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.get_str_for_name_from_idim_idx`
+- {func}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles.compute_str_indices_from_indices`
+
+### Changed
+
+- The argument `ind_start` of
+  {class}`fluiddyn.util.serieofarrays.SeriesOfArrays` is now `"first"` by default.
+
+- {class}`fluiddyn.util.serieofarrays.SeriesOfArrays` can now be created with
+  `SeriesOfArrays(path, "pairs")` and with `SeriesOfArrays(path, "all1by1")`.
+
+### Deprecated
+
+- `get_index_slices` and all methods containing in their name `index_slices`. Use the corresponding method with `slicing_tuples`.
 
 ## [0.5.4] (2023-02-17)
 
@@ -201,3 +229,4 @@ See also the
 [0.5.2]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.1...0.5.2
 [0.5.3]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.2...0.5.3
 [0.5.4]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.3...0.5.4
+[0.6.0]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.4...0.6.0

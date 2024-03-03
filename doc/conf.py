@@ -21,7 +21,7 @@ import fluiddyn as fld
 nb_execution_mode = "cache"
 nb_execution_cache_path = "./_build/jupyter_cache"
 os.makedirs(nb_execution_cache_path, exist_ok=True)
-nb_execution_excludepatterns = ["ipynb/executed/*"]
+nb_execution_excludepatterns = ["tutorials/executed/*"]
 nb_merge_streams = True
 
 # If extensions (or modules to document with autodoc) are in another directory,
