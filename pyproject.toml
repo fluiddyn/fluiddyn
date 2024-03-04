@@ -196,5 +196,4 @@ multi_line_output = 3
 skip_glob = [".pixi/*"]
 
 [tool.pytest.ini_options]
-# does not work, see https://github.com/pytest-dev/pytest/issues/12053
-pdbcls = "IPython.terminal.debugger:TerminalPdb"
+addopts = "--pdbcls=IPython.terminal.debugger:TerminalPdb"
