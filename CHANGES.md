@@ -19,7 +19,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 See also the
 [unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.4...branch%2Fdefault).
 
-## [0.6.0] (2023-03-??)
+## [0.6.0] (2023-03-04)
 
 Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better testing.
 

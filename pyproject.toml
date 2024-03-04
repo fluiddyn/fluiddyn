@@ -4,7 +4,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "fluiddyn"
-version = "0.6.0rc0"
+version = "0.6.0"
 description = "Framework for studying fluid dynamics."
 keywords = ["Fluid dynamics", "research"]
 license = {text = "CeCILL-B License"}
