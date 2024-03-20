@@ -78,7 +78,7 @@ if FLUIDDYN_PATH_WARNING is None:
 
 
 if not os.path.exists(FLUIDDYN_PATH_WARNING):
-    os.makedirs(FLUIDDYN_PATH_WARNING)
+    os.makedirs(FLUIDDYN_PATH_WARNING, exist_ok=True)
 
 
 def _write_warning(*args, **kargs):
