@@ -11,7 +11,7 @@ from shutil import rmtree
 
 from ...io import stdout_redirected
 from ..ciment import Froggy
-from ..legi import Calcul, Calcul3, Calcul7, Calcul8, Calcul9
+from ..legi import GPU9, Calcul, Calcul2, Calcul6, Calcul7, Calcul8
 from ..oar import ClusterOAR
 
 path_test = "tmp_test"
@@ -34,11 +34,11 @@ class CalculNoCheck(ClusterNoCheck, Calcul):
     pass
 
 
-class Calcul3NoCheck(ClusterNoCheck, Calcul3):
+class Calcul2NoCheck(ClusterNoCheck, Calcul2):
     pass
 
 
-class Calcul9NoCheck(ClusterNoCheck, Calcul9):
+class Calcul6NoCheck(ClusterNoCheck, Calcul6):
     pass
 
 
@@ -47,6 +47,10 @@ class Calcul7NoCheck(ClusterNoCheck, Calcul7):
 
 
 class Calcul8NoCheck(ClusterNoCheck, Calcul8):
+    pass
+
+
+class GPU9NoCheck(ClusterNoCheck, GPU9):
     pass
 
 
@@ -98,24 +102,29 @@ class TestCaseCalcul(TestCaseOAR):
     ClusterNoCheck = CalculNoCheck
 
 
-class TestCaseCalcul3(TestCaseOAR):
-    Cluster = Calcul3
-    ClusterNoCheck = Calcul3NoCheck
-
-
-class TestCaseCalcul9(TestCaseOAR):
-    Cluster = Calcul9
-    ClusterNoCheck = Calcul3NoCheck
-
-
 class TestCaseCalcul7(TestCaseOAR):
     Cluster = Calcul7
-    ClusterNoCheck = Calcul3NoCheck
+    ClusterNoCheck = Calcul7NoCheck
 
 
 class TestCaseCalcul8(TestCaseOAR):
     Cluster = Calcul8
-    ClusterNoCheck = Calcul3NoCheck
+    ClusterNoCheck = Calcul8NoCheck
+
+
+class TestCaseCalcul2(TestCaseOAR):
+    Cluster = Calcul2
+    ClusterNoCheck = Calcul2NoCheck
+
+
+class TestCaseCalcul6(TestCaseOAR):
+    Cluster = Calcul6
+    ClusterNoCheck = Calcul6NoCheck
+
+
+class TestCaseGPU9(TestCaseOAR):
+    Cluster = GPU9
+    ClusterNoCheck = GPU9NoCheck
 
 
 class TestCaseFroggy(TestCaseOAR):

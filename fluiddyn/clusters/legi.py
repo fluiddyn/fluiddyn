@@ -1,6 +1,6 @@
 """
-LEGI clusters (:mod:`fluiddyn.clusters.legi`)
-=============================================
+LEGI clusters
+=============
 
 Provides:
 
@@ -16,30 +16,23 @@ Provides:
 .. autoclass:: Calcul2
    :members:
 
-"""
+.. autoclass:: Calcul6
+   :members:
 
-import time
-from subprocess import check_output
+"""
 
 from fluiddyn.clusters.oar import ClusterOAR
 
 
-class Calcul3(ClusterOAR):
-    name_cluster = "calcul3"
+class GPU9(ClusterOAR):
+    name_cluster = "gpu9"
     has_to_add_name_cluster = True
-    nb_cores_per_node = 12
-    frontends = ["calcul8sv109", "legilnx44"]
-
-
-class Calcul9(ClusterOAR):
-    name_cluster = "calcul9"
-    has_to_add_name_cluster = True
-    nb_cores_per_node = 8
-    frontends = ["calcul8sv109", "legilnx44"]
+    nb_cores_per_node = 28
+    frontends = ["nrj1sv223", "nrj1sv224", "meige4sv14"]
 
 
 class Calcul(ClusterOAR):
-    name_cluster = "calcul7-8"
+    name_cluster = "calcul7-8-2-6"
     has_to_add_name_cluster = False
     nb_cores_per_node = 20
     frontends = ["nrj1sv223", "nrj1sv224", "meige4sv14"]
@@ -59,3 +52,9 @@ class Calcul8(Calcul):
 class Calcul2(Calcul):
     name_cluster = "calcul2"
     has_to_add_name_cluster = True
+
+
+class Calcul6(Calcul):
+    name_cluster = "calcul6"
+    has_to_add_name_cluster = True
+    nb_cores_per_node = 32
