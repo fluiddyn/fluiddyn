@@ -23,19 +23,21 @@ Provides:
 
 from fluiddyn.clusters.oar import ClusterOAR
 
+frontends = ("nrj1sv223", "nrj1sv224", "meige4sv14", "cl1f001")
+
 
 class GPU9(ClusterOAR):
     name_cluster = "gpu9"
     has_to_add_name_cluster = True
     nb_cores_per_node = 28
-    frontends = ["nrj1sv223", "nrj1sv224", "meige4sv14"]
+    frontends = frontends
 
 
 class Calcul(ClusterOAR):
     name_cluster = "calcul7-8-2-6"
     has_to_add_name_cluster = False
     nb_cores_per_node = 20
-    frontends = ["nrj1sv223", "nrj1sv224", "meige4sv14"]
+    frontends = frontends
 
 
 class Calcul7(Calcul):
