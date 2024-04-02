@@ -17,7 +17,11 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 % Security   Security in case of vulnerabilities.
 
 See also the
-[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.4...branch%2Fdefault).
+[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.1...branch%2Fdefault).
+
+## [0.6.1] (2023-04-02)
+
+- Update LEGI clusters
 
 ## [0.6.0] (2023-03-04)
 
@@ -230,3 +234,4 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 [0.5.3]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.2...0.5.3
 [0.5.4]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.3...0.5.4
 [0.6.0]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.4...0.6.0
+[0.6.1]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.0...0.6.1
