@@ -138,7 +138,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
     path : str
         The path of the base directory or of a file example.
 
-    slicing_tuples : None or iterable of iterables or str
+    slicing : None or iterable of iterables or str
 
         Iterable of slides (start, stop, step).
 
@@ -150,8 +150,8 @@ class SerieOfArraysFromFiles(SerieOfArrays):
     path_dir : str
         The path of the base directory.
 
-    slicing_tuples : list of list
-        Lists of slides "[start, stop, step]" (one for each index).
+    get_slicing_tuples/set_slicing_tuples : list of tuples
+        Lists of slicing tuples "(start, stop, step)" (one for each index).
         This list can be changed to loop over different sets of files.
 
     Notes

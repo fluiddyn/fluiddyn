@@ -1,4 +1,4 @@
-# Changes
+# Release notes
 
 All notable changes to this project will be documented in this file.
 
@@ -19,11 +19,11 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 See also the
 [unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.1...branch%2Fdefault).
 
-## [0.6.1] (2023-04-02)
+## [0.6.1] (2024-04-02)
 
 - Update LEGI clusters
 
-## [0.6.0] (2023-03-04)
+## [0.6.0] (2024-03-04)
 
 Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better testing.
 
@@ -51,7 +51,7 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 
 - `get_index_slices` and all methods containing in their name `index_slices`. Use the corresponding method with `slicing_tuples`.
 
-## [0.5.4] (2023-02-17)
+## [0.5.4] (2024-02-17)
 
 - Fix `util/serieofarrays.py` for multiprocessing on Windows
 - Less verbose check about Qt
