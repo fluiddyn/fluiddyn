@@ -17,7 +17,12 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 % Security   Security in case of vulnerabilities.
 
 See also the
-[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.1...branch%2Fdefault).
+[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.2...branch%2Fdefault).
+
+## [0.6.2] (2024-04-16)
+
+- Fix a bug in {class}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles`
+  when an index is coded over two letters.
 
 ## [0.6.1] (2024-04-02)
 
@@ -235,3 +240,4 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 [0.5.4]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.3...0.5.4
 [0.6.0]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.5.4...0.6.0
 [0.6.1]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.0...0.6.1
+[0.6.2]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.1...0.6.2
