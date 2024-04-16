@@ -42,6 +42,47 @@ def get_nb_arrays_in_file(fname):
         return images.len()
 
 
+ALPHABET_SIZE = 26
+
+
+def _decompose_in_alpha_base(number):
+    """Generate digits from `number` in base alphabet,
+    least significant bits first.
+
+    """
+    while number:
+        number, remainder = divmod(number, ALPHABET_SIZE)
+        yield remainder
+
+
+def _letters_from_number(number):
+    """Convert a number in base 26 to letters"""
+    word = [_letter_from_number(idx) for idx in _decompose_in_alpha_base(number)]
+    return "".join(word[::-1])
+
+
+def _number_from_letters(letters):
+    """Convert letters to an integer in base 26"""
+    # assert ord("a") == 97
+    letters = letters.lower()
+    number = 0
+    for i_letter, letter in enumerate(letters[::-1]):
+        number += (ord(letter) - 97) * ALPHABET_SIZE**i_letter
+    return number
+
+
+def _number_from_letter(letter):
+    """Convert a letter to a number in base 26"""
+    # assert ord("a") == 97
+    return ord(letter) - 97
+
+
+def _letter_from_number(number):
+    """Convert a number in base 26 to a letter"""
+    # assert ord("a") == 97
+    return chr(97 + number)
+
+
 MAX_SEARCH_INDEX_START = 100000
 
 
@@ -195,13 +236,16 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         self._index_types = []
         self._index_lens = []
         self._index_separators = []
+        self._index_capitalized = []
         while len(remains) != 0:
             if remains[0].isdigit():
                 test_type = str.isdigit
                 self._index_types.append("digit")
+                self._index_capitalized.append(None)
             elif remains[0].isalpha():
                 test_type = str.isalpha
                 self._index_types.append("alpha")
+                self._index_capitalized.append(not remains[0].islower())
             str_index = "".join(itertools.takewhile(test_type, remains))
             self._index_lens.append(len(str_index))
             remains = remains[len(str_index) :]
@@ -339,6 +383,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return self.get_array_from_name(self.compute_name_from_indices(*indices))
 
     def get_tuples_indices(self):
+        """Get a list of tuples containing the indices computed from `self._slicing_tuples`"""
         return [
             tuple(range(*start_stop_step))
             for start_stop_step in self._slicing_tuples
@@ -399,6 +444,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         )
 
     def get_name_path_arrays(self):
+        """Iterable returning tuples ``(name, path)``"""
         return (
             (name, os.path.join(self.path_dir, name))
             for name in self.get_name_arrays()
@@ -483,6 +529,7 @@ class SerieOfArraysFromFiles(SerieOfArrays):
         return self.get_array_from_name(name), name
 
     def get_str_for_name_from_idim_idx(self, idim, idx):
+        """Compute the str corresponding to the index ``idx`` for the dimension ``idim``"""
         if self._from_movies and idim == self.nb_indices - 1:
             return str(idx)
 
@@ -490,10 +537,18 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             code_format = "{:0" + str(self._index_lens[idim]) + "d}"
             str_index = code_format.format(idx)
         elif self._index_types[idim] == "alpha":
-            if idx > 25:
-                raise ValueError('"alpha" index larger than 25.')
+            if idx <= 25:
+                str_index = _letter_from_number(idx)
+            else:
+                str_index = _letters_from_number(idx)
 
-            str_index = chr(ord("a") + idx)
+            if len(str_index) != self._index_lens[idim]:
+                str_index = (
+                    "a" * (self._index_lens[idim] - len(str_index)) + str_index
+                )
+            if self._index_capitalized[idim]:
+                str_index = str_index.upper()
+
         else:
             raise ValueError('The type should be "digit" or "alpha".')
 
@@ -585,8 +640,11 @@ class SerieOfArraysFromFiles(SerieOfArrays):
             if self._index_types[i_ind] == "digit":
                 index = int(index)
             elif self._index_types[i_ind] == "alpha":
-                index = ord(index) - ord("a")
-
+                index = index.lower()
+                if len(index) == 1:
+                    index = _number_from_letter(index)
+                else:
+                    index = _number_from_letters(index)
             indices.append(index)
 
         if internal_index is not None:

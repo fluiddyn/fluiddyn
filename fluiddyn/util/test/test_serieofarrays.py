@@ -238,3 +238,32 @@ def test_series_pairs_first_index(path_dir_images_2d_pairs_first_index):
     assert len(serie) == 2
 
     check_all1by1(path_dir, 16)
+
+
+def test_two_letters(tmp_path):
+    for index in range(60, 62):
+        (tmp_path / f"piv{index}bb.h5").touch()
+    serie = SerieOfArraysFromFiles(tmp_path)
+    assert serie.get_name_files()[0] == "piv60bb.h5"
+    assert serie.compute_name_from_indices(2, 1) == "piv02ab.h5"
+    assert serie.compute_name_from_indices(2, 27) == "piv02bb.h5"
+
+
+def test_two_capital_letters(tmp_path):
+    for index in range(60, 62):
+        (tmp_path / f"piv{index}BB.h5").touch()
+    serie = SerieOfArraysFromFiles(tmp_path)
+    assert serie.get_name_files()[0] == "piv60BB.h5"
+    assert serie.compute_name_from_indices(2, 1) == "piv02AB.h5"
+    assert serie.compute_name_from_indices(2, 27) == "piv02BB.h5"
+
+
+def test_convert_letters_number():
+
+    from fluiddyn.util.serieofarrays import (
+        _letters_from_number,
+        _number_from_letters,
+    )
+
+    for letters in ("bc", "oh", "cba"):
+        assert _letters_from_number(_number_from_letters(letters)) == letters
