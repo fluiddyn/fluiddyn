@@ -25,13 +25,20 @@ Provides:
 
 """
 
+import os
 import subprocess
+from abc import ABC
+from logging import warning
+from pathlib import Path
+from typing import Optional
 
 
-class Cluster:
+class Cluster(ABC):
     """Base class for clusters"""
 
-    _doc_commands = ""
+    _doc_commands: str
+    commands_setting_env: list = None
+    nb_cores_per_node: Optional[int]
 
     @classmethod
     def print_doc_commands(cls):
@@ -58,6 +65,54 @@ class Cluster:
             nb_mpi_processes = nb_cores_per_node * nb_nodes
 
         return nb_cores_per_node, nb_mpi_processes
+
+    def get_commands_setting_env(self):
+        """Return a list of commands setting the environment
+
+        If ``self.commands_setting_env`` is ``None``,
+        ``self.get_commands_activating_lauching_python()`` is returned.
+
+        """
+        if self.commands_setting_env is not None:
+            return self.commands_setting_env
+        return self.get_commands_activating_lauching_python()
+
+    def get_commands_activating_lauching_python(self):
+        """Return a list a commands activating the Python used to launch the script"""
+
+        commands = []
+
+        path_etc_profile = Path("/etc/profile")
+        if path_etc_profile.exists():
+            commands.append(f"source {path_etc_profile}")
+
+        python_path = os.getenv("PYTHONPATH")
+        if python_path is not None:
+            commands.append(f"export PYTHONPATH={python_path}")
+
+        virtualenv = os.getenv("VIRTUAL_ENV")
+        if virtualenv is not None:
+            path_activate = Path(virtualenv) / "bin/activate"
+            if path_activate.exists():
+                commands.append(f"source {path_activate}")
+                return commands
+            warning(f"VIRTUAL_ENV is defined but {path_activate} does not exit.")
+
+        conda_env = os.getenv("CONDA_DEFAULT_ENV")
+        if conda_env is not None:
+            conda_prefix = os.getenv("CONDA_PREFIX")
+            if conda_prefix is None:
+                raise RuntimeError(
+                    "CONDA_DEFAULT_ENV is defined but not CONDA_PREFIX!"
+                )
+            commands.extend(
+                [
+                    f"source {conda_prefix}/etc/profile.d/conda.sh",
+                    f"conda activate {conda_env}",
+                ]
+            )
+
+        return commands
 
 
 def check_oar():

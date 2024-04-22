@@ -94,23 +94,12 @@ oarstat -u
 oardel $JOB_ID
 oarsub -C $JOB_ID"""
 
-    def __init__(self):
-        self.commands_setting_env = [
-            "source /etc/profile",
-            "module load python/{}.{}.{}".format(
-                version.major, version.minor, version.micro
-            ),
-            "source /home/users/$USER/opt/mypy{}.{}/bin/activate".format(
-                version.major, version.minor
-            ),
-        ]
-
     def check_oar(self):
         """check if this script is run on a frontal with oar installed"""
         try:
             subprocess.check_call(["oarsub", "--version"], stdout=subprocess.PIPE)
-        except OSError:
-            raise OSError("oar does not seem to be installed.")
+        except OSError as error:
+            raise OSError("oar does not seem to be installed.") from error
 
     def submit_script(
         self,
@@ -207,8 +196,8 @@ oarsub -C $JOB_ID"""
             use_oar_envsh=use_oar_envsh,
         )
 
-        with open(path_launching_script, "w") as f:
-            f.write(txt)
+        with open(path_launching_script, "w", encoding="utf-8") as file:
+            file.write(txt)
 
         os.chmod(
             path_launching_script, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR
@@ -280,7 +269,7 @@ oarsub -C $JOB_ID"""
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
 
-        txt += "\n".join(self.commands_setting_env) + "\n\n"
+        txt += "\n".join(self.get_commands_setting_env()) + "\n\n"
 
         if omp_num_threads is not None:
             txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"

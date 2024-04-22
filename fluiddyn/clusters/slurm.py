@@ -48,7 +48,6 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
 
     def __init__(self):
         self.check_slurm()
-        self.commands_setting_env = []
         self.commands_unsetting_env = []
 
     def check_slurm(self):
@@ -365,10 +364,10 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         if account is not None:
             txt += f"#SBATCH --account={account}\n"
 
-        if exclusive == True:
-            txt += f"#SBATCH --exclusive\n"
+        if exclusive:
+            txt += "#SBATCH --exclusive\n"
 
-        txt += "\n".join(self.commands_setting_env) + "\n\n"
+        txt += "\n".join(self.get_commands_setting_env()) + "\n\n"
 
         txt += 'echo "hostname: "$HOSTNAME\n\n'
         txt += self._log_job(
