@@ -5,9 +5,13 @@ Test oar clusters
 """
 
 import os
+import platform
 import subprocess
 import unittest
+from pathlib import Path
 from shutil import rmtree
+
+import pytest
 
 from ...io import stdout_redirected
 from ..ciment import Froggy
@@ -130,6 +134,60 @@ class TestCaseGPU9(TestCaseOAR):
 class TestCaseFroggy(TestCaseOAR):
     Cluster = Froggy
     ClusterNoCheck = FroggyNoCheck
+
+
+@pytest.mark.skipif(platform.system() != "Linux", reason="Only on Linux")
+def test_get_commands_setting_env(monkeypatch):
+
+    path_activate = Path("/do/not/exists/bin/activate")
+
+    _exist = Path.exists
+
+    def my_exists(self):
+
+        if self in (Path("/etc/profile"), path_activate):
+            return True
+
+        return _exist(self)
+
+    cluster = Calcul()
+
+    monkeypatch.setattr(Path, "exists", my_exists)
+
+    monkeypatch.setenv("PYTHONPATH", "/my/python/path")
+
+    for name in ("VIRTUAL_ENV", "CONDA_DEFAULT_ENV", "CONDA_PREFIX"):
+        monkeypatch.delenv(name, raising=False)
+
+    commands = cluster.get_commands_setting_env()
+
+    assert commands == [
+        "source /etc/profile",
+        "export PYTHONPATH=/my/python/path",
+    ]
+
+    monkeypatch.setenv("VIRTUAL_ENV", str(path_activate.parent.parent))
+
+    commands = cluster.get_commands_setting_env()
+
+    assert commands == [
+        "source /etc/profile",
+        "export PYTHONPATH=/my/python/path",
+        f"source {path_activate}",
+    ]
+
+    monkeypatch.delenv("VIRTUAL_ENV")
+    monkeypatch.delenv("PYTHONPATH")
+    monkeypatch.setenv("CONDA_DEFAULT_ENV", "my_env")
+    monkeypatch.setenv("CONDA_PREFIX", "/home/my_uname/miniconda")
+
+    commands = cluster.get_commands_setting_env()
+
+    assert commands == [
+        "source /etc/profile",
+        "source /home/my_uname/miniconda/etc/profile.d/conda.sh",
+        "conda activate my_env",
+    ]
 
 
 if __name__ == "__main__":
