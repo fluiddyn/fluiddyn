@@ -55,13 +55,9 @@ class ClusterLocal(Cluster):
     max_walltime = "30-00:00:00"
 
     def __init__(self):
-        self.commands_setting_env = []
         self.commands_unsetting_env = []
         virtualenv = os.getenv("VIRTUAL_ENV")
         if virtualenv is not None:
-            self.commands_setting_env.append(
-                "source " + virtualenv + "/bin/activate"
-            )
             self.commands_unsetting_env.append("deactivate")
 
     def submit_script(self, path, *args, **kwargs):
@@ -207,7 +203,7 @@ class ClusterLocal(Cluster):
             command,
             "LOCAL_JOB.md",
         )
-        txt += "\n".join(self.commands_setting_env) + "\n\n"
+        txt += "\n".join(self.get_commands_setting_env()) + "\n\n"
 
         if omp_num_threads is not None:
             txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"

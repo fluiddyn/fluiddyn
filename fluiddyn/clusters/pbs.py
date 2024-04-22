@@ -239,7 +239,7 @@ qrls"""
             "PBS_JOB.md",
         )
 
-        txt += "\n".join(self.commands_setting_env) + "\n\n"
+        txt += "\n".join(self.get_commands_setting_env()) + "\n\n"
 
         if omp_num_threads is not None:
             txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"

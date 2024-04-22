@@ -86,19 +86,16 @@ class Tetralith(SNIC):
     def __init__(self):
         super().__init__()
         self.check_name_cluster("SNIC_RESOURCE")
-        self.commands_setting_env = []
 
         # NOTE: Typically load the following modules and save them
         # Python/3.6.3-anaconda-5.0.1-nsc1 intel/2018a
         # buildtool-easybuild/3.5.3-nsc17d8ce4 buildenv-intel/2018a-eb
         # FFTW/3.3.6-nsc1
-        self.commands_setting_env.extend(
-            [
-                "ml restore",
-                f"source activate {_venv}",
-                'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH":"$LIBRARY_PATH"',
-            ]
-        )
+        self.commands_setting_env = [
+            "ml restore",
+            f"source activate {_venv}",
+            'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH":"$LIBRARY_PATH"',
+        ]
 
         self.commands_unsetting_env = ["source deactivate"]
 
@@ -133,19 +130,16 @@ class Kebnekaise(SNIC):
     def __init__(self):
         super().__init__()
         self.check_name_cluster("SNIC_RESOURCE")
-        self.commands_setting_env = ["source /etc/profile"]
-
-        self.commands_setting_env.extend(
-            [
-                "module load foss/2017a",
-                # also loads GCC/6.3.0-2.27  OpenMPI/2.0.2
-                # OpenBLAS/0.2.19-LAPACK-3.7.0 FFTW/3.3.6
-                "module rm FFTW/3.3.6",
-                "module load HDF5/1.10.0-patch1",
-                "module load Python/3.6.1",
-                f"source {_venv}/bin/activate",
-            ]
-        )
+        self.commands_setting_env = [
+            "source /etc/profile",
+            "module load foss/2017a",
+            # also loads GCC/6.3.0-2.27  OpenMPI/2.0.2
+            # OpenBLAS/0.2.19-LAPACK-3.7.0 FFTW/3.3.6
+            "module rm FFTW/3.3.6",
+            "module load HDF5/1.10.0-patch1",
+            "module load Python/3.6.1",
+            f"source {_venv}/bin/activate",
+        ]
 
         self.commands_unsetting_env = []
 
