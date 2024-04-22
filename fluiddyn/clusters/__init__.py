@@ -67,13 +67,18 @@ class Cluster(ABC):
         return nb_cores_per_node, nb_mpi_processes
 
     def get_commands_setting_env(self):
-        """Return a list of command setting the environment"""
+        """Return a list of commands setting the environment
+
+        If ``self.commands_setting_env`` is ``None``,
+        ``self.get_commands_activating_lauching_python()`` is returned.
+
+        """
         if self.commands_setting_env is not None:
             return self.commands_setting_env
         return self.get_commands_activating_lauching_python()
 
     def get_commands_activating_lauching_python(self):
-        """Return a list a command activating the Python used to launch the script"""
+        """Return a list a commands activating the Python used to launch the script"""
 
         commands = []
 
