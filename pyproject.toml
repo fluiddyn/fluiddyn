@@ -4,7 +4,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "fluiddyn"
-version = "0.6.3"
+version = "0.6.4"
 description = "Framework for studying fluid dynamics."
 keywords = ["Fluid dynamics", "research"]
 license = {text = "CeCILL-B License"}
@@ -17,7 +17,6 @@ dependencies = [
     "h5netcdf",
     "psutil >= 5.2.1",
     "distro",
-    "qtpy",
     "simpleeval>=0.9.13",
 ]
 readme = "README.rst"

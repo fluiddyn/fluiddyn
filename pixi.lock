@@ -616,7 +616,7 @@ package:
   timestamp: 1681308956927
 - platform: linux-64
   name: coin-or-osi
-  version: 0.108.8
+  version: 0.108.10
   category: main
   manager: conda
   dependencies:
@@ -628,11 +628,11 @@ package:
   - liblapack >=3.9.0,<4.0a0
   - libstdcxx-ng >=12
   - libzlib >=1.2.13,<1.3.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/coin-or-osi-0.108.8-ha2443b9_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/coin-or-osi-0.108.10-haf5fa05_0.conda
   hash:
-    md5: 7e4adb609b8bf87746d6fab1062348c8
-    sha256: b88e6242b20d747e95a4171d59c9fa68826ce7ed1e1d1116f614983c7e1d5d1b
-  build: ha2443b9_0
+    md5: 31465c0cbac3c466b9915563147e21bb
+    sha256: 0cba2f5d91bca83a3de727a6180842dc72f3930041d5399671b6316d07edd311
+  build: haf5fa05_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
@@ -640,11 +640,11 @@ package:
   - coincbc * *_metapackage
   license: EPL-2.0
   license_family: OTHER
-  size: 389406
-  timestamp: 1681308647472
+  size: 372978
+  timestamp: 1713104263049
 - platform: linux-64
   name: coin-or-utils
-  version: 2.11.9
+  version: 2.11.11
   category: main
   manager: conda
   dependencies:
@@ -653,15 +653,15 @@ package:
   - libcblas >=3.9.0,<4.0a0
   - libgcc-ng >=12
   - libgfortran-ng
-  - libgfortran5 >=12.2.0
+  - libgfortran5 >=12.3.0
   - liblapack >=3.9.0,<4.0a0
   - liblapacke >=3.9.0,<4.0a0
   - libstdcxx-ng >=12
   - libzlib >=1.2.13,<1.3.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/coin-or-utils-2.11.9-hee58242_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/coin-or-utils-2.11.11-hee58242_0.conda
   hash:
-    md5: 0f5e6a4d88aac3fa5fcd2fa929862711
-    sha256: df0f220aed5373dfb932c707e5eff75067f5954a499064f36935ae2585df6137
+    md5: d213208e4e3e68877b47b90ad512a95e
+    sha256: 6480bca174e4223bbabd1916957cf9ea0a44e13c8dd8c4c4744125ae2819f05e
   build: hee58242_0
   arch: x86_64
   subdir: linux-64
@@ -670,8 +670,8 @@ package:
   - coincbc * *_metapackage
   license: EPL-2.0
   license_family: OTHER
-  size: 687311
-  timestamp: 1682351198748
+  size: 687789
+  timestamp: 1712651019616
 - platform: linux-64
   name: coincbc
   version: 2.10.10
@@ -738,58 +738,58 @@ package:
   - pkg:pypi/colorama
 - platform: linux-64
   name: contourpy
-  version: 1.2.0
+  version: 1.2.1
   category: main
   manager: conda
   dependencies:
   - libgcc-ng >=12
   - libstdcxx-ng >=12
-  - numpy >=1.20,<2
+  - numpy >=1.20
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
-  url: https://conda.anaconda.org/conda-forge/linux-64/contourpy-1.2.0-py311h9547e67_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/contourpy-1.2.1-py311h9547e67_0.conda
   hash:
-    md5: 40828c5b36ef52433e21f89943e09f33
-    sha256: 2c76e2a970b74eef92ef9460aa705dbdc506dd59b7382bfbedce39d9c189d7f4
+    md5: 74ad0ae64f1ef565e27eda87fa749e84
+    sha256: 82cec326aa81b9b6b40d9f4dab5045f0553092405efd0de9d2daf71179f20607
   build: py311h9547e67_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: BSD-3-Clause
   license_family: BSD
-  size: 255843
-  timestamp: 1699041590533
+  size: 258932
+  timestamp: 1712430087609
   purls:
   - pkg:pypi/contourpy
 - platform: win-64
   name: contourpy
-  version: 1.2.0
+  version: 1.2.1
   category: main
   manager: conda
   dependencies:
-  - numpy >=1.20,<2
+  - numpy >=1.20
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/contourpy-1.2.0-py311h005e61a_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/contourpy-1.2.1-py311h005e61a_0.conda
   hash:
-    md5: 6e36537c6d0c16d2ee8ba8c3dd847662
-    sha256: d043a1cc9157ee25319fa85271cba38fc4c51caf4d38354176659d95629d04ab
+    md5: 050075a7a22e39222595b9191bc082e3
+    sha256: f9c392ae4c746ac32c55b20d8c487cbc06a91d5dd650261089d90fb55cfcb8c2
   build: py311h005e61a_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   license: BSD-3-Clause
   license_family: BSD
-  size: 206078
-  timestamp: 1699042419820
+  size: 206670
+  timestamp: 1712430308615
   purls:
   - pkg:pypi/contourpy
 - platform: linux-64
   name: coverage
-  version: 7.4.4
+  version: 7.5.0
   category: main
   manager: conda
   dependencies:
@@ -797,23 +797,23 @@ package:
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
   - tomli
-  url: https://conda.anaconda.org/conda-forge/linux-64/coverage-7.4.4-py311h459d7ec_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/coverage-7.5.0-py311h331c9d8_0.conda
   hash:
-    md5: 1aa22cb84e68841ec206ee066457bdf0
-    sha256: 51acc7896b00fa1413efff953d1e83eb8d9899b970628bf8ab1e08972f6da0e0
-  build: py311h459d7ec_0
+    md5: 5420e3594638adf670fca1a601d7efb9
+    sha256: 02ba7e37bcc6e16c4fdf8034699cd75213de0c739b60c7bf0db5065333de8da5
+  build: py311h331c9d8_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: Apache-2.0
   license_family: APACHE
-  size: 364260
-  timestamp: 1710462907480
+  size: 372796
+  timestamp: 1713908205733
   purls:
   - pkg:pypi/coverage
 - platform: win-64
   name: coverage
-  version: 7.4.4
+  version: 7.5.0
   category: main
   manager: conda
   dependencies:
@@ -823,18 +823,18 @@ package:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/coverage-7.4.4-py311ha68e1ae_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/coverage-7.5.0-py311he736701_0.conda
   hash:
-    md5: 0f9a0750e075fe2f7dd61a05817627c9
-    sha256: 43b2586802d4b131f889b1365293a2557dd692547ad7ba613b1818daa616f579
-  build: py311ha68e1ae_0
+    md5: 5c8aaa9a242865809ea48e9dea0c2e8f
+    sha256: 9f04600fad4b9897f6b790578750ebf65994efa1ae4848a0d50fda4e0696303b
+  build: py311he736701_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   license: Apache-2.0
   license_family: APACHE
-  size: 382664
-  timestamp: 1710463259556
+  size: 389461
+  timestamp: 1713908691830
   purls:
   - pkg:pypi/coverage
 - platform: linux-64
@@ -992,44 +992,44 @@ package:
   - pkg:pypi/distro
 - platform: linux-64
   name: docutils
-  version: 0.20.1
+  version: 0.21.2
   category: main
   manager: conda
   dependencies:
-  - python >=3.11,<3.12.0a0
-  - python_abi 3.11.* *_cp311
-  url: https://conda.anaconda.org/conda-forge/linux-64/docutils-0.20.1-py311h38be061_3.conda
+  - python >=3.9
+  url: https://conda.anaconda.org/conda-forge/noarch/docutils-0.21.2-pyhd8ed1ab_0.conda
   hash:
-    md5: 1c33f55e5cdcc2a2b973c432b5225bfe
-    sha256: 0011a2193a5995a6706936156ea5d1021153ec11eb8869b6abfe15a8f6f22ea8
-  build: py311h38be061_3
+    md5: e8cd5d629f65bdf0f3bb312cde14659e
+    sha256: 362bfe3afaac18298c48c0c6a935641544077ce5105a42a2d8ebe750ad07c574
+  build: pyhd8ed1ab_0
   arch: x86_64
   subdir: linux-64
-  build_number: 3
+  build_number: 0
   license: CC-PDDC AND BSD-3-Clause AND BSD-2-Clause AND ZPL-2.1
-  size: 918352
-  timestamp: 1701882791483
+  noarch: python
+  size: 403226
+  timestamp: 1713930478970
   purls:
   - pkg:pypi/docutils
 - platform: win-64
   name: docutils
-  version: 0.20.1
+  version: 0.21.2
   category: main
   manager: conda
   dependencies:
-  - python >=3.11,<3.12.0a0
-  - python_abi 3.11.* *_cp311
-  url: https://conda.anaconda.org/conda-forge/win-64/docutils-0.20.1-py311h1ea47a8_3.conda
+  - python >=3.9
+  url: https://conda.anaconda.org/conda-forge/noarch/docutils-0.21.2-pyhd8ed1ab_0.conda
   hash:
-    md5: 53e577542ed0df5a3af146e4a746dbd9
-    sha256: fcce275ca03558a4feab18964ee1368f529fe095304a3a99b22e34459a4c0090
-  build: py311h1ea47a8_3
+    md5: e8cd5d629f65bdf0f3bb312cde14659e
+    sha256: 362bfe3afaac18298c48c0c6a935641544077ce5105a42a2d8ebe750ad07c574
+  build: pyhd8ed1ab_0
   arch: x86_64
   subdir: win-64
-  build_number: 3
+  build_number: 0
   license: CC-PDDC AND BSD-3-Clause AND BSD-2-Clause AND ZPL-2.1
-  size: 973107
-  timestamp: 1701883312560
+  noarch: python
+  size: 403226
+  timestamp: 1713930478970
   purls:
   - pkg:pypi/docutils
 - platform: linux-64
@@ -1266,19 +1266,19 @@ package:
   category: main
   manager: conda
   dependencies: []
-  url: https://conda.anaconda.org/conda-forge/noarch/font-ttf-ubuntu-0.83-h77eed37_1.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/font-ttf-ubuntu-0.83-h77eed37_2.conda
   hash:
-    md5: 6185f640c43843e5ad6fd1c5372c3f80
-    sha256: 056c85b482d58faab5fd4670b6c1f5df0986314cca3bc831d458b22e4ef2c792
-  build: h77eed37_1
+    md5: cbbe59391138ea5ad3658c76912e147f
+    sha256: c940f6e969143e13a3a9660abb3c7e7e23b8319efb29dbdd5dee0b9939236e13
+  build: h77eed37_2
   arch: x86_64
   subdir: linux-64
-  build_number: 1
+  build_number: 2
   license: LicenseRef-Ubuntu-Font-Licence-Version-1.0
   license_family: Other
   noarch: generic
-  size: 1619820
-  timestamp: 1700944216729
+  size: 1622566
+  timestamp: 1714483134319
 - platform: linux-64
   name: fontconfig
   version: 2.14.2
@@ -1347,7 +1347,7 @@ package:
   timestamp: 1566932280397
 - platform: linux-64
   name: fonttools
-  version: 4.50.0
+  version: 4.51.0
   category: main
   manager: conda
   dependencies:
@@ -1356,23 +1356,23 @@ package:
   - munkres
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
-  url: https://conda.anaconda.org/conda-forge/linux-64/fonttools-4.50.0-py311h459d7ec_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/fonttools-4.51.0-py311h459d7ec_0.conda
   hash:
-    md5: fcdef52b45265eece45de756b164a9a7
-    sha256: 8c067ffd17d97374ef206bd88953a641c0807686008da68140039bec5c4dee79
+    md5: 17e1997cc17c571d5ad27bd0159f616c
+    sha256: 117bc8eb7bb390911faa0b816d404d776669b088c41a9caba7b7561cd2f67970
   build: py311h459d7ec_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: MIT
   license_family: MIT
-  size: 2838749
-  timestamp: 1710865729526
+  size: 2827021
+  timestamp: 1712344736242
   purls:
   - pkg:pypi/fonttools
 - platform: win-64
   name: fonttools
-  version: 4.50.0
+  version: 4.51.0
   category: main
   manager: conda
   dependencies:
@@ -1383,18 +1383,18 @@ package:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/fonttools-4.50.0-py311ha68e1ae_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/fonttools-4.51.0-py311ha68e1ae_0.conda
   hash:
-    md5: d74765a814a064018a6966c9dc807a44
-    sha256: fcad25ad5172bc27db6e3d5ceead5ec069ce3201b4fde892e59a84178f20d11b
+    md5: 5d497f05b17751c8e4c60103aa20d2d6
+    sha256: 7f130b53d957624bfea553cab96cf85a9d51bcf0ddcfc4e68f655bc8321cc744
   build: py311ha68e1ae_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   license: MIT
   license_family: MIT
-  size: 2410298
-  timestamp: 1710866466126
+  size: 2417702
+  timestamp: 1712345179311
   purls:
   - pkg:pypi/fonttools
 - platform: linux-64
@@ -1441,84 +1441,95 @@ package:
   timestamp: 1694616398888
 - platform: linux-64
   name: gettext
-  version: 0.21.1
+  version: 0.22.5
+  category: main
+  manager: conda
+  dependencies:
+  - gettext-tools 0.22.5 h59595ed_2
+  - libasprintf 0.22.5 h661eb56_2
+  - libasprintf-devel 0.22.5 h661eb56_2
+  - libgcc-ng >=12
+  - libgettextpo 0.22.5 h59595ed_2
+  - libgettextpo-devel 0.22.5 h59595ed_2
+  - libstdcxx-ng >=12
+  url: https://conda.anaconda.org/conda-forge/linux-64/gettext-0.22.5-h59595ed_2.conda
+  hash:
+    md5: 219ba82e95d7614cf7140d2a4afc0926
+    sha256: 386181254ddd2aed1fccdfc217da5b6545f6df4e9979ad8e08f5e91e22eaf7dc
+  build: h59595ed_2
+  arch: x86_64
+  subdir: linux-64
+  build_number: 2
+  license: LGPL-2.1-or-later AND GPL-3.0-or-later
+  size: 475058
+  timestamp: 1712512357949
+- platform: linux-64
+  name: gettext-tools
+  version: 0.22.5
   category: main
   manager: conda
   dependencies:
   - libgcc-ng >=12
-  url: https://conda.anaconda.org/conda-forge/linux-64/gettext-0.21.1-h27087fc_0.tar.bz2
+  url: https://conda.anaconda.org/conda-forge/linux-64/gettext-tools-0.22.5-h59595ed_2.conda
   hash:
-    md5: 14947d8770185e5153fdd04d4673ed37
-    sha256: 4fcfedc44e4c9a053f0416f9fc6ab6ed50644fca3a761126dbd00d09db1f546a
-  build: h27087fc_0
+    md5: 985f2f453fb72408d6b6f1be0f324033
+    sha256: 67d7b1d6fe4f1c516df2000640ec7dcfebf3ff6ea0785f0276870e730c403d33
+  build: h59595ed_2
   arch: x86_64
   subdir: linux-64
-  build_number: 0
-  license: LGPL-2.1-or-later AND GPL-3.0-or-later
-  size: 4320628
-  timestamp: 1665673494324
-- platform: win-64
-  name: gettext
-  version: 0.21.1
-  category: main
-  manager: conda
-  dependencies:
-  - libiconv >=1.17,<2.0a0
-  url: https://conda.anaconda.org/conda-forge/win-64/gettext-0.21.1-h5728263_0.tar.bz2
-  hash:
-    md5: 299d4fd6798a45337042ff5a48219e5f
-    sha256: 71c75b0a4dc2cf95d2860ea0076edf9f5558baeb4dacaeecb32643b199074616
-  build: h5728263_0
-  arch: x86_64
-  subdir: win-64
-  build_number: 0
-  license: LGPL-2.1-or-later AND GPL-3.0-or-later
-  size: 5579416
-  timestamp: 1665676022441
+  build_number: 2
+  license: GPL-3.0-or-later
+  license_family: GPL
+  size: 2728420
+  timestamp: 1712512328692
 - platform: linux-64
   name: glib
   version: 2.80.0
   category: main
   manager: conda
   dependencies:
-  - glib-tools 2.80.0 hde27a5a_1
+  - glib-tools 2.80.0 hde27a5a_6
+  - libffi >=3.4,<4.0a0
   - libgcc-ng >=12
-  - libglib 2.80.0 hf2295e7_1
+  - libglib 2.80.0 hf2295e7_6
   - python *
-  url: https://conda.anaconda.org/conda-forge/linux-64/glib-2.80.0-hf2295e7_1.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/glib-2.80.0-hf2295e7_6.conda
   hash:
-    md5: d3bcc5c186f78feba6f39ea047c35950
-    sha256: 92e0344072050dafd9f478498a2662cb6e309697b58283793145fd05c413a921
-  build: hf2295e7_1
+    md5: a1e026a82a562b443845db5614ca568a
+    sha256: 186e366c3a48c07830aa94dfc84616155bdfd08e9b73cb8e482c6ca84a550d3e
+  build: hf2295e7_6
   arch: x86_64
   subdir: linux-64
-  build_number: 1
+  build_number: 6
   license: LGPL-2.1-or-later
-  size: 503830
-  timestamp: 1710939217743
+  size: 597788
+  timestamp: 1713639483074
 - platform: win-64
   name: glib
   version: 2.80.0
   category: main
   manager: conda
   dependencies:
-  - glib-tools 2.80.0 h0a98069_1
-  - libglib 2.80.0 h39d0aa6_1
+  - glib-tools 2.80.0 h0a98069_6
+  - libffi >=3.4,<4.0a0
+  - libglib 2.80.0 h39d0aa6_6
+  - libintl >=0.22.5,<1.0a0
+  - libintl-devel
   - python *
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/glib-2.80.0-h39d0aa6_1.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/glib-2.80.0-h39d0aa6_6.conda
   hash:
-    md5: 0384fcbea19fea38cdbf4b3b8924e436
-    sha256: a76ad2d20164be5425269ac9c65dc8a071ea6dbd5ac3090f9b16dc29a7af1dbc
-  build: h39d0aa6_1
+    md5: a4036d0bc6f499ebe9fef7b887f3ca0f
+    sha256: 25b3e8930540cfbb87c03feda23cd412eb1b01fd903f46d1bd067f7d39d5941d
+  build: h39d0aa6_6
   arch: x86_64
   subdir: win-64
-  build_number: 1
+  build_number: 6
   license: LGPL-2.1-or-later
-  size: 491857
-  timestamp: 1710939590211
+  size: 572781
+  timestamp: 1713639879324
 - platform: linux-64
   name: glib-tools
   version: 2.80.0
@@ -1526,39 +1537,40 @@ package:
   manager: conda
   dependencies:
   - libgcc-ng >=12
-  - libglib 2.80.0 hf2295e7_1
-  url: https://conda.anaconda.org/conda-forge/linux-64/glib-tools-2.80.0-hde27a5a_1.conda
+  - libglib 2.80.0 hf2295e7_6
+  url: https://conda.anaconda.org/conda-forge/linux-64/glib-tools-2.80.0-hde27a5a_6.conda
   hash:
-    md5: 939ddd853b1d98bf6fd22cc0adeda317
-    sha256: 8d736e120bb1fe3b57f957d8f6b90c9bb035ee1dac167714c9afba395af6878c
-  build: hde27a5a_1
+    md5: a9d23c02485c5cf055f9ac90eb9c9c63
+    sha256: fb63c92ba2b08aad574404c6229d45f12dc78309ff7a540f1e8d941a8a075074
+  build: hde27a5a_6
   arch: x86_64
   subdir: linux-64
-  build_number: 1
+  build_number: 6
   license: LGPL-2.1-or-later
-  size: 112852
-  timestamp: 1710939161164
+  size: 113049
+  timestamp: 1713639447140
 - platform: win-64
   name: glib-tools
   version: 2.80.0
   category: main
   manager: conda
   dependencies:
-  - libglib 2.80.0 h39d0aa6_1
+  - libglib 2.80.0 h39d0aa6_6
+  - libintl >=0.22.5,<1.0a0
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/glib-tools-2.80.0-h0a98069_1.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/glib-tools-2.80.0-h0a98069_6.conda
   hash:
-    md5: b6a4948e65ee42739ce14967e4cacdca
-    sha256: 079b56c014b5f70381924db7a70000676e616079045e7a70081e2f3cf69bc969
-  build: h0a98069_1
+    md5: 40d452e4012c00f644b1dd6319fcdbcf
+    sha256: a7533a2e10fe95c8503e990da15933711843061e962450a1c7e753dc050f221b
+  build: h0a98069_6
   arch: x86_64
   subdir: win-64
-  build_number: 1
+  build_number: 6
   license: LGPL-2.1-or-later
-  size: 94114
-  timestamp: 1710939517930
+  size: 94763
+  timestamp: 1713639812512
 - platform: win-64
   name: glpk
   version: '5.0'
@@ -1601,14 +1613,13 @@ package:
   timestamp: 1711634169756
 - platform: linux-64
   name: gst-plugins-base
-  version: 1.22.9
+  version: 1.24.1
   category: main
   manager: conda
   dependencies:
   - __glibc >=2.17,<3.0.a0
   - alsa-lib >=1.2.11,<1.3.0a0
-  - gettext >=0.21.1,<1.0a0
-  - gstreamer 1.22.9 h98fc4e7_1
+  - gstreamer 1.24.1 h98fc4e7_2
   - libexpat >=2.6.2,<3.0a0
   - libgcc-ng >=12
   - libglib >=2.80.0,<3.0a0
@@ -1619,99 +1630,94 @@ package:
   - libvorbis >=1.3.7,<1.4.0a0
   - libxcb >=1.15,<1.16.0a0
   - libzlib >=1.2.13,<1.3.0a0
-  - xorg-libx11 >=1.8.7,<2.0a0
+  - xorg-libx11 >=1.8.9,<2.0a0
   - xorg-libxau >=1.0.11,<2.0a0
   - xorg-libxext >=1.3.4,<2.0a0
   - xorg-libxrender >=0.9.11,<0.10.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/gst-plugins-base-1.22.9-hfa15dee_1.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/gst-plugins-base-1.24.1-hfa15dee_2.conda
   hash:
-    md5: b66ddd883308a836ed86c247231aab82
-    sha256: 58fda05d33182b29e0524d684f626aad5208fb21e0622bc4b9013791dc105417
-  build: hfa15dee_1
+    md5: 5ff6ce5ae6e2591b13dd772ba84d8e86
+    sha256: 619755008b457efd8c58dcdf05f4a4c216de4c99e641652a750c2035b8292951
+  build: hfa15dee_2
   arch: x86_64
   subdir: linux-64
-  build_number: 1
+  build_number: 2
   license: LGPL-2.0-or-later
-  license_family: LGPL
-  size: 2709720
-  timestamp: 1711211314174
+  size: 2787559
+  timestamp: 1714678437793
 - platform: win-64
   name: gst-plugins-base
-  version: 1.22.9
+  version: 1.24.1
   category: main
   manager: conda
   dependencies:
-  - gettext >=0.21.1,<1.0a0
-  - gstreamer 1.22.9 hb4038d2_1
-  - libglib >=2.78.4,<3.0a0
+  - gstreamer 1.24.1 hb4038d2_2
+  - libglib >=2.80.0,<3.0a0
+  - libintl >=0.22.5,<1.0a0
   - libogg >=1.3.4,<1.4.0a0
   - libvorbis >=1.3.7,<1.4.0a0
   - libzlib >=1.2.13,<1.3.0a0
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/gst-plugins-base-1.22.9-h001b923_1.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/gst-plugins-base-1.24.1-h001b923_2.conda
   hash:
-    md5: ef961ec5b46ac75cebd3d68460691c27
-    sha256: e2c37128de5bdc12e3656c9c50e7b1459d8890ea656b866e68293e334356b652
-  build: h001b923_1
+    md5: 03bbe386d95cdce0d6069b09ce1698af
+    sha256: e5710147fe1c1b0daf20e0decfbbb1504877600fdc602c12a62713b5dc0e817c
+  build: h001b923_2
   arch: x86_64
   subdir: win-64
-  build_number: 1
+  build_number: 2
   license: LGPL-2.0-or-later
-  license_family: LGPL
-  size: 2035564
-  timestamp: 1711211913043
+  size: 2066034
+  timestamp: 1714679123942
 - platform: linux-64
   name: gstreamer
-  version: 1.22.9
+  version: 1.24.1
   category: main
   manager: conda
   dependencies:
   - __glibc >=2.17,<3.0.a0
-  - gettext >=0.21.1,<1.0a0
   - glib >=2.80.0,<3.0a0
   - libgcc-ng >=12
   - libglib >=2.80.0,<3.0a0
   - libiconv >=1.17,<2.0a0
   - libstdcxx-ng >=12
-  url: https://conda.anaconda.org/conda-forge/linux-64/gstreamer-1.22.9-h98fc4e7_1.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/gstreamer-1.24.1-h98fc4e7_2.conda
   hash:
-    md5: f502076ed4db50d9ee5c907036a5a172
-    sha256: 13cbc0ee5fa4a61f6f06e223d23d3c179dfbede51faf87cd2a4821efa2c249f2
-  build: h98fc4e7_1
+    md5: 3dc9f89a302e171e4361b75a7bef916f
+    sha256: 90c9fd1f44a3a000f822d42122fcb6bf78be5ec1cdf5821f9dd38db1403a9cb0
+  build: h98fc4e7_2
   arch: x86_64
   subdir: linux-64
-  build_number: 1
+  build_number: 2
   license: LGPL-2.0-or-later
-  license_family: LGPL
-  size: 1982967
-  timestamp: 1711211168691
+  size: 2020162
+  timestamp: 1714678301278
 - platform: win-64
   name: gstreamer
-  version: 1.22.9
+  version: 1.24.1
   category: main
   manager: conda
   dependencies:
-  - gettext >=0.21.1,<1.0a0
-  - glib >=2.78.4,<3.0a0
-  - libglib >=2.78.4,<3.0a0
+  - glib >=2.80.0,<3.0a0
+  - libglib >=2.80.0,<3.0a0
   - libiconv >=1.17,<2.0a0
+  - libintl >=0.22.5,<1.0a0
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/gstreamer-1.22.9-hb4038d2_1.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/gstreamer-1.24.1-hb4038d2_2.conda
   hash:
-    md5: 70557ab875e72c1f21e8d2351aeb9c54
-    sha256: 4d42bc24434db62c093748ea3ad0b6ba3872b6810b761363585513ebd79b4f87
-  build: hb4038d2_1
+    md5: 881e39a9b90dc6e6a31ba5ce44fca0ac
+    sha256: cbc822831fcf84b994e6e4f6fcb0492508405324e829b4b718b9fa78b41b080c
+  build: hb4038d2_2
   arch: x86_64
   subdir: win-64
-  build_number: 1
+  build_number: 2
   license: LGPL-2.0-or-later
-  license_family: LGPL
-  size: 1936661
-  timestamp: 1711211717228
+  size: 2031181
+  timestamp: 1714678922367
 - platform: linux-64
   name: h5netcdf
   version: 1.3.0
@@ -1762,7 +1768,7 @@ package:
   - pkg:pypi/h5netcdf
 - platform: linux-64
   name: h5py
-  version: 3.10.0
+  version: 3.11.0
   category: main
   manager: conda
   dependencies:
@@ -1772,21 +1778,21 @@ package:
   - numpy >=1.23.5,<2.0a0
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
-  url: https://conda.anaconda.org/conda-forge/linux-64/h5py-3.10.0-nompi_py311hebc2b07_101.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/h5py-3.11.0-nompi_py311hebc2b07_100.conda
   hash:
-    md5: d296508ba3321610858220a206942274
-    sha256: 77b40eae2ee8dcd664c47a62358aceec774494610bca8cba8e63a42a3fd1a2ff
-  build: nompi_py311hebc2b07_101
+    md5: 31cb281046cd6f25fb9bb83805f3d0c9
+    sha256: 5ecc7971614f8b53e0bf3b583babf7f414bf6bd4ee394777121b5103f2f96550
+  build: nompi_py311hebc2b07_100
   arch: x86_64
   subdir: linux-64
-  build_number: 101
+  build_number: 100
   license: BSD-3-Clause
   license_family: BSD
-  size: 1245917
-  timestamp: 1702471664453
+  size: 1253858
+  timestamp: 1712763767150
 - platform: win-64
   name: h5py
-  version: 3.10.0
+  version: 3.11.0
   category: main
   manager: conda
   dependencies:
@@ -1798,21 +1804,21 @@ package:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/h5py-3.10.0-nompi_py311h7195302_101.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/h5py-3.11.0-nompi_py311h7195302_100.conda
   hash:
-    md5: 04c8294a0d1748d24d5071c777aa2572
-    sha256: 3232aec21a01bb5f491bd4df54eec72035339e36937399358254cf61a974fdc1
-  build: nompi_py311h7195302_101
+    md5: bcaa05902dbec9a88553753202a302d4
+    sha256: f3323c2793c673b486afe5757259a72a8987978625ee480b5039999f215b0d86
+  build: nompi_py311h7195302_100
   arch: x86_64
   subdir: win-64
-  build_number: 101
+  build_number: 100
   license: BSD-3-Clause
   license_family: BSD
-  size: 966559
-  timestamp: 1702473291034
+  size: 964395
+  timestamp: 1712766591096
 - platform: linux-64
   name: harfbuzz
-  version: 8.3.0
+  version: 8.4.0
   category: main
   manager: conda
   dependencies:
@@ -1821,71 +1827,71 @@ package:
   - graphite2
   - icu >=73.2,<74.0a0
   - libgcc-ng >=12
-  - libglib >=2.78.1,<3.0a0
+  - libglib >=2.80.0,<3.0a0
   - libstdcxx-ng >=12
-  url: https://conda.anaconda.org/conda-forge/linux-64/harfbuzz-8.3.0-h3d44ed6_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/harfbuzz-8.4.0-h3d44ed6_0.conda
   hash:
-    md5: 5a6f6c00ef982a9bc83558d9ac8f64a0
-    sha256: 4b55aea03b18a4084b750eee531ad978d4a3690f63019132c26c6ad26bbe3aed
+    md5: 27f46291a6aaa3c2a4f798ebd35a7ddb
+    sha256: d27441d53498f28a36a1612d8f767bae0418076e9c08dcd2cd511c8439d2fb4d
   build: h3d44ed6_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: MIT
   license_family: MIT
-  size: 1547473
-  timestamp: 1699925311766
+  size: 1587652
+  timestamp: 1713957638950
 - platform: linux-64
   name: hdf5
   version: 1.14.3
   category: main
   manager: conda
   dependencies:
-  - libaec >=1.1.2,<2.0a0
-  - libcurl >=8.4.0,<9.0a0
+  - libaec >=1.1.3,<2.0a0
+  - libcurl >=8.7.1,<9.0a0
   - libgcc-ng >=12
   - libgfortran-ng
   - libgfortran5 >=12.3.0
   - libstdcxx-ng >=12
   - libzlib >=1.2.13,<1.3.0a0
-  - openssl >=3.2.0,<4.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/hdf5-1.14.3-nompi_h4f84152_100.conda
+  - openssl >=3.3.0,<4.0a0
+  url: https://conda.anaconda.org/conda-forge/linux-64/hdf5-1.14.3-nompi_h4f84152_101.conda
   hash:
-    md5: d471a5c3abc984b662d9bae3bb7fd8a5
-    sha256: b814f8f9598cc6e50127533ec256725183ba69db5fd8cf5443223627f19e3e59
-  build: nompi_h4f84152_100
+    md5: 7e98860d08eea82c8057abd78864fcb4
+    sha256: e7d2591bc77d47e9f3fc57d94a817dc9385f4079d930a93475fe45aa2ba81d47
+  build: nompi_h4f84152_101
   arch: x86_64
   subdir: linux-64
-  build_number: 100
-  license: LicenseRef-HDF5
+  build_number: 101
+  license: BSD-3-Clause
   license_family: BSD
-  size: 3892189
-  timestamp: 1701791599022
+  size: 3884115
+  timestamp: 1714575562551
 - platform: win-64
   name: hdf5
   version: 1.14.3
   category: main
   manager: conda
   dependencies:
-  - libaec >=1.1.2,<2.0a0
-  - libcurl >=8.4.0,<9.0a0
+  - libaec >=1.1.3,<2.0a0
+  - libcurl >=8.7.1,<9.0a0
   - libzlib >=1.2.13,<1.3.0a0
-  - openssl >=3.2.0,<4.0a0
+  - openssl >=3.3.0,<4.0a0
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/hdf5-1.14.3-nompi_h73e8ff5_100.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/hdf5-1.14.3-nompi_h73e8ff5_101.conda
   hash:
-    md5: 1e91ce0f3a914b0dab762539c0df4ff1
-    sha256: 89bbb2c878e1b6c6073ef5f1f25eac97ed48393541a4a44a7d182da5ede3dc98
-  build: nompi_h73e8ff5_100
+    md5: b746fce22796d2e2d8b37bdd45d12d78
+    sha256: b4d50137e1f2f2b62e4da626ee64f9233457fef3de62c3a8dbd01f41cf2cebe4
+  build: nompi_h73e8ff5_101
   arch: x86_64
   subdir: win-64
-  build_number: 100
-  license: LicenseRef-HDF5
+  build_number: 101
+  license: BSD-3-Clause
   license_family: BSD
-  size: 2045774
-  timestamp: 1701791365837
+  size: 2041847
+  timestamp: 1714575202830
 - platform: linux-64
   name: icu
   version: '73.2'
@@ -1929,17 +1935,17 @@ package:
   timestamp: 1692901469029
 - platform: linux-64
   name: imageio
-  version: 2.34.0
+  version: 2.34.1
   category: main
   manager: conda
   dependencies:
   - numpy
   - pillow >=8.3.2
   - python >=3
-  url: https://conda.anaconda.org/conda-forge/noarch/imageio-2.34.0-pyh4b66e23_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/imageio-2.34.1-pyh4b66e23_0.conda
   hash:
-    md5: b8853659d596f967c661f544dd89ede7
-    sha256: be0eecc8b3ee49ffe3c38dedc4d3c121e18627624926f7d1d998e8027bce4266
+    md5: bcf6a6f4c6889ca083e8d33afbafb8d5
+    sha256: f99e8f3a81d74f4866260badcc4e2f673c0af5564d54325cb6f2df56a6a30a22
   build: pyh4b66e23_0
   arch: x86_64
   subdir: linux-64
@@ -1947,23 +1953,23 @@ package:
   license: BSD-2-Clause
   license_family: BSD
   noarch: python
-  size: 290617
-  timestamp: 1707730229565
+  size: 291095
+  timestamp: 1713760769964
   purls:
   - pkg:pypi/imageio
 - platform: win-64
   name: imageio
-  version: 2.34.0
+  version: 2.34.1
   category: main
   manager: conda
   dependencies:
   - numpy
   - pillow >=8.3.2
   - python >=3
-  url: https://conda.anaconda.org/conda-forge/noarch/imageio-2.34.0-pyh4b66e23_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/imageio-2.34.1-pyh4b66e23_0.conda
   hash:
-    md5: b8853659d596f967c661f544dd89ede7
-    sha256: be0eecc8b3ee49ffe3c38dedc4d3c121e18627624926f7d1d998e8027bce4266
+    md5: bcf6a6f4c6889ca083e8d33afbafb8d5
+    sha256: f99e8f3a81d74f4866260badcc4e2f673c0af5564d54325cb6f2df56a6a30a22
   build: pyh4b66e23_0
   arch: x86_64
   subdir: win-64
@@ -1971,8 +1977,8 @@ package:
   license: BSD-2-Clause
   license_family: BSD
   noarch: python
-  size: 290617
-  timestamp: 1707730229565
+  size: 291095
+  timestamp: 1713760769964
   purls:
   - pkg:pypi/imageio
 - platform: linux-64
@@ -2021,22 +2027,22 @@ package:
   - pkg:pypi/iniconfig
 - platform: win-64
   name: intel-openmp
-  version: 2024.0.0
+  version: 2024.1.0
   category: main
   manager: conda
   dependencies: []
-  url: https://conda.anaconda.org/conda-forge/win-64/intel-openmp-2024.0.0-h57928b3_49841.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/intel-openmp-2024.1.0-h57928b3_965.conda
   hash:
-    md5: e3255c8cdaf1d52f15816d1970f9c77a
-    sha256: 6ee8eb9080bb3268654e015dd17ad79d0c1ea98b2eee6b928ecd27f01d6b38e8
-  build: h57928b3_49841
+    md5: c66eb2fd33b999ccc258aef85689758e
+    sha256: 7b029e476ad6d401d645636ee3e4b40130bfcc9534f7415209dd5b666c6dd292
+  build: h57928b3_965
   arch: x86_64
   subdir: win-64
-  build_number: 49841
+  build_number: 965
   license: LicenseRef-ProprietaryIntel
   license_family: Proprietary
-  size: 2325424
-  timestamp: 1706182537883
+  size: 1617555
+  timestamp: 1712943333029
 - platform: linux-64
   name: ipython
   version: 8.22.2
@@ -2333,11 +2339,11 @@ package:
   category: main
   manager: conda
   dependencies: []
-  url: https://conda.anaconda.org/conda-forge/linux-64/ld_impl_linux-64-2.40-h41732ed_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/ld_impl_linux-64-2.40-h55db66e_0.conda
   hash:
-    md5: 7aca3059a1729aa76c597603f10b0dd3
-    sha256: f6cc89d887555912d6c61b295d398cff9ec982a3417d38025c45d5dd9b9e79cd
-  build: h41732ed_0
+    md5: 10569984e7db886e4f1abc2b47ad79a1
+    sha256: ef969eee228cfb71e55146eaecc6af065f468cb0bc0a5239bc053b39db0b5f09
+  build: h55db66e_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
@@ -2345,8 +2351,8 @@ package:
   - binutils_impl_linux-64 2.40
   license: GPL-3.0-only
   license_family: GPL
-  size: 704696
-  timestamp: 1674833944779
+  size: 713322
+  timestamp: 1713651222435
 - platform: linux-64
   name: lerc
   version: 4.0.0
@@ -2429,54 +2435,92 @@ package:
   size: 32567
   timestamp: 1711021603471
 - platform: linux-64
+  name: libasprintf
+  version: 0.22.5
+  category: main
+  manager: conda
+  dependencies:
+  - libgcc-ng >=12
+  - libstdcxx-ng >=12
+  url: https://conda.anaconda.org/conda-forge/linux-64/libasprintf-0.22.5-h661eb56_2.conda
+  hash:
+    md5: dd197c968bf9760bba0031888d431ede
+    sha256: 31d58af7eb54e2938123200239277f14893c5fa4b5d0280c8cf55ae10000638b
+  build: h661eb56_2
+  arch: x86_64
+  subdir: linux-64
+  build_number: 2
+  license: LGPL-2.1-or-later
+  size: 43226
+  timestamp: 1712512265295
+- platform: linux-64
+  name: libasprintf-devel
+  version: 0.22.5
+  category: main
+  manager: conda
+  dependencies:
+  - libasprintf 0.22.5 h661eb56_2
+  - libgcc-ng >=12
+  url: https://conda.anaconda.org/conda-forge/linux-64/libasprintf-devel-0.22.5-h661eb56_2.conda
+  hash:
+    md5: 02e41ab5834dcdcc8590cf29d9526f50
+    sha256: 99d26d272a8203d30b3efbe734a99c823499884d7759b4291674438137c4b5ca
+  build: h661eb56_2
+  arch: x86_64
+  subdir: linux-64
+  build_number: 2
+  license: LGPL-2.1-or-later
+  size: 34225
+  timestamp: 1712512295117
+- platform: linux-64
   name: libblas
   version: 3.9.0
   category: main
   manager: conda
   dependencies:
-  - libopenblas >=0.3.26,<0.3.27.0a0
-  - libopenblas >=0.3.26,<1.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/libblas-3.9.0-21_linux64_openblas.conda
+  - libopenblas >=0.3.27,<0.3.28.0a0
+  - libopenblas >=0.3.27,<1.0a0
+  url: https://conda.anaconda.org/conda-forge/linux-64/libblas-3.9.0-22_linux64_openblas.conda
   hash:
-    md5: 0ac9f44fc096772b0aa092119b00c3ca
-    sha256: ebd5c91f029f779fb88a1fcbd1e499559a9c258e3674ff58a2fbb4e375ae56d9
-  build: 21_linux64_openblas
+    md5: 1a2a0cd3153464fee6646f3dd6dad9b8
+    sha256: 082b8ac20d43a7bbcdc28b3b1cd40e4df3a8b5daf0a2d23d68953a44d2d12c1b
+  build: 22_linux64_openblas
   arch: x86_64
   subdir: linux-64
-  build_number: 21
+  build_number: 22
   constrains:
-  - liblapacke 3.9.0 21_linux64_openblas
+  - libcblas 3.9.0 22_linux64_openblas
   - blas * openblas
-  - libcblas 3.9.0 21_linux64_openblas
-  - liblapack 3.9.0 21_linux64_openblas
+  - liblapacke 3.9.0 22_linux64_openblas
+  - liblapack 3.9.0 22_linux64_openblas
   license: BSD-3-Clause
   license_family: BSD
-  size: 14691
-  timestamp: 1705979549006
+  size: 14537
+  timestamp: 1712542250081
 - platform: win-64
   name: libblas
   version: 3.9.0
   category: main
   manager: conda
   dependencies:
-  - mkl 2024.0.0 h66d3029_49657
-  url: https://conda.anaconda.org/conda-forge/win-64/libblas-3.9.0-21_win64_mkl.conda
+  - mkl 2024.1.0 h66d3029_692
+  url: https://conda.anaconda.org/conda-forge/win-64/libblas-3.9.0-22_win64_mkl.conda
   hash:
-    md5: ebba3846d11201fe54277e4965ba5250
-    sha256: ad47053cee17802df875203aba191b04d97a50d820dbf75a114a50972c517334
-  build: 21_win64_mkl
+    md5: 65c56ecdeceffd6c32d3d54db7e02c6e
+    sha256: 4faab445cbd9a13736a206b98fde962d0a9fa80dcbd38300951a8b2863e7c35c
+  build: 22_win64_mkl
   arch: x86_64
   subdir: win-64
-  build_number: 21
+  build_number: 22
   constrains:
-  - liblapack 3.9.0 21_win64_mkl
+  - liblapacke 3.9.0 22_win64_mkl
   - blas * mkl
-  - libcblas 3.9.0 21_win64_mkl
-  - liblapacke 3.9.0 21_win64_mkl
+  - libcblas 3.9.0 22_win64_mkl
+  - liblapack 3.9.0 22_win64_mkl
   license: BSD-3-Clause
   license_family: BSD
-  size: 5017135
-  timestamp: 1705980415163
+  size: 5182602
+  timestamp: 1712542984136
 - platform: linux-64
   name: libbrotlicommon
   version: 1.1.0
@@ -2627,46 +2671,46 @@ package:
   category: main
   manager: conda
   dependencies:
-  - libblas 3.9.0 21_linux64_openblas
-  url: https://conda.anaconda.org/conda-forge/linux-64/libcblas-3.9.0-21_linux64_openblas.conda
+  - libblas 3.9.0 22_linux64_openblas
+  url: https://conda.anaconda.org/conda-forge/linux-64/libcblas-3.9.0-22_linux64_openblas.conda
   hash:
-    md5: 4a3816d06451c4946e2db26b86472cb6
-    sha256: 467bbfbfe1a1aeb8b1f9f6485eedd8ed1b6318941bf3702da72336ccf4dc25a6
-  build: 21_linux64_openblas
+    md5: 4b31699e0ec5de64d5896e580389c9a1
+    sha256: da1b2faa017663c8f5555c1c5518e96ac4cd8e0be2a673c1c9e2cb8507c8fe46
+  build: 22_linux64_openblas
   arch: x86_64
   subdir: linux-64
-  build_number: 21
+  build_number: 22
   constrains:
-  - liblapacke 3.9.0 21_linux64_openblas
+  - liblapack 3.9.0 22_linux64_openblas
   - blas * openblas
-  - liblapack 3.9.0 21_linux64_openblas
+  - liblapacke 3.9.0 22_linux64_openblas
   license: BSD-3-Clause
   license_family: BSD
-  size: 14614
-  timestamp: 1705979564122
+  size: 14438
+  timestamp: 1712542270166
 - platform: win-64
   name: libcblas
   version: 3.9.0
   category: main
   manager: conda
   dependencies:
-  - libblas 3.9.0 21_win64_mkl
-  url: https://conda.anaconda.org/conda-forge/win-64/libcblas-3.9.0-21_win64_mkl.conda
+  - libblas 3.9.0 22_win64_mkl
+  url: https://conda.anaconda.org/conda-forge/win-64/libcblas-3.9.0-22_win64_mkl.conda
   hash:
-    md5: 38e5ec23bc2b62f9dd971143aa9dddb7
-    sha256: 886505d0a4a5b508b2255991395aadecdad140719ba0d413411fec86491a9283
-  build: 21_win64_mkl
+    md5: 336c93ab102846c6131cf68e722a68f1
+    sha256: 5503273924650330dc03edd1eb01ec4020b9967b5a4cafc377ba20b976d15590
+  build: 22_win64_mkl
   arch: x86_64
   subdir: win-64
-  build_number: 21
+  build_number: 22
   constrains:
-  - liblapack 3.9.0 21_win64_mkl
+  - liblapacke 3.9.0 22_win64_mkl
   - blas * mkl
-  - liblapacke 3.9.0 21_win64_mkl
+  - liblapack 3.9.0 22_win64_mkl
   license: BSD-3-Clause
   license_family: BSD
-  size: 5017024
-  timestamp: 1705980469944
+  size: 5191513
+  timestamp: 1712543043641
 - platform: linux-64
   name: libclang-cpp15
   version: 15.0.7
@@ -2690,28 +2734,28 @@ package:
   timestamp: 1711063711931
 - platform: linux-64
   name: libclang13
-  version: 18.1.2
+  version: 18.1.4
   category: main
   manager: conda
   dependencies:
   - libgcc-ng >=12
-  - libllvm18 >=18.1.2,<18.2.0a0
+  - libllvm18 >=18.1.4,<18.2.0a0
   - libstdcxx-ng >=12
-  url: https://conda.anaconda.org/conda-forge/linux-64/libclang13-18.1.2-default_h5d6823c_1.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libclang13-18.1.4-default_h5d6823c_0.conda
   hash:
-    md5: 7aa3c2bbedb583b81e1efc997cb22073
-    sha256: fd1bb5fb2cd65526e1c67ea20efbbe8c1b1bf8ff61465af591d7b25f0c037b06
-  build: default_h5d6823c_1
+    md5: 2c3b47879fc036ef57f3056834737ecb
+    sha256: 3ec4de4613285b971350c9588125164ed2753bdabfd3a0f6378b7bc832a5a859
+  build: default_h5d6823c_0
   arch: x86_64
   subdir: linux-64
-  build_number: 1
+  build_number: 0
   license: Apache-2.0 WITH LLVM-exception
   license_family: Apache
-  size: 11070109
-  timestamp: 1711067889145
+  size: 11043670
+  timestamp: 1714511189746
 - platform: win-64
   name: libclang13
-  version: 18.1.2
+  version: 18.1.4
   category: main
   manager: conda
   dependencies:
@@ -2720,18 +2764,18 @@ package:
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
   - zstd >=1.5.5,<1.6.0a0
-  url: https://conda.anaconda.org/conda-forge/win-64/libclang13-18.1.2-default_hf64faad_1.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/libclang13-18.1.4-default_hf64faad_0.conda
   hash:
-    md5: ece5a1b226db1000b2c479694c1ae265
-    sha256: 847dc28280d6564a02ef971a232f30c84fcb5d366a54e59de35fae33e096c8cc
-  build: default_hf64faad_1
+    md5: eb322d98026526776d1464c2b04ddbe3
+    sha256: 126ad517d9d85371566f6668e5207f69bc43e22dea4663674ebd90e23c36f38f
+  build: default_hf64faad_0
   arch: x86_64
   subdir: win-64
-  build_number: 1
+  build_number: 0
   license: Apache-2.0 WITH LLVM-exception
   license_family: Apache
-  size: 25310297
-  timestamp: 1711069468740
+  size: 25328763
+  timestamp: 1714517601407
 - platform: linux-64
   name: libcups
   version: 2.3.3
@@ -3013,20 +3057,19 @@ package:
   dependencies:
   - _libgcc_mutex 0.1 conda_forge
   - _openmp_mutex >=4.5
-  url: https://conda.anaconda.org/conda-forge/linux-64/libgcc-ng-13.2.0-h807b86a_5.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libgcc-ng-13.2.0-h77fa898_6.conda
   hash:
-    md5: d4ff227c46917d3b4565302a2bbb276b
-    sha256: d32f78bfaac282cfe5205f46d558704ad737b8dbf71f9227788a5ca80facaba4
-  build: h807b86a_5
+    md5: 4398809ac84d0b8c28beebaaa83277f5
+    sha256: 8bd6311a05f02459eb3efafe948f21e58170ccfcce4350a86de35d7573256bb2
+  build: h77fa898_6
   arch: x86_64
   subdir: linux-64
-  build_number: 5
+  build_number: 6
   constrains:
-  - libgomp 13.2.0 h807b86a_5
+  - libgomp 13.2.0 h77fa898_6
   license: GPL-3.0-only WITH GCC-exception-3.1
-  license_family: GPL
-  size: 770506
-  timestamp: 1706819192021
+  size: 777610
+  timestamp: 1714581763008
 - platform: linux-64
   name: libgcrypt
   version: 1.10.3
@@ -3048,24 +3091,63 @@ package:
   size: 634887
   timestamp: 1701383493365
 - platform: linux-64
+  name: libgettextpo
+  version: 0.22.5
+  category: main
+  manager: conda
+  dependencies:
+  - libgcc-ng >=12
+  url: https://conda.anaconda.org/conda-forge/linux-64/libgettextpo-0.22.5-h59595ed_2.conda
+  hash:
+    md5: 172bcc51059416e7ce99e7b528cede83
+    sha256: e2f784564a2bdc6f753f00f63cc77c97601eb03bc89dccc4413336ec6d95490b
+  build: h59595ed_2
+  arch: x86_64
+  subdir: linux-64
+  build_number: 2
+  license: GPL-3.0-or-later
+  license_family: GPL
+  size: 170582
+  timestamp: 1712512286907
+- platform: linux-64
+  name: libgettextpo-devel
+  version: 0.22.5
+  category: main
+  manager: conda
+  dependencies:
+  - libgcc-ng >=12
+  - libgettextpo 0.22.5 h59595ed_2
+  url: https://conda.anaconda.org/conda-forge/linux-64/libgettextpo-devel-0.22.5-h59595ed_2.conda
+  hash:
+    md5: b63d9b6da3653179a278077f0de20014
+    sha256: 695eb2439ad4a89e4205dd675cc52fba5cef6b5d41b83f07cdbf4770a336cc15
+  build: h59595ed_2
+  arch: x86_64
+  subdir: linux-64
+  build_number: 2
+  license: GPL-3.0-or-later
+  license_family: GPL
+  size: 36758
+  timestamp: 1712512303244
+- platform: linux-64
   name: libgfortran-ng
   version: 13.2.0
   category: main
   manager: conda
   dependencies:
-  - libgfortran5 13.2.0 ha4646dd_5
-  url: https://conda.anaconda.org/conda-forge/linux-64/libgfortran-ng-13.2.0-h69a702a_5.conda
+  - libgfortran5 13.2.0 h43f5ff8_6
+  url: https://conda.anaconda.org/conda-forge/linux-64/libgfortran-ng-13.2.0-h69a702a_6.conda
   hash:
-    md5: e73e9cfd1191783392131e6238bdb3e9
-    sha256: 238c16c84124d58307376715839aa152bd4a1bf5a043052938ad6c3137d30245
-  build: h69a702a_5
+    md5: 3666a850342f8f3be88f9a93d948d027
+    sha256: 5e436753c55d81005e9383d7a8ec14298ebd35029d148db7e03c4834ffca54ee
+  build: h69a702a_6
   arch: x86_64
   subdir: linux-64
-  build_number: 5
+  build_number: 6
   license: GPL-3.0-only WITH GCC-exception-3.1
   license_family: GPL
-  size: 23829
-  timestamp: 1706819413770
+  size: 24183
+  timestamp: 1713755271389
 - platform: linux-64
   name: libgfortran5
   version: 13.2.0
@@ -3073,20 +3155,20 @@ package:
   manager: conda
   dependencies:
   - libgcc-ng >=13.2.0
-  url: https://conda.anaconda.org/conda-forge/linux-64/libgfortran5-13.2.0-ha4646dd_5.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libgfortran5-13.2.0-h43f5ff8_6.conda
   hash:
-    md5: 7a6bd7a12a4bd359e2afe6c0fa1acace
-    sha256: ba8d94e8493222ce155bb264d9de4200e41498a458e866fedf444de809bde8b6
-  build: ha4646dd_5
+    md5: e54a5ddc67e673f9105cf2a2e9c070b0
+    sha256: 5da2abd9e2c09ec8566fbacb237926b532f6629871ff2733c90a0be77b77679e
+  build: h43f5ff8_6
   arch: x86_64
   subdir: linux-64
-  build_number: 5
+  build_number: 6
   constrains:
   - libgfortran-ng 13.2.0
   license: GPL-3.0-only WITH GCC-exception-3.1
   license_family: GPL
-  size: 1442769
-  timestamp: 1706819209473
+  size: 1442624
+  timestamp: 1713755021286
 - platform: linux-64
   name: libglib
   version: 2.80.0
@@ -3098,19 +3180,19 @@ package:
   - libiconv >=1.17,<2.0a0
   - libzlib >=1.2.13,<1.3.0a0
   - pcre2 >=10.43,<10.44.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/libglib-2.80.0-hf2295e7_1.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libglib-2.80.0-hf2295e7_6.conda
   hash:
-    md5: 0725f6081030c29b109088639824ff90
-    sha256: 636d984568a1e5d915098a5020712f82bb3988635015765c3caf70f1a91340c5
-  build: hf2295e7_1
+    md5: 9342e7c44c38bea649490f72d92c382d
+    sha256: d2867a1515676f3b64265420598badb2e4ad2369d85237fb276173a99959eb37
+  build: hf2295e7_6
   arch: x86_64
   subdir: linux-64
-  build_number: 1
+  build_number: 6
   constrains:
-  - glib 2.80.0 *_1
+  - glib 2.80.0 *_6
   license: LGPL-2.1-or-later
-  size: 2888982
-  timestamp: 1710939100254
+  size: 3942450
+  timestamp: 1713639388280
 - platform: win-64
   name: libglib
   version: 2.80.0
@@ -3119,24 +3201,25 @@ package:
   dependencies:
   - libffi >=3.4,<4.0a0
   - libiconv >=1.17,<2.0a0
+  - libintl >=0.22.5,<1.0a0
   - libzlib >=1.2.13,<1.3.0a0
   - pcre2 >=10.43,<10.44.0a0
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/libglib-2.80.0-h39d0aa6_1.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/libglib-2.80.0-h39d0aa6_6.conda
   hash:
-    md5: 6160439f169ec670951460024751b2ae
-    sha256: 326fb2d1c8789660cec01eda3eec2fa15dd816d291126df13f1c34d80ffda6aa
-  build: h39d0aa6_1
+    md5: cd5c6efbe213c089f78575c98ab9a0ed
+    sha256: 87772cdcfb292a64ddd9e737c5deaaf671c7cd82b22ad70c8a8a9f1f34074fb5
+  build: h39d0aa6_6
   arch: x86_64
   subdir: win-64
-  build_number: 1
+  build_number: 6
   constrains:
-  - glib 2.80.0 *_1
+  - glib 2.80.0 *_6
   license: LGPL-2.1-or-later
-  size: 2805065
-  timestamp: 1710939443433
+  size: 3740691
+  timestamp: 1713639713931
 - platform: linux-64
   name: libgomp
   version: 13.2.0
@@ -3144,62 +3227,63 @@ package:
   manager: conda
   dependencies:
   - _libgcc_mutex 0.1 conda_forge
-  url: https://conda.anaconda.org/conda-forge/linux-64/libgomp-13.2.0-h807b86a_5.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libgomp-13.2.0-h77fa898_6.conda
   hash:
-    md5: d211c42b9ce49aee3734fdc828731689
-    sha256: 0d3d4b1b0134283ea02d58e8eb5accf3655464cf7159abf098cc694002f8d34e
-  build: h807b86a_5
+    md5: e733e0573651a1f0639fa8ce066a286e
+    sha256: b059ec2403a421c71c33633ece6be2ccd303e376aae6079f8cfda96d42616527
+  build: h77fa898_6
   arch: x86_64
   subdir: linux-64
-  build_number: 5
+  build_number: 6
   license: GPL-3.0-only WITH GCC-exception-3.1
-  license_family: GPL
-  size: 419751
-  timestamp: 1706819107383
+  size: 420177
+  timestamp: 1714581699319
 - platform: linux-64
   name: libgpg-error
-  version: '1.48'
+  version: '1.49'
   category: main
   manager: conda
   dependencies:
-  - gettext >=0.21.1,<1.0a0
+  - gettext
+  - libasprintf >=0.22.5,<1.0a0
   - libgcc-ng >=12
+  - libgettextpo >=0.22.5,<1.0a0
   - libstdcxx-ng >=12
-  url: https://conda.anaconda.org/conda-forge/linux-64/libgpg-error-1.48-h71f35ed_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libgpg-error-1.49-h4f305b6_0.conda
   hash:
-    md5: 4d18d86916705d352d5f4adfb7f0edd3
-    sha256: c448c6d86d27e10b9e844172000540e9cbfe9c28f968db87f949ba05add9bd50
-  build: h71f35ed_0
+    md5: dfcfd72c7a430d3616763ecfbefe4ca9
+    sha256: b2664c2c11211a63856f23278efb49d3e65d902297989a0c12dcd228b5d97110
+  build: h4f305b6_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: GPL-2.0-only
   license_family: GPL
-  size: 266447
-  timestamp: 1708702470365
+  size: 263319
+  timestamp: 1714121531915
 - platform: win-64
   name: libhwloc
-  version: 2.9.3
+  version: 2.10.0
   category: main
   manager: conda
   dependencies:
-  - libxml2 >=2.11.5,<3.0.0a0
+  - libxml2 >=2.12.6,<3.0a0
   - pthreads-win32
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/libhwloc-2.9.3-default_haede6df_1009.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/libhwloc-2.10.0-default_h2fffb23_1000.conda
   hash:
-    md5: 87da045f6d26ce9fe20ad76a18f6a18a
-    sha256: 2e8c4bb7173f281a8e13f333a23c9fb7a1c86d342d7dccdd74f2eb583ddde450
-  build: default_haede6df_1009
+    md5: ee944f0d41d9e2048f9d7492c1623ca3
+    sha256: e0d75da50e67a81e3cb37e2ee3b0d6ddc6543ec0f7b3828f884558552a1c4d93
+  build: default_h2fffb23_1000
   arch: x86_64
   subdir: win-64
-  build_number: 1009
+  build_number: 1000
   license: BSD-3-Clause
   license_family: BSD
-  size: 2578462
-  timestamp: 1694533393675
+  size: 2376728
+  timestamp: 1711491473761
 - platform: linux-64
   name: libiconv
   version: '1.17'
@@ -3238,6 +3322,43 @@ package:
   license: LGPL-2.1-only
   size: 636146
   timestamp: 1702682547199
+- platform: win-64
+  name: libintl
+  version: 0.22.5
+  category: main
+  manager: conda
+  dependencies:
+  - libiconv >=1.17,<2.0a0
+  url: https://conda.anaconda.org/conda-forge/win-64/libintl-0.22.5-h5728263_2.conda
+  hash:
+    md5: aa622c938af057adc119f8b8eecada01
+    sha256: 1b95335af0a3e278b31e16667fa4e51d1c3f5e22d394d982539dfd5d34c5ae19
+  build: h5728263_2
+  arch: x86_64
+  subdir: win-64
+  build_number: 2
+  license: LGPL-2.1-or-later
+  size: 95745
+  timestamp: 1712516102666
+- platform: win-64
+  name: libintl-devel
+  version: 0.22.5
+  category: main
+  manager: conda
+  dependencies:
+  - libiconv >=1.17,<2.0a0
+  - libintl 0.22.5 h5728263_2
+  url: https://conda.anaconda.org/conda-forge/win-64/libintl-devel-0.22.5-h5728263_2.conda
+  hash:
+    md5: a2ad82fae23975e4ccbfab2847d31d48
+    sha256: 6164fd51abfc7294477c58da77ee1ff9ebc63b9a33404b646407f7fbc3cc7d0d
+  build: h5728263_2
+  arch: x86_64
+  subdir: win-64
+  build_number: 2
+  license: LGPL-2.1-or-later
+  size: 40772
+  timestamp: 1712516363413
 - platform: linux-64
   name: libjpeg-turbo
   version: 3.0.0
@@ -3286,69 +3407,69 @@ package:
   category: main
   manager: conda
   dependencies:
-  - libblas 3.9.0 21_linux64_openblas
-  url: https://conda.anaconda.org/conda-forge/linux-64/liblapack-3.9.0-21_linux64_openblas.conda
+  - libblas 3.9.0 22_linux64_openblas
+  url: https://conda.anaconda.org/conda-forge/linux-64/liblapack-3.9.0-22_linux64_openblas.conda
   hash:
-    md5: 1a42f305615c3867684e049e85927531
-    sha256: 64b5c35dce00dd6f9f53178b2fe87116282e00967970bd6551a5a42923806ded
-  build: 21_linux64_openblas
+    md5: b083767b6c877e24ee597d93b87ab838
+    sha256: db246341d42f9100d45adeb1a7ba8b1ef5b51ceb9056fd643e98046a3259fde6
+  build: 22_linux64_openblas
   arch: x86_64
   subdir: linux-64
-  build_number: 21
+  build_number: 22
   constrains:
-  - liblapacke 3.9.0 21_linux64_openblas
-  - libcblas 3.9.0 21_linux64_openblas
+  - libcblas 3.9.0 22_linux64_openblas
   - blas * openblas
+  - liblapacke 3.9.0 22_linux64_openblas
   license: BSD-3-Clause
   license_family: BSD
-  size: 14599
-  timestamp: 1705979579648
+  size: 14471
+  timestamp: 1712542277696
 - platform: win-64
   name: liblapack
   version: 3.9.0
   category: main
   manager: conda
   dependencies:
-  - libblas 3.9.0 21_win64_mkl
-  url: https://conda.anaconda.org/conda-forge/win-64/liblapack-3.9.0-21_win64_mkl.conda
+  - libblas 3.9.0 22_win64_mkl
+  url: https://conda.anaconda.org/conda-forge/win-64/liblapack-3.9.0-22_win64_mkl.conda
   hash:
-    md5: c4740f091cb75987390087934354a621
-    sha256: 3fa7c08dd4edf59cb0907d2e5b74e6be890e0671f845e1bae892d212d118a7e9
-  build: 21_win64_mkl
+    md5: c752cc2af9f3d8d7b2fdebb915a33ef7
+    sha256: 8b28b361a13819ed83a67d3bfdde750a13bc8b50b9af26d94fd61616d0f2d703
+  build: 22_win64_mkl
   arch: x86_64
   subdir: win-64
-  build_number: 21
+  build_number: 22
   constrains:
+  - liblapacke 3.9.0 22_win64_mkl
   - blas * mkl
-  - libcblas 3.9.0 21_win64_mkl
-  - liblapacke 3.9.0 21_win64_mkl
+  - libcblas 3.9.0 22_win64_mkl
   license: BSD-3-Clause
   license_family: BSD
-  size: 5017043
-  timestamp: 1705980523462
+  size: 5182500
+  timestamp: 1712543085027
 - platform: linux-64
   name: liblapacke
   version: 3.9.0
   category: main
   manager: conda
   dependencies:
-  - libblas 3.9.0 21_linux64_openblas
-  - libcblas 3.9.0 21_linux64_openblas
-  - liblapack 3.9.0 21_linux64_openblas
-  url: https://conda.anaconda.org/conda-forge/linux-64/liblapacke-3.9.0-21_linux64_openblas.conda
+  - libblas 3.9.0 22_linux64_openblas
+  - libcblas 3.9.0 22_linux64_openblas
+  - liblapack 3.9.0 22_linux64_openblas
+  url: https://conda.anaconda.org/conda-forge/linux-64/liblapacke-3.9.0-22_linux64_openblas.conda
   hash:
-    md5: 854c3c762b25ccfbaa1aa24ee34288e3
-    sha256: 7e6281a788aa3e9a74eac95cce075634afb25a2cea0416a8b7c77e95de524044
-  build: 21_linux64_openblas
+    md5: 1fd156abd41a4992835952f6f4d951d0
+    sha256: fe0b80c19703e57ed23623ba7db20f795eac9d852d77ea0e4b0b76ae7500939e
+  build: 22_linux64_openblas
   arch: x86_64
   subdir: linux-64
-  build_number: 21
+  build_number: 22
   constrains:
   - blas * openblas
   license: BSD-3-Clause
   license_family: BSD
-  size: 14608
-  timestamp: 1705979594896
+  size: 14469
+  timestamp: 1712542286901
 - platform: linux-64
   name: libllvm15
   version: 15.0.7
@@ -3374,7 +3495,7 @@ package:
   timestamp: 1701375836233
 - platform: linux-64
   name: libllvm18
-  version: 18.1.2
+  version: 18.1.4
   category: main
   manager: conda
   dependencies:
@@ -3383,18 +3504,18 @@ package:
   - libxml2 >=2.12.6,<3.0a0
   - libzlib >=1.2.13,<1.3.0a0
   - zstd >=1.5.5,<1.6.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/libllvm18-18.1.2-h2448989_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libllvm18-18.1.4-h2448989_0.conda
   hash:
-    md5: fae7780457e00a07d068417d9dbdb24b
-    sha256: 231b3edb7650786fd9fc6ac8d7ecf38d663a0ae63eeb1f19c4c1c17d2eb98d51
+    md5: fc46f35def3d50b071c138fe8b84bc72
+    sha256: fce6d29c7e5771858a653653475366a9742b06ef725d85cf062e855fe3eba5c5
   build: h2448989_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: Apache-2.0 WITH LLVM-exception
   license_family: Apache
-  size: 38407510
-  timestamp: 1710943474854
+  size: 38415463
+  timestamp: 1714412509082
 - platform: linux-64
   name: libnghttp2
   version: 1.58.0
@@ -3480,27 +3601,27 @@ package:
   timestamp: 1610382533961
 - platform: linux-64
   name: libopenblas
-  version: 0.3.26
+  version: 0.3.27
   category: main
   manager: conda
   dependencies:
   - libgcc-ng >=12
   - libgfortran-ng
   - libgfortran5 >=12.3.0
-  url: https://conda.anaconda.org/conda-forge/linux-64/libopenblas-0.3.26-pthreads_h413a1c8_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libopenblas-0.3.27-pthreads_h413a1c8_0.conda
   hash:
-    md5: 760ae35415f5ba8b15d09df5afe8b23a
-    sha256: b626954b5a1113dafec8df89fa8bf18ce9b4701464d9f084ddd7fc9fac404bbd
+    md5: a356024784da6dfd4683dc5ecf45b155
+    sha256: 2ae7559aed0705deb3f716c7b247c74fd1b5e35b64e39834ce8b95f7564d4a3e
   build: pthreads_h413a1c8_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   constrains:
-  - openblas >=0.3.26,<0.3.27.0a0
+  - openblas >=0.3.27,<0.3.28.0a0
   license: BSD-3-Clause
   license_family: BSD
-  size: 5578031
-  timestamp: 1704950143521
+  size: 5598747
+  timestamp: 1712364444346
 - platform: linux-64
   name: libopus
   version: 1.3.1
@@ -3608,43 +3729,43 @@ package:
   timestamp: 1695747735668
 - platform: linux-64
   name: libsqlite
-  version: 3.45.2
+  version: 3.45.3
   category: main
   manager: conda
   dependencies:
   - libgcc-ng >=12
   - libzlib >=1.2.13,<1.3.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/libsqlite-3.45.2-h2797004_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libsqlite-3.45.3-h2797004_0.conda
   hash:
-    md5: 866983a220e27a80cb75e85cb30466a1
-    sha256: 8cdbeb7902729e319510a82d7c642402981818702b58812af265ef55d1315473
+    md5: b3316cbe90249da4f8e84cd66e1cc55b
+    sha256: e2273d6860eadcf714a759ffb6dc24a69cfd01f2a0ea9d6c20f86049b9334e0c
   build: h2797004_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: Unlicense
-  size: 857489
-  timestamp: 1710254744982
+  size: 859858
+  timestamp: 1713367435849
 - platform: win-64
   name: libsqlite
-  version: 3.45.2
+  version: 3.45.3
   category: main
   manager: conda
   dependencies:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/libsqlite-3.45.2-hcfcfb64_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/libsqlite-3.45.3-hcfcfb64_0.conda
   hash:
-    md5: f95359f8dc5abf7da7776ece9ef10bc5
-    sha256: 4bb24b986550275a6d02835150d943c4c675808d05c0efc5c2a22154d007a69f
+    md5: 73f5dc8e2d55d9a1e14b11f49c3b4a28
+    sha256: 06ec75faa51d7ec6d5db98889e869b579a9df19d7d3d9baff8359627da4a3b7e
   build: hcfcfb64_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   license: Unlicense
-  size: 869606
-  timestamp: 1710255095740
+  size: 870518
+  timestamp: 1713367888406
 - platform: linux-64
   name: libssh2
   version: 1.11.0
@@ -3695,18 +3816,17 @@ package:
   category: main
   manager: conda
   dependencies: []
-  url: https://conda.anaconda.org/conda-forge/linux-64/libstdcxx-ng-13.2.0-h7e041cc_5.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libstdcxx-ng-13.2.0-hc0a3c3a_6.conda
   hash:
-    md5: f6f6600d18a4047b54f803cf708b868a
-    sha256: a56c5b11f1e73a86e120e6141a42d9e935a99a2098491ac9e15347a1476ce777
-  build: h7e041cc_5
+    md5: 2f18345bbc433c8a1ed887d7161e86a6
+    sha256: 547903d5ffecf49543c6ca9f6e504f0a8a47920b0517395cf529b4a955f1c3d4
+  build: hc0a3c3a_6
   arch: x86_64
   subdir: linux-64
-  build_number: 5
+  build_number: 6
   license: GPL-3.0-only WITH GCC-exception-3.1
-  license_family: GPL
-  size: 3834139
-  timestamp: 1706819252496
+  size: 3844194
+  timestamp: 1714581807420
 - platform: linux-64
   name: libsystemd0
   version: '255'
@@ -3846,48 +3966,48 @@ package:
   timestamp: 1610610022421
 - platform: linux-64
   name: libwebp-base
-  version: 1.3.2
+  version: 1.4.0
   category: main
   manager: conda
   dependencies:
   - libgcc-ng >=12
-  url: https://conda.anaconda.org/conda-forge/linux-64/libwebp-base-1.3.2-hd590300_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libwebp-base-1.4.0-hd590300_0.conda
   hash:
-    md5: 30de3fd9b3b602f7473f30e684eeea8c
-    sha256: 68764a760fa81ef35dacb067fe8ace452bbb41476536a4a147a1051df29525f0
+    md5: b26e8aa824079e1be0294e7152ca4559
+    sha256: 49bc5f6b1e11cb2babf2a2a731d1a680a5e08a858280876a779dbda06c78c35f
   build: hd590300_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   constrains:
-  - libwebp 1.3.2
+  - libwebp 1.4.0
   license: BSD-3-Clause
   license_family: BSD
-  size: 401830
-  timestamp: 1694709121323
+  size: 438953
+  timestamp: 1713199854503
 - platform: win-64
   name: libwebp-base
-  version: 1.3.2
+  version: 1.4.0
   category: main
   manager: conda
   dependencies:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/libwebp-base-1.3.2-hcfcfb64_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/libwebp-base-1.4.0-hcfcfb64_0.conda
   hash:
-    md5: dcde8820959e64378d4e06147ffecfdd
-    sha256: af1453fab10d1fb8b379c61a78882614051a8bac37307d7ac4fb58eac667709e
+    md5: abd61d0ab127ec5cd68f62c2969e6f34
+    sha256: d0ca51cb1de9192be9a3238e71fbcca5a535619c499c4f4c9b2ed41c14d36770
   build: hcfcfb64_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   constrains:
-  - libwebp 1.3.2
+  - libwebp 1.4.0
   license: BSD-3-Clause
   license_family: BSD
-  size: 268870
-  timestamp: 1694709461733
+  size: 274359
+  timestamp: 1713200524021
 - platform: linux-64
   name: libxcb
   version: '1.15'
@@ -3986,18 +4106,18 @@ package:
   - libiconv >=1.17,<2.0a0
   - libzlib >=1.2.13,<1.3.0a0
   - xz >=5.2.6,<6.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/libxml2-2.12.6-h232c23b_1.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/libxml2-2.12.6-h232c23b_2.conda
   hash:
-    md5: 6853448e9ca1cfd5f15382afd2a6d123
-    sha256: c0bd693bb1a7e5aba388a0c79be16ff92e2411e03aaa920f94b4b33bf099e254
-  build: h232c23b_1
+    md5: 9a3a42df8a95f65334dfc7b80da1195d
+    sha256: 0fd41df7211aae04f492c8550ce10238e8cfa8b1abebc2215a983c5e66d284ea
+  build: h232c23b_2
   arch: x86_64
   subdir: linux-64
-  build_number: 1
+  build_number: 2
   license: MIT
   license_family: MIT
-  size: 705994
-  timestamp: 1711318087106
+  size: 704938
+  timestamp: 1713314718258
 - platform: win-64
   name: libxml2
   version: 2.12.6
@@ -4009,18 +4129,18 @@ package:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/libxml2-2.12.6-hc3477c8_1.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/libxml2-2.12.6-hc3477c8_2.conda
   hash:
-    md5: eb9f59dd51f50f5aa369813fa63ba569
-    sha256: 1846c1318a5987e7315ca3648b55b38e5cfd9853370803a0f5159bc0071609c1
-  build: hc3477c8_1
+    md5: ac7af7a949db01dae61ddc48f4a93d79
+    sha256: 9a717cad6da52c84cfc490f7d52203c4cbc9e0e0389941fc6523273be5ccd17a
+  build: hc3477c8_2
   arch: x86_64
   subdir: win-64
-  build_number: 1
+  build_number: 2
   license: MIT
   license_family: MIT
-  size: 1640801
-  timestamp: 1711318467301
+  size: 1589904
+  timestamp: 1713315104803
 - platform: linux-64
   name: libzlib
   version: 1.2.13
@@ -4184,53 +4304,53 @@ package:
   timestamp: 1608166099896
 - platform: linux-64
   name: matplotlib
-  version: 3.8.3
+  version: 3.8.4
   category: main
   manager: conda
   dependencies:
-  - matplotlib-base >=3.8.3,<3.8.4.0a0
+  - matplotlib-base >=3.8.4,<3.8.5.0a0
   - pyqt >=5.10
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
   - tornado >=5
-  url: https://conda.anaconda.org/conda-forge/linux-64/matplotlib-3.8.3-py311h38be061_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/matplotlib-3.8.4-py311h38be061_0.conda
   hash:
-    md5: 0452c2cca94bdda38a16cf7b84edcd27
-    sha256: e3c4aed587c91fdd1ecc2a8ba50a774e1edc7ed4dd4451fcd59bf74f07b58b97
+    md5: fd6fc4385d0eb6b00c46c4c0d28f5c48
+    sha256: 1250bedb7ce0bfda38837717245e229d83784cf5ffc2f3ed79a35ad90460c1da
   build: py311h38be061_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: PSF-2.0
   license_family: PSF
-  size: 8535
-  timestamp: 1708026784226
+  size: 8425
+  timestamp: 1712606144818
 - platform: win-64
   name: matplotlib
-  version: 3.8.3
+  version: 3.8.4
   category: main
   manager: conda
   dependencies:
-  - matplotlib-base >=3.8.3,<3.8.4.0a0
+  - matplotlib-base >=3.8.4,<3.8.5.0a0
   - pyqt >=5.10
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
   - tornado >=5
-  url: https://conda.anaconda.org/conda-forge/win-64/matplotlib-3.8.3-py311h1ea47a8_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/matplotlib-3.8.4-py311h1ea47a8_0.conda
   hash:
-    md5: 76fa41f6762c45b213e63432a2672ca8
-    sha256: ba6c75f66f9463501fe49f3d0fe3ab2c80b2b5ea1233fa7c6ec1cbdcc0342a37
+    md5: b6d55204863d508caf4a9a721eb6e47a
+    sha256: 68702ebea1806035e4ff09df5db9c19c7bd4118c4773f395dfddfca6125a3968
   build: py311h1ea47a8_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   license: PSF-2.0
   license_family: PSF
-  size: 8824
-  timestamp: 1708027411731
+  size: 8876
+  timestamp: 1712606736133
 - platform: linux-64
   name: matplotlib-base
-  version: 3.8.3
+  version: 3.8.4
   category: main
   manager: conda
   dependencies:
@@ -4251,23 +4371,23 @@ package:
   - python-dateutil >=2.7
   - python_abi 3.11.* *_cp311
   - tk >=8.6.13,<8.7.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/matplotlib-base-3.8.3-py311h54ef318_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/matplotlib-base-3.8.4-py311h54ef318_0.conda
   hash:
-    md5: 014c115be880802d2372ac6ed665f526
-    sha256: 3b1d85d61b2c88e72449c1fb2fb0893522512d0924a50aca608ba58663253907
+    md5: 150186110f111b458f86c04361351337
+    sha256: f66c03de945c4b11b308655c4777466310798253054646502044f50d3346f7e3
   build: py311h54ef318_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: PSF-2.0
   license_family: PSF
-  size: 7927557
-  timestamp: 1708026755428
+  size: 7806844
+  timestamp: 1712606110913
   purls:
   - pkg:pypi/matplotlib
 - platform: win-64
   name: matplotlib-base
-  version: 3.8.3
+  version: 3.8.4
   category: main
   manager: conda
   dependencies:
@@ -4288,32 +4408,32 @@ package:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/matplotlib-base-3.8.3-py311h6e989c2_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/matplotlib-base-3.8.4-py311h6e989c2_0.conda
   hash:
-    md5: 47fb1d03ff14dcf37bed939b9bf6b72b
-    sha256: f94ddc2f6e2009563797e14621e010210bf5ce00f2ca03096912945eff19288f
+    md5: e4118e9daeb3e773c5c277065c43bedf
+    sha256: 6d8381255a1d39067c3b77eb12b592909ea8614496127637e873df83a87641b1
   build: py311h6e989c2_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   license: PSF-2.0
   license_family: PSF
-  size: 7848740
-  timestamp: 1708027375396
+  size: 7802824
+  timestamp: 1712606679884
   purls:
   - pkg:pypi/matplotlib
 - platform: linux-64
   name: matplotlib-inline
-  version: 0.1.6
+  version: 0.1.7
   category: main
   manager: conda
   dependencies:
   - python >=3.6
   - traitlets
-  url: https://conda.anaconda.org/conda-forge/noarch/matplotlib-inline-0.1.6-pyhd8ed1ab_0.tar.bz2
+  url: https://conda.anaconda.org/conda-forge/noarch/matplotlib-inline-0.1.7-pyhd8ed1ab_0.conda
   hash:
-    md5: b21613793fcc81d944c76c9f2864a7de
-    sha256: aa091b88aec55bfa2d9207028d8cdc689b9efb090ae27b99557e93c675be2f3c
+    md5: 779345c95648be40d22aaa89de7d4254
+    sha256: 7ea68676ea35fbb095420bbcc1c82c4767b8be7bb56abb6989b7f89d957a3bab
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: linux-64
@@ -4321,22 +4441,22 @@ package:
   license: BSD-3-Clause
   license_family: BSD
   noarch: python
-  size: 12273
-  timestamp: 1660814913405
+  size: 14599
+  timestamp: 1713250613726
   purls:
   - pkg:pypi/matplotlib-inline
 - platform: win-64
   name: matplotlib-inline
-  version: 0.1.6
+  version: 0.1.7
   category: main
   manager: conda
   dependencies:
   - python >=3.6
   - traitlets
-  url: https://conda.anaconda.org/conda-forge/noarch/matplotlib-inline-0.1.6-pyhd8ed1ab_0.tar.bz2
+  url: https://conda.anaconda.org/conda-forge/noarch/matplotlib-inline-0.1.7-pyhd8ed1ab_0.conda
   hash:
-    md5: b21613793fcc81d944c76c9f2864a7de
-    sha256: aa091b88aec55bfa2d9207028d8cdc689b9efb090ae27b99557e93c675be2f3c
+    md5: 779345c95648be40d22aaa89de7d4254
+    sha256: 7ea68676ea35fbb095420bbcc1c82c4767b8be7bb56abb6989b7f89d957a3bab
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: win-64
@@ -4344,50 +4464,50 @@ package:
   license: BSD-3-Clause
   license_family: BSD
   noarch: python
-  size: 12273
-  timestamp: 1660814913405
+  size: 14599
+  timestamp: 1713250613726
   purls:
   - pkg:pypi/matplotlib-inline
 - platform: win-64
   name: mkl
-  version: 2024.0.0
+  version: 2024.1.0
   category: main
   manager: conda
   dependencies:
   - intel-openmp 2024.*
   - tbb 2021.*
-  url: https://conda.anaconda.org/conda-forge/win-64/mkl-2024.0.0-h66d3029_49657.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/mkl-2024.1.0-h66d3029_692.conda
   hash:
-    md5: 006b65d9cd436247dfe053df772e041d
-    sha256: 928bed978827e4c891d0879d79ecda6c9104ed7df1f1d4e2e392c9c80b471be7
-  build: h66d3029_49657
+    md5: b43ec7ed045323edeff31e348eea8652
+    sha256: abfdb5eb3a17af59a827ea49fcb4d2bf18e70b62498bf3720351962e636cb5b7
+  build: h66d3029_692
   arch: x86_64
   subdir: win-64
-  build_number: 49657
+  build_number: 692
   license: LicenseRef-ProprietaryIntel
   license_family: Proprietary
-  size: 108505947
-  timestamp: 1701973497498
+  size: 109491063
+  timestamp: 1712153746272
 - platform: linux-64
   name: mpg123
-  version: 1.32.4
+  version: 1.32.6
   category: main
   manager: conda
   dependencies:
   - libgcc-ng >=12
   - libstdcxx-ng >=12
-  url: https://conda.anaconda.org/conda-forge/linux-64/mpg123-1.32.4-h59595ed_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/mpg123-1.32.6-h59595ed_0.conda
   hash:
-    md5: 3f1017b4141e943d9bc8739237f749e8
-    sha256: 512f4ad7eda3b2c9a1cc9f7931932aefa6e79567e35b76de03895e769cb3b43c
+    md5: 9160cdeb523a1b20cf8d2a0bf821f45d
+    sha256: 8895a5ce5122a3b8f59afcba4b032f198e8a690a0efc95ef61f2135357ef0d72
   build: h59595ed_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: LGPL-2.1-only
   license_family: LGPL
-  size: 491061
-  timestamp: 1704980200966
+  size: 491811
+  timestamp: 1712327176955
 - platform: win-64
   name: msys2-conda-epoch
   version: '20160418'
@@ -4659,29 +4779,29 @@ package:
   timestamp: 1709159764160
 - platform: linux-64
   name: openssl
-  version: 3.2.1
+  version: 3.3.0
   category: main
   manager: conda
   dependencies:
   - ca-certificates
   - libgcc-ng >=12
-  url: https://conda.anaconda.org/conda-forge/linux-64/openssl-3.2.1-hd590300_1.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/openssl-3.3.0-hd590300_0.conda
   hash:
-    md5: 9d731343cff6ee2e5a25c4a091bf8e2a
-    sha256: 2c689444ed19a603be457284cf2115ee728a3fafb7527326e96054dee7cdc1a7
-  build: hd590300_1
+    md5: c0f3abb4a16477208bbd43a39bd56f18
+    sha256: fdbf05e4db88c592366c90bb82e446edbe33c6e49e5130d51c580b2629c0b5d5
+  build: hd590300_0
   arch: x86_64
   subdir: linux-64
-  build_number: 1
+  build_number: 0
   constrains:
   - pyopenssl >=22.1
   license: Apache-2.0
   license_family: Apache
-  size: 2865379
-  timestamp: 1710793235846
+  size: 2895187
+  timestamp: 1714466138265
 - platform: win-64
   name: openssl
-  version: 3.2.1
+  version: 3.3.0
   category: main
   manager: conda
   dependencies:
@@ -4689,20 +4809,20 @@ package:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/openssl-3.2.1-hcfcfb64_1.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/openssl-3.3.0-hcfcfb64_0.conda
   hash:
-    md5: 958e0418e93e50c575bff70fbcaa12d8
-    sha256: 61ce4e11c3c26ed4e4d9b7e7e2483121a1741ad0f9c8db0a91a28b6e05182ce6
-  build: hcfcfb64_1
+    md5: a6c544c9f060740c625dbf6d92cf3495
+    sha256: ca7573b7503711b53b2464fa35e4efa6f89dcd3d436fb5f128722b853e356dfd
+  build: hcfcfb64_0
   arch: x86_64
   subdir: win-64
-  build_number: 1
+  build_number: 0
   constrains:
   - pyopenssl >=22.1
   license: Apache-2.0
   license_family: Apache
-  size: 8230112
-  timestamp: 1710796158475
+  size: 8358240
+  timestamp: 1714468180752
 - platform: linux-64
   name: packaging
   version: '24.0'
@@ -4749,15 +4869,15 @@ package:
   - pkg:pypi/packaging
 - platform: linux-64
   name: parso
-  version: 0.8.3
+  version: 0.8.4
   category: main
   manager: conda
   dependencies:
   - python >=3.6
-  url: https://conda.anaconda.org/conda-forge/noarch/parso-0.8.3-pyhd8ed1ab_0.tar.bz2
+  url: https://conda.anaconda.org/conda-forge/noarch/parso-0.8.4-pyhd8ed1ab_0.conda
   hash:
-    md5: 17a565a0c3899244e938cdf417e7b094
-    sha256: 4e26d5daf5de0e31aa5e74ac56386a361b202433b83f024fdadbf07d4a244da4
+    md5: 81534b420deb77da8833f2289b8d47ac
+    sha256: bfe404eebb930cc41782d34f8fc04c0388ea692eeebe2c5fc28df8ec8d4d61ae
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: linux-64
@@ -4765,21 +4885,21 @@ package:
   license: MIT
   license_family: MIT
   noarch: python
-  size: 71048
-  timestamp: 1638335054552
+  size: 75191
+  timestamp: 1712320447201
   purls:
   - pkg:pypi/parso
 - platform: win-64
   name: parso
-  version: 0.8.3
+  version: 0.8.4
   category: main
   manager: conda
   dependencies:
   - python >=3.6
-  url: https://conda.anaconda.org/conda-forge/noarch/parso-0.8.3-pyhd8ed1ab_0.tar.bz2
+  url: https://conda.anaconda.org/conda-forge/noarch/parso-0.8.4-pyhd8ed1ab_0.conda
   hash:
-    md5: 17a565a0c3899244e938cdf417e7b094
-    sha256: 4e26d5daf5de0e31aa5e74ac56386a361b202433b83f024fdadbf07d4a244da4
+    md5: 81534b420deb77da8833f2289b8d47ac
+    sha256: bfe404eebb930cc41782d34f8fc04c0388ea692eeebe2c5fc28df8ec8d4d61ae
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: win-64
@@ -4787,8 +4907,8 @@ package:
   license: MIT
   license_family: MIT
   noarch: python
-  size: 71048
-  timestamp: 1638335054552
+  size: 75191
+  timestamp: 1712320447201
   purls:
   - pkg:pypi/parso
 - platform: linux-64
@@ -4837,46 +4957,46 @@ package:
   timestamp: 1708118868321
 - platform: linux-64
   name: pdm-backend
-  version: 2.1.8
+  version: 2.3.0
   category: main
   manager: conda
   dependencies:
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
-  url: https://conda.anaconda.org/conda-forge/linux-64/pdm-backend-2.1.8-py311h38be061_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/pdm-backend-2.3.0-py311h38be061_0.conda
   hash:
-    md5: fc4c576b39d186a4aeac1654d755980b
-    sha256: aaa298f4d13e5f86996cc9dd39352faedff5f722bd4fd0933d0bfcd1ada1015d
+    md5: 0d6e3ea777038f68f280a446dcd6196e
+    sha256: 0d94429d49e74b25e16512f679070d9b1f0b815b1e411348b97397e6f40b70ad
   build: py311h38be061_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: MIT
   license_family: MIT
-  size: 202620
-  timestamp: 1703769091525
+  size: 215029
+  timestamp: 1714532004187
   purls:
   - pkg:pypi/pdm-backend
 - platform: win-64
   name: pdm-backend
-  version: 2.1.8
+  version: 2.3.0
   category: main
   manager: conda
   dependencies:
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
-  url: https://conda.anaconda.org/conda-forge/win-64/pdm-backend-2.1.8-py311h1ea47a8_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/pdm-backend-2.3.0-py311h1ea47a8_0.conda
   hash:
-    md5: 96d15646f067fae57000a4a392681d24
-    sha256: 776835864ba2c7decb3dd4c5d3cf94f8b20b28276773651aeeefc22b71ccebc1
+    md5: 735ce99c3450a6aa5c2755b9e93312fa
+    sha256: f6630575e29dbd07f838bc950ab8ba43a5fcee22e656cbdba4c572d3f3954996
   build: py311h1ea47a8_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   license: MIT
   license_family: MIT
-  size: 202618
-  timestamp: 1703769392508
+  size: 214202
+  timestamp: 1714532218522
   purls:
   - pkg:pypi/pdm-backend
 - platform: linux-64
@@ -4947,7 +5067,7 @@ package:
   - pkg:pypi/pickleshare
 - platform: linux-64
   name: pillow
-  version: 10.2.0
+  version: 10.3.0
   category: main
   manager: conda
   dependencies:
@@ -4959,24 +5079,24 @@ package:
   - libwebp-base >=1.3.2,<2.0a0
   - libxcb >=1.15,<1.16.0a0
   - libzlib >=1.2.13,<1.3.0a0
-  - openjpeg >=2.5.0,<3.0a0
+  - openjpeg >=2.5.2,<3.0a0
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
   - tk >=8.6.13,<8.7.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/pillow-10.2.0-py311ha6c5da5_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/pillow-10.3.0-py311h18e6fac_0.conda
   hash:
-    md5: a5ccd7f2271f28b7d2de0b02b64e3796
-    sha256: 3cd4827d822c9888b672bfac9017e905348ac5bd2237a98b30a734ed6573b248
-  build: py311ha6c5da5_0
+    md5: 6c520a9d36c9d7270988c7a6c360d6d4
+    sha256: 6e54cc2acead8884e81e3e1b4f299b18d5daa0e3d11f4db5686db9e2ada2a353
+  build: py311h18e6fac_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: HPND
-  size: 41629216
-  timestamp: 1704252244851
+  size: 42600867
+  timestamp: 1712154582003
 - platform: win-64
   name: pillow
-  version: 10.2.0
+  version: 10.3.0
   category: main
   manager: conda
   dependencies:
@@ -4987,24 +5107,24 @@ package:
   - libwebp-base >=1.3.2,<2.0a0
   - libxcb >=1.15,<1.16.0a0
   - libzlib >=1.2.13,<1.3.0a0
-  - openjpeg >=2.5.0,<3.0a0
+  - openjpeg >=2.5.2,<3.0a0
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
   - tk >=8.6.13,<8.7.0a0
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/pillow-10.2.0-py311h4dd8a23_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/pillow-10.3.0-py311h6819b35_0.conda
   hash:
-    md5: 8e4d6eed54fea0725d77c0a333e9fa51
-    sha256: 609d0106c35798345eb155605d21d8dfee0608d68bd51a97f7842d7c73ec10f8
-  build: py311h4dd8a23_0
+    md5: 86b3e331bf65cca7b8b5aacf9fefa1be
+    sha256: aaf367926867e0cfe727b4f64b95d78b9db9166e634cd26ec6f847cdcb0e5adb
+  build: py311h6819b35_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   license: HPND
-  size: 42099257
-  timestamp: 1704252849476
+  size: 41717626
+  timestamp: 1712155076324
 - platform: linux-64
   name: pip
   version: '24.0'
@@ -5075,15 +5195,15 @@ package:
   timestamp: 1706549500138
 - platform: linux-64
   name: pluggy
-  version: 1.4.0
+  version: 1.5.0
   category: main
   manager: conda
   dependencies:
   - python >=3.8
-  url: https://conda.anaconda.org/conda-forge/noarch/pluggy-1.4.0-pyhd8ed1ab_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/pluggy-1.5.0-pyhd8ed1ab_0.conda
   hash:
-    md5: 139e9feb65187e916162917bb2484976
-    sha256: 6edfd2c41938ea772096c674809bfcf2ebb9bef7e82de6c7ea0b966b86bfb4d0
+    md5: d3483c8fc2dc2cc3f5cf43e26d60cabf
+    sha256: 33eaa3359948a260ebccf9cdc2fd862cea5a6029783289e13602d8e634cd9a26
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: linux-64
@@ -5091,21 +5211,21 @@ package:
   license: MIT
   license_family: MIT
   noarch: python
-  size: 23384
-  timestamp: 1706116931972
+  size: 23815
+  timestamp: 1713667175451
   purls:
   - pkg:pypi/pluggy
 - platform: win-64
   name: pluggy
-  version: 1.4.0
+  version: 1.5.0
   category: main
   manager: conda
   dependencies:
   - python >=3.8
-  url: https://conda.anaconda.org/conda-forge/noarch/pluggy-1.4.0-pyhd8ed1ab_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/pluggy-1.5.0-pyhd8ed1ab_0.conda
   hash:
-    md5: 139e9feb65187e916162917bb2484976
-    sha256: 6edfd2c41938ea772096c674809bfcf2ebb9bef7e82de6c7ea0b966b86bfb4d0
+    md5: d3483c8fc2dc2cc3f5cf43e26d60cabf
+    sha256: 33eaa3359948a260ebccf9cdc2fd862cea5a6029783289e13602d8e634cd9a26
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: win-64
@@ -5113,8 +5233,8 @@ package:
   license: MIT
   license_family: MIT
   noarch: python
-  size: 23384
-  timestamp: 1706116931972
+  size: 23815
+  timestamp: 1713667175451
   purls:
   - pkg:pypi/pluggy
 - platform: linux-64
@@ -5123,20 +5243,20 @@ package:
   category: main
   manager: conda
   dependencies:
-  - python
-  url: https://conda.anaconda.org/conda-forge/noarch/ply-3.11-py_1.tar.bz2
+  - python >=2.6
+  url: https://conda.anaconda.org/conda-forge/noarch/ply-3.11-pyhd8ed1ab_2.conda
   hash:
-    md5: 7205635cd71531943440fbfe3b6b5727
-    sha256: 2cd6fae8f9cbc806b7f828f006ae4a83c23fac917cacfd73c37ce322d4324e53
-  build: py_1
+    md5: 18c6deb6f9602e32446398203c8f0e91
+    sha256: d8faaf4dcc13caed560fa32956523b35928a70499a2d08c51320947d637e3a41
+  build: pyhd8ed1ab_2
   arch: x86_64
   subdir: linux-64
-  build_number: 1
-  license: BSD 3-clause
+  build_number: 2
+  license: BSD-3-Clause
   license_family: BSD
   noarch: python
-  size: 44837
-  timestamp: 1530963184592
+  size: 49196
+  timestamp: 1712243121626
   purls:
   - pkg:pypi/ply
 - platform: win-64
@@ -5145,20 +5265,20 @@ package:
   category: main
   manager: conda
   dependencies:
-  - python
-  url: https://conda.anaconda.org/conda-forge/noarch/ply-3.11-py_1.tar.bz2
+  - python >=2.6
+  url: https://conda.anaconda.org/conda-forge/noarch/ply-3.11-pyhd8ed1ab_2.conda
   hash:
-    md5: 7205635cd71531943440fbfe3b6b5727
-    sha256: 2cd6fae8f9cbc806b7f828f006ae4a83c23fac917cacfd73c37ce322d4324e53
-  build: py_1
+    md5: 18c6deb6f9602e32446398203c8f0e91
+    sha256: d8faaf4dcc13caed560fa32956523b35928a70499a2d08c51320947d637e3a41
+  build: pyhd8ed1ab_2
   arch: x86_64
   subdir: win-64
-  build_number: 1
-  license: BSD 3-clause
+  build_number: 2
+  license: BSD-3-Clause
   license_family: BSD
   noarch: python
-  size: 44837
-  timestamp: 1530963184592
+  size: 49196
+  timestamp: 1712243121626
   purls:
   - pkg:pypi/ply
 - platform: linux-64
@@ -5690,7 +5810,7 @@ package:
   timestamp: 1695418442619
 - platform: linux-64
   name: pytest
-  version: 8.1.1
+  version: 8.2.0
   category: main
   manager: conda
   dependencies:
@@ -5698,13 +5818,13 @@ package:
   - exceptiongroup >=1.0.0rc8
   - iniconfig
   - packaging
-  - pluggy <2.0,>=1.4
+  - pluggy <2.0,>=1.5
   - python >=3.8
   - tomli >=1
-  url: https://conda.anaconda.org/conda-forge/noarch/pytest-8.1.1-pyhd8ed1ab_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/pytest-8.2.0-pyhd8ed1ab_0.conda
   hash:
-    md5: 94ff09cdedcb7b17e9cd5097ee2cfcff
-    sha256: 3c481d6b54af1a33c32a3f3eaa3e0971955431e7023db55808740cd062271c73
+    md5: 088ff7e08f4f10a06190468048c2a353
+    sha256: 02227fea7b50132a75fb223c2d796306ffebd4dc6324897455f17cb54d16683d
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: linux-64
@@ -5714,13 +5834,13 @@ package:
   license: MIT
   license_family: MIT
   noarch: python
-  size: 255523
-  timestamp: 1709992719691
+  size: 257122
+  timestamp: 1714308481448
   purls:
   - pkg:pypi/pytest
 - platform: win-64
   name: pytest
-  version: 8.1.1
+  version: 8.2.0
   category: main
   manager: conda
   dependencies:
@@ -5728,13 +5848,13 @@ package:
   - exceptiongroup >=1.0.0rc8
   - iniconfig
   - packaging
-  - pluggy <2.0,>=1.4
+  - pluggy <2.0,>=1.5
   - python >=3.8
   - tomli >=1
-  url: https://conda.anaconda.org/conda-forge/noarch/pytest-8.1.1-pyhd8ed1ab_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/pytest-8.2.0-pyhd8ed1ab_0.conda
   hash:
-    md5: 94ff09cdedcb7b17e9cd5097ee2cfcff
-    sha256: 3c481d6b54af1a33c32a3f3eaa3e0971955431e7023db55808740cd062271c73
+    md5: 088ff7e08f4f10a06190468048c2a353
+    sha256: 02227fea7b50132a75fb223c2d796306ffebd4dc6324897455f17cb54d16683d
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: win-64
@@ -5744,8 +5864,8 @@ package:
   license: MIT
   license_family: MIT
   noarch: python
-  size: 255523
-  timestamp: 1709992719691
+  size: 257122
+  timestamp: 1714308481448
   purls:
   - pkg:pypi/pytest
 - platform: linux-64
@@ -5796,49 +5916,49 @@ package:
   timestamp: 1711411153367
 - platform: linux-64
   name: python
-  version: 3.11.8
+  version: 3.11.9
   category: main
   manager: conda
   dependencies:
   - bzip2 >=1.0.8,<2.0a0
   - ld_impl_linux-64 >=2.36.1
-  - libexpat >=2.5.0,<3.0a0
+  - libexpat >=2.6.2,<3.0a0
   - libffi >=3.4,<4.0a0
   - libgcc-ng >=12
   - libnsl >=2.0.1,<2.1.0a0
-  - libsqlite >=3.45.1,<4.0a0
+  - libsqlite >=3.45.3,<4.0a0
   - libuuid >=2.38.1,<3.0a0
   - libxcrypt >=4.4.36
   - libzlib >=1.2.13,<1.3.0a0
-  - ncurses >=6.4,<7.0a0
+  - ncurses >=6.4.20240210,<7.0a0
   - openssl >=3.2.1,<4.0a0
   - readline >=8.2,<9.0a0
   - tk >=8.6.13,<8.7.0a0
   - tzdata
   - xz >=5.2.6,<6.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/python-3.11.8-hab00c5b_0_cpython.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/python-3.11.9-hb806964_0_cpython.conda
   hash:
-    md5: 2fdc314ee058eda0114738a9309d3683
-    sha256: f33559d7127b6a892854bc3b2b4be1406c3be9537d658cb13edae57c8c0b5a11
-  build: hab00c5b_0_cpython
+    md5: ac68acfa8b558ed406c75e98d3428d7b
+    sha256: 177f33a1fb8d3476b38f73c37b42f01c0b014fa0e039a701fd9f83d83aae6d40
+  build: hb806964_0_cpython
   arch: x86_64
   subdir: linux-64
   build_number: 0
   constrains:
   - python_abi 3.11.* *_cp311
   license: Python-2.0
-  size: 30754113
-  timestamp: 1708118457486
+  size: 30884494
+  timestamp: 1713553104915
 - platform: win-64
   name: python
-  version: 3.11.8
+  version: 3.11.9
   category: main
   manager: conda
   dependencies:
   - bzip2 >=1.0.8,<2.0a0
-  - libexpat >=2.5.0,<3.0a0
+  - libexpat >=2.6.2,<3.0a0
   - libffi >=3.4,<4.0a0
-  - libsqlite >=3.45.1,<4.0a0
+  - libsqlite >=3.45.3,<4.0a0
   - libzlib >=1.2.13,<1.3.0a0
   - openssl >=3.2.1,<4.0a0
   - tk >=8.6.13,<8.7.0a0
@@ -5847,19 +5967,19 @@ package:
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
   - xz >=5.2.6,<6.0a0
-  url: https://conda.anaconda.org/conda-forge/win-64/python-3.11.8-h2628c8c_0_cpython.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/python-3.11.9-h631f459_0_cpython.conda
   hash:
-    md5: 5af649cf283ec4c1ffff5c4fe0cec12b
-    sha256: 8b2db64acfd351f4281d75465b09109f4b51096d5e58128cb7a4c1d2ade47203
-  build: h2628c8c_0_cpython
+    md5: d7ed1e7c4e2dcdfd4599bd42c0613e6c
+    sha256: 23698d4eb24970f74911d120204318d48384fabbb25e1e57773ad74fcd38fb12
+  build: h631f459_0_cpython
   arch: x86_64
   subdir: win-64
   build_number: 0
   constrains:
   - python_abi 3.11.* *_cp311
   license: Python-2.0
-  size: 18096526
-  timestamp: 1708116524168
+  size: 18232422
+  timestamp: 1713551717924
 - platform: linux-64
   name: python-dateutil
   version: 2.9.0
@@ -5958,8 +6078,8 @@ package:
   - fontconfig >=2.14.2,<3.0a0
   - fonts-conda-ecosystem
   - freetype >=2.12.1,<3.0a0
-  - gst-plugins-base >=1.22.9,<1.23.0a0
-  - gstreamer >=1.22.9,<1.23.0a0
+  - gst-plugins-base >=1.24.1,<1.25.0a0
+  - gstreamer >=1.24.1,<1.25.0a0
   - harfbuzz >=8.3.0,<9.0a0
   - icu >=73.2,<74.0a0
   - krb5 >=1.21.2,<1.22.0a0
@@ -5977,7 +6097,7 @@ package:
   - libsqlite >=3.45.2,<4.0a0
   - libstdcxx-ng >=12
   - libxcb >=1.15,<1.16.0a0
-  - libxkbcommon >=1.6.0,<2.0a0
+  - libxkbcommon >=1.7.0,<2.0a0
   - libxml2 >=2.12.6,<3.0a0
   - libzlib >=1.2.13,<1.3.0a0
   - mysql-libs >=8.3.0,<8.4.0a0
@@ -5992,32 +6112,32 @@ package:
   - xcb-util-wm >=0.4.1,<0.5.0a0
   - xorg-libice >=1.1.1,<2.0a0
   - xorg-libsm >=1.2.4,<2.0a0
-  - xorg-libx11 >=1.8.7,<2.0a0
+  - xorg-libx11 >=1.8.9,<2.0a0
   - xorg-libxext >=1.3.4,<2.0a0
   - xorg-xf86vidmodeproto
   - zstd >=1.5.5,<1.6.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/qt-main-5.15.8-h112747c_20.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/qt-main-5.15.8-hc9dc06e_21.conda
   hash:
-    md5: cea58006ee5e891fc2a70c6b64d41363
-    sha256: 14f9075640d1abc7f8834420564f80aeaaf4da75e40dc3e4187f93d39f952418
-  build: h112747c_20
+    md5: b325046180590c868ce0dbf267b82eb8
+    sha256: 6b4594f6f2fad65a7ed52993f602e3ab183193755fe4a492aaa48e463b23105b
+  build: hc9dc06e_21
   arch: x86_64
   subdir: linux-64
-  build_number: 20
+  build_number: 21
   constrains:
   - qt 5.15.8
   license: LGPL-3.0-only
   license_family: LGPL
-  size: 60849352
-  timestamp: 1711304658310
+  size: 61305384
+  timestamp: 1712549380352
 - platform: win-64
   name: qt-main
   version: 5.15.8
   category: main
   manager: conda
   dependencies:
-  - gst-plugins-base >=1.22.9,<1.23.0a0
-  - gstreamer >=1.22.9,<1.23.0a0
+  - gst-plugins-base >=1.24.1,<1.25.0a0
+  - gstreamer >=1.24.1,<1.25.0a0
   - icu >=73.2,<74.0a0
   - krb5 >=1.21.2,<1.22.0a0
   - libclang13 >=15.0.7
@@ -6031,66 +6151,20 @@ package:
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
   - zstd >=1.5.5,<1.6.0a0
-  url: https://conda.anaconda.org/conda-forge/win-64/qt-main-5.15.8-h9e85ed6_20.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/qt-main-5.15.8-hcef0176_21.conda
   hash:
-    md5: 312511ef95bf1418f20dd50041a4bc85
-    sha256: 548e948eb70174dad20151714a70319b9b2d220b75d407a88f4f5812f14fcdd2
-  build: h9e85ed6_20
+    md5: 76544d3dfeff8fd52250df168cb0005b
+    sha256: 7eb717efea95fb0f8384f7c59b709dbe3c7a2c1fabca60c8792760211c430251
+  build: hcef0176_21
   arch: x86_64
   subdir: win-64
-  build_number: 20
+  build_number: 21
   constrains:
   - qt 5.15.8
   license: LGPL-3.0-only
   license_family: LGPL
-  size: 60012507
-  timestamp: 1711306247296
-- platform: linux-64
-  name: qtpy
-  version: 2.4.1
-  category: main
-  manager: conda
-  dependencies:
-  - packaging
-  - python >=3.7
-  url: https://conda.anaconda.org/conda-forge/noarch/qtpy-2.4.1-pyhd8ed1ab_0.conda
-  hash:
-    md5: 7f391bd70d2abfb70f304ba5aa4e1261
-    sha256: 925bf48e747af6ceff1b073c10b12fc94ef79c88a34729059d253e43466a33f1
-  build: pyhd8ed1ab_0
-  arch: x86_64
-  subdir: linux-64
-  build_number: 0
-  license: MIT
-  license_family: MIT
-  noarch: python
-  size: 61808
-  timestamp: 1698112171285
-  purls:
-  - pkg:pypi/qtpy
-- platform: win-64
-  name: qtpy
-  version: 2.4.1
-  category: main
-  manager: conda
-  dependencies:
-  - packaging
-  - python >=3.7
-  url: https://conda.anaconda.org/conda-forge/noarch/qtpy-2.4.1-pyhd8ed1ab_0.conda
-  hash:
-    md5: 7f391bd70d2abfb70f304ba5aa4e1261
-    sha256: 925bf48e747af6ceff1b073c10b12fc94ef79c88a34729059d253e43466a33f1
-  build: pyhd8ed1ab_0
-  arch: x86_64
-  subdir: win-64
-  build_number: 0
-  license: MIT
-  license_family: MIT
-  noarch: python
-  size: 61808
-  timestamp: 1698112171285
-  purls:
-  - pkg:pypi/qtpy
+  size: 59806644
+  timestamp: 1712551057454
 - platform: linux-64
   name: readline
   version: '8.2'
@@ -6113,7 +6187,7 @@ package:
   timestamp: 1679532220005
 - platform: linux-64
   name: scipy
-  version: 1.12.0
+  version: 1.13.0
   category: main
   manager: conda
   dependencies:
@@ -6128,21 +6202,21 @@ package:
   - numpy >=1.23.5,<2.0a0
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
-  url: https://conda.anaconda.org/conda-forge/linux-64/scipy-1.12.0-py311h64a7726_2.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/scipy-1.13.0-py311h64a7726_0.conda
   hash:
-    md5: 24ca5107ab75c5521067b8ba505dfae5
-    sha256: e5aca4c5e63314848600d6da7360e0701c512f70d1783610eed5c1f7ecf58a57
-  build: py311h64a7726_2
+    md5: d443c70b4a05f50236c70b9c79beff64
+    sha256: d61d31d6f54e5d22f45bfce9d37d847313eab0afd6ff45e4c31f56f9ca2f8955
+  build: py311h64a7726_0
   arch: x86_64
   subdir: linux-64
-  build_number: 2
+  build_number: 0
   license: BSD-3-Clause
   license_family: BSD
-  size: 17270207
-  timestamp: 1706042776987
+  size: 17410362
+  timestamp: 1712256764147
 - platform: win-64
   name: scipy
-  version: 1.12.0
+  version: 1.13.0
   category: main
   manager: conda
   dependencies:
@@ -6156,29 +6230,29 @@ package:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/scipy-1.12.0-py311h0b4df5a_2.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/scipy-1.13.0-py311h0b4df5a_0.conda
   hash:
-    md5: eeccea26a9e7819b4ab9e69e4d7b9b44
-    sha256: 0519e3a4988d56e689a37d2a79b3d5cb15591d4e9428b3a66fdb607310295f1f
-  build: py311h0b4df5a_2
+    md5: c6658cd2b5a4cb1cd7530ac182566ce5
+    sha256: 0094e9d9b49636182ee797f7db51272e6a9092c024ddf4226194404452cf7c20
+  build: py311h0b4df5a_0
   arch: x86_64
   subdir: win-64
-  build_number: 2
+  build_number: 0
   license: BSD-3-Clause
   license_family: BSD
-  size: 15968999
-  timestamp: 1706043936628
+  size: 15668033
+  timestamp: 1712257530957
 - platform: linux-64
   name: setuptools
-  version: 69.2.0
+  version: 69.5.1
   category: main
   manager: conda
   dependencies:
   - python >=3.8
-  url: https://conda.anaconda.org/conda-forge/noarch/setuptools-69.2.0-pyhd8ed1ab_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/setuptools-69.5.1-pyhd8ed1ab_0.conda
   hash:
-    md5: da214ecd521a720a9d521c68047682dc
-    sha256: 78a75c75a5dacda6de5f4056c9c990141bdaf4f64245673a590594d00bc63713
+    md5: 7462280d81f639363e6e63c81276bd9e
+    sha256: 72d143408507043628b32bed089730b6d5f5445eccc44b59911ec9f262e365e7
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: linux-64
@@ -6186,21 +6260,21 @@ package:
   license: MIT
   license_family: MIT
   noarch: python
-  size: 471183
-  timestamp: 1710344615844
+  size: 501790
+  timestamp: 1713094963112
   purls:
   - pkg:pypi/setuptools
 - platform: win-64
   name: setuptools
-  version: 69.2.0
+  version: 69.5.1
   category: main
   manager: conda
   dependencies:
   - python >=3.8
-  url: https://conda.anaconda.org/conda-forge/noarch/setuptools-69.2.0-pyhd8ed1ab_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/setuptools-69.5.1-pyhd8ed1ab_0.conda
   hash:
-    md5: da214ecd521a720a9d521c68047682dc
-    sha256: 78a75c75a5dacda6de5f4056c9c990141bdaf4f64245673a590594d00bc63713
+    md5: 7462280d81f639363e6e63c81276bd9e
+    sha256: 72d143408507043628b32bed089730b6d5f5445eccc44b59911ec9f262e365e7
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: win-64
@@ -6208,8 +6282,8 @@ package:
   license: MIT
   license_family: MIT
   noarch: python
-  size: 471183
-  timestamp: 1710344615844
+  size: 501790
+  timestamp: 1713094963112
   purls:
   - pkg:pypi/setuptools
 - platform: linux-64
@@ -6407,26 +6481,26 @@ package:
   - pkg:pypi/stack-data
 - platform: win-64
   name: tbb
-  version: 2021.11.0
+  version: 2021.12.0
   category: main
   manager: conda
   dependencies:
-  - libhwloc >=2.9.3,<2.9.4.0a0
+  - libhwloc >=2.10.0,<2.10.1.0a0
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/tbb-2021.11.0-h91493d7_1.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/tbb-2021.12.0-h91493d7_0.conda
   hash:
-    md5: 21069f3ed16812f9f4f2700667b6ec86
-    sha256: aa30c089fdd6f66c7808592362e29963586e094159964a5fb61fb8efa9e349bc
-  build: h91493d7_1
+    md5: 21745fdd12f01b41178596143cbecffd
+    sha256: 621926aae93513408bdca3dd21c97e2aa8ba7dcd2c400dab804fb0ce7da1387b
+  build: h91493d7_0
   arch: x86_64
   subdir: win-64
-  build_number: 1
+  build_number: 0
   license: Apache-2.0
   license_family: APACHE
-  size: 161382
-  timestamp: 1706164225098
+  size: 161618
+  timestamp: 1712960215111
 - platform: linux-64
   name: tk
   version: 8.6.13
@@ -6606,15 +6680,15 @@ package:
   - pkg:pypi/tornado
 - platform: linux-64
   name: traitlets
-  version: 5.14.2
+  version: 5.14.3
   category: main
   manager: conda
   dependencies:
   - python >=3.8
-  url: https://conda.anaconda.org/conda-forge/noarch/traitlets-5.14.2-pyhd8ed1ab_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/traitlets-5.14.3-pyhd8ed1ab_0.conda
   hash:
-    md5: af5fa2d2186003472e766a23c46cae04
-    sha256: 9ea6073091c130470a51b51703c8d2d959434992e29c4aa4abeba07cd56533a3
+    md5: 3df84416a021220d8b5700c613af2dc5
+    sha256: 8a64fa0f19022828513667c2c7176cfd125001f3f4b9bc00d33732e627dd2592
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: linux-64
@@ -6622,21 +6696,21 @@ package:
   license: BSD-3-Clause
   license_family: BSD
   noarch: python
-  size: 110288
-  timestamp: 1710254564088
+  size: 110187
+  timestamp: 1713535244513
   purls:
   - pkg:pypi/traitlets
 - platform: win-64
   name: traitlets
-  version: 5.14.2
+  version: 5.14.3
   category: main
   manager: conda
   dependencies:
   - python >=3.8
-  url: https://conda.anaconda.org/conda-forge/noarch/traitlets-5.14.2-pyhd8ed1ab_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/traitlets-5.14.3-pyhd8ed1ab_0.conda
   hash:
-    md5: af5fa2d2186003472e766a23c46cae04
-    sha256: 9ea6073091c130470a51b51703c8d2d959434992e29c4aa4abeba07cd56533a3
+    md5: 3df84416a021220d8b5700c613af2dc5
+    sha256: 8a64fa0f19022828513667c2c7176cfd125001f3f4b9bc00d33732e627dd2592
   build: pyhd8ed1ab_0
   arch: x86_64
   subdir: win-64
@@ -6644,21 +6718,21 @@ package:
   license: BSD-3-Clause
   license_family: BSD
   noarch: python
-  size: 110288
-  timestamp: 1710254564088
+  size: 110187
+  timestamp: 1713535244513
   purls:
   - pkg:pypi/traitlets
 - platform: linux-64
   name: typing_extensions
-  version: 4.10.0
+  version: 4.11.0
   category: main
   manager: conda
   dependencies:
   - python >=3.8
-  url: https://conda.anaconda.org/conda-forge/noarch/typing_extensions-4.10.0-pyha770c72_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/typing_extensions-4.11.0-pyha770c72_0.conda
   hash:
-    md5: 16ae769069b380646c47142d719ef466
-    sha256: 4be24d557897b2f6609f5d5f7c437833c62f4d4a96581e39530067e96a2d0451
+    md5: 6ef2fc37559256cf682d8b3375e89b80
+    sha256: a7e8714d14f854058e971a6ed44f18cc37cc685f98ddefb2e6b7899a0cc4d1a2
   build: pyha770c72_0
   arch: x86_64
   subdir: linux-64
@@ -6666,21 +6740,21 @@ package:
   license: PSF-2.0
   license_family: PSF
   noarch: python
-  size: 37018
-  timestamp: 1708904796013
+  size: 37583
+  timestamp: 1712330089194
   purls:
   - pkg:pypi/typing-extensions
 - platform: win-64
   name: typing_extensions
-  version: 4.10.0
+  version: 4.11.0
   category: main
   manager: conda
   dependencies:
   - python >=3.8
-  url: https://conda.anaconda.org/conda-forge/noarch/typing_extensions-4.10.0-pyha770c72_0.conda
+  url: https://conda.anaconda.org/conda-forge/noarch/typing_extensions-4.11.0-pyha770c72_0.conda
   hash:
-    md5: 16ae769069b380646c47142d719ef466
-    sha256: 4be24d557897b2f6609f5d5f7c437833c62f4d4a96581e39530067e96a2d0451
+    md5: 6ef2fc37559256cf682d8b3375e89b80
+    sha256: a7e8714d14f854058e971a6ed44f18cc37cc685f98ddefb2e6b7899a0cc4d1a2
   build: pyha770c72_0
   arch: x86_64
   subdir: win-64
@@ -6688,8 +6762,8 @@ package:
   license: PSF-2.0
   license_family: PSF
   noarch: python
-  size: 37018
-  timestamp: 1708904796013
+  size: 37583
+  timestamp: 1712330089194
   purls:
   - pkg:pypi/typing-extensions
 - platform: linux-64
@@ -7080,7 +7154,7 @@ package:
   timestamp: 1685453649160
 - platform: linux-64
   name: xorg-libx11
-  version: 1.8.7
+  version: 1.8.9
   category: main
   manager: conda
   dependencies:
@@ -7089,18 +7163,18 @@ package:
   - xorg-kbproto
   - xorg-xextproto >=7.3.0,<8.0a0
   - xorg-xproto
-  url: https://conda.anaconda.org/conda-forge/linux-64/xorg-libx11-1.8.7-h8ee46fc_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/xorg-libx11-1.8.9-h8ee46fc_0.conda
   hash:
-    md5: 49e482d882669206653b095f5206c05b
-    sha256: 7a02a7beac472ae2759498550b5fc5261bf5be7a9a2b4648a3f67818a7bfefcf
+    md5: 077b6e8ad6a3ddb741fce2496dd01bec
+    sha256: 3e53ba247f1ad68353f18aceba5bf8ce87e3dea930de85d36946844a7658c9fb
   build: h8ee46fc_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: MIT
   license_family: MIT
-  size: 828692
-  timestamp: 1697056910935
+  size: 828060
+  timestamp: 1712415742569
 - platform: linux-64
   name: xorg-libxau
   version: 1.0.11
@@ -7355,28 +7429,27 @@ package:
   timestamp: 1686575231103
 - platform: linux-64
   name: zstd
-  version: 1.5.5
+  version: 1.5.6
   category: main
   manager: conda
   dependencies:
   - libgcc-ng >=12
   - libstdcxx-ng >=12
   - libzlib >=1.2.13,<1.3.0a0
-  url: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.5-hfc55251_0.conda
+  url: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.6-ha6fb4c9_0.conda
   hash:
-    md5: 04b88013080254850d6c01ed54810589
-    sha256: 607cbeb1a533be98ba96cf5cdf0ddbb101c78019f1fda063261871dad6248609
-  build: hfc55251_0
+    md5: 4d056880988120e29d75bfff282e0f45
+    sha256: c558b9cc01d9c1444031bd1ce4b9cff86f9085765f17627a6cd85fc623c8a02b
+  build: ha6fb4c9_0
   arch: x86_64
   subdir: linux-64
   build_number: 0
   license: BSD-3-Clause
-  license_family: BSD
-  size: 545199
-  timestamp: 1693151163452
+  size: 554846
+  timestamp: 1714722996770
 - platform: win-64
   name: zstd
-  version: 1.5.5
+  version: 1.5.6
   category: main
   manager: conda
   dependencies:
@@ -7384,15 +7457,14 @@ package:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  url: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.5-h12be248_0.conda
+  url: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.6-h0ea2cb4_0.conda
   hash:
-    md5: 792bb5da68bf0a6cac6a6072ecb8dbeb
-    sha256: d540dd56c5ec772b60e4ce7d45f67f01c6614942225885911964ea1e70bb99e3
-  build: h12be248_0
+    md5: 9a17230f95733c04dc40a2b1e5491d74
+    sha256: 768e30dc513568491818fb068ee867c57c514b553915536da09e5d10b4ebf3c3
+  build: h0ea2cb4_0
   arch: x86_64
   subdir: win-64
   build_number: 0
   license: BSD-3-Clause
-  license_family: BSD
-  size: 343428
-  timestamp: 1693151615801
+  size: 349143
+  timestamp: 1714723445995
