@@ -12,7 +12,7 @@ from pathlib import Path
 is_conda = (Path(sys.prefix) / "conda-meta").exists()
 
 if not is_conda and not os.environ.get(
-    "FLUIDDYN_NO_QTPY_INIT_BEFORE_OPENCV_IMPORT", False
+    "FLUIDDYN_NO_QT_INIT_BEFORE_OPENCV_IMPORT", False
 ):
     # to avoid using Qt libs included in opencv
     try:
@@ -20,7 +20,7 @@ if not is_conda and not os.environ.get(
             [
                 sys.executable,
                 "-c",
-                "from qtpy import QtWidgets; QtWidgets.QApplication([])",
+                "from matplotlib.backends.qt_compat import QtWidgets; QtWidgets.QApplication([])",
             ],
             check=True,
             capture_output=True,
@@ -29,7 +29,7 @@ if not is_conda and not os.environ.get(
         pass
     else:
         try:
-            from qtpy import QtWidgets
+            from matplotlib.backends.qt_compat import QtWidgets
         except (RuntimeError, ImportError):
             pass
         else:

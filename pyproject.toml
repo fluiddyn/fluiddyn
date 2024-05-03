@@ -17,7 +17,6 @@ dependencies = [
     "h5netcdf",
     "psutil >= 5.2.1",
     "distro",
-    "qtpy",
     "simpleeval>=0.9.13",
 ]
 readme = "README.rst"

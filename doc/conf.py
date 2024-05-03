@@ -14,7 +14,7 @@
 import os
 import sys
 
-os.environ["FLUIDDYN_NO_QTPY_INIT_BEFORE_OPENCV_IMPORT"] = "1"
+os.environ["FLUIDDYN_NO_QT_INIT_BEFORE_OPENCV_IMPORT"] = "1"
 
 import fluiddyn as fld
 

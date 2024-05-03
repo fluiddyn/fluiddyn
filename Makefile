@@ -2,6 +2,9 @@
 develop:
 	pdm install
 
+lock:
+	pdm lock
+
 help:
 	@echo "targets: develop, clean_so and tests"
 
