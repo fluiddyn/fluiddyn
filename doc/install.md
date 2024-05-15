@@ -1,63 +1,47 @@
 # Installation
 
-## Dependencies
-
-- **Minimum** : Python (>=3.8), numpy, matplotlib, h5py, h5netcdf, psutil
-- **Full functionality**: pillow, imageio, mpi4py, scipy, pyfftw (requires FFTW
-  library)
-- **Optional**: OpenCV with Python bindings, scikit-image
-
-It is recommended to install [NumPy](http://docs.scipy.org/doc/numpy/user/install.html) and [Matplotlib](http://matplotlib.org/users/installing.html) before installing FluidDyn.
-
-FluidDyn also used some other packages for some particular tasks, as in
-particular Scipy. Since it can be difficult to install them for some small
-hardware, they are not considered as real dependencies. However, be prepared to
-get some ImportError :-)
-
-We present how to install the requirements in this page:
+The first step to install the fluiddyn packages is to get Python (>=3.9). We discuss
+different methods in this page:
 
 ```{toctree}
-:maxdepth: 1
-
+---
+maxdepth: 1
+---
 get_good_Python_env
 ```
 
-## Basic installation
+## From the Python Package Index
 
 FluidDyn can be installed from the Python Package Index by the command:
 
-```
+```sh
 pip install fluiddyn
 ```
 
-Or, to also install all optional dependencies:
+This installs Fluiddyn and its hard dependencies (numpy, matplotlib, h5py, h5netcdf,
+psutil, simpleeval).
 
-```
+FluidDyn also used some other packages for some particular tasks, as in particular Scipy.
+Since it can be difficult to install them for some small hardware, they are not
+considered as hard dependencies.
+
+Fluiddyn has few sets of optional dependencies (`fft`, `mpi`, `sht`, `full`), which can
+be installed with commands like
+
+```sh
 pip install fluiddyn[full]
 ```
 
-## Install in development mode
+## From the repository
 
-Get the source by cloning the repository (as explained in {ref}`advicedev`):
-
-```
-hg clone https://foss.heptapod.net/fluiddyn/fluiddyn
+```sh
+pip install fluiddyn@hg+https://foss.heptapod.net/fluiddyn/fluiddyn
 ```
 
-or by manually downloading the package from [the Heptapod page](https://foss.heptapod.net/fluiddyn/fluiddyn) or from [the PyPI page](https://pypi.python.org/pypi/fluiddyn).
+## From the conda-forge index
 
-The development mode is often very convenient. From the root directory
-of the project, run:
-
-```
-cd fluiddyn
-pip install -e .
-```
-
-After the installation, it is a good practice to run the unit tests by running
-`pytest` from the root directory or from any of the "test" directories.
-To install the test dependencies:
-
-```
-pip install -e .[test]
+```sh
+conda install fluiddyn
+# or
+mamba install fluiddyn
 ```
