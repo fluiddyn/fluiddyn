@@ -14,13 +14,13 @@ The FluidDyn project aims at promoting the use of open-source Python software in
 in fluid dynamics. The project provides some Python packages specialized for different
 tasks, in particular
 
-- [transonic](http://transonic.readthedocs.org), to make your Python code fly at
+- [Transonic](http://transonic.readthedocs.org), to make your Python code fly at
   transonic speeds!
-- [fluidfft](http://fluidfft.readthedocs.org) for 2D and 3D Fast Fourier Transforms,
-- [fluidsim](http://fluidsim.readthedocs.org) for numerical simulations,
-- [fluidlab](http://fluidlab.readthedocs.org) for laboratory experiments,
-- [fluidimage](http://fluidimage.readthedocs.io) for processing of images of fluid,
-- [fluidsht](http://fluidsht.readthedocs.org) for Spherical Harmonic Transforms.
+- [Fluidfft](http://fluidfft.readthedocs.org) for 2D and 3D Fast Fourier Transforms,
+- [Fluidsim](http://fluidsim.readthedocs.org) for numerical simulations,
+- [Fluidlab](http://fluidlab.readthedocs.org) for laboratory experiments,
+- [Fluidimage](http://fluidimage.readthedocs.io) for processing of images of fluid,
+- [Fluidsht](http://fluidsht.readthedocs.org) for Spherical Harmonic Transforms.
 - [Formattex](https://foss.heptapod.net/fluiddyn/formattex) and
   [Formatbibtex](https://foss.heptapod.net/fluiddyn/formatbibtex) for Latex
 

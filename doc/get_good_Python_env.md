@@ -1,25 +1,16 @@
 # Get a good scientific Python environment
 
-By a "good Python environment", I mean a recent version of Python with
-recent versions of the main packages for sciences installed (SciPy,
-NumPy, Matplotlib, IPython, h5py, etc.) and a good editor with fly
-checks.
-
-```{admonition} Announcement: require Python 3
-:class: warning
-As [many other scientific
-projects](http://www.python3statement.org/), we now require Python 3 for
-all new feature releases. For science, try to use a recent version of
-Python (\>= 3.6 in 2019).
-```
+By a "good Python environment", I mean a recent version of Python with recent versions of
+the main packages for sciences installed (SciPy, NumPy, Matplotlib, IPython, h5py, etc.)
+and a good editor with fly checks.
 
 ## The easy way: Mambaforge and conda-forge
 
 A very simple way to get such environment is to use Mambaforge (provided by the
 [Miniforge] project), which is a modified version of
-[Miniconda](https://docs.conda.io/en/latest/miniconda.html) with the new and
-fast cross-platform package manager [mamba] and using by default the community
-driven [conda-forge] channel.
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html) with the new and fast
+cross-platform package manager [mamba] and using by default the community driven
+[conda-forge] channel.
 
 ```bash
 wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh" -O Mambaforge_installer.sh
@@ -28,8 +19,9 @@ $HOME/mambaforge/bin/mamba init bash
 ```
 
 ````{admonition} Command wget not found?
-:class: dropdown
-
+---
+class: dropdown
+---
 You might be more lucky with the equivalent command with `curl`:
 
 ```bash
@@ -43,17 +35,17 @@ command to initialize your shell. For example for macOS:
 `$HOME/mambaforge/bin/mamba init zsh`.
 ```
 
-When it's done, try to open a new terminal (click on `ctrl-alt-t`) and check that
-the line in the new terminal starts with `(base)`. If yes, you can close the old
-terminal (with `ctrl-d`). The indication `(base)` means that you use the base
-"environment".
+When it's done, try to open a new terminal (click on `ctrl-alt-t`) and check that the
+line in the new terminal starts with `(base)`. If yes, you can close the old terminal
+(with `ctrl-d`). The indication `(base)` means that you use the base "environment".
 
-`conda` and `mamba` are 2 commandline tools to manage software installations and
-create "environments".
+`conda` and `mamba` are 2 commandline tools to manage software installations and create
+"environments".
 
 ```{admonition} conda and mamba: differences?
-:class: dropdown
-
+---
+class: dropdown
+---
 Conda is an open source package management system and environment management
 system that runs on Windows, macOS, Linux and z/OS.
 
@@ -62,8 +54,9 @@ has better logging.
 ```
 
 ```{admonition} Definition: conda environment
-:class: dropdown
-
+---
+class: dropdown
+---
 A environment is a set of programs and libraries with particular versions. An
 environment is defined by the software installed on your computer and by
 environment variables, in particular the variable `$PATH`, which contains all
@@ -71,23 +64,23 @@ the paths where your shell looks for programs (you can read the output of `echo
 $PATH`).
 ```
 
-It is very useful to be able to create different environments for different
-tasks. It is usually better to keep the `base` environment only for the `conda`
-/ `mamba` software and to use different environments for other tasks. We will
-use this strategy here. We will have
+It is very useful to be able to create different environments for different tasks. It is
+usually better to keep the `base` environment only for the `conda` / `mamba` software and
+to use different environments for other tasks. We will use this strategy here. We will
+have
 
 - 1 environment for some basic libraries and Fluidsim sequential (called `main`),
 
 - 1 environment with Fluidsim and MPI (called `env_fluidsim`)
 
-- 1 environment with the Spyder editor (automatically created with the tool
+- 1 environment with the [Spyder] editor (automatically created with the tool
   `conda-app`)
 
 - 1 environment with Mercurial (automatically created with the tool `conda-app`)
 
-`conda` takes the programs that it installs from "channels". With Fluiddyn,
-we'd like to use the largest open-source community driven channel called
-[conda-forge]. With [Miniforge], [conda-forge] is by default the main channel.
+`conda` takes the programs that it installs from "channels". With Fluiddyn, we'd like to
+use the largest open-source community driven channel called [conda-forge]. With
+[Miniforge], [conda-forge] is by default the main channel.
 
 We can start by creating the `main` environment with the commands:
 
@@ -115,7 +108,8 @@ mamba create -n env-fluidsim -y \
   "pyfftw=0.13.0=py310*_0"
 ```
 
-To install up-to-date versions of useful applications like Mercurial and Spyder, you can run:
+To install up-to-date versions of useful applications like Mercurial and Spyder, you can
+run:
 
 ```bash
 pip install conda-app
@@ -126,6 +120,10 @@ conda-app install spyder
 ```{note}
 [conda-app] is a very small utility which installs programs in isolated conda
 environments. Very similar to [pipx] but with conda environment.
+
+[conda-app]: https://pypi.org/project/conda-app/
+[pipx]: https://github.com/pypa/pipx
+
 ```
 
 ```{note}
@@ -138,6 +136,9 @@ with conda).
 To compile Python files with Pythran (which is done when one builds some
 fluiddyn packages from source) one can install [clang] (with `mamba install
 clangdev`) to compile C++ files produced by Pythran.
+
+[clang]: https://clang.llvm.org/
+
 ```
 
 ```{warning}
@@ -148,21 +149,23 @@ use the library `fftw_mpi`, which is incompatible with MKL.
 
 ## Another easy way (slightly more difficult?)
 
-It is now very easy to build the most recent Python versions with
+Recent versions of Linux come with good recent versions of Python, so it is now often
+very reasonable to use `/usr/bin/python3` (you can check with
+`/usr/bin/python3 --version`). However, if you use `/usr/bin/python3`, it is really
+better to create a virtual environment as described in the official Python documentation
+on
+[Installing using pip in virtual environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/).
+
+Moreover, it is now very easy to build the most recent Python versions with
 [pyenv](https://github.com/pyenv/pyenv).
 
-With the latest versions of pip and the
-[wheels](https://github.com/pypa/wheel), it is now easy and fast to
-install scientific packages without conda, using pip.
+With recent versions of pip and the [wheels](https://github.com/pypa/wheel), it is now
+easy and fast to install scientific packages without conda, using pip.
 
-But without conda, one needs to get the non-python dependencies with the
-system package management tool, for example apt for Debian/Ubuntu, as
-shown [here](setup_ubuntu1804.md)
+But without conda, one needs to get the non-python dependencies with the system package
+management tool, for example apt for Debian/Ubuntu, as shown [here](setup_ubuntu1804.md)
 
 [conda-forge]: https://conda-forge.org/
+[mamba]: https://github.com/mamba-org/mamba
 [miniforge]: https://github.com/conda-forge/miniforge
 [spyder]: https://www.spyder-ide.org/
-[mamba]: https://github.com/mamba-org/mamba
-[conda-app]: https://pypi.org/project/conda-app/
-[pipx]: https://github.com/pypa/pipx
-[clang]: https://clang.llvm.org/
