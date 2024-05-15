@@ -10,37 +10,37 @@
 </h1>
 ```
 
-The FluidDyn project aims at promoting the use of open-source Python software
-in research in fluid dynamics.  The project provides some Python packages
-specialized for different tasks, in particular
+The FluidDyn project aims at promoting the use of open-source Python software in research
+in fluid dynamics. The project provides some Python packages specialized for different
+tasks, in particular
 
-- [transonic](http://transonic.readthedocs.org), to make your Python code fly
-  at transonic speeds!
-- [fluidfft](http://fluidfft.readthedocs.org) for 2D and 3D Fast Fourier
-  Transforms,
-- [fluidsim](http://fluidsim.readthedocs.org) for numerical simulations,
-- [fluidlab](http://fluidlab.readthedocs.org) for laboratory experiments,
-- [fluidimage](http://fluidimage.readthedocs.io) for processing of images of
-  fluid,
-- [fluidsht](http://fluidsht.readthedocs.org) for Spherical Harmonic
-  Transforms.
+- [Transonic](http://transonic.readthedocs.org), to make your Python code fly at
+  transonic speeds!
+- [Fluidfft](http://fluidfft.readthedocs.org) for 2D and 3D Fast Fourier Transforms,
+- [Fluidsim](http://fluidsim.readthedocs.org) for numerical simulations,
+- [Fluidlab](http://fluidlab.readthedocs.org) for laboratory experiments,
+- [Fluidimage](http://fluidimage.readthedocs.io) for processing of images of fluid,
+- [Fluidsht](http://fluidsht.readthedocs.org) for Spherical Harmonic Transforms.
+- [Formattex](https://foss.heptapod.net/fluiddyn/formattex) and
+  [Formatbibtex](https://foss.heptapod.net/fluiddyn/formatbibtex) for Latex
 
-This documentation presents the FluidDyn project and the package of the same
-name, which is the base package on which the other packages depend on. For the
-specific documentations of these specialized packages, follow the links above.
+This documentation presents the FluidDyn project and the package of the same name, which
+is the base package on which the other packages depend on. For the specific
+documentations of these specialized packages, follow the links above.
 
 ```{toctree}
-:caption: The FluidDyn project
-:maxdepth: 1
-
+---
+caption: The FluidDyn project
+maxdepth: 1
+---
 intro-motivations
 advice_on_Python
 ```
 
 ## Metapaper and citation
 
-If you use any of the FluidDyn packages to produce scientific articles, please
-cite [our metapaper presenting the FluidDyn project and the fluiddyn package](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.237/):
+If you use any of the FluidDyn packages to produce scientific articles, please cite
+[our metapaper presenting the FluidDyn project and the fluiddyn package](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.237/):
 
 ```
 @article{fluiddyn,
@@ -56,19 +56,19 @@ journal = {Journal of Open Research Software}
 ```
 
 ```{toctree}
-:caption: User Guide of the fluiddyn package
-:maxdepth: 2
-
+---
+caption: User Guide of the fluiddyn package
+maxdepth: 2
+---
 install
 tutorials/overview
 tutorials
 ```
 
-### Modules Reference
+### API Reference
 
-In order to discover FluidDyn, the best is to see how it is structured. Here is
-a list of the first-level packages.  If you are looking for a particular
-feature, you can also use the "Quick search" tool in this page.
+Here is a presentation of the API of the fluiddyn package. If you are looking for a particular feature, you can also use
+the "Quick search" tool in this page.
 
 ```{eval-rst}
 .. autosummary::
@@ -91,9 +91,10 @@ Fluiddyn also provides a small package for documentation:
 ```
 
 ```{toctree}
-:caption: More
-:maxdepth: 1
-
+---
+caption: More
+maxdepth: 1
+---
 changes
 advice_developers
 code-of-conduct
