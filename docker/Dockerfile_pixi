@@ -4,7 +4,7 @@ LABEL Pierre Augier <pierre.augier@univ-grenoble-alpes.fr>
 RUN apt-get update
 
 RUN apt-get install -y --no-install-recommends \
-  mercurial python3-pip wget sudo libgl1 \
+  mercurial python3-pip wget sudo libgl1 libegl1 libopengl0 \
   --option=Dpkg::Options::=--force-confdef
 
 RUN rm -rf /var/lib/apt/lists/*
