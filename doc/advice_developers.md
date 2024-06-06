@@ -24,23 +24,22 @@ Thanks to [Octobus](https://octobus.net/) and [Clever Cloud](https://www.clever-
 </h1>
 ```
 
-If you are new with Mercurial and Heptapod, you should read this short
-tutorial:
+If you are new with Mercurial and Heptapod, you should read [our dedicated
+tutorial](https://fluidhowto.readthedocs.io/en/latest/mercurial.html)
+
+```{warning}
+We wrote a specific Mercurial extension for FluidDyn development called
+[hg-fluiddyn](https://foss.heptapod.net/fluiddyn/hg-fluiddyn). All
+FluidDyn contributors / developers / maintainers should install and activate
+it! We explain [here](https://fluidhowto.readthedocs.io/en/latest/mercurial.html) how
+to do that.
+```
 
 ```{toctree}
 :maxdepth: 1
 
-mercurial_heptapod
 workflow_release
 ```
-
-:::{warning}
-We wrote a specific Mercurial extension for FluidDyn development called
-[hg-fluiddyn](https://foss.heptapod.net/fluiddyn/hg-fluiddyn). All
-FluidDyn contributors / developers / maintainers should install and activate
-it! We explain [here](https://fluiddyn.readthedocs.io/en/latest/mercurial_heptapod.html) how
-to do that.
-:::
 
 ## Few important coding tips
 
