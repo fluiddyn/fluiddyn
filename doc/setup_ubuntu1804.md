@@ -1,7 +1,7 @@
 # How to setup a fresh install of Ubuntu 18.04 for Python for sciences
 
-This is just an example (2018-07-10), but it is useful for me (Pierre Augier) to
-have this page, so it may be useful to others.
+This is just an example (2018-07-10), but it is useful for me (Pierre Augier) to have
+this page, so it may be useful to others.
 
 - Install some useful compilers, libraries and utilities:
 
@@ -79,8 +79,8 @@ have this page, so it may be useful to others.
   exec "$SHELL"
   ```
 
-  And for Fish, see <https://github.com/fisherman/pyenv> (It's a bit tricky so
-  read carefully. The file `~/.config/fish/conf.d/000-env.fish` is needed).
+  And for Fish, see <https://github.com/fisherman/pyenv> (It's a bit tricky so read
+  carefully. The file `~/.config/fish/conf.d/000-env.fish` is needed).
 
 - Build nice Python versions and use Python 3.6 or 3.7:
 
@@ -141,8 +141,8 @@ have this page, so it may be useful to others.
   wget https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/simple.pythranrc -O ~/.pythranrc
   ```
 
-  Note that with this setup, Pythran needs clang and openblas (which have been
-  install previously).
+  Note that with this setup, Pythran needs clang and openblas (which have been install
+  previously).
 
 - Fix Gnome:
 
@@ -186,5 +186,5 @@ have this page, so it may be useful to others.
   pip install https://github.com/GenericMappingTools/gmt-python/archive/master.zip
   ```
 
-  Then, set the environment variables `PATH` and `LD_LIBRARY_PATH` as
-  needed by modifying your `~/.bashrc`.
+  Then, set the environment variables `PATH` and `LD_LIBRARY_PATH` as needed by modifying
+  your `~/.bashrc`.

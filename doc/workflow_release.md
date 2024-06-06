@@ -1,9 +1,9 @@
 # Release checklist for maintainers
 
-:::{note}
+```{note}
 For demonstration's sake, we assume that the next version is `$VERSION`
 and the package name is `$PACKAGE`.
-:::
+```
 
 - Ensure tests pass locally and on CI:
 

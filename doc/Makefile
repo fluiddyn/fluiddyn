@@ -163,3 +163,6 @@ zip: html
 
 nbstripout:
 	fluidnbstripout ipynb
+
+format:
+	mdformat *.md */*.md

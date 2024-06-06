@@ -1,18 +1,18 @@
 # Automated workflow for developers
 
-Since various specialized packages are hosted under decentralized repositories
-(repos) in the FluidDyn project, which can be frequently updated, it can become
-*overwhelming* to clone each of these one-by-one or to go into every directory
-and run `hg pull -u` as a routine. Instead you can use [fluiddevops](https://pypi.org/project/fluiddevops/) designed for this exact purpose. To
-get started:
+Since various specialized packages are hosted under decentralized repositories (repos) in
+the FluidDyn project, which can be frequently updated, it can become *overwhelming* to
+clone each of these one-by-one or to go into every directory and run `hg pull -u` as a
+routine. Instead you can use [fluiddevops](https://pypi.org/project/fluiddevops/)
+designed for this exact purpose. To get started:
 
 ```
 pip install fluiddevops
 wget https://foss.heptapod.net/fluiddyn/fluiddevops/raw/branch/default/examples/mirror.cfg
 ```
 
-The package `fluiddevops` provides the console utility `fluidmirror` which
-can perform clone, pull, push with multiple repositories:
+The package `fluiddevops` provides the console utility `fluidmirror` which can perform
+clone, pull, push with multiple repositories:
 
 ```
 $ fluidmirror -h
@@ -41,8 +41,7 @@ Let us clone all the FluidDyn repos!:
 fluidmirror clone
 ```
 
-Pull all recent commits and update, for daily use (since cloning is done only
-once):
+Pull all recent commits and update, for daily use (since cloning is done only once):
 
 ```
 fluidmirror pull
@@ -104,18 +103,16 @@ pull: https://foss.heptapod.net/fluiddyn/fluidfft
 push: ssh://hg@foss.heptapod.net/fluiddyn/fluidfft
 ```
 
-The `defaults` section describes the base URLs to pull from and push to. For
-example, for the repo `fluiddyn` the pull URL will be
-`join(pull_base,repo)` which would be
+The `defaults` section describes the base URLs to pull from and push to. For example, for
+the repo `fluiddyn` the pull URL will be `join(pull_base,repo)` which would be
 `https://foss.heptapod.net/fluiddyn/fluiddyn`.
 
 ## Customizing
 
 You can add more sections to or customize the configuration as you prefer.
 
-Any non-empty value added under a `repo:` section would override the
-defaults. For example, let's add a new repo and override the default pull &
-push URLs as follows:
+Any non-empty value added under a `repo:` section would override the defaults. For
+example, let's add a new repo and override the default pull & push URLs as follows:
 
 ```
 [repo:pythran]

@@ -67,8 +67,8 @@ tutorials
 
 ### API Reference
 
-Here is a presentation of the API of the fluiddyn package. If you are looking for a particular feature, you can also use
-the "Quick search" tool in this page.
+Here is a presentation of the API of the fluiddyn package. If you are looking for a
+particular feature, you can also use the "Quick search" tool in this page.
 
 ```{eval-rst}
 .. autosummary::
