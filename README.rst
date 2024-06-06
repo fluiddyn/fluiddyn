@@ -53,15 +53,6 @@ The simplest way to install fluiddyn is by using pip::
 
   pip install fluiddyn
 
-You can also get the source code from
-https://foss.heptapod.net/fluiddyn/fluiddyn or from `the Python Package Index
-<https://pypi.python.org/pypi/fluiddyn/>`_. The development
-mode is often useful if you intend to modify fluiddyn. From the root
-directory::
-
-  pip install -e .[dev]
-
-
 Requirements
 ------------
 
