@@ -20,7 +20,10 @@ mock_modules(('nbstripout', 'scipy', 'scipy.fftpack', 'scipy.interpolate',
 
 # Main features of the fluiddyn package
 
-We here give an overview of the main features of the package. Fluiddyn contains pure python code useful when developing and using fluiddyn packages. It is like the Ali Baba's cave of the fluiddyn project. Here, we just show typical import commands and point towards pages in the documentation.
+We here give an overview of the main features of the package. Fluiddyn contains pure
+python code useful when developing and using fluiddyn packages. It is like the Ali Baba's
+cave of the fluiddyn project. Here, we just show typical import commands and point
+towards pages in the documentation.
 
 Just importing the main package can be useful:
 
@@ -81,7 +84,9 @@ from fluiddyn.io import stdout_redirected
 ```
 
 ### fluiddump
-This package also contains the code of a very simple utility to dump hdf5 and netcdf files (without dependency in the netcdf library and in the program `h5dump`)
+
+This package also contains the code of a very simple utility to dump hdf5 and netcdf
+files (without dependency in the netcdf library and in the program `h5dump`)
 
 ```{code-cell} ipython3
 from fluiddyn.io.dump import dump_h5_file, dump_nc_file

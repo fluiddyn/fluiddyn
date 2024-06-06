@@ -21,7 +21,8 @@ This notebook shows how the class :class:`fluiddyn.util.paramcontainer.ParamCont
 from fluiddyn.util.paramcontainer import ParamContainer
 ```
 
-Let's consider code taken from fluidimage. The object containing the parameter is initialized in the package. It is first created empty:
+Let's consider code taken from fluidimage. The object containing the parameter is
+initialized in the package. It is first created empty:
 
 ```{code-cell} ipython3
 params = ParamContainer(tag='params')
@@ -60,11 +61,15 @@ params.piv0._set_attrib
 params.piv0._set_attribs
 ```
 
-The ParamContainer object can be used in the code to generate the documentation, as for example in this [page](http://fluidimage.readthedocs.io/en/latest/generated/fluidimage.topologies.piv.html).
+The ParamContainer object can be used in the code to generate the documentation, as for
+example in this
+[page](http://fluidimage.readthedocs.io/en/latest/generated/fluidimage.topologies.piv.html).
 
 +++
 
-Then the user has to modify the default parameters in a python script. She/he can first create the object in ipython and play with it. The representation of the object shows the parameters and their values:
+Then the user has to modify the default parameters in a python script. She/he can first
+create the object in ipython and play with it. The representation of the object shows the
+parameters and their values:
 
 ```{code-cell} ipython3
 params.piv0

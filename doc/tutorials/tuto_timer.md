@@ -34,7 +34,8 @@ for i in range(10):
     print("It's time to tick", i)
 ```
 
-Ok. This is the simplest way to use it. But we don't see when the timer ticked. Let's print these times:
+Ok. This is the simplest way to use it. But we don't see when the timer ticked. Let's
+print these times:
 
 ```{code-cell} ipython3
 timer = Timer(0.02)
@@ -45,7 +46,8 @@ for i in range(10):
     print("It's time to tick", i, f'(t = {t_tick:.4f} s)')
 ```
 
-Now, we see that it's ticking regularly... and it seems with a quite good accuracy for many needs.
+Now, we see that it's ticking regularly... and it seems with a quite good accuracy for
+many needs.
 
 But what can we do if we need irregular steps between the ticks?
 

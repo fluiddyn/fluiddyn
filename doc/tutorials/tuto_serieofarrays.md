@@ -15,14 +15,16 @@ kernelspec:
 
 +++
 
-This notebook focuses on demonstrating how the classes {class}`fluiddyn.util.serieofarrays.SeriesOfArrays` can be used.
-This class can be used to create subsets from series of files. Let's first import it:
+This notebook focuses on demonstrating how the classes
+{class}`fluiddyn.util.serieofarrays.SeriesOfArrays` can be used. This class can be used
+to create subsets from series of files. Let's first import it:
 
 ```{code-cell} ipython3
 from fluiddyn.util.serieofarrays import SeriesOfArrays
 ```
 
-This class works with a serie of files (or a file containing a serie of arrays) so we first need to create files. For this demo, we just create emtpy files.
+This class works with a serie of files (or a file containing a serie of arrays) so we
+first need to create files. For this demo, we just create emtpy files.
 
 ```{code-cell} ipython3
 import tempfile
@@ -127,8 +129,9 @@ Of course we can do many more things with these objects:
 pprint([name for name in dir(series) if not name.startswith('__')])
 ```
 
-Internally, {class}`fluiddyn.util.serieofarrays.SeriesOfArrays` uses an instance
-(its attribute `serie`) of the class {class}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles`.
+Internally, {class}`fluiddyn.util.serieofarrays.SeriesOfArrays` uses an instance (its
+attribute `serie`) of the class
+{class}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles`.
 
 ```{code-cell} ipython3
 pprint([name for name in dir(series.serie) if not name.startswith('_') and not "index_slices" in name])

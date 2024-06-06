@@ -3,6 +3,9 @@
 FluidDyn should also be used by scientists that are not experienced in Python. We provide
 some advice on how to work with Python and how to get a good Python environment.
 
+See also
+[the dedicated session in our how-to book](https://fluidhowto.readthedocs.io/en/latest/python.html).
+
 ## Use an up-to-date Python environment
 
 Python is an old language but the strong dynamics in scientific Python is quite young.

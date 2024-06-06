@@ -2,10 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a
-Changelog](https://keepachangelog.com/en/1.0.0/), and this project
-adheres to [Semantic
-Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this
+project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 % Type of changes:
 
@@ -30,8 +28,8 @@ See also the
 
 ## [0.6.2] (2024-04-16)
 
-- Fix a bug in {class}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles`
-  when an index is coded over two letters.
+- Fix a bug in {class}`fluiddyn.util.serieofarrays.SerieOfArraysFromFiles` when an index
+  is coded over two letters.
 
 ## [0.6.1] (2024-04-02)
 
@@ -55,15 +53,16 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 
 ### Changed
 
-- The argument `ind_start` of
-  {class}`fluiddyn.util.serieofarrays.SeriesOfArrays` is now `"first"` by default.
+- The argument `ind_start` of {class}`fluiddyn.util.serieofarrays.SeriesOfArrays` is now
+  `"first"` by default.
 
 - {class}`fluiddyn.util.serieofarrays.SeriesOfArrays` can now be created with
   `SeriesOfArrays(path, "pairs")` and with `SeriesOfArrays(path, "all1by1")`.
 
 ### Deprecated
 
-- `get_index_slices` and all methods containing in their name `index_slices`. Use the corresponding method with `slicing_tuples`.
+- `get_index_slices` and all methods containing in their name `index_slices`. Use the
+  corresponding method with `slicing_tuples`.
 
 ## [0.5.4] (2024-02-17)
 
@@ -80,7 +79,8 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 
 ## [0.5.1] (2022-09-27)
 
-- Fluiddyn [code of conduct](https://fluiddyn.readthedocs.io/en/latest/code-of-conduct.html)
+- Fluiddyn
+  [code of conduct](https://fluiddyn.readthedocs.io/en/latest/code-of-conduct.html)
 - New cluster {mod}`fluiddyn.clusters.azzurra`
 - More options in {mod}`fluiddyn.clusters.oar` and {mod}`fluiddyn.clusters.slurm`
 - New functions {func}`fluiddyn.clusters.oar.get_job_id` and
@@ -106,8 +106,7 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 
 - General maintenance
 - Various improvements for clusters SLURM and OAR
-- New module {mod}`fluiddyn.util.opencv`: fix incompatibility between `cv2` and
-  Qt wheels
+- New module {mod}`fluiddyn.util.opencv`: fix incompatibility between `cv2` and Qt wheels
 
 ## [0.3.3] (2020-10-01)
 
@@ -133,8 +132,8 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 - Minor fixes and cleanup for EasySHT class
 - Update SNIC cluster classes
 - Compatibility layer for `cached_property`
-- Function `imsave_h5` has a `splitext` option, allowing the function to
-  preserve the original file extension
+- Function `imsave_h5` has a `splitext` option, allowing the function to preserve the
+  original file extension
 
 ## 0.2.5 (2018-09-12)
 
@@ -171,8 +170,7 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 
 ## 0.1.6
 
-- Can now execute the notebooks during the doc building
-  (fluiddoc/ipynb_maker.py)
+- Can now execute the notebooks during the doc building (fluiddoc/ipynb_maker.py)
 
 ## 0.1.5
 
@@ -229,9 +227,8 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 
 ## [0.0.8]
 
-- The fluiddyn package now only contains base files for the FluidDyn
-  project. Other packages (fluidsim, fluidlab, ...) provide other
-  files.
+- The fluiddyn package now only contains base files for the FluidDyn project. Other
+  packages (fluidsim, fluidlab, ...) provide other files.
 
 [0.0.8]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/tags/0.0.8a1
 [0.0.9]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.0.8a1...0.0.9a1
