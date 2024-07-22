@@ -7,6 +7,9 @@ Provides:
 .. autoclass:: ClusterOAR
    :members:
 
+.. autoclass:: ClusterOARGuix
+   :members:
+
 .. autofunction:: get_job_id
 
 .. autofunction:: get_job_info
@@ -19,10 +22,9 @@ import os
 import stat
 import time
 from subprocess import getoutput
-from sys import version_info as version
 
-from ..io.query import call_bash, run_asking_agreement
-from . import Cluster, subprocess
+from fluiddyn.io.query import call_bash, run_asking_agreement
+from fluiddyn.clusters import Cluster, subprocess
 
 
 def get_job_id(name_job):
@@ -85,6 +87,9 @@ class ClusterOAR(Cluster):
     name_cluster = ""
     nb_cores_per_node = 12
     has_to_add_name_cluster = False
+    devel: bool = False
+    resource_conditions: str = None
+    use_oar_envsh: bool = None
 
     _doc_commands = """
 Useful commands
@@ -96,6 +101,8 @@ oarsub -C $JOB_ID"""
 
     def check_oar(self):
         """check if this script is run on a frontal with oar installed"""
+        if not self.check_scheduler:
+            return
         try:
             subprocess.check_call(["oarsub", "--version"], stdout=subprocess.PIPE)
         except OSError as error:
@@ -167,6 +174,7 @@ oarsub -C $JOB_ID"""
         run_with_exec=True,
         resource_conditions=None,
         use_oar_envsh=None,
+        devel=None,
     ):
         self.check_oar()
 
@@ -194,6 +202,8 @@ oarsub -C $JOB_ID"""
             run_with_exec=run_with_exec,
             resource_conditions=resource_conditions,
             use_oar_envsh=use_oar_envsh,
+            devel=devel,
+            project=project,
         )
 
         with open(path_launching_script, "w", encoding="utf-8") as file:
@@ -243,8 +253,19 @@ oarsub -C $JOB_ID"""
         run_with_exec=True,
         resource_conditions=None,
         use_oar_envsh=None,
+        devel=None,
+        project=None,
     ):
         txt = f"#!/bin/bash\n\n#OAR -n {name_run}\n"
+
+        if devel is None:
+            devel = self.devel
+
+        if devel:
+            txt += "#OAR -t devel\n"
+
+        if project is not None:
+            txt += f"#OAR --project {project}\n"
 
         txt += "#OAR -l "
 
@@ -254,6 +275,14 @@ oarsub -C $JOB_ID"""
             conditions = f"network_address='{network_address}"
         else:
             conditions = ""
+
+        if self.resource_conditions is not None:
+            if resource_conditions is not None:
+                resource_conditions = (
+                    self.resource_conditions + " and " + resource_conditions
+                )
+            else:
+                resource_conditions = self.resource_conditions
 
         if resource_conditions is not None:
             if conditions:
@@ -271,8 +300,13 @@ oarsub -C $JOB_ID"""
 
         txt += "\n".join(self.get_commands_setting_env()) + "\n\n"
 
+        txt += self.get_mpi_prefix_setter() + "\n\n"
+
         if omp_num_threads is not None:
             txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"
+
+        if use_oar_envsh is None:
+            use_oar_envsh = self.use_oar_envsh
 
         if use_oar_envsh is None:
             use_oar_envsh = nb_mpi_processes is not None and nb_nodes > 1
@@ -286,15 +320,23 @@ oarsub -C $JOB_ID"""
         if run_with_exec:
             txt += "exec "
 
+        txt += self.get_after_exec()
+
         if nb_mpi_processes is not None:
             txt += f"mpirun -np {nb_mpi_processes} "
 
-            if nb_nodes > 1:
-                txt += "-machinefile ${OAR_NODEFILE} "
+            if nb_mpi_processes > 1:
+                txt += "-machinefile $OAR_NODEFILE "
 
         txt += command + "\n"
 
         return txt
+
+    def get_after_exec(self):
+        return ""
+
+    def get_mpi_prefix_setter(self):
+        return ""
 
     def stall(self, name_job, limit_number_jobs=1, time_check=30):
         """Wait until job(s) completion.
@@ -315,3 +357,15 @@ oarsub -C $JOB_ID"""
         while count_number_jobs(name_job) >= limit_number_jobs:
             time.sleep(time_check)
         print(f"job {name_job} finished in {time.time() - tstart} s")
+
+
+class ClusterOARGuix(ClusterOAR):
+    """OAR cluster using Guix"""
+
+    options_guix_shell: str = ""
+
+    def get_after_exec(self):
+        return f"~/.config/guix/current/bin/guix shell {self.options_guix_shell} \\\n  -- "
+
+    def get_mpi_prefix_setter(self):
+        return f'''MPI_PREFIX="`guix shell {self.options_guix_shell} -- /bin/sh -c 'echo $GUIX_ENVIRONMENT'`"'''

@@ -13,8 +13,7 @@ from shutil import rmtree
 
 import pytest
 
-from ...io import stdout_redirected
-from ..ciment import Froggy
+from ..ciment import DahuGuixDevel
 from ..legi import GPU9, Calcul, Calcul2, Calcul6, Calcul7, Calcul8
 from ..oar import ClusterOAR
 
@@ -58,7 +57,7 @@ class GPU9NoCheck(ClusterNoCheck, GPU9):
     pass
 
 
-class FroggyNoCheck(ClusterNoCheck, Froggy):
+class DahuGuixDevelNoCheck(ClusterNoCheck, DahuGuixDevel):
     pass
 
 
@@ -97,8 +96,7 @@ class TestCaseOAR(unittest.TestCase):
         with open("tmp_for_test.py", "w") as f:
             f.write('print("hello")')
 
-        with stdout_redirected():
-            self.clusternocheck.submit_script("tmp_for_test.py", submit=False)
+        self.clusternocheck.submit_script("tmp_for_test.py", submit=False)
 
 
 class TestCaseCalcul(TestCaseOAR):
@@ -131,9 +129,9 @@ class TestCaseGPU9(TestCaseOAR):
     ClusterNoCheck = GPU9NoCheck
 
 
-class TestCaseFroggy(TestCaseOAR):
-    Cluster = Froggy
-    ClusterNoCheck = FroggyNoCheck
+class TestCaseDahuGuixDevel(TestCaseOAR):
+    Cluster = DahuGuixDevel
+    ClusterNoCheck = DahuGuixDevelNoCheck
 
 
 @pytest.mark.skipif(platform.system() != "Linux", reason="Only on Linux")

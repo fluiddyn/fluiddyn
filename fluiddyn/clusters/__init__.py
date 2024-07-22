@@ -40,6 +40,9 @@ class Cluster(ABC):
     commands_setting_env: list = None
     nb_cores_per_node: Optional[int]
 
+    def __init__(self, check_scheduler=True):
+        self.check_scheduler = check_scheduler
+
     @classmethod
     def print_doc_commands(cls):
         """Print a short documentation about the commands available in the cluster"""
@@ -54,7 +57,7 @@ class Cluster(ABC):
             raise ValueError("nb_nodes has to be a positive integer")
 
         if nb_cores_per_node is None:
-            if nb_mpi_processes is not None:
+            if nb_mpi_processes is not None and isinstance(nb_mpi_processes, int):
                 nb_cores_per_node = nb_mpi_processes // nb_nodes
             else:
                 nb_cores_per_node = self.nb_cores_per_node
