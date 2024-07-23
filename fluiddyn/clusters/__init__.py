@@ -16,6 +16,7 @@ Provides:
    legi
    ciment
    cines
+   gricad
    snic
    idris
    azzurra
@@ -40,8 +41,10 @@ class Cluster(ABC):
     commands_setting_env: list = None
     nb_cores_per_node: Optional[int]
 
-    def __init__(self, check_scheduler=True):
-        self.check_scheduler = check_scheduler
+    def __init__(self, check_scheduler=True, **kwargs):
+        self._has_to_check_scheduler = check_scheduler
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
     @classmethod
     def print_doc_commands(cls):

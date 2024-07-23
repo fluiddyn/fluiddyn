@@ -23,8 +23,8 @@ import stat
 import time
 from subprocess import getoutput
 
-from fluiddyn.io.query import call_bash, run_asking_agreement
 from fluiddyn.clusters import Cluster, subprocess
+from fluiddyn.io.query import call_bash, run_asking_agreement
 
 
 def get_job_id(name_job):
@@ -84,6 +84,8 @@ def count_number_jobs(name_job):
 
 
 class ClusterOAR(Cluster):
+    """Cluster using the OAR scheduler"""
+
     name_cluster = ""
     nb_cores_per_node = 12
     has_to_add_name_cluster = False
@@ -101,8 +103,6 @@ oarsub -C $JOB_ID"""
 
     def check_oar(self):
         """check if this script is run on a frontal with oar installed"""
-        if not self.check_scheduler:
-            return
         try:
             subprocess.check_call(["oarsub", "--version"], stdout=subprocess.PIPE)
         except OSError as error:
@@ -176,7 +176,8 @@ oarsub -C $JOB_ID"""
         use_oar_envsh=None,
         devel=None,
     ):
-        self.check_oar()
+        if self._has_to_check_scheduler:
+            self.check_oar()
 
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
             nb_nodes, nb_cores_per_node, nb_mpi_processes
@@ -360,7 +361,7 @@ oarsub -C $JOB_ID"""
 
 
 class ClusterOARGuix(ClusterOAR):
-    """OAR cluster using Guix"""
+    """OAR cluster using the package manager Guix"""
 
     options_guix_shell: str = ""
 

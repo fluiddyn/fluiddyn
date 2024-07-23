@@ -54,7 +54,8 @@ class ClusterLocal(Cluster):
     cmd_launch = "nohup"
     max_walltime = "30-00:00:00"
 
-    def __init__(self):
+    def __init__(self, check_scheduler=True, **kwargs):
+        super().__init__(check_scheduler, **kwargs)
         self.commands_unsetting_env = []
         virtualenv = os.getenv("VIRTUAL_ENV")
         if virtualenv is not None:
