@@ -5,7 +5,7 @@
 groups = ["default", "dev", "doc", "fft", "full", "mpi", "sht", "test"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:ebfe06f8aed18a11dd5fb4646cd34f9d2fd073e4144bf1643b26de0f323a8e12"
+content_hash = "sha256:1eb916fecc43905b0f1183e148a4af4372ab5e2f32b2179d112c82ed3bbe047b"
 
 [[metadata.targets]]
 requires_python = ">=3.9"
@@ -1789,6 +1789,21 @@ dependencies = [
 files = [
     {file = "myst_nb-1.1.1-py3-none-any.whl", hash = "sha256:8b8f9085287d948eef46cb3764aafc21915e0e981882b8c742719f5b1a84c36f"},
     {file = "myst_nb-1.1.1.tar.gz", hash = "sha256:74227c11f76d03494f43b7788659b161b94f4dedef230a2912412bc8c3c9e553"},
+]
+
+[[package]]
+name = "myst-nb-json"
+version = "0.1.3"
+requires_python = ">=3.9"
+summary = "A MIME-type plugin for rendering JSON output from Jupyter notebooks to HTML"
+groups = ["doc"]
+dependencies = [
+    "docutils",
+    "myst-nb>=1.0.0",
+]
+files = [
+    {file = "myst_nb_json-0.1.3-py3-none-any.whl", hash = "sha256:0c351edae9aec17b4894c0264d451020454f63b45cca022844e87849893c3e3c"},
+    {file = "myst_nb_json-0.1.3.tar.gz", hash = "sha256:1bb8f24d65828b85281ab57837b9921754e13b58c8a69840bb81f9250a12b2bb"},
 ]
 
 [[package]]

@@ -2,8 +2,6 @@
 Utilities for creating figures (:mod:`fluiddyn.output.figs`)
 =============================================================
 
-.. currentmodule:: fluiddyn.output.figs
-
 Provides
 
 .. autoclass:: Figure

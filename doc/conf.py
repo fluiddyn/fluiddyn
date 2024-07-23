@@ -55,12 +55,14 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
     "sphinx.ext.autosummary",
+    "sphinx.ext.intersphinx",
     "numpydoc",
     "fluiddoc.mathmacro",
     "sphinxemoji.sphinxemoji",
     "myst_nb",
     "sphinx_copybutton",
     "sphinxcontrib.mermaid",
+    "matplotlib.sphinxext.roles",  # see ttps://github.com/matplotlib/matplotlib/issues/28234
 ]
 
 sphinxemoji_style = "twemoji"
@@ -274,8 +276,8 @@ latex_elements = {
 latex_documents = [
     (
         "index",
-        "fluidlab.tex",
-        "fluidlab Documentation",
+        "fluiddyn.tex",
+        "fluiddyn Documentation",
         "Pierre Augier",
         "manual",
     ),
@@ -370,4 +372,9 @@ myst_enable_extensions = [
     # "tasklist",
 ]
 
-suppress_warnings = ["mystnb.unknown_mime_type"]
+intersphinx_mapping = {
+    "python": ("http://docs.python.org/3", None),
+    "numpy": ("https://numpy.org/doc/2.0", None),
+    "scipy": ("http://docs.scipy.org/doc/scipy/reference", None),
+    "matplotlib": ("http://matplotlib.org/stable", None),
+}
