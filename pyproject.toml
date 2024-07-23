@@ -30,6 +30,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Scientific/Engineering",
@@ -96,8 +97,8 @@ doc = [
     "sphinx_rtd_theme",
     "numpydoc",
     "sphinxemoji",
-    "setuptools",  # needed for sphinxemoji https://github.com/sphinx-contrib/emojicodes/issues/42
     "myst-nb",
+    "myst-nb-json",
     "sphinx-copybutton",
     "pyqt5",
     "pyqt5-qt5==5.15.2",
