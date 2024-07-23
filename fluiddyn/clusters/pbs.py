@@ -34,8 +34,8 @@ qrls"""
     cmd_launch = "qsub"
     max_walltime = "23:59:59"
 
-    def __init__(self):
-        self.check_pbs()
+    def __init__(self, check_scheduler=True, **kwargs):
+        super().__init__(check_scheduler, **kwargs)
         self.commands_setting_env = ["cd $PBS_O_WORKDIR"]
         self.commands_unsetting_env = []
 
@@ -43,10 +43,10 @@ qrls"""
         """Check if this script is run on a frontal with pbs installed."""
         try:
             subprocess.check_call(["qsub", "--version"], stdout=subprocess.PIPE)
-        except OSError:
+        except OSError as err:
             raise ValueError(
                 "This script should be run on a cluster with PBS installed."
-            )
+            ) from err
 
     def check_name_cluster(self, env="HOSTNAME"):
         """Check if self.name_cluster matches the environment variable."""
@@ -121,6 +121,9 @@ qrls"""
         interactive : boolean
             Use `cmd_run_interactive` instead of `cmd_run` inside the jobscript
         """
+        if self._has_to_check_scheduler:
+            self.check_pbs()
+
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
             nb_nodes, nb_cores_per_node, nb_mpi_processes
         )

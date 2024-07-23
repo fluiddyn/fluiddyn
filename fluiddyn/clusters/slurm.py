@@ -46,9 +46,9 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
     account = None  #: Name of the project for jobs' submission (mandatory on some clusters)
     exclusive = False  #: Reserve nodes when submitting jobs
 
-    def __init__(self):
-        self.check_slurm()
+    def __init__(self, check_scheduler=True, **kwargs):
         self.commands_unsetting_env = []
+        super().__init__(check_scheduler, **kwargs)
 
     def check_slurm(self):
         """Check if this script is run on a frontal with slurm installed."""
@@ -189,6 +189,10 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
             Reserve nodes when submitting jobs
 
         """
+
+        if self._has_to_check_scheduler:
+            self.check_slurm()
+
         nb_cores_per_node, nb_mpi_processes = self._parse_cores_procs(
             nb_nodes, nb_cores_per_node, nb_mpi_processes
         )
