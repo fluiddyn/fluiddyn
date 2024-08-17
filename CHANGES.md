@@ -15,7 +15,12 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 % Security   Security in case of vulnerabilities.
 
 See also the
-[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.4...branch%2Fdefault).
+[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.5...branch%2Fdefault).
+
+## [0.6.5] (2024-08-17)
+
+- Cluster Gricad (OAR with Guix).
+- Compatibility Numpy 2.0.
 
 ## [0.6.4] (2024-05-03)
 
@@ -249,3 +254,4 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 [0.6.2]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.1...0.6.2
 [0.6.3]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.2...0.6.3
 [0.6.4]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.3...0.6.4
+[0.6.5]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.4...0.6.5
