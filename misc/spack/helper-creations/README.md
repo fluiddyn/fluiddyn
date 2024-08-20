@@ -1,0 +1,3 @@
+# Helper creation of a Fluiddyn Spack repo
+
+See the Makefile...
