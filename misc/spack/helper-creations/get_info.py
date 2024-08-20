@@ -28,8 +28,7 @@ for url, name in zip(urls, names):
     with tarfile.open(path_archive, "r", encoding="utf-8") as file:
         file.extractall(path_dir)
 
-
-for name_full in names:
+for command, name_full in zip(commands, names):
     path_dir = path_tmp_dir / name_full
 
     with open(path_dir / name_full/ "pyproject.toml", "rb") as f:
@@ -62,6 +61,7 @@ for name_full in names:
     build_backend = build_system["build-backend"]
 
     print(name, version)
+    print(command.strip())
     print(description)
     print(license)
     print("Build system:", build_backend, build_system["requires"])
