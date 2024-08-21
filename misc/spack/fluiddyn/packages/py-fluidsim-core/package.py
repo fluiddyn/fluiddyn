@@ -3,7 +3,16 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
+# pylint: disable=W0622,E0401
+
+from spack.package import (
+    PythonPackage,
+    depends_on,
+    extends,
+    license,
+    maintainers,
+    version,
+)
 
 
 class PyFluidsimCore(PythonPackage):
@@ -29,5 +38,4 @@ class PyFluidsimCore(PythonPackage):
 
     extends("python@3.9:", type=("build", "run"))
     depends_on("py-flit-core", type="build")
-
     depends_on("py-fluiddyn", type="run")

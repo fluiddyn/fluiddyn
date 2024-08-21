@@ -3,13 +3,16 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+# pylint: disable=W0622,E0401
+
 from spack.package import (
     PythonPackage,
-    maintainers,
-    license,
-    version,
+    default_args,
     depends_on,
     extends,
+    license,
+    maintainers,
+    version,
 )
 
 
@@ -30,7 +33,8 @@ class PyTransonic(PythonPackage):
     extends("python@3.9:", type=("build", "run"))
     depends_on("py-pdm-backend", type="build")
 
-    depends_on("py-numpy", type="run")
-    depends_on("py-beniget", type="run")
-    depends_on("py-gast", type="run")
-    depends_on("py-autopep8", type="run")
+    with default_args(type="run"):
+        depends_on("py-numpy")
+        depends_on("py-beniget")
+        depends_on("py-gast")
+        depends_on("py-autopep8")

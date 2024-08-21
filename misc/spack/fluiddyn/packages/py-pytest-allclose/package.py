@@ -15,18 +15,19 @@ from spack.package import (
 )
 
 
-class PyFluidfftBuilder(PythonPackage):
-    """Fluidfft plugin dependencies"""
+class PyPytestAllclose(PythonPackage):
+    """Pytest fixture extending Numpy's allclose function."""
 
-    pypi = "fluidfft-builder/fluidfft_builder-0.0.2.tar.gz"
+    pypi = "pytest-allclose/pytest-allclose-1.0.0.tar.gz"
 
     maintainers("paugier")
+
     license("MIT", checked_by="paugier")
 
     version(
-        "0.0.2",
-        sha256="c0af9ceca27ae3a00ccf2f160703be9e394d8b886b8a02653b6c0a12a4f54a90",
+        "1.0.0",
+        sha256="b2f0c521fa652281400d4a105c84454db3c50b993bcfee9861380be69cc6b041",
     )
 
     extends("python@3.9:", type=("build", "run"))
-    depends_on("py-flit-core", type="build")
+    depends_on("py-setuptools", type="build")

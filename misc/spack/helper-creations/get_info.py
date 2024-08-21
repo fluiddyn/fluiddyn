@@ -1,6 +1,6 @@
-import urllib.request
 import tarfile
 import tomllib
+import urllib.request
 from pathlib import Path
 
 with open("tmp_commands.txt", "r", encoding="utf-8") as file:
@@ -31,7 +31,7 @@ for url, name in zip(urls, names):
 for command, name_full in zip(commands, names):
     path_dir = path_tmp_dir / name_full
 
-    with open(path_dir / name_full/ "pyproject.toml", "rb") as f:
+    with open(path_dir / name_full / "pyproject.toml", "rb") as f:
         data = tomllib.load(f)
 
     project = data["project"]

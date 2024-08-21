@@ -3,13 +3,16 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+# pylint: disable=W0622,E0401
+
 from spack.package import (
     PythonPackage,
-    maintainers,
-    license,
-    version,
+    default_args,
     depends_on,
     extends,
+    license,
+    maintainers,
+    version,
 )
 
 
@@ -50,9 +53,17 @@ class PyFluiddyn(PythonPackage):
     extends("python@3.9:", type=("build", "run"))
     depends_on("py-pdm-backend", type="build")
 
-    depends_on("py-numpy", type="run")
-    depends_on("py-matplotlib", type="run")
-    depends_on("py-h5py", type="run")
-    depends_on("py-h5netcdf", type="run")
-    depends_on("py-distro", type="run")
-    depends_on("py-simpleeval", type="run")
+    with default_args(type="run"):
+        depends_on("py-numpy")
+        depends_on("py-matplotlib")
+        depends_on("py-h5py")
+        depends_on("py-h5netcdf")
+        depends_on("py-distro")
+        depends_on("py-simpleeval")
+        depends_on("py-psutil")
+        # optional deps
+        depends_on("py-ipython")
+        depends_on("py-scipy")
+        depends_on("py-pytest")
+        depends_on("py-pytest-allclose")
+        depends_on("py-pytest-mock")
