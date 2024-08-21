@@ -24,10 +24,9 @@ class PyPytestAllclose(PythonPackage):
 
     license("MIT", checked_by="paugier")
 
-    version(
-        "1.0.0",
-        sha256="b2f0c521fa652281400d4a105c84454db3c50b993bcfee9861380be69cc6b041",
-    )
+    # fmt: off
+    version("1.0.0", sha256="b2f0c521fa652281400d4a105c84454db3c50b993bcfee9861380be69cc6b041")
+    # fmt: on
 
     extends("python@3.9:", type=("build", "run"))
     depends_on("py-setuptools", type="build")

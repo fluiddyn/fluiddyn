@@ -89,7 +89,7 @@ validate_style:
     - job: "image:build"
       optional: true
   script:
-    - black --diff --check fluiddyn fluiddoc
+    - black --diff --check fluiddyn fluiddoc doc/examples
 
 validate_min_version:
   stage: lint
@@ -97,7 +97,7 @@ validate_min_version:
     - job: "image:build"
       optional: true
   script:
-    - vermin --no-parse-comments --lint --target=3.9 --no-tips  fluiddyn fluiddoc
+    - vermin --no-parse-comments --lint --target=3.9 --no-tips  fluiddyn fluiddoc doc/examples
   allow_failure: true
 
 validate_imports:

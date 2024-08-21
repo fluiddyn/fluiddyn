@@ -24,10 +24,9 @@ class PyFluidfftMpiWithFftw(PythonPackage):
     maintainers("paugier")
     license("CECILL-B", checked_by="paugier")
 
-    version(
-        "0.0.1",
-        sha256="ab8c1867e745715892f8d30c9409e9509467a610f5a702ac7b5cfa003787f6ce",
-    )
+    # fmt: off
+    version("0.0.1", sha256="ab8c1867e745715892f8d30c9409e9509467a610f5a702ac7b5cfa003787f6ce")
+    # fmt: on
 
     with default_args(type=("build", "run")):
         extends("python@3.9:")

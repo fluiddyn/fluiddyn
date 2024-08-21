@@ -25,10 +25,9 @@ class PyTransonic(PythonPackage):
 
     license("BSD-3-Clause", checked_by="paugier")
 
-    version(
-        "0.7.1",
-        sha256="dcc59f1936d09129c800629cd4e6812571a74afe40dadd8193940b545e6ef03e",
-    )
+    # fmt: off
+    version("0.7.1", sha256="dcc59f1936d09129c800629cd4e6812571a74afe40dadd8193940b545e6ef03e")
+    # fmt: on
 
     extends("python@3.9:", type=("build", "run"))
     depends_on("py-pdm-backend", type="build")

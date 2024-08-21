@@ -24,10 +24,9 @@ class PyFluidfftFftwmpi(PythonPackage):
     maintainers("paugier")
     license("CECILL-B", checked_by="paugier")
 
-    version(
-        "0.0.1",
-        sha256="af3c606852e991c2c1b3ea4f7558c69ab9138b713a7166a6eedf48ef1af660d3",
-    )
+    # fmt: off
+    version("0.0.1", sha256="af3c606852e991c2c1b3ea4f7558c69ab9138b713a7166a6eedf48ef1af660d3")
+    # fmt: on
 
     with default_args(type=("build", "run")):
         extends("python@3.9:")
