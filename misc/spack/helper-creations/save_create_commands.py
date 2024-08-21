@@ -8,6 +8,8 @@ package_names = [
     "fluidfft-fftw",
     "fluidfft-fftwmpi",
     "fluidfft-mpi_with_fftw",
+    "fluidfft-pfft",
+    "fluidfft-p3dfft",
     "fluidsim-core",
     "fluidsim",
     "fluidimage",
