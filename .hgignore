@@ -60,3 +60,5 @@ scripts/Simul/Launch/Profile.prof
 .pdm-python
 
 misc/spack/helper-creations/pdm.lock
+**/.spack-env
+spack.lock
