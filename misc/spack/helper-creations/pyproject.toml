@@ -1,0 +1,14 @@
+[project]
+name = "helper-creation-fluiddyn-spack-repo"
+version = "0.1.0"
+description = "Helper to create a Spack repo"
+authors = [
+    {name = "Pierre Augier", email = ""},
+]
+dependencies = ["pypi-simple[tqdm]"]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.pdm]
+distribution = false

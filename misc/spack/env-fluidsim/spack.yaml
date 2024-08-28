@@ -1,0 +1,15 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs:
+  - py-fluidsim
+  - py-fluidfft-fftw
+  - py-fluidfft-fftwmpi
+  - py-fluidfft-mpi-with-fftw
+  - py-fluidfft-pfft
+  view: true
+  concretizer:
+    unify: true

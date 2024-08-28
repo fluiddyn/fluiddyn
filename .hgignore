@@ -4,6 +4,7 @@ syntax: glob
 *.pyc
 *~
 *temp
+tmp_*
 .venv
 .pixi
 
@@ -57,3 +58,7 @@ scripts/Simul/Launch/Profile.prof
 
 .pdm-build
 .pdm-python
+
+misc/spack/helper-creations/pdm.lock
+**/.spack-env
+spack.lock
