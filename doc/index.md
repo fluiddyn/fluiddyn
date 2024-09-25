@@ -28,6 +28,9 @@ This documentation presents the FluidDyn project and the package of the same nam
 is the base package on which the other packages depend on. For the specific
 documentations of these specialized packages, follow the links above.
 
+We try to gather information on how to use computers in the
+website [Fluidhowto](https://fluidhowto.readthedocs.io).
+
 ```{toctree}
 ---
 caption: The FluidDyn project
