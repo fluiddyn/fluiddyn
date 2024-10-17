@@ -15,7 +15,13 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 % Security   Security in case of vulnerabilities.
 
 See also the
-[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.5...branch%2Fdefault).
+[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.6...branch%2Fdefault).
+
+## [0.6.6] (2024-10-17)
+
+- Fix [a bug](https://foss.heptapod.net/fluiddyn/fluidsim/-/issues/160) in
+  {mod}`fluiddyn.util.paramcontainer` related to Numpy 2.0
+  ([#130](https://foss.heptapod.net/fluiddyn/fluiddyn/-/merge_requests/130)).
 
 ## [0.6.5] (2024-08-17)
 
@@ -255,3 +261,4 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 [0.6.3]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.2...0.6.3
 [0.6.4]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.3...0.6.4
 [0.6.5]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.4...0.6.5
+[0.6.6]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.5...0.6.6
