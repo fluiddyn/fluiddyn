@@ -44,7 +44,7 @@ except ImportError:
 
 
 def _as_str(value):
-    if isinstance(value, Path):
+    if isinstance(value, (Path, np.number)):
         return str(value)
     elif isinstance(value, str):
         return value
@@ -75,6 +75,12 @@ def _as_value(value):
                 pass
         obj = literal_eval(code)
         return np.array(obj, dtype=dtype)
+    elif any(
+        value.startswith(f"np.{base_type}")
+        for base_type in ["float", "int", "complex"]
+    ):
+        idx_par = value.find("(")
+        value = value[idx_par + 1 : -1]
 
     if "\t" in value:
         return value
@@ -751,52 +757,3 @@ def tidy_container(cont):
 def convert_capword_to_lowercaseunderscore(name):
     s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
     return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
-
-
-if __name__ == "__main__":
-    # params = ParamContainer(tag='params')
-
-    # params._set_attrib('a0', 1)
-    # params._set_attribs({'a1': 1, 'a2': 1})
-
-    # params._set_child('child0', {'a0': 2, 'a1': 2})
-
-    # params2 = ParamContainer(tag='params')
-
-    # params2._set_attribs({'a1': 1, 'a2': 1})
-    # params2._set_attrib('a0', 1)
-
-    # params2._set_child('child0', {'a0': 2, 'a1': 2})
-
-    # assert params == params2
-
-    # c1 = ParamContainer(tag='child1')
-    # c1._set_attrib('a0', 10)
-
-    # params._set_as_child(c1)
-
-    # print(params)
-
-    # assert params != params2
-
-    params = ParamContainer(tag="params")
-    params._set_attribs({"a0": 1, "a1": 1})
-    params._set_attrib("a2", 1)
-
-    params._print_as_xml()
-
-    params._set_child("child0", {"a0": 2, "a1": 2})
-    params.child0.a0 = 3
-
-    params._print_as_xml()
-
-    # params.a3 = 3
-
-    # params.child0 = 3
-
-    params._save_as_xml()
-
-    params_loaded = ParamContainer(path_file=params._tag + ".xml")
-    os.remove(params._tag + ".xml")
-
-    assert params_loaded == params

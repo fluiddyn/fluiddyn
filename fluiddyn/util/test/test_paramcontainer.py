@@ -18,7 +18,16 @@ class TestContainer(unittest.TestCase):
         cls.params = ParamContainer(tag="params")
         params = cls.params
         params._set_attrib("a0", 1)
-        params._set_attribs({"a1": 1, "a2": "a", "a_str_list": ["a", "b"]})
+        params._set_attribs(
+            {
+                "a1": 1,
+                "a2": "a",
+                "a_str_list": ["a", "b"],
+                "a_np_float": np.float64(2.2),
+                "a_np_int": np.int16(2),
+                "a_np_complex": np.complex128(2.2),
+            }
+        )
 
         params._set_child("child0", {"a0": 2, "a1": None}, doc="Doc on a0 & a1")
         params.child0.a0 = []
@@ -99,7 +108,7 @@ class TestContainer(unittest.TestCase):
             params._does_not_exist
 
         with self.assertRaises(AttributeError):
-            print(params.child1.a0)
+            print(params.child_does_not_exist.a0)
 
     def test_tidy(self):
         param = ParamContainer(path_file=xml_file)
@@ -164,6 +173,19 @@ class TestContainer(unittest.TestCase):
         p1._set_child("x")
 
         assert p0 == p1
+
+
+def test_as_value_np_number(tmpdir):
+    """Test _as_value for np.float64"""
+
+    number = 1.1
+    params = ParamContainer("params", attribs={"a_f": f"np.float64({number})"})
+    params._save_as_xml(tmpdir / "tmp.xml")
+    params2 = ParamContainer(path_file=tmpdir / "tmp.xml")
+
+    assert isinstance(params2.a_f, float)
+    assert not isinstance(params2.a_f, np.number)
+    assert params2.a_f == number
 
 
 if __name__ == "__main__":
