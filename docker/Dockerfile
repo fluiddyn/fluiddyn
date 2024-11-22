@@ -1,4 +1,4 @@
-FROM python:3.9-bookworm
+FROM python:3.10-bookworm
 LABEL Pierre Augier <pierre.augier@univ-grenoble-alpes.fr>
 
 COPY docker/hgrc $HOME/.hgrc

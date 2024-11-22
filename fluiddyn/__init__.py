@@ -18,7 +18,6 @@ Use the question mark in ipython to view a function's docstring::
 
 """
 
-from ._version import __version__
 from .util import constants
 from .util.util import (
     create_object_from_file,
@@ -42,7 +41,6 @@ journal = {Journal of Open Research Software}
 
 
 __all__ = [
-    "__version__",
     "constants",
     "create_object_from_file",
     "time_as_str",
@@ -50,3 +48,13 @@ __all__ = [
     "ipydebug",
     "__citation__",
 ]
+
+
+def __getattr__(name):
+    if name == "__version__":
+
+        from importlib import metadata
+
+        return metadata.version(__package__)
+
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
