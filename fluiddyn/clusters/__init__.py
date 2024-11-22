@@ -80,6 +80,8 @@ class Cluster(ABC):
 
         """
         if self.commands_setting_env is not None:
+            if isinstance(self.commands_setting_env, str):
+                return self.commands_setting_env.split("\n")
             return self.commands_setting_env
         return self.get_commands_activating_lauching_python()
 
