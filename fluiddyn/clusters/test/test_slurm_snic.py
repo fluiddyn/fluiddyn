@@ -8,8 +8,7 @@ import os
 import unittest
 from shutil import rmtree
 
-from ...io import stdout_redirected
-from .. import cines, slurm, snic
+from .. import cines, mesonet, slurm, snic
 
 jobid = 123
 
@@ -64,8 +63,7 @@ class SlurmTestCase(unittest.TestCase):
 
     def test_submit_defaults(self):
         """Test submit_script method with its default options."""
-        with stdout_redirected():
-            self.cluster.submit_script(self._script, ask=False)
+        self.cluster.submit_script(self._script, ask=False)
 
     def test_submit_non_default(self):
         """Test submit_script method with its non-default options."""
@@ -73,28 +71,27 @@ class SlurmTestCase(unittest.TestCase):
         self.cluster.max_walltime = "3-00:00:00"
         nb_cores_per_node = self.cluster.nb_cores_per_node // 2
 
-        with stdout_redirected():
-            self.cluster.submit_script(
-                self._script,
-                path_resume=self._script_resume,
-                name_run="test",
-                path_launching_script=launcher,
-                retain_script=False,
-                nb_nodes=2,
-                nb_cores_per_node=nb_cores_per_node,
-                nb_mpi_processes=None,
-                walltime="2-23:59:59",
-                nb_runs=2,
-                jobid=jobid,
-                project="2001-01-01",
-                requeue=True,
-                nb_switches=2,
-                max_waittime="00:10:00",
-                ask=False,
-                bash=False,
-                email="johndoe@example.com",
-                interactive=True,
-            )
+        self.cluster.submit_script(
+            self._script,
+            path_resume=self._script_resume,
+            name_run="test",
+            path_launching_script=launcher,
+            retain_script=False,
+            nb_nodes=2,
+            nb_cores_per_node=nb_cores_per_node,
+            nb_mpi_processes=None,
+            walltime="2-23:59:59",
+            nb_runs=2,
+            jobid=jobid,
+            project="2001-01-01",
+            requeue=True,
+            nb_switches=2,
+            max_waittime="00:10:00",
+            ask=False,
+            bash=False,
+            email="johndoe@example.com",
+            interactive=True,
+        )
 
         if os.path.exists(launcher):
             raise ValueError(f"SLURM launching script {launcher} was left behind")
@@ -136,5 +133,10 @@ class OccigenTestCase(SlurmTestCase):
         super().setUp(OccigenMod)
 
 
-if __name__ == "__main__":
-    unittest.main()
+class ZenMod(ClusterSlurmMod, mesonet.Zen):
+    pass
+
+
+class ZenTestCase(SlurmTestCase):
+    def setUp(self):
+        super().setUp(ZenMod)

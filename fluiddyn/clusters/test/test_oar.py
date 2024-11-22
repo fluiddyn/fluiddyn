@@ -196,7 +196,3 @@ def test_get_commands_setting_env(monkeypatch):
         "source /home/my_uname/miniconda/etc/profile.d/conda.sh",
         "conda activate my_env",
     ]
-
-
-if __name__ == "__main__":
-    unittest.main()

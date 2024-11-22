@@ -408,7 +408,7 @@ scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
         if interactive:
             txt += f" > {logfile_stdout} 2>&1"
 
-        txt += "\n" + "\n".join(self.commands_unsetting_env)
+        txt = self._append_commands_unsetting_env(txt) + "\n"
         return txt
 
     def launch_more_dependant_jobs(

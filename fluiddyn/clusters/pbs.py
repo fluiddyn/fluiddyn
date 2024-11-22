@@ -264,5 +264,5 @@ qrls"""
         else:
             txt += command
 
-        txt += "\n" + "\n".join(self.commands_unsetting_env)
+        txt = self._append_commands_unsetting_env(txt) + "\n"
         return txt

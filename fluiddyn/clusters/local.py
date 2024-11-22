@@ -54,13 +54,6 @@ class ClusterLocal(Cluster):
     cmd_launch = "nohup"
     max_walltime = "30-00:00:00"
 
-    def __init__(self, check_scheduler=True, **kwargs):
-        super().__init__(check_scheduler, **kwargs)
-        self.commands_unsetting_env = []
-        virtualenv = os.getenv("VIRTUAL_ENV")
-        if virtualenv is not None:
-            self.commands_unsetting_env.append("deactivate")
-
     def submit_script(self, path, *args, **kwargs):
         """Submit a script. See `submit_command` for all possible arguments"""
         path = os.path.expandvars(path)
@@ -223,7 +216,7 @@ class ClusterLocal(Cluster):
                 self.cmd_launch, cmd, logfile_stdout, logfile_stderr
             )
 
-        txt += "\n" + "\n".join(self.commands_unsetting_env)
+        txt = self._append_commands_unsetting_env(txt) + "\n"
         return txt
 
     def _log_job(
@@ -236,9 +229,9 @@ class ClusterLocal(Cluster):
     ):
         """Generate a shell command to log the job into a markdown file."""
         return (
-            "\n" + rf'printf "\n# np={nb_cores} `date` PID $$ '
+            rf'printf "\n# np={nb_cores} `date` PID $$ '
             rf'{path_launching_script} {logfile_stdout}\n{command}" >> {logfile_job}'
-            + "\n"
+            + "\n\n"
         )
 
     def _write_txt_launching_script(self, txt, path_launching_script):
