@@ -39,6 +39,7 @@ class Cluster(ABC):
 
     _doc_commands: str
     commands_setting_env: list = None
+    commands_unsetting_env: list = None
     nb_cores_per_node: Optional[int]
 
     def __init__(self, check_scheduler=True, **kwargs):
@@ -79,9 +80,11 @@ class Cluster(ABC):
         ``self.get_commands_activating_lauching_python()`` is returned.
 
         """
-        if self.commands_setting_env is not None:
-            return self.commands_setting_env
-        return self.get_commands_activating_lauching_python()
+        if self.commands_setting_env is None:
+            return self.get_commands_activating_lauching_python()
+        if isinstance(self.commands_setting_env, str):
+            return self.commands_setting_env.strip().split("\n")
+        return self.commands_setting_env
 
     def get_commands_activating_lauching_python(self):
         """Return a list a commands activating the Python used to launch the script"""
@@ -119,6 +122,45 @@ class Cluster(ABC):
             )
 
         return commands
+
+    def _get_commands_unsetting_env(self):
+        """Return a list of commands unsetting the environment
+
+        If ``self.commands_setting_env`` is ``None``,
+        ``self.get_commands_desactivate_lauching_python()`` is returned.
+
+        """
+        if self.commands_setting_env is None:
+            return self._get_commands_deactivate_lauching_python()
+        if isinstance(self.commands_unsetting_env, str):
+            return self.commands_unsetting_env.strip().split("\n")
+        return self.commands_unsetting_env
+
+    def _get_commands_deactivate_lauching_python(self):
+        """Return a list a commands deactivating the Python used to launch the script"""
+
+        virtualenv = os.getenv("VIRTUAL_ENV")
+        if virtualenv is not None:
+            return ["deactivate"]
+
+        conda_env = os.getenv("CONDA_DEFAULT_ENV")
+        if conda_env is not None:
+            conda_prefix = os.getenv("CONDA_PREFIX")
+            if conda_prefix is None:
+                raise RuntimeError(
+                    "CONDA_DEFAULT_ENV is defined but not CONDA_PREFIX!"
+                )
+            return ["conda deactivate"]
+
+        return []
+
+    def _append_commands_unsetting_env(self, txt):
+
+        commands_unsetting_env = self._get_commands_unsetting_env()
+        if commands_unsetting_env:
+            return txt + "\n" + "\n".join(commands_unsetting_env)
+        else:
+            return txt
 
 
 def check_oar():

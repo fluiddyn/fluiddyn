@@ -97,7 +97,3 @@ class PBSTestCase(unittest.TestCase):
 
         if os.path.exists(launcher):
             raise ValueError(f"PBS launching script {launcher} was left behind")
-
-
-if __name__ == "__main__":
-    unittest.main()
