@@ -28,7 +28,7 @@ ipython = ">=8.20.0"
 simpleeval = ">=0.9.13"
 
 [host-dependencies]
-python = ">=3.9"
+python = ">=3.10"
 pdm-backend = ">=2.1.8"
 pip = ">=23.3.2"
 editables = ">=0.3"
