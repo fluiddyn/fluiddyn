@@ -44,7 +44,7 @@ conda-forge = "https://github.com/conda-forge/fluiddyn-feedstock"
 
 [project.optional-dependencies]
 fft = [
-    "pyfftw >= 0.10.4",
+    "pyfftw >= 0.15",
     "pulp",
 ]
 mpi = ["mpi4py"]
