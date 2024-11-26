@@ -15,7 +15,14 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 % Security   Security in case of vulnerabilities.
 
 See also the
-[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.6...branch%2Fdefault).
+[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.7.0...branch%2Fdefault).
+
+## [0.7.0] (2024-11-26)
+
+- Fix `__version__`.
+- Clusters: add MesoNET and improve automatic detection of the commands to set and unset
+  environments
+  ([#132](https://foss.heptapod.net/fluiddyn/fluiddyn/-/merge_requests/132)).
 
 ## [0.6.6] (2024-10-17)
 
@@ -262,3 +269,4 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 [0.6.4]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.3...0.6.4
 [0.6.5]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.4...0.6.5
 [0.6.6]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.5...0.6.6
+[0.7.0]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.6...0.7.0
