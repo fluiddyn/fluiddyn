@@ -187,12 +187,12 @@ def test_get_commands_setting_env(monkeypatch):
     monkeypatch.delenv("VIRTUAL_ENV")
     monkeypatch.delenv("PYTHONPATH")
     monkeypatch.setenv("CONDA_DEFAULT_ENV", "my_env")
-    monkeypatch.setenv("CONDA_PREFIX", "/home/my_uname/miniconda")
+    monkeypatch.setenv("CONDA_EXE", "/home/my_uname/miniforge3/bin/conda")
 
     commands = cluster.get_commands_setting_env()
 
     assert commands == [
         "source /etc/profile",
-        "source /home/my_uname/miniconda/etc/profile.d/conda.sh",
+        "source /home/my_uname/miniforge3/etc/profile.d/conda.sh",
         "conda activate my_env",
     ]
