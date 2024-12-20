@@ -14,7 +14,7 @@ from shutil import rmtree
 import pytest
 
 from ..ciment import Froggy
-from ..gricad import DahuGuixDevel
+from ..gricad import Dahu, DahuGuixDevel
 from ..legi import GPU9, Calcul, Calcul2, Calcul6, Calcul7, Calcul8
 from ..oar import ClusterOAR
 
@@ -59,6 +59,10 @@ class GPU9NoCheck(ClusterNoCheck, GPU9):
 
 
 class FroggyNoCheck(ClusterNoCheck, Froggy):
+    pass
+
+
+class DahuNoCheck(ClusterNoCheck, Dahu):
     pass
 
 
@@ -137,6 +141,11 @@ class TestCaseGPU9(TestCaseOAR):
 class TestFroggy(TestCaseOAR):
     Cluster = Froggy
     ClusterNoCheck = FroggyNoCheck
+
+
+class TestCaseDahu(TestCaseOAR):
+    Cluster = Dahu
+    ClusterNoCheck = DahuNoCheck
 
 
 class TestCaseDahuGuixDevel(TestCaseOAR):
