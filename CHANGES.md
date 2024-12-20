@@ -15,7 +15,14 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 % Security   Security in case of vulnerabilities.
 
 See also the
-[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.7.0...branch%2Fdefault).
+[unreleased changes](https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.8.0...branch%2Fdefault).
+
+## [0.8.0] (2024-12-20)
+
+[!134](https://foss.heptapod.net/fluiddyn/fluiddyn/-/merge_requests/134):
+
+- Fix bug cluster Conda activate path
+- Cluster Gricad Dahu without Guix
 
 ## [0.7.0] (2024-11-26)
 
@@ -270,3 +277,4 @@ Improvements and refactoring {mod}`fluiddyn.util.serieofarrays` with much better
 [0.6.5]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.4...0.6.5
 [0.6.6]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.5...0.6.6
 [0.7.0]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.6.6...0.7.0
+[0.8.0]: https://foss.heptapod.net/fluiddyn/fluiddyn/-/compare/0.7.0...0.8.0
