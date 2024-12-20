@@ -109,14 +109,16 @@ class Cluster(ABC):
 
         conda_env = os.getenv("CONDA_DEFAULT_ENV")
         if conda_env is not None:
-            conda_prefix = os.getenv("CONDA_PREFIX")
-            if conda_prefix is None:
+            conda_exe = os.getenv("CONDA_EXE")
+            if conda_exe is None:
                 raise RuntimeError(
-                    "CONDA_DEFAULT_ENV is defined but not CONDA_PREFIX!"
+                    "CONDA_DEFAULT_ENV is defined but not CONDA_EXE!"
                 )
+            conda_root = Path(conda_exe).parent.parent
+            conda_profile_sh = conda_root / "etc/profile.d/conda.sh"
             commands.extend(
                 [
-                    f"source {conda_prefix}/etc/profile.d/conda.sh",
+                    f"source {conda_profile_sh}",
                     f"conda activate {conda_env}",
                 ]
             )
@@ -201,16 +203,18 @@ scancel
 scontrol hold <job_list>
 scontrol release <job_list>
 scontrol show job $JOBID
-""",
+tail -f logfile.txt""",
     "pbs": """qsub
 qstat -u $USER
 qdel
 qhold
-qrls""",
+qrls
+tail -f logfile.txt""",
     "oar": """oarsub -S script.sh
 oarstat -u
 oardel $JOB_ID
-oarsub -C $JOB_ID""",
+oarsub -C $JOB_ID
+tail -f logfile.txt""",
 }
 
 

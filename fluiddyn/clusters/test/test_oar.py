@@ -14,7 +14,7 @@ from shutil import rmtree
 import pytest
 
 from ..ciment import Froggy
-from ..gricad import DahuGuixDevel
+from ..gricad import Dahu, DahuGuixDevel
 from ..legi import GPU9, Calcul, Calcul2, Calcul6, Calcul7, Calcul8
 from ..oar import ClusterOAR
 
@@ -59,6 +59,10 @@ class GPU9NoCheck(ClusterNoCheck, GPU9):
 
 
 class FroggyNoCheck(ClusterNoCheck, Froggy):
+    pass
+
+
+class DahuNoCheck(ClusterNoCheck, Dahu):
     pass
 
 
@@ -139,6 +143,11 @@ class TestFroggy(TestCaseOAR):
     ClusterNoCheck = FroggyNoCheck
 
 
+class TestCaseDahu(TestCaseOAR):
+    Cluster = Dahu
+    ClusterNoCheck = DahuNoCheck
+
+
 class TestCaseDahuGuixDevel(TestCaseOAR):
     Cluster = DahuGuixDevel
     ClusterNoCheck = DahuGuixDevelNoCheck
@@ -187,12 +196,12 @@ def test_get_commands_setting_env(monkeypatch):
     monkeypatch.delenv("VIRTUAL_ENV")
     monkeypatch.delenv("PYTHONPATH")
     monkeypatch.setenv("CONDA_DEFAULT_ENV", "my_env")
-    monkeypatch.setenv("CONDA_PREFIX", "/home/my_uname/miniconda")
+    monkeypatch.setenv("CONDA_EXE", "/home/my_uname/miniforge3/bin/conda")
 
     commands = cluster.get_commands_setting_env()
 
     assert commands == [
         "source /etc/profile",
-        "source /home/my_uname/miniconda/etc/profile.d/conda.sh",
+        "source /home/my_uname/miniforge3/etc/profile.d/conda.sh",
         "conda activate my_env",
     ]
