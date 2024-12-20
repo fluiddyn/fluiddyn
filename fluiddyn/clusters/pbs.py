@@ -26,7 +26,8 @@ qsub
 qstat -u $USER
 qdel
 qhold
-qrls"""
+qrls
+tail -f logfile.txt"""
     name_cluster = ""
     nb_cores_per_node = 32
     default_project = None

@@ -32,7 +32,8 @@ scancel
 scontrol hold
 scontrol release
 scontrol show <jobid>
-scontrol update jobid=<jobid> TimeLimit=1-00:00:00"""
+scontrol update jobid=<jobid> TimeLimit=1-00:00:00
+tail -f logfile.txt"""
     name_cluster = ""  #: Name of cluster used in :meth:`check_name_cluster`
     nb_cores_per_node = 32  #: Number of cores per node
     default_project = None  #: Default project allocation

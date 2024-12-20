@@ -99,7 +99,8 @@ Useful commands
 oarsub -S script.sh
 oarstat -u
 oardel $JOB_ID
-oarsub -C $JOB_ID"""
+oarsub -C $JOB_ID
+tail -f logfile.txt"""
 
     def check_oar(self):
         """check if this script is run on a frontal with oar installed"""

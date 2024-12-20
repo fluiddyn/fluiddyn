@@ -203,16 +203,18 @@ scancel
 scontrol hold <job_list>
 scontrol release <job_list>
 scontrol show job $JOBID
-""",
+tail -f logfile.txt""",
     "pbs": """qsub
 qstat -u $USER
 qdel
 qhold
-qrls""",
+qrls
+tail -f logfile.txt""",
     "oar": """oarsub -S script.sh
 oarstat -u
 oardel $JOB_ID
-oarsub -C $JOB_ID""",
+oarsub -C $JOB_ID
+tail -f logfile.txt""",
 }
 
 
