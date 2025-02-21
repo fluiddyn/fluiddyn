@@ -13,12 +13,13 @@ supporting Mercurial. <https://foss.heptapod.net> is a public instance for Free 
 Open-Source Software (more information
 [here](https://foss.heptapod.net/heptapod/foss.heptapod.net)).
 
-Thanks to [Octobus](https://octobus.net/) and
-[Clever Cloud](https://www.clever-cloud.com) for providing this service!
+Thanks to [CloudCrane](https://orbeet.io/a-propos/cloudcrane/),
+[Octobus](https://octobus.net/) and [Clever Cloud](https://www.clever-cloud.com)
+for providing this service!
 
 ```{raw} html
 <h1 align="center">
-  <a href="https://foss.heptapod.net/heptapod/foss.heptapod.net">
+  <a href="https://heptapod.net">
     <img width="500" alt="Octobus + Clever Cloud"
          src="https://foss.heptapod.net/heptapod/slides/2020-FOSDEM/raw/branch/default/octobus+clever.png"
          >
