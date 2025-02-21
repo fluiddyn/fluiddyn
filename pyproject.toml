@@ -121,6 +121,9 @@ black = "black fluiddyn fluiddoc doc"
 isort = "isort --atomic --tc fluiddyn fluiddoc doc/examples"
 black_check = "black --check fluiddyn fluiddoc doc"
 
+[tool.pdm.options]
+lock = ["-G", ":all"]
+
 
 [tool.coverage.run]
 source = ["./fluiddyn"]

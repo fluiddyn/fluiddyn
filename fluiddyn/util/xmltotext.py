@@ -1,6 +1,4 @@
-"""Formatted xml text from xml element
-
-"""
+"""Formatted xml text from xml element"""
 
 
 def produce_text_element(elem, level=0):

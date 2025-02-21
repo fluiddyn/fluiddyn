@@ -1,6 +1,6 @@
 
 develop:
-	pdm install
+	pdm sync --clean
 
 lock:
 	pdm lock
