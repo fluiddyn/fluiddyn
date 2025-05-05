@@ -111,7 +111,7 @@ miscellaneous
 - [Forge of the FluidDyn project on Heptapod](https://foss.heptapod.net/fluiddyn)
 - [Forge of the fluiddyn package on Heptapod](https://foss.heptapod.net/fluiddyn/fluiddyn)
 - [FluidDyn in PyPI](https://pypi.org/project/fluiddyn/)
-- [FluidDyn project blog](https://fluiddyn.bitbucket.io/)
+- [FluidDyn project blog](https://fluiddyn.netlify.app)
 - FluidDyn user chat room in
   [riot](https://riot.im/app/#/room/#fluiddyn-users:matrix.org) or
   [slack](https://fluiddyn.slack.com)
