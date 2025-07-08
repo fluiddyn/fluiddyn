@@ -14,7 +14,7 @@ from shutil import rmtree
 import pytest
 
 from ..ciment import Froggy
-from ..gricad import Dahu, DahuGuixDevel
+from ..gricad import Dahu, DahuDevel
 from ..legi import GPU9, Calcul, Calcul2, Calcul6, Calcul7, Calcul8
 from ..oar import ClusterOAR
 
@@ -27,57 +27,13 @@ except OSError:
     oar = False
 
 
-class ClusterNoCheck(ClusterOAR):
-    """A modified class which skips checking if oar is installed or not."""
-
-    def check_oar(self):
-        pass
-
-
-class CalculNoCheck(ClusterNoCheck, Calcul):
-    pass
-
-
-class Calcul2NoCheck(ClusterNoCheck, Calcul2):
-    pass
-
-
-class Calcul6NoCheck(ClusterNoCheck, Calcul6):
-    pass
-
-
-class Calcul7NoCheck(ClusterNoCheck, Calcul7):
-    pass
-
-
-class Calcul8NoCheck(ClusterNoCheck, Calcul8):
-    pass
-
-
-class GPU9NoCheck(ClusterNoCheck, GPU9):
-    pass
-
-
-class FroggyNoCheck(ClusterNoCheck, Froggy):
-    pass
-
-
-class DahuNoCheck(ClusterNoCheck, Dahu):
-    pass
-
-
-class DahuGuixDevelNoCheck(ClusterNoCheck, DahuGuixDevel):
-    pass
-
-
 @unittest.skipUnless(os.name == "posix", "requires POSIX")
 class TestCaseOAR(unittest.TestCase):
     Cluster = ClusterOAR
-    ClusterNoCheck = ClusterNoCheck
 
     def setUp(self):
         self.cluster = self.Cluster()
-        self.clusternocheck = self.ClusterNoCheck()
+        self.clusternocheck = self.Cluster(check_scheduler=False)
 
         self._work_dir = "tmp_test_oar"
         if not os.path.exists(self._work_dir):
@@ -110,47 +66,38 @@ class TestCaseOAR(unittest.TestCase):
 
 class TestCaseCalcul(TestCaseOAR):
     Cluster = Calcul
-    ClusterNoCheck = CalculNoCheck
 
 
 class TestCaseCalcul7(TestCaseOAR):
     Cluster = Calcul7
-    ClusterNoCheck = Calcul7NoCheck
 
 
 class TestCaseCalcul8(TestCaseOAR):
     Cluster = Calcul8
-    ClusterNoCheck = Calcul8NoCheck
 
 
 class TestCaseCalcul2(TestCaseOAR):
     Cluster = Calcul2
-    ClusterNoCheck = Calcul2NoCheck
 
 
 class TestCaseCalcul6(TestCaseOAR):
     Cluster = Calcul6
-    ClusterNoCheck = Calcul6NoCheck
 
 
 class TestCaseGPU9(TestCaseOAR):
     Cluster = GPU9
-    ClusterNoCheck = GPU9NoCheck
 
 
 class TestFroggy(TestCaseOAR):
     Cluster = Froggy
-    ClusterNoCheck = FroggyNoCheck
 
 
 class TestCaseDahu(TestCaseOAR):
     Cluster = Dahu
-    ClusterNoCheck = DahuNoCheck
 
 
-class TestCaseDahuGuixDevel(TestCaseOAR):
-    Cluster = DahuGuixDevel
-    ClusterNoCheck = DahuGuixDevelNoCheck
+class TestCaseDahuDevel(TestCaseOAR):
+    Cluster = DahuDevel
 
 
 @pytest.mark.skipif(platform.system() != "Linux", reason="Only on Linux")

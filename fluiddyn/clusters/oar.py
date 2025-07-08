@@ -302,8 +302,6 @@ tail -f logfile.txt"""
 
         txt += "\n".join(self.get_commands_setting_env()) + "\n\n"
 
-        txt += self.get_mpi_prefix_setter() + "\n\n"
-
         if omp_num_threads is not None:
             txt += f"export OMP_NUM_THREADS={omp_num_threads}\n\n"
 
@@ -314,9 +312,15 @@ tail -f logfile.txt"""
             use_oar_envsh = nb_mpi_processes is not None and nb_nodes > 1
 
         if use_oar_envsh:
+
+            if isinstance(use_oar_envsh, str):
+                oar_envsh = use_oar_envsh
+            else:
+                oar_envsh = "oar-envsh"
+
             txt += (
                 "# Shell with environment variables forwarded\n"
-                "export OMPI_MCA_plm_rsh_agent=oar-envsh\n\n"
+                f"export OMPI_MCA_plm_rsh_agent={oar_envsh}\n\n"
             )
 
         if run_with_exec:
@@ -328,7 +332,7 @@ tail -f logfile.txt"""
             txt += f"mpirun -np {nb_mpi_processes} "
 
             if nb_mpi_processes > 1:
-                txt += "-machinefile $OAR_NODEFILE "
+                txt += self.get_mpirun_options()
 
         txt += command + "\n"
 
@@ -337,8 +341,14 @@ tail -f logfile.txt"""
     def get_after_exec(self):
         return ""
 
-    def get_mpi_prefix_setter(self):
-        return ""
+    def get_mpirun_options(self):
+
+        options = "-machinefile $OAR_NODEFILE "
+
+        if self.guix_profile:
+            options += f"--prefix {self.guix_profile} "
+
+        return options
 
     def stall(self, name_job, limit_number_jobs=1, time_check=30):
         """Wait until job(s) completion.
@@ -364,10 +374,4 @@ tail -f logfile.txt"""
 class ClusterOARGuix(ClusterOAR):
     """OAR cluster using the package manager Guix"""
 
-    options_guix_shell: str = ""
-
-    def get_after_exec(self):
-        return f"~/.config/guix/current/bin/guix shell {self.options_guix_shell} \\\n  -- "
-
-    def get_mpi_prefix_setter(self):
-        return f'''MPI_PREFIX="`guix shell {self.options_guix_shell} -- /bin/sh -c 'echo $GUIX_ENVIRONMENT'`"'''
+    guix_profile: str | None = "$HOME/.guix-profile"

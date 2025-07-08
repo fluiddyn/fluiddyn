@@ -39,8 +39,10 @@ class Cluster(ABC):
 
     _doc_commands: str
     commands_setting_env: list = None
+    commands_setting_mpi: list = None
     commands_unsetting_env: list = None
     nb_cores_per_node: Optional[int]
+    guix_profile: str = None
 
     def __init__(self, check_scheduler=True, **kwargs):
         self._has_to_check_scheduler = check_scheduler
@@ -74,19 +76,24 @@ class Cluster(ABC):
         return nb_cores_per_node, nb_mpi_processes
 
     def get_commands_setting_env(self):
-        """Return a list of commands setting the environment
-
-        If ``self.commands_setting_env`` is ``None``,
-        ``self.get_commands_activating_lauching_python()`` is returned.
-
-        """
+        """Return a list of commands setting the environment"""
         if self.commands_setting_env is None:
-            return self.get_commands_activating_lauching_python()
-        if isinstance(self.commands_setting_env, str):
-            return self.commands_setting_env.strip().split("\n")
-        return self.commands_setting_env
+            if self.guix_profile is not None:
+                commands = [
+                    f"GUIX_PROFILE={self.guix_profile}",
+                    "source $GUIX_PROFILE/etc/profile",
+                ]
+            else:
+                commands = self.get_commands_activating_launching_python()
+        elif isinstance(self.commands_setting_env, str):
+            commands = self.commands_setting_env.strip().split("\n")
+        else:
+            commands = self.commands_setting_env.copy()
+        if self.commands_setting_mpi is not None:
+            commands.extend(self.commands_setting_mpi)
+        return commands
 
-    def get_commands_activating_lauching_python(self):
+    def get_commands_activating_launching_python(self):
         """Return a list a commands activating the Python used to launch the script"""
 
         commands = []

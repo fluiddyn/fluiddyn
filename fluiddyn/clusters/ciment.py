@@ -22,8 +22,8 @@ class Froggy(ClusterOAR):
     nb_cores_per_node = 16
     frontends = [""]
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.commands_setting_env = [
             "source /applis/site/env.bash",
