@@ -438,6 +438,7 @@ tail -f logfile.txt"""
                 text=True,
                 stdout=PIPE,
                 stderr=PIPE,
+                check=False,
             )
             if process.returncode:
                 print(process.stdout, process.stderr, sep="\n")
@@ -467,6 +468,7 @@ tail -f logfile.txt"""
                 text=True,
                 stdout=PIPE,
                 stderr=PIPE,
+                check=False,
             )
             if process.returncode:
                 print(process.stdout, process.stderr, sep="\n")

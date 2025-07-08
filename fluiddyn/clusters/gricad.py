@@ -3,7 +3,7 @@
 
 Provides:
 
-.. autoclass:: DahuGuix
+.. autoclass:: Dahu
    :members:
 
 `Gricad <https://gricad.univ-grenoble-alpes.fr>`_ handles the Grenoble University
@@ -18,7 +18,12 @@ class Dahu(ClusterOAR):
     name_cluster = "dahu"
     has_to_add_name_cluster = False
     frontends = ["dahu", "dahu-oar3"]
-    use_oar_envsh = False
+    use_oar_envsh = "/bettik/legi/oar-envsh"
+    commands_setting_mpi = [
+        "export OMPI_MCA_btl_openib_allow_ib=true",
+        "export OMPI_MCA_pml=cm",
+        "export OMPI_MCA_mtl=psm2",
+    ]
 
 
 class DahuDevel(Dahu):
@@ -49,40 +54,3 @@ class Dahu32_5218(Dahu):
 class Dahu16_6244(Dahu):
     nb_cores_per_node = 16
     resource_conditions = "cpumodel='Gold 6244' and n_cores=16"
-
-
-class DahuGuix(Dahu, ClusterOARGuix):
-
-    options_guix_shell = "-E ^OMPI -E ^OAR -E ^OMP -m manifest.scm"
-
-    commands_setting_env = [
-        "source /applis/site/guix-start.sh",
-        "export OMPI_MCA_plm_rsh_agent=/usr/bin/oarsh",
-        "export OMPI_MCA_btl_openib_allow_ib=true",
-        "export OMPI_MCA_pml=cm",
-        "export OMPI_MCA_mtl=psm2",
-    ]
-
-
-class DahuGuixDevel(DahuGuix, DahuDevel):
-    """Dahu devel with Guix"""
-
-
-class DahuGuix16_6130(DahuGuix, Dahu16_6130):
-    """Dahu16_6130 with Guix"""
-
-
-class DahuGuix32_6130(DahuGuix, Dahu32_6130):
-    """Dahu32_6130 with Guix"""
-
-
-class DahuGuix24_6126(DahuGuix, Dahu24_6126):
-    """Dahu24_6126 with Guix"""
-
-
-class DahuGuix32_5218(DahuGuix, Dahu32_5218):
-    """Dahu32_5218 with Guix"""
-
-
-class DahuGuix16_6244(DahuGuix, Dahu16_6244):
-    """Dahu16_6244 with Guix"""
