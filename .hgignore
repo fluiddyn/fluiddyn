@@ -62,3 +62,5 @@ scripts/Simul/Launch/Profile.prof
 misc/spack/helper-creations/pdm.lock
 **/.spack-env
 spack.lock
+
+.ruff_cache
