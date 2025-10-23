@@ -2,7 +2,7 @@
 |logo|
 ======
 
-|release| |pyversions| |docs| |coverage| |heptapod_ci| |github_actions|
+|release| |pyversions| |docs| |project-status| |coverage| |heptapod_ci| |github_actions|
 
 .. |logo| image:: https://foss.heptapod.net/fluiddyn/fluiddyn/raw/branch/default/doc/logo.svg
    :alt: FluidDyn project and fluiddyn package
@@ -17,6 +17,10 @@
 .. |docs| image:: https://readthedocs.org/projects/fluiddyn/badge/?version=latest
    :target: http://fluiddyn.readthedocs.org
    :alt: Documentation status
+
+.. |project-status| image:: https://www.repostatus.org/badges/latest/active.svg
+   :target: https://www.repostatus.org/#active
+   :alt: Project Status: Active - The project has reached a stable, usable state and is being actively developed.
 
 .. |coverage| image:: https://codecov.io/gh/fluiddyn/fluiddyn/branch/branch%2Fdefault/graph/badge.svg
    :target: https://codecov.io/gh/fluiddyn/fluiddyn/branch/branch%2Fdefault
@@ -57,7 +61,7 @@ Requirements
 ------------
 
 +------------------------+-------------------------------------------------------------------------------+
-| **Minimum**            | Python (>=3.9), ``numpy matplotlib h5py psutil``                              |
+| **Minimum**            | Python (>=3.11), ``numpy matplotlib h5py psutil``                              |
 +------------------------+-------------------------------------------------------------------------------+
 | **Full functionality** | ``h5py h5netcdf pillow imageio mpi4py scipy pyfftw`` (requires FFTW library), |
 |                        | SHTns                                                                         |
