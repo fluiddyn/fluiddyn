@@ -6,15 +6,16 @@
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Code coverage](https://codecov.io/gh/fluiddyn/fluiddyn/branch/branch%2Fdefault/graph/badge.svg)](https://codecov.io/gh/fluiddyn/fluiddyn/branch/branch%2Fdefault)
 [![Heptapod CI](https://foss.heptapod.net/fluiddyn/fluiddyn/badges/branch/default/pipeline.svg)](https://foss.heptapod.net/fluiddyn/fluiddyn/-/pipelines)
-[![Github Actions](https://github.com/fluiddyn/fluidsim/actions/workflows/ci-linux.yml/badge.svg?branch=branch/default)](https://github.com/fluiddyn/fluiddyn/actions/)
+[![Github Actions Linux](https://github.com/fluiddyn/fluidsim/actions/workflows/ci-linux.yml/badge.svg?branch=branch/default)](https://github.com/fluiddyn/fluiddyn/actions/)
+[![Github Actions Windows](https://github.com/fluiddyn/fluidsim/actions/workflows/ci-windows.yml/badge.svg?branch=branch/default)](https://github.com/fluiddyn/fluiddyn/actions/)
 
 FluidDyn project is an ecosystem of packages for research and teaching
 in fluid dynamics. The Python package fluiddyn contains:
 
--   **basic utilities to manage**: File I/O for some esoteric formats,
-    publication quality figures, job submission on clusters, MPI
--   **powerful classes to handle**: parameters, arrays, series of files
--   **simplified interfaces to calculate**: FFT, spherical harmonics
+- **basic utilities to manage**: File I/O for some esoteric formats,
+  publication quality figures, job submission on clusters, MPI
+- **powerful classes to handle**: parameters, arrays, series of files
+- **simplified interfaces to calculate**: FFT, spherical harmonics
 
 and much more. It is used as a library in [the other specialized
 packages of the FluidDyn project](https://foss.heptapod.net/fluiddyn)
