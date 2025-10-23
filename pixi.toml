@@ -6,7 +6,7 @@ platforms = ["linux-64", "win-64"]
 [tasks]
 # use as `pixi run install-editable`
 install-dependencies = "pixi install"
-install-editable = {cmd = "pip install -e . -v --no-build-isolation --no-deps", depends_on = ["install-dependencies"]}
+install-editable = {cmd = "pip install -e . -v --no-build-isolation --no-deps", depends-on = ["install-dependencies"]}
 
 [dependencies]
 h5py = ">=3.10.0"
