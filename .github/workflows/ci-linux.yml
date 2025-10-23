@@ -9,15 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     steps:
     - name: apt install
       run: |
         sudo apt install -y libopenmpi-dev
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -27,7 +27,7 @@ jobs:
     - name: Test with nox
       run: |
         nox -s test
-    - uses: codecov/codecov-action@v3
+    - uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: false # optional (default = false)

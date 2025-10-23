@@ -7,9 +7,10 @@ name = "fluiddyn"
 version = "0.9.0"
 description = "Framework for studying fluid dynamics."
 keywords = ["Fluid dynamics", "research"]
-license = {text = "CeCILL-B License"}
+license = "CECILL-B"
+license-files = ["LICENSE.txt"]
 authors = [{name = "Pierre Augier", email = "pierre.augier@legi.cnrs.fr"}]
-requires-python = ">= 3.10"
+requires-python = ">= 3.11"
 dependencies = [
     "numpy",
     "matplotlib",
@@ -19,18 +20,17 @@ dependencies = [
     "distro",
     "simpleeval>=0.9.13",
 ]
-readme = "README.rst"
+readme = "README.md"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Education",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: BSD License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Scientific/Engineering",

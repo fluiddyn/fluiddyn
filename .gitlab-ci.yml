@@ -126,7 +126,7 @@ test:run:
 
 doc:build:
   stage: doc
-  image: sphinxdoc/sphinx:5.3.0
+  image: sphinxdoc/sphinx:8.2.3
   before_script:
     - pip install pdm
     - pdm install -G doc
