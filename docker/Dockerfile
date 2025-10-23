@@ -1,12 +1,9 @@
-FROM python:3.10-bookworm
+FROM python:3.11
 LABEL Pierre Augier <pierre.augier@univ-grenoble-alpes.fr>
-
-COPY docker/hgrc $HOME/.hgrc
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 RUN apt-get update
-
-RUN apt-get install -y --no-install-recommends emacs vim rsync python3-pip
-RUN apt-get install -y --no-install-recommends mercurial git
+RUN apt-get install -y --no-install-recommends emacs vim rsync git
 RUN apt-get install -y --no-install-recommends libopenmpi-dev libfftw3-dev
 
 RUN rm -rf /var/lib/apt/lists/*
@@ -19,15 +16,18 @@ RUN mkdir -p $HOME/opt
 WORKDIR $HOME/opt
 RUN echo $USER $HOME $PWD && whoami
 
+COPY docker/hgrc $HOME/.hgrc
 RUN mkdir -p $HOME/.local/bin
 ENV PATH=$HOME/.local/bin:$PATH
-
-ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 RUN mkdir -p $HOME/.config/matplotlib
 RUN echo 'backend      : agg' > $HOME/.config/matplotlib/matplotlibrc
 
-RUN $(hg debuginstall -T '{pythonexe}') -m pip install hg-evolve hg-git --no-cache-dir --user
 RUN git config --global pull.rebase false
 
-RUN python -m pip install pip nox pdm black isort vermin -U --user
+RUN uv tool install mercurial --with hg-evolve,hg-git
+RUN uv tool install pdm
+RUN uv tool install nox
+RUN uv tool install isort
+RUN uv tool install black
+RUN uv tool install vermin
