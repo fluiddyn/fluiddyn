@@ -47,3 +47,10 @@ class Occigen(ClusterSlurm):
 class Occigen28(Occigen):
     nb_cores_per_node = 28
     constraint = "BDW28"
+
+
+class Adastra(ClusterSlurm):
+    name_cluster = "adastra"
+    nb_cores_per_node = 96
+    constraint = "GENOA"
+    max_walltime = "23:59:59"
