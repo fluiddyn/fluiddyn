@@ -97,6 +97,24 @@ class TestContainer(unittest.TestCase):
             print("params2=\n", params2)
             raise
 
+    def test_save_load_h5netcdf(self):
+        """Test save to and load from hdf5 file."""
+        params = self.params
+
+        name_file_nc = "params_test.nc"
+        params._save_as_hdf5(path_file=name_file_nc)
+        params._save_as_hdf5()
+
+        params2 = ParamContainer(path_file=name_file_nc)
+        os.remove(name_file_nc)
+
+        try:
+            self.assertEqual(self.params, params2)
+        except AssertionError:
+            print("params=\n", self.params)
+            print("params2=\n", params2)
+            raise
+
     def test_raise(self):
         """Test raise errors."""
         params = self.params
