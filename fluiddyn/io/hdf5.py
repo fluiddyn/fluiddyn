@@ -12,7 +12,9 @@ IO for HDF5 files (:mod:`fluiddyn.io.hdf5`)
 """
 
 import numbers
+from pathlib import Path
 
+import h5netcdf
 import h5py
 import numpy as np
 
@@ -178,6 +180,12 @@ def load_variables_h5(path):
     return variables
 
 
-# if __name__ == '__main__':
+def open_h5_nc(path, mode):
+    """Helper to open .h5 or .nc file with the right package"""
+    path = Path(path)
 
-#     pass
+    if path.name.endswith(".nc"):
+        cls = h5netcdf.File
+    else:
+        cls = H5File
+    return cls(path, mode)

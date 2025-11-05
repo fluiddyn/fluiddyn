@@ -30,9 +30,10 @@ except ImportError:
 
 
 try:
+    import h5netcdf
     import h5py
 
-    from fluiddyn.io.hdf5 import H5File
+    from fluiddyn.io.hdf5 import H5File, open_h5_nc
 except ImportError:
     from warnings import warn
 
@@ -213,7 +214,7 @@ class ParamContainer:
             self._set_internal_attr("_path_file", path_file)
             if path_file.endswith(".xml"):
                 self._load_from_xml_file(path_file)
-            elif path_file.endswith(".h5"):
+            elif any(path_file.endswith(end) for end in (".h5", ".nc")):
                 self._load_from_hdf5_file(path_file)
         elif elemxml is not None:
             self._load_from_elemxml(elemxml)
@@ -597,9 +598,9 @@ class ParamContainer:
         if hdf5_object is None:
             if path_file is None:
                 path_file = ""
-            if not path_file.endswith(".h5"):
+            if not any(path_file.endswith(end) for end in [".h5", ".nc"]):
                 path_file = os.path.join(path_file, self._tag + ".h5")
-            with H5File(path_file, "w") as f:
+            with open_h5_nc(path_file, "w") as f:
                 try:
                     tag = self._tag.encode("utf8")
                 except AttributeError:
@@ -646,12 +647,12 @@ class ParamContainer:
                 self.__dict__[key]._save_as_hdf5(hdf5_object=group)
         else:
             raise ValueError(
-                "If hdf5_object is not None," "path_file should be None."
+                "If hdf5_object is not None, path_file should be None."
             )
 
     def _load_from_hdf5_file(self, path_file):
-        with H5File(path_file, "r") as f:
-            self._load_from_hdf5_object(f)
+        with open_h5_nc(path_file, "r") as file:
+            self._load_from_hdf5_object(file)
 
     def _load_from_hdf5_object(self, hdf5_object):
         attrs = dict(hdf5_object.attrs)
@@ -666,8 +667,11 @@ class ParamContainer:
             except AttributeError:
                 pass
 
-            if isinstance(v, np.ndarray) and v.dtype.kind in ("S", "U", "O"):
-                attrs[k] = list(v.astype(np.str_))
+            if isinstance(v, np.ndarray):
+                if v.dtype.kind in ("S", "U", "O"):
+                    attrs[k] = list(v.astype(np.str_))
+                else:
+                    attrs[k] = v.tolist()
 
         tag = hdf5_object.name.split("/")[-1]
 
@@ -700,7 +704,7 @@ class ParamContainer:
                 value = hdf5_object[tag][...]
                 self._set_attrib(tag, value)
 
-            elif isinstance(hdf5_object[tag], h5py.Group):
+            elif isinstance(hdf5_object[tag], (h5py.Group, h5netcdf.Group)):
                 self.__dict__[tag] = self.__class__(
                     hdf5_object=hdf5_object[tag], parent=self
                 )

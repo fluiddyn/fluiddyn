@@ -29,9 +29,13 @@ class TestContainer(unittest.TestCase):
             }
         )
 
-        params._set_child("child0", {"a0": 2, "a1": None}, doc="Doc on a0 & a1")
+        params._set_child(
+            "child0",
+            {"a0": 2, "a1": None, "a2": [100, 101]},
+            doc="Doc on a0 & a1",
+        )
         params.child0.a0 = []
-        params.child0.a0.append(1)
+        params.child0.a0.append(10)
 
         params.child0._set_child("cc", {})
 
