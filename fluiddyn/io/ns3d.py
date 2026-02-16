@@ -60,7 +60,7 @@ class NS3DFieldFile(NS3DFile):
             self.lx, self.ly, self.lz, self.dt = f.readt(4, "float64")
 
             self.truncate, self.type_trunc = f.readt(2, "uint32")
-            (self.rtrunc_x, self.rtrunc_y, self.rtrunc_z, self.nu) = f.readt(
+            self.rtrunc_x, self.rtrunc_y, self.rtrunc_z, self.nu = f.readt(
                 4, "float64"
             )
 

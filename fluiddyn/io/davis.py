@@ -29,20 +29,16 @@ except ImportError as error:
 
 
 def _import_error_readim():
-    print(
-        """ImportError ReadIM.
+    print("""ImportError ReadIM.
 We need the package ReadIM to handle .im7 images. Please install it correctly
-(see https://bitbucket.org/fleming79/readim)."""
-    )
+(see https://bitbucket.org/fleming79/readim).""")
     raise ImportError(_error_readim)
 
 
 def _import_error_png():
-    print(
-        """ImportError png.
+    print("""ImportError png.
 We need the package pypng to handle png 'I;16'. Please install it correctly with
-`pip install pypng` (see https://pypi.python.org/pypi/pypng)."""
-    )
+`pip install pypng` (see https://pypi.python.org/pypi/pypng).""")
     raise ImportError(_error_png)
 
 

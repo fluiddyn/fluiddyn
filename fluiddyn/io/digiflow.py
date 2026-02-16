@@ -329,11 +329,11 @@ class DigiflowMovie:
     def _read_movie_header(self, f):
         # Movie Header Information
 
-        (iFormatType, iFrameRate) = f.readt(2, "uint16")
-        (iSampleSpacing, iMovieDuration, iPtrFrameTable, nMovieFrames) = f.readt(
+        iFormatType, iFrameRate = f.readt(2, "uint16")
+        iSampleSpacing, iMovieDuration, iPtrFrameTable, nMovieFrames = f.readt(
             4, "uint32"
         )
-        (iw0, iw1, jw0, jw1, idi, jdj) = f.readt(6, "uint16")
+        iw0, iw1, jw0, jw1, idi, jdj = f.readt(6, "uint16")
 
         self.shape_im = [iw1 - iw0 + 1, jw1 - jw0 + 1]
         self.size_im = self.shape_im[0] * self.shape_im[1]
